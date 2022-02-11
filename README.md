@@ -4,6 +4,8 @@
 # ggmice
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/amices/ggmice/workflows/R-CMD-check/badge.svg)](https://github.com/amices/ggmice/actions)
 <!-- badges: end -->
 
 `ggmice` is an `R` package which enhances the imputation package `mice`
