@@ -17,7 +17,8 @@ Imports:
     ggplot2,
     mice
 Suggests:
+    testthat (>= 3.0.0),
     plotly
-Enhances: 
-    mice
-URL: https://amices.org/
+URL: https://github.com/amices/ggmice, https://amices.org/
+BugReports: https://github.com/amices/ggmice
+Config/testthat/edition: 3
