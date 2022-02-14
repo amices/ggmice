@@ -2,3 +2,4 @@
 
 export(plot_chains)
 export(plot_imps)
+export(theme_mice)

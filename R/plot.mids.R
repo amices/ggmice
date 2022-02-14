@@ -47,6 +47,5 @@ plot_chains <- function(imp){
     ggplot2::labs(x = "Iteration",
          y = "",
          color = "Imputation") +
-    ggplot2::theme_classic() +
-    ggplot2::theme(strip.placement = "outside")
+    theme_mice()
 }
