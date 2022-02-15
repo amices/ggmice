@@ -2,4 +2,6 @@
 
 export(plot_chains)
 export(plot_imps)
+export(plot_pred)
+export(plot_quickpred)
 export(theme_mice)

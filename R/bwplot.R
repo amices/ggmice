@@ -1,11 +1,11 @@
 # bwplot
 #' Title
 #'
-#' @param imp An object of class \code{mids}
+#' @param imp An object of class `mids`
 #' @param x A variable name
 #' @param y An optional second variable name
 #'
-#' @return An object of class \code{ggplot}
+#' @return An object of class `ggplot`
 #'
 #' @examples
 #' imp <- mice::mice(mice::nhanes, print = FALSE)
