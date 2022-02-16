@@ -4,10 +4,12 @@
 \alias{plot_pred}
 \title{Title}
 \usage{
-plot_pred(pred)
+plot_pred(pred, label = FALSE)
 }
 \arguments{
 \item{pred}{A predictor matrix for \code{mice}}
+
+\item{label}{Logical indicating whether predictor matrix values should be displayed}
 }
 \value{
 An object of class \code{ggplot}
