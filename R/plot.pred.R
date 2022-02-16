@@ -1,5 +1,5 @@
 # plot predictor matrix
-#' Title
+#' Title Plot predictorMatrix for `mice::mice()` argument
 #'
 #' @param pred A predictor matrix for `mice`
 #' @param label Logical indicating whether predictor matrix values should be displayed
@@ -31,30 +31,7 @@ plot_pred <- function(pred, label = FALSE){
   return(gg)
 }
 
-# # plot quickpred
-# #' Title
-# #'
-# #' @param dat An incomplete data.frame
-# #' @param ... Optional additional arguments to `mice::quickpred`
-# #'
-# #' @return An object of class `ggplot`
-# #'
-# #' @examples
-# #' plot_quickpred(mice::nhanes)
-# #' @export
-# plot_quickpred <- function(dat, ...){
-#   #TODO: make this work with other pred matrices
-#   vrbs <- names(dat)
-#   p <- length(vrbs)
-#   corrs <- data.frame(
-#     vrb = rep(vrbs, each = p),
-#     prd = vrbs,
-#     corr = matrix(round(stats::cov2cor(stats::cov(dat, use =  "pairwise.complete.obs")), 3), nrow = p*p, byrow = TRUE))
-#   plot_pred(mice::quickpred(dat, ...)) +
-#     ggplot2::geom_text(ggplot2::aes(x = vrb, y = prd, label = paste("r =", corr)), color = "black", data = corrs)
-# }
-
-#' Title
+#' Title Plot correlations between (incomplete) variables
 #'
 #' @param dat An incomplete data.frame
 #' @param label Logical indicating whether correlation values should be displayed

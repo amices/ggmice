@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.pred.R
 \name{plot_corr}
 \alias{plot_corr}
-\title{Title}
+\title{Title Plot correlations between (incomplete) variables}
 \usage{
 plot_corr(dat, label = FALSE)
 }
@@ -15,7 +15,7 @@ plot_corr(dat, label = FALSE)
 An object of class \code{ggplot}
 }
 \description{
-Title
+Title Plot correlations between (incomplete) variables
 }
 \examples{
 plot_corr(mice::nhanes, label = TRUE)
