@@ -15,7 +15,8 @@ RoxygenNote: 7.1.2
 Imports: 
     dplyr,
     ggplot2,
-    mice
+    mice,
+    stats
 Suggests:
     testthat (>= 3.0.0),
     plotly
