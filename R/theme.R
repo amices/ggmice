@@ -5,12 +5,11 @@
 #'
 #' @export
 theme_mice <- function(){
-  # param
-  font <- "Arial"
-  # theme
   ggplot2::theme_classic() +
     ggplot2::theme(
-      legend.position = "top",
+      # text = ggplot2::element_text(family="sans"),
+      legend.position = "bottom",
+      legend.justification = "right",
       strip.placement = "outside"
     )
   }
