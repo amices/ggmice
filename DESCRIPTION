@@ -16,6 +16,7 @@ Imports:
     dplyr,
     ggplot2,
     mice,
+    purrr,
     stats
 Suggests:
     testthat (>= 3.0.0),

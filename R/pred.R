@@ -64,3 +64,31 @@ plot_corr <- function(dat, label = FALSE){
   if(label == TRUE) {gg <- gg + ggplot2::geom_text(color = "black", show.legend = FALSE)}
   return(gg)
 }
+
+#' Title
+#'
+#' @param dat An incomplete data.frame
+#'
+#' @return An object of class `ggplot`
+#'
+#' @examples
+#' plot_corr(mice::nhanes)
+#' @export
+plot_test <- function(dat){
+  M <- is.na(dat)
+  v <- names(dat)
+
+  est <- purrr::map_dfr(v[colSums(M)>0], ~{dat[, v != .x] %>% scale() %>% as.data.frame() %>%
+    glm(M[, .x] ~ . -1, data = ., family = "binomial", na.action = "na.exclude") %>%
+    coef() %>% data.frame(M = .x, prd = names(.), b = ., row.names = NULL)})
+
+  ggplot2::ggplot(est, ggplot2::aes(x = prd, y = M, fill = b)) +
+    ggplot2::geom_tile() +
+    ggplot2::scale_x_discrete(limits = v, position = "top") +
+    ggplot2::scale_y_discrete(limits = rev(v), labels = rev(paste0("M(", v, ")")), drop = FALSE) +
+    ggplot2::scale_fill_gradient2(low = "navyblue", mid = "white", high = "darkred", limits = c(-1, 1), na.value = "white") +
+    ggplot2::labs(x = "Predictor variable",
+         y = "Missingness indicator",
+         fill = "St. beta") +
+    ggplot2::theme_minimal()
+}

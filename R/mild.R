@@ -12,6 +12,8 @@
 #' plot_imps(imp, x = "bmi")
 #' @export
 plot_imps <- function(imp, x, y = NULL) {
+  #TODO: suppress warnings about NA/non-finite values
+  #TODO: do something about spacing categorical/ordinal values, like vertical jitter
   type = "bwplot" #c("bwplot", "stripplot", "densityplot")
   # pre-process mids object for plotting
   if(is.null(y)){y <- x}
