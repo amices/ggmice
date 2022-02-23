@@ -90,5 +90,7 @@ plot_test <- function(dat){
     ggplot2::labs(x = "Predictor variable",
          y = "Missingness indicator",
          fill = "St. beta") +
-    ggplot2::theme_minimal()
+    ggplot2::theme_minimal() +
+    ggplot2::theme(legend.position = "bottom",
+                   legend.justification = "right")
 }
