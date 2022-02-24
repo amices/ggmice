@@ -55,9 +55,11 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     gg <- gg +
       ggplot2::facet_wrap(~ .imp)
   }
-  # else {
-  #   annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = .2)
-  # }
+  else {
+    gg <- gg +
+      ggplot2::coord_cartesian(clip = "off")
+    #   annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = .2)
+  }
   # output
   return(gg)
 }
