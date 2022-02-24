@@ -27,15 +27,18 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   vrbs_xy <- vrbs[stringr::str_detect(ggplot2::as_label(mapping$x), vrbs) | stringr::str_detect(ggplot2::as_label(mapping$y), vrbs)]
   # edit data and mapping objects
   if(mice::is.mids(data)){
-    mice_data <- dplyr::mutate(mice::complete(data, action = "long", include = TRUE),
-                        .imp = factor(.imp, levels = 0:data$m, ordered = TRUE),
-                        .mis = rep(rowSums(as.matrix(data$where[, vrbs_xy])) > 0L, data$m + 1L),
-                        .mis = factor(.mis, levels = c(FALSE, TRUE), labels = c("observed", "imputed"), ordered = TRUE))
+    mice_data <- dplyr::mutate(
+      mice::complete(data, action = "long", include = TRUE),
+      .imp = factor(.imp, levels = 0:data$m, labels = c("original", paste("imputation", 1:data$m)), ordered = TRUE),
+      .mis = rep(rowSums(as.matrix(data$where[, vrbs_xy])) > 0L, data$m + 1L),
+      .mis = factor(.mis, levels = c(FALSE, TRUE), labels = c("observed", "imputed"), ordered = TRUE))
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .mis, fill = .mis))
   } else {
-    mice_data <- dplyr::mutate(data,
-                       .mis = rowSums(is.na(as.matrix(data[, vrbs_xy]))) > 0L,
-                       .mis = factor(.mis, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE))
+    mice_data <- dplyr::mutate(
+      data,
+      dplyr::across(tidyselect::vars_select_helpers$where(is.numeric), ~tidyr::replace_na(.x, -Inf)),
+      .mis = rowSums(is.na(as.matrix(data[, vrbs_xy]))) > 0L,
+      .mis = factor(.mis, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE))
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .mis, fill = .mis))
   }
   # create plot
@@ -44,7 +47,13 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     ggplot2::scale_color_manual(values = mice_colors, drop = TRUE, name = "") +
     ggplot2::scale_fill_manual(values = mice_colors, drop = TRUE, name = "") +
     theme_mice()
-
+  if(mice::is.mids(data)){
+    gg <- gg +
+      ggplot2::facet_wrap(~ .imp)
+  }
+  # else {
+  #   #annotate("rect", xmin = 3, xmax = 4.2, ymin = 12, ymax = 21, alpha = .2)
+  # }
   # output
   return(gg)
 }
