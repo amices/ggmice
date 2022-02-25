@@ -17,7 +17,7 @@ plot_pred <- function(pred, label = FALSE){
     prd = rep(vrbs, each = p),
     vrb = vrbs,
     ind = matrix(pred, nrow = p*p, byrow = TRUE))
-  gg <- ggplot2::ggplot(long, ggplot2::aes(x = prd, y = vrb, label = ind, color = ifelse(ind == 0, "no", "yes"))) +
+  gg <- ggplot2::ggplot(long, ggplot2::aes(x = .data$prd, y = .data$vrb, label = .data$ind, color = ifelse(.data$ind == 0, "no", "yes"))) +
     ggplot2::geom_tile(fill = "white", size = 1.5*p, width = 0.8, height = 0.8) +
     ggplot2::scale_x_discrete(limits = vrbs, position = "top") +
     ggplot2::scale_y_discrete(limits = rev(vrbs)) +
@@ -48,7 +48,7 @@ plot_corr <- function(dat, label = FALSE){
     vrb = rep(vrbs, each = p),
     prd = vrbs,
     corr = matrix(round(stats::cov2cor(stats::cov(data.matrix(dat), use =  "pairwise.complete.obs")), 2), nrow = p*p, byrow = TRUE))
-  gg <- ggplot2::ggplot(corrs, ggplot2::aes(x = prd, y = vrb, label = corr, color = corr)) +
+  gg <- ggplot2::ggplot(corrs, ggplot2::aes(x = .data$prd, y = .data$vrb, label = .data$corr, color = .data$corr)) +
     ggplot2::geom_tile(fill = "white", size = 2*p, width = 0.8, height = 0.8) +
     ggplot2::scale_x_discrete(limits = vrbs, position = "top") +
     ggplot2::scale_y_discrete(limits = rev(vrbs)) +
@@ -71,9 +71,9 @@ plot_corr <- function(dat, label = FALSE){
 #'
 #' @return An object of class `ggplot`
 #'
+#' @export
 #' @examples
 #' plot_corr(mice::nhanes)
-#' @export
 plot_test <- function(dat){
   M <- is.na(dat)
   v <- names(dat)
@@ -82,7 +82,7 @@ plot_test <- function(dat){
     glm(M[, .x] ~ . -1, data = ., family = "binomial", na.action = "na.exclude") %>%
     coef() %>% data.frame(M = .x, prd = names(.), b = ., row.names = NULL)})
 
-  ggplot2::ggplot(est, ggplot2::aes(x = prd, y = M, fill = b)) +
+  ggplot2::ggplot(est, ggplot2::aes(x = .data$prd, y = .data$M, fill = .data$b)) +
     ggplot2::geom_tile() +
     ggplot2::scale_x_discrete(limits = v, position = "top") +
     ggplot2::scale_y_discrete(limits = rev(v), labels = rev(paste0("M(", v, ")")), drop = FALSE) +

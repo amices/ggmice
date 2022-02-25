@@ -2,7 +2,7 @@
 % Please edit documentation in R/ggmice.R
 \name{ggmice}
 \alias{ggmice}
-\title{Title}
+\title{Plot incomplete or imputed data}
 \usage{
 ggmice(data = NULL, mapping = ggplot2::aes())
 }
@@ -15,9 +15,8 @@ ggmice(data = NULL, mapping = ggplot2::aes())
 A ggplot object of class \code{gg}
 }
 \description{
-Title
+Plot incomplete or imputed data
 }
 \examples{
-imp <- mice::mice(mice::nhanes, print = FALSE)
-ggmice(imp, ggplot2::aes(x = age, y = bmi))
+ggmice(mice::nhanes, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
 }
