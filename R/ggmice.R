@@ -6,8 +6,7 @@
 #' @return A ggplot object of class `gg`
 #'
 #' @examples
-#' imp <- mice::mice(mice::nhanes, print = FALSE)
-#' ggmice(imp, ggplot2::aes(x = age, y = bmi))
+#' ggmice(mice::nhanes, ggplot2::aes(x = age, y = bmi))
 #' @export
 ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   # process inputs
@@ -32,10 +31,16 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if(mice::is.mids(data)){
     mice_data <- tidyr::drop_na(dplyr::mutate(
       mice::complete(data, action = "long", include = TRUE),
-      .imp = factor(.imp, levels = 0:data$m, labels = c("original", paste("imputation", 1:data$m)), ordered = TRUE),
+      .imp = factor(.imp, levels = 0:data$m, ordered = TRUE), #labels = c("original", paste("imp.", 1:data$m))
       .mis = rep(rowSums(as.matrix(data$where[, vrbs_xy])) > 0L, data$m + 1L),
       .mis = factor(.mis, levels = c(FALSE, TRUE), labels = c("observed", "imputed"), ordered = TRUE)), vrbs_xy)
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .mis, fill = .mis))
+    if("x" %nin% mapping_args){
+      mice_mapping <- utils::modifyList(mice_mapping, ggplot2::aes(x = .imp))
+    }
+    if("y" %nin% mapping_args){
+      mice_mapping <- utils::modifyList(mice_mapping, ggplot2::aes(y = .imp))
+    }
   } else {
     mice_data <- dplyr::mutate(
       data,
@@ -51,20 +56,22 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     ggplot2::scale_color_manual(values = mice_colors, drop = TRUE, name = "") +
     ggplot2::scale_fill_manual(values = mice_colors, drop = TRUE, name = "") +
     theme_mice()
-  if(mice::is.mids(data)){
-    gg <- gg +
-      ggplot2::facet_wrap(~ .imp)
-  }
-  else {
-    gg <- gg +
-      ggplot2::coord_cartesian(clip = "off")
-    #   annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = .2)
-  }
+  # if(mice::is.mids(data)){
+  #   gg <- gg +
+  #     ggplot2::facet_wrap(~ .imp)
+  # }
+  # else {
+  #   gg <- gg +
+  #     ggplot2::coord_cartesian(clip = "off")
+  #   #   annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = .2)
+  # }
   # output
   return(gg)
 }
 
+#TODO resolve notes about global variables/functions by adding .data, see https://dplyr.tidyverse.org/articles/programming.html
 
+# ggmice(imp, ggplot2::aes(bmi)) + ggplot2::geom_boxplot()
 # x_mis <- if("x" %in% mapping_args){data$where[, rlang::as_name(mapping$x)]} else FALSE
 # y_mis <- if("y" %in% mapping_args){data$where[, rlang::as_name(mapping$y)]} else FALSE
 # xy_mis <- x_mis | y_mis
