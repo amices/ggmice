@@ -29,26 +29,28 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
 
   # edit data and mapping objects
   if(mice::is.mids(data)){
-    mice_data <- tidyr::drop_na(dplyr::mutate(
-      mice::complete(data, action = "long", include = TRUE),
-      .imp = factor(.imp, levels = 0:data$m, ordered = TRUE), #labels = c("original", paste("imp.", 1:data$m))
-      .mis = rep(rowSums(as.matrix(data$where[, vrbs_xy])) > 0L, data$m + 1L),
-      .mis = factor(.mis, levels = c(FALSE, TRUE), labels = c("observed", "imputed"), ordered = TRUE)), vrbs_xy)
-    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .mis, fill = .mis))
+    where_xy <- rowSums(as.matrix(data$where[, vrbs_xy])) > 0L
+    mice_data <- dplyr::mutate(
+      rbind(
+        data.frame(.where = "observed", .imp = 0, .id = rownames(data$data), data$data)[!where_xy, ],
+        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy, ]),
+      .imp = factor(.imp, ordered = TRUE))
+    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where, fill = .where))
     if("x" %nin% mapping_args){
       mice_mapping <- utils::modifyList(mice_mapping, ggplot2::aes(x = .imp))
     }
     if("y" %nin% mapping_args){
       mice_mapping <- utils::modifyList(mice_mapping, ggplot2::aes(y = .imp))
+      mice_data$.imp <- ordered(mice_data$.imp, levels = rev(levels(mice_data$.imp)))
     }
   } else {
+    where_xy <- rowSums(is.na(as.matrix(data[, vrbs_xy]))) > 0L
     mice_data <- dplyr::mutate(
       data,
       dplyr::across(vrbs_num, ~tidyr::replace_na(.x, -Inf)),
       dplyr::across(vrbs[vrbs %nin% vrbs_num], ~{as.factor(tidyr::replace_na(as.character(.x), "-Inf"))}),
-      .mis = rowSums(is.na(as.matrix(data[, vrbs_xy]))) > 0L,
-      .mis = factor(.mis, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE))
-    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .mis, fill = .mis))
+      .where = factor(where_xy, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE))
+    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where, fill = .where))
   }
   # create plot
   mice_colors <- c("observed" = "#006CC2B3", "missing" = "#B61A51B3", "imputed" = "#B61A51B3")
