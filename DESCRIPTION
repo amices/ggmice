@@ -9,14 +9,24 @@ Description: Enhance 'mice' with 'ggplot2' plotting functions. Visualize
     Overwrites the 'mice' plotting functions 'bwplot', 'densityplot',
     'stripplot' and 'xyplot', and adds other visualizations.
 License: GPL (>= 3)
+Copyright: 
+    person("Utrecht University", role = "cph"),
+    person("University Medical Centre Utrecht", role = "cph")
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Imports: 
     dplyr,
     ggplot2,
+    magrittr,
     mice,
-    stats
+    purrr,
+    rlang,
+    stats,
+    stringr,
+    tidyr,
+    tidyselect,
+    utils
 Suggests:
     testthat (>= 3.0.0),
     plotly

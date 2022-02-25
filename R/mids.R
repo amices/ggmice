@@ -41,7 +41,7 @@ plot_chains <- function(imp){
   # .m <- NULL
   # rm(.m)
 
-  ggplot2::ggplot(dat, ggplot2::aes(x = .it, y = val, color = as.factor(.m))) +
+  ggplot2::ggplot(dat, ggplot2::aes(x = .data$.it, y = .data$val, color = as.factor(.data$.m))) +
     ggplot2::geom_line() +
     ggplot2::facet_wrap(vrb~.ms, scales = "free", ncol = 2, strip.position = "left") +
     ggplot2::labs(x = "Iteration",
