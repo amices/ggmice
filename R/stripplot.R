@@ -1,9 +1,9 @@
 #' Stripplot of observed and imputed data
 #'
-#' @param imp A `mids` object, typically created by `mice()` or `mice.mids()`
-#' @param vrb String or vector with variable name(s), default is "all"
+#' @param imp A `mids` object, typically created by `mice()` or `mice.mids()`.
+#' @param vrb String or vector with variable name(s), default is "all".
 #'
-#' @return A list with one or more `ggplot` objects
+#' @return A list with one or more `ggplot` objects.
 #' @export
 #'
 #' @examples

@@ -1,10 +1,10 @@
 # plot predictor matrix
 #' Title Plot predictorMatrix for `mice::mice()` argument
 #'
-#' @param pred A predictor matrix for `mice`
-#' @param label Logical indicating whether predictor matrix values should be displayed
+#' @param pred A predictor matrix for `mice`.
+#' @param label Logical indicating whether predictor matrix values should be displayed.
 #'
-#' @return An object of class `ggplot`
+#' @return An object of class `ggplot`.
 #'
 #' @examples
 #' pred <- mice::make.predictorMatrix(mice::nhanes)
@@ -22,7 +22,7 @@ plot_pred <- function(pred, label = FALSE) {
     ggplot2::geom_tile(fill = "white", size = 1.5 * p, width = 0.8, height = 0.8) +
     ggplot2::scale_x_discrete(limits = vrbs, position = "top") +
     ggplot2::scale_y_discrete(limits = rev(vrbs)) +
-    ggplot2::scale_color_manual(values = c("yes" = "#006CC2B3", "no" = "#B61A51B3")) +
+    ggplot2::scale_color_manual(values = c("yes" = "#006CC2B3", "no" = "white")) +
     ggplot2::labs(
       x = "Predictor in imputation model",
       y = "Variable to impute",

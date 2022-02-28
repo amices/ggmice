@@ -1,21 +1,24 @@
 #' Plot incomplete or imputed data
 #'
-#' @param data An incomplete dataset or an object of class `mids`
-#' @param mapping A list of aesthetic mappings created with `ggplot2::aes()`
+#' @param data An incomplete dataset or an object of class `mids`.
+#' @param mapping A list of aesthetic mappings created with `ggplot2::aes()`.
 #'
-#' @return A ggplot object of class `gg`
+#' @return A ggplot object of class `gg`.
 #'
 #' @examples
 #' ggmice(mice::nhanes, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
 #' @export
 ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   # process inputs
+  if (!(is.data.frame(data) | mice::is.mids(data))) {
+    stop("Dataset (e.g., 'data.frame' or 'tibble') or 'mids' object (e.g. created with mice::mice()) is required.")
+  }
   mapping_args <- names(mapping)
-  try(if (!any(c("x", "y") %in% mapping_args)) {
+  if (!any(c("x", "y") %in% mapping_args)) {
     stop("At least one of the aes() arguments 'x' or 'y' is required. Cannot create ggmice object without mapping.")
-  })
+  }
   if (any(c("colour", "fill") %in% mapping_args)) {
-    warning("The aes() arguments 'colour', 'fill' and 'group' have a special use in ggmmice() and will be overwritten. Try using 'shape' or 'linetype' for additional mapping.")
+    warning("The aes() arguments 'colour', 'fill' and 'group' have a special use in ggmmice() and will be overwritten. Try using 'shape' or 'linetype' for additional mapping, or use faceting.")
   }
   # extract variable names from mapping object
   if (mice::is.mids(data)) {
@@ -78,5 +81,3 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   # output
   return(gg)
 }
-
-# TODO resolve notes about global variables/functions by adding .data, see https://dplyr.tidyverse.org/articles/programming.html

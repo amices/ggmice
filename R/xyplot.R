@@ -1,8 +1,7 @@
 #' Scatterplot of observed and imputed data
 #'
-#' @param imp A `mids` object, typically created by `mice()` or `mice.mids()`
-#' @param x String with variable name
-#' @param y String with variable name
+#' @param imp A `mids` object, typically created by `mice()` or `mice.mids()`.
+#' @param x,y String with a variable name.
 #'
 #' @return A `ggplot` object
 #' @export

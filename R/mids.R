@@ -1,16 +1,15 @@
 # plot convergence
 #' Title
 #'
-#' @param imp An object of class `mids`
+#' @param imp An object of class `mids`.
 #'
-#' @return An object of class `ggplot`
+#' @return An object of class `ggplot`.
 #'
 #' @examples
 #' imp <- mice::mice(mice::nhanes, print = FALSE)
 #' plot_chains(imp)
 #' @export
-plot_chains <- function(imp) {
-  # call <- match.call()
+plot_chains <- function(imp, vrb = "all") {
   if (!mice::is.mids(imp)) {
     stop("argument 'imp' must be a 'mids' object", call. = FALSE)
   }
@@ -18,32 +17,34 @@ plot_chains <- function(imp) {
     stop("no convergence diagnostics found", call. = FALSE)
   }
 
-  # extract chain means and chain variances
+  # extract chain means and chain standard deviations
   mn <- imp$chainMean
   sm <- sqrt(imp$chainVar)
 
-  # select subset of nonmissing entries
-  obs <- apply(!(is.nan(mn) | is.na(mn)), 1, all)
-  varlist <- names(obs)[obs]
-  p <- length(varlist)
+  # select variable to plot from list of imputed variables
+  varlist <- names(imp$imp)[apply(!(is.nan(mn) | is.na(mn)), 1, all)]
+  if (vrb %nin% varlist & vrb != "all") {
+    stop(paste0("No convergence diagnostics found for variable '", vrb, "'. No plot can be produced. Are you sure this variable is imputed?"))
+  }
+  if (vrb == "all") {
+    vrb <- varlist
+  }
+  p <- length(vrb)
   m <- imp$m
   it <- imp$iteration
   dat <- cbind(
     expand.grid(.it = seq_len(it), .m = seq_len(m)),
     data.frame(
       .ms = rep(c("mean", "sd"), each = m * it * p),
-      vrb = rep(varlist, each = m * it, times = 2),
+      vrb = rep(vrb, each = m * it, times = 2),
       val = c(
-        matrix(aperm(mn[varlist, , , drop = FALSE], c(2, 3, 1)), nrow = m * it * p),
-        matrix(aperm(sm[varlist, , , drop = FALSE], c(2, 3, 1)), nrow = m * it * p)
+        matrix(aperm(mn[vrb, , , drop = FALSE], c(2, 3, 1)), nrow = m * it * p),
+        matrix(aperm(sm[vrb, , , drop = FALSE], c(2, 3, 1)), nrow = m * it * p)
       )
     )
   )
 
-  # ## Dummy to trick R CMD check
-  # .m <- NULL
-  # rm(.m)
-
+  # plot the convergence diagnostics
   ggplot2::ggplot(dat, ggplot2::aes(x = .data$.it, y = .data$val, color = as.factor(.data$.m))) +
     ggplot2::geom_line() +
     ggplot2::facet_wrap(vrb ~ .ms, scales = "free", ncol = 2, strip.position = "left") +
