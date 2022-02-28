@@ -6,6 +6,11 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/amices/ggmice/workflows/R-CMD-check/badge.svg)](https://github.com/amices/ggmice/actions)
+[![GitHub R package
+version](https://img.shields.io/github/r-package/v/amices/ggmice.svg)](https://github.com/amices/ggmice/blob/main/DESCRIPTION)
+[![GitHub](https://img.shields.io/github/license/amices/ggmice.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 `ggmice` is an `R` package which enhances the imputation package `mice`
@@ -13,7 +18,7 @@ with `ggplot2` visualizations.
 
 ## Installation
 
-You can install the development version of ggmice from
+You can install the development version of `ggmice` from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -23,9 +28,20 @@ devtools::install_github("amices/ggmice")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Visualize missing data in an incomplete dataset, or evaluate imputed
+data against the observed data.
 
 ``` r
-# library(ggmice)
-## basic example code
+library(ggmice)
+dat <- mice::nhanes
+ggmice(dat, ggplot2::aes(age, bmi)) + ggplot2::geom_point()
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" />
+
+``` r
+imp <- mice::mice(dat, printFlag = FALSE)
+ggmice(imp, ggplot2::aes(age, bmi)) + ggplot2::geom_point() 
+```
+
+<img src="man/figures/README-example-2.png" width="100%" />
