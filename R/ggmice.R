@@ -11,14 +11,14 @@
 ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   # process inputs
   mapping_args <- names(mapping)
-  try(if(!any(c("x", "y") %in% mapping_args)){
+  try(if (!any(c("x", "y") %in% mapping_args)) {
     stop("At least one of the aes() arguments 'x' or 'y' is required. Cannot create ggmice object without mapping.")
   })
-  if(any(c("colour", "fill") %in% mapping_args)){
+  if (any(c("colour", "fill") %in% mapping_args)) {
     warning("The aes() arguments 'colour', 'fill' and 'group' have a special use in ggmmice() and will be overwritten. Try using 'shape' or 'linetype' for additional mapping.")
   }
   # extract variable names from mapping object
-  if(mice::is.mids(data)){
+  if (mice::is.mids(data)) {
     vrbs <- names(data$data)
     vrbs_num <- vrbs[purrr::map_lgl(data$data, is.numeric)]
   } else {
@@ -28,13 +28,15 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   vrbs_xy <- vrbs[stringr::str_detect(ggplot2::as_label(mapping$x), vrbs) | stringr::str_detect(ggplot2::as_label(mapping$y), vrbs)]
 
   # edit data and mapping objects
-  if(mice::is.mids(data)){
+  if (mice::is.mids(data)) {
     where_xy <- rowSums(as.matrix(data$where[, vrbs_xy])) > 0L
     mice_data <- dplyr::mutate(
       rbind(
         data.frame(.where = "observed", .imp = 0, .id = rownames(data$data), data$data)[!where_xy, ],
-        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy, ]),
-      .imp = factor(.imp, ordered = TRUE))
+        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy, ]
+      ),
+      .imp = factor(.imp, ordered = TRUE)
+    )
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where, fill = .where))
     # if("x" %nin% mapping_args){
     #   mice_mapping <- utils::modifyList(mice_mapping, ggplot2::aes(x = .imp))
@@ -47,9 +49,12 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     where_xy <- rowSums(is.na(as.matrix(data[, vrbs_xy]))) > 0L
     mice_data <- dplyr::mutate(
       data,
-      dplyr::across(vrbs_num, ~tidyr::replace_na(as.numeric(.x), -Inf)),
-      dplyr::across(vrbs[vrbs %nin% vrbs_num], ~{as.factor(tidyr::replace_na(as.character(.x), "-Inf"))}),
-      .where = factor(where_xy, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE))
+      dplyr::across(vrbs_num, ~ tidyr::replace_na(as.numeric(.x), -Inf)),
+      dplyr::across(vrbs[vrbs %nin% vrbs_num], ~ {
+        as.factor(tidyr::replace_na(as.character(.x), "-Inf"))
+      }),
+      .where = factor(where_xy, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE)
+    )
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where, fill = .where))
   }
   # create plot
@@ -58,7 +63,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     ggplot2::scale_color_manual(values = mice_colors, drop = TRUE, name = "") +
     ggplot2::scale_fill_manual(values = mice_colors, drop = TRUE, name = "") +
     theme_mice()
-  if(!mice::is.mids(data)){
+  if (!mice::is.mids(data)) {
     gg <- gg +
       ggplot2::coord_cartesian(clip = "off")
   }
@@ -74,4 +79,4 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   return(gg)
 }
 
-#TODO resolve notes about global variables/functions by adding .data, see https://dplyr.tidyverse.org/articles/programming.html
+# TODO resolve notes about global variables/functions by adding .data, see https://dplyr.tidyverse.org/articles/programming.html

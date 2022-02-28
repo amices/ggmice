@@ -15,8 +15,8 @@ xyplot <- function(imp, x, y) {
     stop("argument 'imp' must be a 'mids' object", call. = FALSE)
   }
   gg <- ggmice(imp, ggplot2::aes_string(x, y)) +
-      ggplot2::geom_point()
+    ggplot2::geom_point()
   return(gg)
 }
 
-#TODO: think about how to plot just one imp
+# TODO: think about how to plot just one imp
