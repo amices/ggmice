@@ -7,12 +7,12 @@
 ggmice(data = NULL, mapping = ggplot2::aes())
 }
 \arguments{
-\item{data}{An incomplete dataset or an object of class \code{mids}}
+\item{data}{An incomplete dataset or an object of class \code{mids}.}
 
-\item{mapping}{A list of aesthetic mappings created with \code{ggplot2::aes()}}
+\item{mapping}{A list of aesthetic mappings created with \code{ggplot2::aes()}.}
 }
 \value{
-A ggplot object of class \code{gg}
+A ggplot object of class \code{gg}.
 }
 \description{
 Plot incomplete or imputed data

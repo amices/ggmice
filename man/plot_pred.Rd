@@ -4,20 +4,22 @@
 \alias{plot_pred}
 \title{Title Plot predictorMatrix for \code{mice::mice()} argument}
 \usage{
-plot_pred(pred, label = FALSE)
+plot_pred(pred, label = FALSE, square = TRUE)
 }
 \arguments{
-\item{pred}{A predictor matrix for \code{mice}}
+\item{pred}{A predictor matrix for \code{mice}.}
 
-\item{label}{Logical indicating whether predictor matrix values should be displayed}
+\item{label}{Logical indicating whether predictor matrix values should be displayed.}
+
+\item{square}{Logical indicating whether the plot tiles should be squares (setting the plot height equal to the plot width).}
 }
 \value{
-An object of class \code{ggplot}
+An object of class \code{ggplot}.
 }
 \description{
 Title Plot predictorMatrix for \code{mice::mice()} argument
 }
 \examples{
 pred <- mice::make.predictorMatrix(mice::nhanes)
-plot_pred(pred)
+plot_pred(pred, label = TRUE)
 }
