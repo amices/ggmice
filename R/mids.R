@@ -1,7 +1,8 @@
 # plot convergence
-#' Title
+#' Convergence plot for Multiply Imputed Data Sets
 #'
 #' @param imp An object of class `mids`.
+#' @param vrb String or vector with variable name(s), default is "all".
 #'
 #' @return An object of class `ggplot`.
 #'
@@ -32,7 +33,7 @@ plot_chains <- function(imp, vrb = "all") {
   p <- length(vrb)
   m <- imp$m
   it <- imp$iteration
-  dat <- cbind(
+  long <- cbind(
     expand.grid(.it = seq_len(it), .m = seq_len(m)),
     data.frame(
       .ms = rep(c("mean", "sd"), each = m * it * p),
@@ -45,7 +46,7 @@ plot_chains <- function(imp, vrb = "all") {
   )
 
   # plot the convergence diagnostics
-  ggplot2::ggplot(dat, ggplot2::aes(x = .data$.it, y = .data$val, color = as.factor(.data$.m))) +
+  ggplot2::ggplot(long, ggplot2::aes(x = .data$.it, y = .data$val, color = as.factor(.data$.m))) +
     ggplot2::geom_line() +
     ggplot2::facet_wrap(vrb ~ .ms, scales = "free", ncol = 2, strip.position = "left") +
     ggplot2::labs(

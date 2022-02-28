@@ -7,11 +7,9 @@
 xyplot(imp, x, y)
 }
 \arguments{
-\item{imp}{A \code{mids} object, typically created by \code{mice()} or \code{mice.mids()}}
+\item{imp}{A \code{mids} object, typically created by \code{mice()} or \code{mice.mids()}.}
 
-\item{x}{String with variable name}
-
-\item{y}{String with variable name}
+\item{x, y}{String with a variable name.}
 }
 \value{
 A \code{ggplot} object

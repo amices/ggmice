@@ -28,7 +28,7 @@ test_that("ggmice with complete data", {
   dat <- na.omit(mice::nhanes)
   gg <- ggmice(dat, ggplot2::aes("bmi"))
   expect_s3_class(gg, "ggplot")
-  imp <- mice::mice(dat, printFlag = FALSE)
+  imp <- mice::mice(dat, printFlag = FALSE, seed = 1)
   gg <- ggmice(imp, ggplot2::aes("bmi"))
   expect_s3_class(gg, "ggplot")
 })

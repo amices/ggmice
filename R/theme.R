@@ -1,11 +1,24 @@
 # mice ggplot2 theme
-#' Title
+#' Theme for 'mice' style 'ggplot2' objects
 #'
-#' @return A ggplot2 theme
+#' @return A ggplot2 theme.
 #'
 #' @export
 theme_mice <- function() {
   ggplot2::theme_classic() +
+    ggplot2::theme(
+      # text = ggplot2::element_text(family="sans"),
+      legend.position = "bottom",
+      legend.justification = "right",
+      strip.placement = "outside"
+    )
+}
+
+#' Minimal theme for mice
+#'
+#' @return A ggplot2 theme.
+theme_minimice <- function() {
+  ggplot2::theme_minimal() +
     ggplot2::theme(
       # text = ggplot2::element_text(family="sans"),
       legend.position = "bottom",

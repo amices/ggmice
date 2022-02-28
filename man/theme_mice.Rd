@@ -2,13 +2,13 @@
 % Please edit documentation in R/theme.R
 \name{theme_mice}
 \alias{theme_mice}
-\title{Title}
+\title{Theme for 'mice' style 'ggplot2' objects}
 \usage{
 theme_mice()
 }
 \value{
-A ggplot2 theme
+A ggplot2 theme.
 }
 \description{
-Title
+Theme for 'mice' style 'ggplot2' objects
 }

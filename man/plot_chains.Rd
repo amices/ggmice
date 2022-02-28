@@ -2,18 +2,20 @@
 % Please edit documentation in R/mids.R
 \name{plot_chains}
 \alias{plot_chains}
-\title{Title}
+\title{Convergence plot for Multiply Imputed Data Sets}
 \usage{
-plot_chains(imp)
+plot_chains(imp, vrb = "all")
 }
 \arguments{
-\item{imp}{An object of class \code{mids}}
+\item{imp}{An object of class \code{mids}.}
+
+\item{vrb}{String or vector with variable name(s), default is "all".}
 }
 \value{
-An object of class \code{ggplot}
+An object of class \code{ggplot}.
 }
 \description{
-Title
+Convergence plot for Multiply Imputed Data Sets
 }
 \examples{
 imp <- mice::mice(mice::nhanes, print = FALSE)
