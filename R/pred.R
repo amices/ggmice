@@ -79,7 +79,7 @@ plot_corr <- function(dat, vrb = "all", label = FALSE, square = TRUE) {
       fill = "Correlation*\n",
       caption = "*paiwise complete observations"
     ) +
-   theme_minimice()
+    theme_minimice()
   if (label) {
     gg <- gg + ggplot2::geom_text(color = "black", show.legend = FALSE)
   }
