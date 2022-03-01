@@ -42,30 +42,24 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
       .imp = factor(.imp, ordered = TRUE)
     )
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where, fill = .where))
-    # if("x" %nin% mapping_args){
-    #   mice_mapping <- utils::modifyList(mice_mapping, ggplot2::aes(x = .imp))
-    # }
-    # if("y" %nin% mapping_args){
-    #   mice_mapping <- utils::modifyList(mice_mapping, ggplot2::aes(y = .imp))
-    #   mice_data$.imp <- ordered(mice_data$.imp, levels = rev(levels(mice_data$.imp)))
-    # }
+    mice_colors <- c("observed" = "#006CC2B3", "imputed" = "#B61A51B3")
   } else {
     where_xy <- rowSums(is.na(as.matrix(data[, vrbs_xy]))) > 0L
     mice_data <- dplyr::mutate(
       data,
       dplyr::across(vrbs_num, ~ tidyr::replace_na(as.numeric(.x), -Inf)),
       dplyr::across(vrbs[vrbs %nin% vrbs_num], ~ {
-        as.factor(tidyr::replace_na(as.character(.x), "NA"))
+        as.factor(tidyr::replace_na(as.character(.x), " "))
       }),
       .where = factor(where_xy, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE)
     )
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where, fill = .where))
+    mice_colors <- c("observed" = "#006CC2B3", "missing" = "#B61A51B3")
   }
   # create plot
-  # mice_colors <- c("observed" = "#006CC2B3", "missing" = "#B61A51B3", "imputed" = "#B61A51B3")
   gg <- ggplot2::ggplot(data = mice_data, mapping = mice_mapping) +
-    ggplot2::scale_color_manual(values = c("#006CC2B3", "#B61A51B3"), drop = TRUE, name = "") +
-    ggplot2::scale_fill_manual(values = c("#006CC2B3", "#B61A51B3"), drop = TRUE, name = "") +
+    ggplot2::scale_color_manual(values = mice_colors, drop = TRUE, name = "") +
+    ggplot2::scale_fill_manual(values = mice_colors, drop = TRUE, name = "") +
     theme_mice()
   if (!mice::is.mids(data)) {
     gg <- gg +
@@ -84,4 +78,4 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
 }
 
 # TODO: add jitter to categorical variables?
-# TODO: adjust axis categorical variables
+# TODO: adjust axis categorical variables with scale_*_discrete expand argument
