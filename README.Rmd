@@ -39,9 +39,9 @@ Visualize missing data in an incomplete dataset, or evaluate imputed data agains
 
 ```{r example}
 library(ggmice)
-dat <- mice::nhanes
+dat <- mice::boys
 ggmice(dat, ggplot2::aes(age, bmi)) + ggplot2::geom_point()
-imp <- mice::mice(dat, printFlag = FALSE)
+imp <- mice::mice(dat, m = 1, printFlag = FALSE)
 ggmice(imp, ggplot2::aes(age, bmi)) + ggplot2::geom_point() 
 ```
 

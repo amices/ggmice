@@ -18,5 +18,6 @@ A ggplot object of class \code{gg}.
 Plot incomplete or imputed data
 }
 \examples{
-ggmice(mice::nhanes, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
+dat <- mice::nhanes
+ggmice(dat, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
 }

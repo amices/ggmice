@@ -6,7 +6,8 @@
 #' @return A ggplot object of class `gg`.
 #'
 #' @examples
-#' ggmice(mice::nhanes, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
+#' dat <- mice::nhanes
+#' ggmice(dat, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
 #' @export
 ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   # process inputs
@@ -54,17 +55,17 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
       data,
       dplyr::across(vrbs_num, ~ tidyr::replace_na(as.numeric(.x), -Inf)),
       dplyr::across(vrbs[vrbs %nin% vrbs_num], ~ {
-        as.factor(tidyr::replace_na(as.character(.x), "-Inf"))
+        as.factor(tidyr::replace_na(as.character(.x), "NA"))
       }),
       .where = factor(where_xy, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE)
     )
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where, fill = .where))
   }
   # create plot
-  mice_colors <- c("observed" = "#006CC2B3", "missing" = "#B61A51B3", "imputed" = "#B61A51B3")
+  # mice_colors <- c("observed" = "#006CC2B3", "missing" = "#B61A51B3", "imputed" = "#B61A51B3")
   gg <- ggplot2::ggplot(data = mice_data, mapping = mice_mapping) +
-    ggplot2::scale_color_manual(values = mice_colors, drop = TRUE, name = "") +
-    ggplot2::scale_fill_manual(values = mice_colors, drop = TRUE, name = "") +
+    ggplot2::scale_color_manual(values = c("#006CC2B3", "#B61A51B3"), drop = TRUE, name = "") +
+    ggplot2::scale_fill_manual(values = c("#006CC2B3", "#B61A51B3"), drop = TRUE, name = "") +
     theme_mice()
   if (!mice::is.mids(data)) {
     gg <- gg +
@@ -81,3 +82,6 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   # output
   return(gg)
 }
+
+# TODO: add jitter to categorical variables?
+# TODO: adjust axis categorical variables
