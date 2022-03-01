@@ -33,14 +33,14 @@ data against the observed data.
 
 ``` r
 library(ggmice)
-dat <- mice::nhanes
+dat <- mice::boys
 ggmice(dat, ggplot2::aes(age, bmi)) + ggplot2::geom_point()
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
 ``` r
-imp <- mice::mice(dat, printFlag = FALSE)
+imp <- mice::mice(dat, m = 1, printFlag = FALSE)
 ggmice(imp, ggplot2::aes(age, bmi)) + ggplot2::geom_point() 
 ```
 
