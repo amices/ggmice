@@ -27,7 +27,7 @@ stripplot <- function(imp, vrb = "all") {
   } else {
     return(gg)
   }
-  }
+}
 
 # TODO: add vignette with stripplot() + geom_boxplot(alpha = 0.5, outlier.shape = NA)
 # TODO: add vertical jitter or warning for categorical variables
