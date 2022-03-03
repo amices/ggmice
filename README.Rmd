@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# ggmice
+# `ggmice` <a href='https://amices.github.io/ggmice/'><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/amices/ggmice/workflows/R-CMD-check/badge.svg)](https://github.com/amices/ggmice/actions)
@@ -22,7 +22,9 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-`ggmice` is an `R` package which enhances the imputation package `mice` with `ggplot2` visualizations.
+## Plotting package for incomplete and imputed data
+
+`ggmice` is an `R` package which enhances the imputation package `mice` with `ggplot2` visualizations. See the `ggmice` vignette for an overview of functionalities.
 
 ## Installation
 
