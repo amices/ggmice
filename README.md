@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file and render with devtools::build_readme() -->
 
-# ggmice
+# `ggmice` <a href='https://amices.github.io/ggmice/'><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -13,8 +13,11 @@ version](https://img.shields.io/github/r-package/v/amices/ggmice.svg)](https://g
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
+## Plotting package for incomplete and imputed data
+
 `ggmice` is an `R` package which enhances the imputation package `mice`
-with `ggplot2` visualizations.
+with `ggplot2` visualizations. See the `ggmice` vignette for an overview
+of functionalities.
 
 ## Installation
 

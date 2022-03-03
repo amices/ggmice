@@ -71,16 +71,18 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (!mice::is.mids(data)) {
     gg <- gg +
       ggplot2::coord_cartesian(clip = "off")
-    if ("x" %in% mapping_args ) {
+    if ("x" %in% mapping_args) {
       if (vrb_x %nin% vrbs_num) {
-      gg <- gg +
-        ggplot2::scale_x_discrete(expand = ggplot2::expansion(add = c(0, 0.6)))
-    }}
+        gg <- gg +
+          ggplot2::scale_x_discrete(expand = ggplot2::expansion(add = c(0, 0.6)))
+      }
+    }
     if ("y" %in% mapping_args) {
       if (vrb_y %nin% vrbs_num) {
-      gg <- gg +
-        ggplot2::scale_y_discrete(expand = ggplot2::expansion(add = c(0, 0.6)))
-    }}
+        gg <- gg +
+          ggplot2::scale_y_discrete(expand = ggplot2::expansion(add = c(0, 0.6)))
+      }
+    }
   }
   # if(mice::is.mids(data)){
   #   gg <- gg +
