@@ -17,8 +17,13 @@ densityplot <- function(imp, vrb = "all") {
     vrb <- names(imp$data)
   }
   gg <- purrr::map(vrb, ~ {
-    ggmice(imp, ggplot2::aes_string(x = .x, group = ".imp")) +
-      ggplot2::geom_density(fill = NA)
+    ggmice(imp, ggplot2::aes_string(x = .x, group = ".imp", size = ".where")) +
+      ggplot2::geom_density(fill = NA) +
+      ggplot2::scale_size_manual(values = c("observed" = 1, "imputed" = 0.5), guide = "none")
   }) %>% stats::setNames(vrb)
-  return(gg)
+  if (length(vrb) == 1) {
+    return(gg[[1]])
+  } else {
+    return(gg)
+  }
 }

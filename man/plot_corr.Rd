@@ -4,7 +4,7 @@
 \alias{plot_corr}
 \title{Title Plot correlations between (incomplete) variables}
 \usage{
-plot_corr(dat, vrb = "all", label = FALSE, square = TRUE)
+plot_corr(dat, vrb = "all", label = FALSE, square = TRUE, diagonal = FALSE)
 }
 \arguments{
 \item{dat}{An incomplete data.frame.}
@@ -14,6 +14,8 @@ plot_corr(dat, vrb = "all", label = FALSE, square = TRUE)
 \item{label}{Logical indicating whether correlation values should be displayed.}
 
 \item{square}{Logical indicating whether the plot tiles should be squares (setting the plot height equal to the plot width).}
+
+\item{diagonal}{Logical indicating whether the correlation of each variable with itself should be displayed.}
 }
 \value{
 An object of class \code{ggplot}
