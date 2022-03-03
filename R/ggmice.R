@@ -16,7 +16,10 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   }
   mapping_args <- names(mapping)
   if (!any(c("x", "y") %in% mapping_args)) {
-    stop("At least one of the aes() arguments 'x' or 'y' is required. Cannot create ggmice object without mapping.")
+    stop("At least one of the mapping arguments 'x' or 'y' are required. Supply variable name(s) with ggplot2::aes().")
+  }
+  if (is.character(mapping$x) | is.character(mapping$y)) {
+    stop("The mapping argument requires variable name(s) of type 'quosure', typically created with ggplot2::aes(). To supply a string instead, try using ggplot2::aes_string()")
   }
   if (any(c("colour", "fill") %in% mapping_args)) {
     warning("The aes() arguments 'colour', 'fill' and 'group' have a special use in ggmmice() and will be overwritten. Try using 'shape' or 'linetype' for additional mapping, or use faceting.")
@@ -29,11 +32,15 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     vrbs <- names(data)
     vrbs_num <- vrbs[purrr::map_lgl(data, is.numeric)]
   }
-  vrbs_xy <- vrbs[stringr::str_detect(ggplot2::as_label(mapping$x), vrbs) | stringr::str_detect(ggplot2::as_label(mapping$y), vrbs)]
+  vrb_x <- vrbs[stringr::str_detect(ggplot2::as_label(mapping$x), vrbs)]
+  vrb_y <- vrbs[stringr::str_detect(ggplot2::as_label(mapping$y), vrbs)]
+  if (identical(vrb_x, character(0)) & identical(vrb_y, character(0))) {
+    stop("Mapping variable(s) not found in the data.")
+  }
 
   # edit data and mapping objects
   if (mice::is.mids(data)) {
-    where_xy <- rowSums(as.matrix(data$where[, vrbs_xy])) > 0L
+    where_xy <- rowSums(as.matrix(data$where[, c(vrb_x, vrb_y)])) > 0L
     mice_data <- dplyr::mutate(
       rbind(
         data.frame(.where = "observed", .imp = 0, .id = rownames(data$data), data$data)[!where_xy, ],
@@ -44,7 +51,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where, fill = .where))
     mice_colors <- c("observed" = "#006CC2B3", "imputed" = "#B61A51B3")
   } else {
-    where_xy <- rowSums(is.na(as.matrix(data[, vrbs_xy]))) > 0L
+    where_xy <- rowSums(is.na(as.matrix(data[, c(vrb_x, vrb_y)]))) > 0L
     mice_data <- dplyr::mutate(
       data,
       dplyr::across(vrbs_num, ~ tidyr::replace_na(as.numeric(.x), -Inf)),
@@ -64,6 +71,16 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (!mice::is.mids(data)) {
     gg <- gg +
       ggplot2::coord_cartesian(clip = "off")
+    if ("x" %in% mapping_args ) {
+      if (vrb_x %nin% vrbs_num) {
+      gg <- gg +
+        ggplot2::scale_x_discrete(expand = ggplot2::expansion(add = c(0, 0.6)))
+    }}
+    if ("y" %in% mapping_args) {
+      if (vrb_y %nin% vrbs_num) {
+      gg <- gg +
+        ggplot2::scale_y_discrete(expand = ggplot2::expansion(add = c(0, 0.6)))
+    }}
   }
   # if(mice::is.mids(data)){
   #   gg <- gg +
@@ -78,4 +95,3 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
 }
 
 # TODO: add jitter to categorical variables?
-# TODO: adjust axis categorical variables with scale_*_discrete expand argument

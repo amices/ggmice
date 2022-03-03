@@ -22,5 +22,9 @@ bwplot <- function(imp, vrb = "all") {
       ggplot2::scale_x_discrete(drop = FALSE) +
       ggplot2::labs(x = "Imputation number\n(0 = original data)")
   }) %>% stats::setNames(vrb)
-  return(gg)
-}
+  if (length(vrb) == 1) {
+    return(gg[[1]])
+  } else {
+    return(gg)
+  }
+  }

@@ -28,7 +28,7 @@ plot_pred <- function(pred, label = FALSE, square = TRUE) {
     ggplot2::scale_y_discrete(limits = rev(vrbs)) +
     ggplot2::scale_fill_manual(values = c("yes" = "#006CC2B3", "no" = "white")) +
     ggplot2::labs(
-      x = "Predictor in imputation model",
+      x = "Imputation model predictor",
       y = "Variable to impute",
       fill = "Predictor used",
       color = ""
@@ -49,17 +49,18 @@ plot_pred <- function(pred, label = FALSE, square = TRUE) {
 #' @param vrb String or vector with variable name(s), default is "all".
 #' @param label Logical indicating whether correlation values should be displayed.
 #' @param square Logical indicating whether the plot tiles should be squares (setting the plot height equal to the plot width).
+#' @param diagonal Logical indicating whether the correlation of each variable with itself should be displayed.
 #'
 #' @return An object of class `ggplot`
 #'
 #' @examples
 #' plot_corr(mice::nhanes, label = TRUE)
 #' @export
-plot_corr <- function(dat, vrb = "all", label = FALSE, square = TRUE) {
+plot_corr <- function(dat, vrb = "all", label = FALSE, square = TRUE, diagonal = FALSE) {
   if (!is.data.frame(dat) & !is.matrix(dat)) {
     stop("Dataset should be a 'data.frame' or 'matrix'.")
   }
-  if (vrb == "all") {
+  if (vrb[1] == "all") {
     vrb <- names(dat)
   }
   p <- length(vrb)
@@ -68,14 +69,17 @@ plot_corr <- function(dat, vrb = "all", label = FALSE, square = TRUE) {
     prd = vrb,
     corr = matrix(round(stats::cov2cor(stats::cov(data.matrix(dat[, vrb]), use = "pairwise.complete.obs")), 2), nrow = p * p, byrow = TRUE)
   )
+  if (!diagonal) {
+    corrs[corrs$vrb == corrs$prd, "corr"] <- NA
+  }
   gg <- ggplot2::ggplot(corrs, ggplot2::aes(x = .data$prd, y = .data$vrb, label = .data$corr, fill = .data$corr)) +
-    ggplot2::geom_tile() +
+    ggplot2::geom_tile(color = "black") +
     ggplot2::scale_x_discrete(limits = vrb, position = "top") +
     ggplot2::scale_y_discrete(limits = rev(vrb)) +
-    ggplot2::scale_fill_gradient2(low = "deepskyblue", mid = "lightyellow", high = "orangered", limits = c(-1, 1)) +
+    ggplot2::scale_fill_gradient2(low = "deepskyblue", mid = "lightyellow", high = "orangered", na.value = "white", limits = c(-1, 1)) +
     ggplot2::labs(
-      x = "",
-      y = "",
+      x = "Imputation model predictor",
+      y = "Variable to impute",
       fill = "Correlation*\n",
       caption = "*paiwise complete observations"
     ) +
@@ -91,3 +95,4 @@ plot_corr <- function(dat, vrb = "all", label = FALSE, square = TRUE) {
 
 # TODO: add plot for missingness indicators predictors
 # TODO: maybe add model.matrix argument to correlation plot?
+# TODO: add argument to rotate/shorten variable names

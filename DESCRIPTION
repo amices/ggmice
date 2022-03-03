@@ -29,7 +29,10 @@ Imports:
     utils
 Suggests:
     testthat (>= 3.0.0),
-    plotly
+    plotly,
+    knitr,
+    rmarkdown
 URL: https://github.com/amices/ggmice, https://amices.org/
 BugReports: https://github.com/amices/ggmice
 Config/testthat/edition: 3
+VignetteBuilder: knitr
