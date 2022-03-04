@@ -1,9 +1,9 @@
 #' Plot incomplete or imputed data
 #'
-#' @param data An incomplete dataset or an object of class `mids`.
+#' @param data An incomplete dataset or an object of class `mids` (see `?mice::mids`).
 #' @param mapping A list of aesthetic mappings created with `ggplot2::aes()`.
 #'
-#' @return A ggplot object of class `gg`.
+#' @return An object of class `ggplot` (see `?ggplot2::ggplot`).
 #'
 #' @examples
 #' dat <- mice::nhanes

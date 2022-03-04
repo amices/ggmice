@@ -1,9 +1,9 @@
 #' Box-and-whisker plot of observed and imputed data
 #'
-#' @param imp A `mids` object, typically created by `mice()` or `mice.mids()`.
+#' @param imp A `mids` object, typically created by `mice::mice()` or `mice::mice.mids()` (see `?mice::mids`).
 #' @param vrb String or vector with variable name(s), default is "all".
 #'
-#' @return A list with one or more `ggplot` objects.
+#' @return A (list with) `ggplot` object(s).
 #' @export
 #'
 #' @examples

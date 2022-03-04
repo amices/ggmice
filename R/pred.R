@@ -1,5 +1,5 @@
 # plot predictor matrix
-#' Title Plot predictorMatrix for `mice::mice()` argument
+#' Plot predictorMatrix for `mice::mice()` argument
 #'
 #' @param pred A predictor matrix for `mice`.
 #' @param label Logical indicating whether predictor matrix values should be displayed.
@@ -43,7 +43,7 @@ plot_pred <- function(pred, label = FALSE, square = TRUE) {
   return(gg)
 }
 
-#' Title Plot correlations between (incomplete) variables
+#' Plot correlations between (incomplete) variables
 #'
 #' @param dat An incomplete data.frame.
 #' @param vrb String or vector with variable name(s), default is "all".

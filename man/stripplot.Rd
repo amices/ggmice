@@ -7,12 +7,12 @@
 stripplot(imp, vrb = "all")
 }
 \arguments{
-\item{imp}{A \code{mids} object, typically created by \code{mice()} or \code{mice.mids()}.}
+\item{imp}{A \code{mids} object, typically created by \code{mice::mice()} or \code{mice::mice.mids()} (see \code{?mice::mids}).}
 
 \item{vrb}{String or vector with variable name(s), default is "all".}
 }
 \value{
-A list with one or more \code{ggplot} objects.
+A (list with) \code{ggplot} object(s).
 }
 \description{
 Stripplot of observed and imputed data
