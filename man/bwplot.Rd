@@ -12,7 +12,7 @@ bwplot(imp, vrb = "all")
 \item{vrb}{String or vector with variable name(s), default is "all".}
 }
 \value{
-A list with one or more \code{ggplot} objects.
+A (list with) \code{ggplot} object(s).
 }
 \description{
 Box-and-whisker plot of observed and imputed data
