@@ -2,7 +2,7 @@
 % Please edit documentation in R/pred.R
 \name{plot_pred}
 \alias{plot_pred}
-\title{Title Plot predictorMatrix for \code{mice::mice()} argument}
+\title{Plot predictorMatrix for \code{mice::mice()} argument}
 \usage{
 plot_pred(pred, label = FALSE, square = TRUE)
 }
@@ -17,7 +17,7 @@ plot_pred(pred, label = FALSE, square = TRUE)
 An object of class \code{ggplot}.
 }
 \description{
-Title Plot predictorMatrix for \code{mice::mice()} argument
+Plot predictorMatrix for \code{mice::mice()} argument
 }
 \examples{
 pred <- mice::make.predictorMatrix(mice::nhanes)

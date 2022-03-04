@@ -7,7 +7,7 @@
 xyplot(imp, x, y)
 }
 \arguments{
-\item{imp}{A \code{mids} object, typically created by \code{mice()} or \code{mice.mids()}.}
+\item{imp}{A \code{mids} object, typically created by \code{mice::mice()} or \code{mice::mice.mids()} (see \code{?mice::mids}).}
 
 \item{x, y}{String with a variable name.}
 }
