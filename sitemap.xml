@@ -4,6 +4,9 @@
     <loc>http://amices.org/ggmice/404.html</loc>
   </url>
   <url>
+    <loc>http://amices.org/ggmice/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
     <loc>http://amices.org/ggmice/LICENSE.html</loc>
   </url>
   <url>
@@ -38,6 +41,9 @@
   </url>
   <url>
     <loc>http://amices.org/ggmice/reference/plot_corr.html</loc>
+  </url>
+  <url>
+    <loc>http://amices.org/ggmice/reference/plot_pattern.html</loc>
   </url>
   <url>
     <loc>http://amices.org/ggmice/reference/plot_pred.html</loc>
