@@ -3,7 +3,7 @@ pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   ggmice: ggmice.html
-last_built: 2022-03-04T21:37Z
+last_built: 2022-03-07T12:04Z
 urls:
   reference: http://amices.org/ggmice/reference
   article: http://amices.org/ggmice/articles
