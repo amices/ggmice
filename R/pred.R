@@ -80,8 +80,8 @@ plot_corr <- function(dat, vrb = "all", label = FALSE, square = TRUE, diagonal =
     ggplot2::labs(
       x = "Imputation model predictor",
       y = "Variable to impute",
-      fill = "Correlation*\n",
-      caption = "*paiwise complete observations"
+      fill = "Correlation*",
+      caption = "*pairwise complete observations"
     ) +
     theme_minimice()
   if (label) {
