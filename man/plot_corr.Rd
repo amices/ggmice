@@ -18,7 +18,7 @@ plot_corr(dat, vrb = "all", label = FALSE, square = TRUE, diagonal = FALSE)
 \item{diagonal}{Logical indicating whether the correlation of each variable with itself should be displayed.}
 }
 \value{
-An object of class \code{ggplot}
+An object of class \code{ggplot}.
 }
 \description{
 Plot correlations between (incomplete) variables

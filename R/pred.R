@@ -51,7 +51,7 @@ plot_pred <- function(pred, label = FALSE, square = TRUE) {
 #' @param square Logical indicating whether the plot tiles should be squares (setting the plot height equal to the plot width).
 #' @param diagonal Logical indicating whether the correlation of each variable with itself should be displayed.
 #'
-#' @return An object of class `ggplot`
+#' @return An object of class `ggplot`.
 #'
 #' @examples
 #' plot_corr(mice::nhanes, label = TRUE)
@@ -93,6 +93,7 @@ plot_corr <- function(dat, vrb = "all", label = FALSE, square = TRUE, diagonal =
   return(gg)
 }
 
+# TODO: add imputation method to pred plot
 # TODO: add plot for missingness indicators predictors
 # TODO: maybe add model.matrix argument to correlation plot?
 # TODO: add argument to rotate/shorten variable names
