@@ -23,6 +23,7 @@ theme_minimice <- function() {
       # text = ggplot2::element_text(family="sans"),
       legend.position = "bottom",
       legend.justification = "right",
-      strip.placement = "outside"
+      strip.placement = "outside",
+      panel.grid.minor = ggplot2::element_blank()
     )
 }

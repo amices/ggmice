@@ -4,13 +4,17 @@
 \alias{plot_pattern}
 \title{Plot the missing data pattern of an incomplete dataset}
 \usage{
-plot_pattern(dat)
+plot_pattern(dat, square = FALSE, rotate = FALSE)
 }
 \arguments{
-\item{dat}{An incomplete data.frame.}
+\item{dat}{An incomplete dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
+
+\item{square}{Logical indicating whether the plot tiles should be squares.}
+
+\item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
 }
 \value{
-An object of class \code{ggplot}
+An object of class \code{ggplot}.
 }
 \description{
 Plot the missing data pattern of an incomplete dataset
