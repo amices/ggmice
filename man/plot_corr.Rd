@@ -4,21 +4,30 @@
 \alias{plot_corr}
 \title{Plot correlations between (incomplete) variables}
 \usage{
-plot_corr(dat, vrb = "all", label = FALSE, square = TRUE, diagonal = FALSE)
+plot_corr(
+  dat,
+  vrb = "all",
+  label = FALSE,
+  square = TRUE,
+  diagonal = FALSE,
+  rotate = FALSE
+)
 }
 \arguments{
-\item{dat}{An incomplete data.frame.}
+\item{dat}{A dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
 
 \item{vrb}{String or vector with variable name(s), default is "all".}
 
 \item{label}{Logical indicating whether correlation values should be displayed.}
 
-\item{square}{Logical indicating whether the plot tiles should be squares (setting the plot height equal to the plot width).}
+\item{square}{Logical indicating whether the plot tiles should be squares.}
 
 \item{diagonal}{Logical indicating whether the correlation of each variable with itself should be displayed.}
+
+\item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
 }
 \value{
-An object of class \code{ggplot}
+An object of class \code{ggplot}.
 }
 \description{
 Plot correlations between (incomplete) variables

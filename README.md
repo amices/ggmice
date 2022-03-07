@@ -48,3 +48,9 @@ ggmice(imp, ggplot2::aes(age, bmi)) + ggplot2::geom_point()
 ```
 
 <img src="man/figures/README-example-2.png" width="100%" />
+
+## Code of Conduct
+
+Please note that the `ggmice` project is released with a [Contributor
+Code of Conduct](http://amices.org/ggmice/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.

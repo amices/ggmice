@@ -4,14 +4,16 @@
 \alias{plot_pred}
 \title{Plot predictorMatrix for \code{mice::mice()} argument}
 \usage{
-plot_pred(pred, label = FALSE, square = TRUE)
+plot_pred(pred, label = FALSE, square = TRUE, rotate = FALSE)
 }
 \arguments{
 \item{pred}{A predictor matrix for \code{mice}.}
 
 \item{label}{Logical indicating whether predictor matrix values should be displayed.}
 
-\item{square}{Logical indicating whether the plot tiles should be squares (setting the plot height equal to the plot width).}
+\item{square}{Logical indicating whether the plot tiles should be squares.}
+
+\item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
 }
 \value{
 An object of class \code{ggplot}.
