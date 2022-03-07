@@ -27,7 +27,7 @@ plot_pred <- function(pred, label = FALSE, square = TRUE, rotate = FALSE) {
     ggplot2::geom_tile(color = "black", alpha = 1) +
     ggplot2::scale_x_discrete(limits = vrbs, position = "top") +
     ggplot2::scale_y_discrete(limits = rev(vrbs)) +
-    ggplot2::scale_fill_manual(values = c("yes" = "grey60", "no" = "white")) + ##006CC2B3
+    ggplot2::scale_fill_manual(values = c("yes" = "grey60", "no" = "white")) + ## 006CC2B3
     ggplot2::labs(
       x = "Imputation model predictor",
       y = "Variable to impute",

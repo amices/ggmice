@@ -24,11 +24,12 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE) {
   na_tot <- pat[rws, cls]
 
   # tidy the pattern
-  long <- data.frame(y = 1:(rws-1), pat[-rws, -cls], row.names = NULL) %>%
+  long <- data.frame(y = 1:(rws - 1), pat[-rws, -cls], row.names = NULL) %>%
     tidyr::pivot_longer(cols = vrb, names_to = "x", values_to = ".where") %>%
     dplyr::mutate(
       x = as.numeric(factor(.data$x, levels = vrb, ordered = TRUE)),
-      .where = factor(.data$.where, levels = c(0, 1), labels = c("missing", "observed")))
+      .where = factor(.data$.where, levels = c(0, 1), labels = c("missing", "observed"))
+    )
 
   # create the plot
   gg <- ggplot2::ggplot(long, ggplot2::aes(.data$x, .data$y, fill = .data$.where)) +
@@ -37,18 +38,25 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE) {
     ggplot2::scale_x_continuous(
       breaks = 1:(cls - 1),
       labels = na_col,
-      sec.axis = ggplot2::dup_axis(labels = vrb,
-                                   name = "")) +
+      sec.axis = ggplot2::dup_axis(
+        labels = vrb,
+        name = ""
+      )
+    ) +
     ggplot2::scale_y_reverse(
       breaks = 1:(rws - 1),
       labels = frq,
-      sec.axis = ggplot2::dup_axis(labels = na_row,
-                                   name = "Number of missing entries per pattern*\n")
+      sec.axis = ggplot2::dup_axis(
+        labels = na_row,
+        name = "Number of missing entries per pattern*\n"
+      )
     ) +
-    ggplot2::labs(x = "Number of missing entries per variable*",
-                  y = "Pattern frequency",
-                  fill = "",
-                  caption = paste("*total number of missing entries =", na_tot)) +
+    ggplot2::labs(
+      x = "Number of missing entries per variable*",
+      y = "Pattern frequency",
+      fill = "",
+      caption = paste("*total number of missing entries =", na_tot)
+    ) +
     theme_minimice()
   if (square) {
     gg <- gg + ggplot2::coord_fixed()
@@ -59,33 +67,3 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE) {
 
   return(gg)
 }
-
-# # md.pattern function
-# # x=mice::nhanes
-# R <- is.na(x)
-# nmis <- colSums(R)
-# # sort columnwise
-# R <- matrix(R[, order(nmis)], dim(x))
-# pat <- apply(R, 1, function(x) paste(as.numeric(x), collapse = ""))
-# # sort rowwise
-# sortR <- matrix(R[order(pat), ], dim(x))
-# if (nrow(x) == 1) {
-#   mpat <- is.na(x)
-# } else {
-#   mpat <- sortR[!duplicated(sortR), ]
-# }
-# # update row and column margins
-# if (all(!is.na(x))) {
-#   cat(" /\\     /\\\n{  `---'  }\n{  O   O  }\n==>  V <==")
-#   cat("  No need for mice. This data set is completely observed.\n")
-#   cat(" \\  \\|/  /\n  `-----'\n\n")
-#   mpat <- t(as.matrix(mpat, byrow = TRUE))
-#   rownames(mpat) <- table(pat)
-# } else {
-#   if (is.null(dim(mpat))) {
-#     mpat <- t(as.matrix(mpat))
-#   }
-#   rownames(mpat) <- table(pat)
-# }
-# r <- cbind(abs(mpat - 1), rowSums(mpat))
-# r <- rbind(r, c(nmis[order(nmis)], sum(nmis)))
