@@ -27,3 +27,5 @@ theme_minimice <- function() {
       panel.grid.minor = ggplot2::element_blank()
     )
 }
+
+# TODO: make facets in plot_trace() look more pretty

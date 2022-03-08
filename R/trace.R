@@ -1,5 +1,5 @@
 # plot convergence
-#' Convergence plot for Multiply Imputed Data Sets
+#' Plot the trace lines of the MICE algorithm for convergence evaluation
 #'
 #' @param imp An object of class `mids`.
 #' @param vrb String or vector with variable name(s), default is "all".
@@ -8,9 +8,9 @@
 #'
 #' @examples
 #' imp <- mice::mice(mice::nhanes, print = FALSE)
-#' plot_chains(imp)
+#' plot_trace(imp)
 #' @export
-plot_chains <- function(imp, vrb = "all") {
+plot_trace <- function(imp, vrb = "all") {
   if (!mice::is.mids(imp)) {
     stop("argument 'imp' must be a 'mids' object", call. = FALSE)
   }
@@ -56,3 +56,5 @@ plot_chains <- function(imp, vrb = "all") {
     ) +
     theme_mice()
 }
+
+# TODO: make iterations and statistic arguments as well

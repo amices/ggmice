@@ -67,3 +67,5 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE) {
 
   return(gg)
 }
+
+

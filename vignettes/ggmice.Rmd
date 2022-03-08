@@ -88,7 +88,7 @@ The `ggmice` package contains functions to evaluate observed and imputed data.
 ## Algorithmic convergence
 
 ```{r convergence}
-plot_chains(imp, "bmi")
+plot_trace(imp, "bmi")
 ```
 
 ## Box and whiskers plot
