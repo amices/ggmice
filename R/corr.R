@@ -29,19 +29,20 @@ plot_corr <- function(dat, vrb = "all", label = FALSE, square = TRUE, diagonal =
     corrs[corrs$vrb == corrs$prd, "corr"] <- NA
   }
   gg <- ggplot2::ggplot(corrs, ggplot2::aes(x = .data$prd, y = .data$vrb, label = .data$corr, fill = .data$corr)) +
-    ggplot2::geom_tile(color = "black") +
+    ggplot2::geom_tile(color = "black", alpha = 0.6) +
     ggplot2::scale_x_discrete(limits = vrb, position = "top") +
     ggplot2::scale_y_discrete(limits = rev(vrb)) +
-    ggplot2::scale_fill_gradient2(low = "deepskyblue", mid = "lightyellow", high = "orangered", na.value = "white", limits = c(-1, 1)) +
+    ggplot2::scale_fill_gradient2(low = ggplot2::alpha("deepskyblue", 0.6), mid = "lightyellow", high = ggplot2::alpha("orangered", 0.6), na.value = "white", limits = c(-1, 1)) +
     ggplot2::labs(
       x = "Imputation model predictor",
       y = "Variable to impute",
-      fill = "Correlation*",
+      fill = "Correlation*
+      ",
       caption = "*pairwise complete observations"
     ) +
     theme_minimice()
   if (label) {
-    gg <- gg + ggplot2::geom_text(color = "black", show.legend = FALSE)
+    gg <- gg + ggplot2::geom_text(color = "black", show.legend = FALSE, na.rm = TRUE)
   }
   if (square) {
     gg <- gg + ggplot2::coord_fixed()

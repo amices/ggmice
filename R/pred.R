@@ -24,10 +24,10 @@ plot_pred <- function(pred, label = FALSE, square = TRUE, rotate = FALSE) {
     ind = matrix(pred, nrow = p * p, byrow = TRUE)
   )
   gg <- ggplot2::ggplot(long, ggplot2::aes(x = .data$prd, y = .data$vrb, label = .data$ind, fill = ifelse(.data$ind == 0, "no", "yes"))) +
-    ggplot2::geom_tile(color = "black", alpha = 1) +
+    ggplot2::geom_tile(color = "black", alpha = 0.6) +
     ggplot2::scale_x_discrete(limits = vrbs, position = "top") +
     ggplot2::scale_y_discrete(limits = rev(vrbs)) +
-    ggplot2::scale_fill_manual(values = c("yes" = "grey60", "no" = "white")) + ## 006CC2B3
+    ggplot2::scale_fill_manual(values = c("yes" = "grey75", "no" = "white")) + ## 006CC2B3
     ggplot2::labs(
       x = "Imputation model predictor",
       y = "Variable to impute",
