@@ -1,0 +1,145 @@
+---
+title: "Old friends"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{old_friends}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+# Create the `ggmice` equivalent of `mice` plots
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7.2,
+  fig.height = 4
+)
+```
+
+```{r setup}
+# load packages
+library(ggmice)
+# load incomplete dataset 
+dat <- mice::boys
+# generate imputations
+imp <- mice::mice(dat, method = "pmm", printFlag = FALSE)
+```
+
+How to re-create the output of the plotting functions from `mice` with `ggmice`. In alphabetical order of the `mice` functions.
+
+# `bwplot`
+
+Box-and-whisker plot of observed and imputed data.
+
+```{r bwplot}
+# original plot
+mice::bwplot(imp, bmi ~ .imp)
+# ggmice equivalent
+ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) +
+      ggplot2::geom_boxplot() +
+      ggplot2::labs(x = "Imputation number")
+# extended reproduction with ggmice
+ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) +
+  ggplot2::stat_boxplot(geom = 'errorbar', linetype = "dashed") +
+  ggplot2::geom_boxplot(outlier.colour = "grey", outlier.shape = 1) +
+  ggplot2::labs(x = "Imputation number") +
+  ggplot2::theme(legend.position = "none")
+```
+
+# `densityplot`
+
+Density plot of observed and imputed data.
+
+```{r densityplot}
+# original plot
+mice::densityplot(imp, ~bmi)
+# ggmice equivalent
+ggmice(imp, ggplot2::aes(x = bmi, group = .imp)) +
+      ggplot2::geom_density() 
+# extended reproduction with ggmice
+ggmice(imp, ggplot2::aes(x = bmi, group = .imp, size = .where)) +
+  ggplot2::geom_density() +
+  ggplot2::scale_size_manual(values = c("observed" = 1, "imputed" = 0.5),
+                             guide = "none") +
+  ggplot2::theme(legend.position = "none")
+```
+
+# `fluxplot`
+
+Influx and outflux plot of multivariate missing data patterns.
+
+```{r flux}
+# original plot
+mice::fluxplot(dat)
+# ggmice equivalent
+plot_flux(dat)
+```
+
+
+# `md.pattern`
+
+Missing data pattern plot.
+
+```{r md.pattern}
+# original plot
+md <- mice::md.pattern(dat)
+# ggmice equivalent
+plot_pattern(dat)
+```
+
+# `plot.mids`
+
+Plot the trace lines of the MICE algorithm.
+
+```{r plot.mids}
+# original plot
+plot(imp, bmi ~ .it | .ms)
+# ggmice equivalent
+plot_trace(imp, "bmi")
+```
+
+# `stripplot`
+
+Stripplot of observed and imputed data.
+
+```{r stripplot}
+# original plot
+mice::stripplot(imp, bmi ~ .imp)
+# ggmice equivalent
+ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) +
+  ggplot2::geom_jitter(width = 0.25) +
+  ggplot2::labs(x = "Imputation number")
+# extended reproduction with ggmice (not recommended)
+ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) +
+  ggplot2::geom_jitter(
+    shape = 1,
+    width = 0.1,
+    na.rm = TRUE,
+    data = data.frame(
+      bmi = dat$bmi,
+      .imp = factor(rep(1:imp$m, each = nrow(dat))),
+      .where = "observed"
+    )
+  ) +
+  ggplot2::geom_jitter(shape = 1, width = 0.1) +
+  ggplot2::labs(x = "Imputation number") +
+  ggplot2::theme(legend.position = "none")
+```
+
+# `xyplot`
+
+Scatterplot of observed and imputed data.
+
+```{r}
+# original plot
+mice::xyplot(imp, bmi ~ age)
+# ggmice equivalent
+ggmice(imp, ggplot2::aes(age, bmi)) +
+  ggplot2::geom_point()
+# extended reproduction with ggmice
+ggmice(imp, ggplot2::aes(age, bmi)) +
+  ggplot2::geom_point(shape = 1) +
+  ggplot2::theme(legend.position = "none")
+```
+

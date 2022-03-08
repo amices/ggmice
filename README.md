@@ -15,14 +15,15 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## Plotting package for incomplete and imputed data
 
-`ggmice` is an `R` package which enhances the imputation package `mice`
-with `ggplot2` visualizations. See the `ggmice` vignette for an overview
-of functionalities.
+The `ggmice` package enhances imputation package `mice` with `ggplot2`
+visualizations. See the
+[vignette](https://amices.org/ggmice/articles/ggmice.html) for an
+overview of `ggmice`’s functionalities.
 
 ## Installation
 
 You can install the development version of `ggmice` from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/amices) with:
 
 ``` r
 # install.packages("devtools")
@@ -35,14 +36,17 @@ Visualize missing data in an incomplete dataset, or evaluate imputed
 data against the observed data.
 
 ``` r
+# load the package and some data
 library(ggmice)
 dat <- mice::boys
+# visualize the incomplete data
 ggmice(dat, ggplot2::aes(age, bmi)) + ggplot2::geom_point()
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
 ``` r
+# impute the data and visualize again
 imp <- mice::mice(dat, m = 1, printFlag = FALSE)
 ggmice(imp, ggplot2::aes(age, bmi)) + ggplot2::geom_point() 
 ```
