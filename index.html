@@ -54,6 +54,15 @@
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/old_friends.html">Old friends</a>
+  </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="news/index.html">Changelog</a>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -85,12 +94,12 @@
 <div class="section level2">
 <h2 id="plotting-package-for-incomplete-and-imputed-data">Plotting package for incomplete and imputed data<a class="anchor" aria-label="anchor" href="#plotting-package-for-incomplete-and-imputed-data"></a>
 </h2>
-<p><code>ggmice</code> is an <code>R</code> package which enhances the imputation package <code>mice</code> with <code>ggplot2</code> visualizations. See the <code>ggmice</code> vignette for an overview of functionalities.</p>
+<p>The <code>ggmice</code> package enhances imputation package <code>mice</code> with <code>ggplot2</code> visualizations. See the <a href="https://amices.org/ggmice/articles/ggmice.html" class="external-link">vignette</a> for an overview of <code>ggmice</code>’s functionalities.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of <code>ggmice</code> from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of <code>ggmice</code> from <a href="https://github.com/amices" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"amices/ggmice"</span><span class="op">)</span></code></pre></div>
@@ -100,12 +109,15 @@
 </h2>
 <p>Visualize missing data in an incomplete dataset, or evaluate imputed data against the observed data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/amices/ggmice" class="external-link">ggmice</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="co"># load the package and some data</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/amices/ggmice" class="external-link">ggmice</a></span><span class="op">)</span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">mice</span><span class="fu">::</span><span class="va"><a href="https://amices.org/mice/reference/boys.html" class="external-link">boys</a></span>
+<span class="co"># visualize the incomplete data</span>
 <span class="fu"><a href="reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">dat</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu">mice</span><span class="fu">::</span><span class="fu"><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice</a></span><span class="op">(</span><span class="va">dat</span>, m <span class="op">=</span> <span class="fl">1</span>, printFlag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="co"># impute the data and visualize again</span>
+<span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu">mice</span><span class="fu">::</span><span class="fu"><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice</a></span><span class="op">(</span><span class="va">dat</span>, m <span class="op">=</span> <span class="fl">1</span>, printFlag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu"><a href="reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
 <p><img src="reference/figures/README-example-2.png" width="100%"></p>
 </div>

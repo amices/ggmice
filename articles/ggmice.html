@@ -48,6 +48,15 @@
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/old_friends.html">Old friends</a>
+  </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -83,8 +92,10 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The package <code>ggmice</code> bundles a set of plotting functions for the imputation package <code>mice</code>. These plotting functions adhere to the ‘grammar of graphics’ style, popularized by the <code>ggplot2</code> package. With that, <code>ggmice</code> enhances imputation workflows and provides plotting objects that are easy to extend and manipulate.</p>
-<p>The main <code>mice</code> package contains several <code>lattice</code> style plotting functions, <code>ggmice</code> provides <code>ggplot2</code> versions of these functions and more. The core function in the <code>ggmice</code> package, the <code><a href="../reference/ggmice.html">ggmice()</a></code> function, can be applied to obtain <code>ggplot2</code> objects for both incomplete <em>and</em> imputed data. This vignette provides an overview of the main functions included in <code>ggmice</code>.</p>
+<p>The <code>ggmice</code> package provides plotting functions for the evaluation of incomplete data, <code>mice</code> imputation models, and multiply imputed data sets (<code><a href="https://amices.org/mice/reference/mids-class.html" class="external-link">mice::mids</a></code>). The functions in <code>ggmice</code> adhere to the ‘grammar of graphics’ philosophy, popularized by the <code>ggplot2</code> package. With that, <code>ggmice</code> enhances imputation workflows and provides plotting objects that are easily extended and manipulated by each individual ‘imputer’.</p>
+<p>This vignette gives an overview of the core plotting functions in <code>ggmice</code>. Experienced <code>mice</code> users may already be familiar with the <code>lattice</code> style plotting functions in <code>mice</code>. These ‘old friends’ such as <code><a href="https://amices.org/mice/reference/bwplot.mids.html" class="external-link">mice::bwplot()</a></code> can be re-created with <code>ggmice</code>, see <a href="https://amices.org/ggmice/articles/old_friends.html" class="external-link">this</a> vignette for advise.</p>
+<!-- Loading `ggmice` after `mice` masks these functions and provides suggestions for `ggplot2` equivalents these 'old friends'.  -->
+<!-- The `mice` package contains several plotting functions that may guide 'imputers' in their workflow.  `lattice` style plotting functions, `ggmice` provides `ggplot2` versions of these functions and more. The core function in the `ggmice` package, the `ggmice()` function, can be applied to obtain `ggplot2` objects for both incomplete *and* imputed data. This vignette provides an overview of the main functions included in `ggmice`. -->
 </div>
 <div class="section level2">
 <h2 id="set-up">Set-up<a class="anchor" aria-label="anchor" href="#set-up"></a>
@@ -95,51 +106,83 @@
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"amices/ggmice"</span><span class="op">)</span></code></pre></div>
 <p>It is recommended to load the imputation package <code>mice</code> and the plotting package <code>ggplot2</code> into your workspace as well.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/amices/ggmice" class="external-link">ggmice</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="co"># load packages</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/amices/ggmice" class="external-link">ggmice</a></span><span class="op">)</span>
+<span class="co"># load incomplete dataset </span>
 <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">mice</span><span class="fu">::</span><span class="va"><a href="https://amices.org/mice/reference/boys.html" class="external-link">boys</a></span>
+<span class="co"># generate imputations</span>
 <span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu">mice</span><span class="fu">::</span><span class="fu"><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice</a></span><span class="op">(</span><span class="va">dat</span>, method <span class="op">=</span> <span class="st">"pmm"</span>, printFlag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="incomplete-data">Incomplete data<a class="anchor" aria-label="anchor" href="#incomplete-data"></a>
 </h2>
 <p>The <code>ggmice</code> package contains functions to explore incomplete data.</p>
-<div class="section level3">
-<h3 id="missing-data-pattern">Missing data pattern<a class="anchor" aria-label="anchor" href="#missing-data-pattern"></a>
-</h3>
-</div>
-<div class="section level3">
-<h3 id="correlations-between-variables">Correlations between variables<a class="anchor" aria-label="anchor" href="#correlations-between-variables"></a>
-</h3>
-<p>The function <code><a href="../reference/plot_corr.html">plot_corr()</a></code> can be used to investigate relations between variables, for the development of imputation models. Only one of the arguments (<code>dat</code>, the incomplete dataset) is required, all other arguments are optional.</p>
+<div class="section level4">
+<h4 id="missing-data-pattern">Missing data pattern<a class="anchor" aria-label="anchor" href="#missing-data-pattern"></a>
+</h4>
+<p>The <code><a href="../reference/plot_pattern.html">plot_pattern()</a></code> function displays the missing data pattern in an incomplete dataset. The argument <code>dat</code> (the incomplete dataset) is required, the argument <code>square</code> is optional and determines whether the missing data pattern has square or rectangular tiles, and the optional argument <code>rotate</code> changes the angle of the variable names 90 degrees if requested.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_corr.html">plot_corr</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
-<p><img src="ggmice_files/figure-html/correlations-1.png" width="691.2"></p>
+<code class="sourceCode R"><span class="co"># create missing data pattern plot</span>
+<span class="fu"><a href="../reference/plot_pattern.html">plot_pattern</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
+<p><img src="ggmice_files/figure-html/pattern-1.png" width="691.2"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_corr.html">plot_corr</a></span><span class="op">(</span><span class="va">dat</span>, vrb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hgt"</span>, <span class="st">"wgt"</span>, <span class="st">"bmi"</span><span class="op">)</span>, label <span class="op">=</span> <span class="cn">TRUE</span>, square <span class="op">=</span> <span class="cn">FALSE</span>, diagonal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># specify optional arguments  </span>
+<span class="fu"><a href="../reference/plot_pattern.html">plot_pattern</a></span><span class="op">(</span><span class="va">dat</span>, square <span class="op">=</span> <span class="cn">TRUE</span>, rotate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p><img src="ggmice_files/figure-html/pattern-2.png" width="691.2"></p>
+</div>
+<div class="section level4">
+<h4 id="influx-and-outflux">Influx and outflux<a class="anchor" aria-label="anchor" href="#influx-and-outflux"></a>
+</h4>
+<p>The <code><a href="../reference/plot_flux.html">plot_flux()</a></code> function produces an influx-outflux plot. The influx of a variable quantifies how well its missing data connect to the observed data on other variables. The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. In general, higher influx and outflux values are preferred when building imputation models. The plotting function requires an incomplete daatset (argument <code>dat</code>), and takes optional arguments to adjust the legend and axis labels.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create influx-outflux plot</span>
+<span class="fu"><a href="../reference/plot_flux.html">plot_flux</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
+<p><img src="ggmice_files/figure-html/flux-1.png" width="691.2"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># specify optional arguments  </span>
+<span class="fu"><a href="../reference/plot_flux.html">plot_flux</a></span><span class="op">(</span><span class="va">dat</span>, label <span class="op">=</span> <span class="cn">FALSE</span>, caption <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<p><img src="ggmice_files/figure-html/flux-2.png" width="691.2"></p>
+</div>
+<div class="section level4">
+<h4 id="correlations-between-variables">Correlations between variables<a class="anchor" aria-label="anchor" href="#correlations-between-variables"></a>
+</h4>
+<p>The function <code><a href="../reference/plot_corr.html">plot_corr()</a></code> can be used to investigate relations between variables, for the development of imputation models. Only one of the arguments (<code>dat</code>, the incomplete dataset) is required, all other arguments are optional.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create correlation plot</span>
+<span class="fu"><a href="../reference/plot_corr.html">plot_corr</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></code></pre></div>
+<p><img src="ggmice_files/figure-html/correlations-1.png" width="691.2"></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># specify optional arguments  </span>
+<span class="fu"><a href="../reference/plot_corr.html">plot_corr</a></span><span class="op">(</span><span class="va">dat</span>, vrb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hgt"</span>, <span class="st">"wgt"</span>, <span class="st">"bmi"</span><span class="op">)</span>, label <span class="op">=</span> <span class="cn">TRUE</span>, square <span class="op">=</span> <span class="cn">FALSE</span>, diagonal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="ggmice_files/figure-html/correlations-2.png" width="691.2"></p>
 </div>
-<div class="section level3">
-<h3 id="predictor-matrix">Predictor matrix<a class="anchor" aria-label="anchor" href="#predictor-matrix"></a>
-</h3>
-<p>The function <code><a href="../reference/plot_pred.html">plot_pred()</a></code> displays <code>mice</code> predictor matrices. A predictor matrix is typically created using <code><a href="https://amices.org/mice/reference/make.predictorMatrix.html" class="external-link">mice::make.predictorMatrix()</a></code>, <code><a href="https://amices.org/mice/reference/quickpred.html" class="external-link">mice::quickpred()</a></code>, or by using the default in <code><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice::mice()</a></code> and extracting the <code>predictorMatrix</code> from the resulting <code>mids</code> object. The <code><a href="../reference/plot_pred.html">plot_pred()</a></code> function only requires the <code>pred</code> argument.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu">mice</span><span class="fu">::</span><span class="fu"><a href="https://amices.org/mice/reference/quickpred.html" class="external-link">quickpred</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>
+<div class="section level4">
+<h4 id="predictor-matrix">Predictor matrix<a class="anchor" aria-label="anchor" href="#predictor-matrix"></a>
+</h4>
+<p>The function <code><a href="../reference/plot_pred.html">plot_pred()</a></code> displays <code>mice</code> predictor matrices. A predictor matrix is typically created using <code><a href="https://amices.org/mice/reference/make.predictorMatrix.html" class="external-link">mice::make.predictorMatrix()</a></code>, <code><a href="https://amices.org/mice/reference/quickpred.html" class="external-link">mice::quickpred()</a></code>, or by using the default in <code><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice::mice()</a></code> and extracting the <code>predictorMatrix</code> from the resulting <code>mids</code> object. The <code><a href="../reference/plot_pred.html">plot_pred()</a></code> function only requires the <code>pred</code> argument, but other arguments can be provided.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create predictor matrix</span>
+<span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu">mice</span><span class="fu">::</span><span class="fu"><a href="https://amices.org/mice/reference/quickpred.html" class="external-link">quickpred</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>
+<span class="co"># create predictor matrix plot</span>
 <span class="fu"><a href="../reference/plot_pred.html">plot_pred</a></span><span class="op">(</span><span class="va">pred</span><span class="op">)</span></code></pre></div>
 <p><img src="ggmice_files/figure-html/predictormatrix-1.png" width="691.2"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_pred.html">plot_pred</a></span><span class="op">(</span><span class="va">pred</span>, label <span class="op">=</span> <span class="cn">TRUE</span>, square <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># specify optional arguments  </span>
+<span class="fu"><a href="../reference/plot_pred.html">plot_pred</a></span><span class="op">(</span><span class="va">pred</span>, label <span class="op">=</span> <span class="cn">TRUE</span>, square <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="ggmice_files/figure-html/predictormatrix-2.png" width="691.2"></p>
 </div>
-<div class="section level3">
-<h3 id="the-ggmice-function">The <code>ggmice()</code> function<a class="anchor" aria-label="anchor" href="#the-ggmice-function"></a>
-</h3>
-<p>The <code>ggmice</code> function processes incomplete data in such a way that it can be displayed with <code>ggplot2</code>. The missing values are displayed on the axes.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">dat</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+<div class="section level4">
+<h4 id="the-ggmice-function">The <code>ggmice()</code> function<a class="anchor" aria-label="anchor" href="#the-ggmice-function"></a>
+</h4>
+<p>The <code>ggmice</code> function processes incomplete data in such a way that it can be displayed with <code>ggplot2</code>. The missing values are displayed on the axes (i.e., a missing value for the x-variable is plotted on top of the y-axis, and vice versa). Note that, in contrast to the <code>ggplot()</code> function, <code><a href="../reference/ggmice.html">ggmice()</a></code> <em>requires</em> an aesthetic mapping (argument <code>mapping</code>).</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create scatter plot with continuous variables</span>
+<span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">dat</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="ggmice_files/figure-html/incomplete-1.png" width="691.2"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">dat</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">gen</span>, <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create scatter plot with a categorical variable</span>
+<span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">dat</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">gen</span>, <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="ggmice_files/figure-html/incomplete-2.png" width="691.2"></p>
 </div>
@@ -147,54 +190,41 @@
 <div class="section level2">
 <h2 id="imputed-data">Imputed data<a class="anchor" aria-label="anchor" href="#imputed-data"></a>
 </h2>
-<p>The <code>ggmice</code> package contains functions to evaluate observed and imputed data.</p>
-<div class="section level3">
-<h3 id="algorithmic-convergence">Algorithmic convergence<a class="anchor" aria-label="anchor" href="#algorithmic-convergence"></a>
-</h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_chains.html">plot_chains</a></span><span class="op">(</span><span class="va">imp</span>, <span class="st">"bmi"</span><span class="op">)</span></code></pre></div>
+<p>The <code>ggmice</code> package contains two functions to evaluate observed and imputed data.</p>
+<div class="section level4">
+<h4 id="algorithmic-convergence">Algorithmic convergence<a class="anchor" aria-label="anchor" href="#algorithmic-convergence"></a>
+</h4>
+<p>The function <code><a href="../reference/plot_trace.html">plot_trace()</a></code> plots the trace lines of the MICE algorithm for convergence evaluation. The only required argument is <code>imp</code> (to supply a <code><a href="https://amices.org/mice/reference/mids-class.html" class="external-link">mice::mids</a></code> object). The optional argument <code>vrb</code> defaults to <code>"all"</code>, which would display traceplots for all variables.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create traceplot for one variable</span>
+<span class="fu"><a href="../reference/plot_trace.html">plot_trace</a></span><span class="op">(</span><span class="va">imp</span>, <span class="st">"bmi"</span><span class="op">)</span></code></pre></div>
 <p><img src="ggmice_files/figure-html/convergence-1.png" width="691.2"></p>
 </div>
-<div class="section level3">
-<h3 id="box-and-whiskers-plot">Box and whiskers plot<a class="anchor" aria-label="anchor" href="#box-and-whiskers-plot"></a>
-</h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/bwplot.html">bwplot</a></span><span class="op">(</span><span class="va">imp</span>, <span class="st">"bmi"</span><span class="op">)</span></code></pre></div>
-<p><img src="ggmice_files/figure-html/bwplot-1.png" width="691.2"></p>
-</div>
-<div class="section level3">
-<h3 id="stripplot">Stripplot<a class="anchor" aria-label="anchor" href="#stripplot"></a>
-</h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/stripplot.html">stripplot</a></span><span class="op">(</span><span class="va">imp</span>, <span class="st">"bmi"</span><span class="op">)</span></code></pre></div>
-<p><img src="ggmice_files/figure-html/stripplot-1.png" width="691.2"></p>
-</div>
-<div class="section level3">
-<h3 id="densityplot">Densityplot<a class="anchor" aria-label="anchor" href="#densityplot"></a>
-</h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/densityplot.html">densityplot</a></span><span class="op">(</span><span class="va">imp</span>, <span class="st">"bmi"</span><span class="op">)</span></code></pre></div>
-<p><img src="ggmice_files/figure-html/densityplot-1.png" width="691.2"></p>
-</div>
-<div class="section level3">
-<h3 id="x-y-plot">X-Y plot<a class="anchor" aria-label="anchor" href="#x-y-plot"></a>
-</h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/xyplot.html">xyplot</a></span><span class="op">(</span><span class="va">imp</span>, <span class="st">"age"</span>, <span class="st">"bmi"</span><span class="op">)</span></code></pre></div>
-<p><img src="ggmice_files/figure-html/xyplot-1.png" width="691.2"></p>
-</div>
-<div class="section level3">
-<h3 id="the-ggmice-function-1">The <code>ggmice()</code> function<a class="anchor" aria-label="anchor" href="#the-ggmice-function-1"></a>
-</h3>
+<div class="section level4">
+<h4 id="the-ggmice-function-1">The <code>ggmice()</code> function<a class="anchor" aria-label="anchor" href="#the-ggmice-function-1"></a>
+</h4>
+<p>The <code>ggmice</code> function is versatile. It produces a <code>ggplot</code> object that can be extended to mimic every type of plot for observed and imputed data in <code>mice</code>, see see <a href="https://amices.org/ggmice/articles/old_friends.html" class="external-link">this</a> vignette for advise. Below are some examples of plots produced with <code><a href="../reference/ggmice.html">ggmice()</a></code>. Note that, in contrast to the <code>ggplot()</code> function, <code><a href="../reference/ggmice.html">ggmice()</a></code> <em>requires</em> an aesthetic mapping (argument <code>mapping</code>).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">wgt</span><span class="op">)</span>, <span class="va">hgt</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+<code class="sourceCode R"><span class="co"># create scatter plot with continuous variables</span>
+<span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="ggmice_files/figure-html/imputed-1.png" width="691.2"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.imp</span>, y <span class="op">=</span> <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+<code class="sourceCode R"><span class="co"># create scatter plot with a categorical variable</span>
+<span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">gen</span>, <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="ggmice_files/figure-html/imputed-2.png" width="691.2"></p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create scatter plot with a transformed variable</span>
+<span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">wgt</span><span class="op">)</span>, <span class="va">hgt</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p><img src="ggmice_files/figure-html/imputed-3.png" width="691.2"></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create stripplot with bowplot overlay</span>
+<span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.imp</span>, y <span class="op">=</span> <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html" class="external-link">geom_jitter</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span>, fill <span class="op">=</span> <span class="st">"white"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, outlier.shape <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
-<p><img src="ggmice_files/figure-html/imputed-2.png" width="691.2"></p>
+<p><img src="ggmice_files/figure-html/imputed-4.png" width="691.2"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

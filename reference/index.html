@@ -24,6 +24,15 @@
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/old_friends.html">Old friends</a>
+  </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -71,14 +80,14 @@
         <dd>Plot incomplete or imputed data</dd>
       </dl><dl><dt>
           
-          <code><a href="plot_chains.html">plot_chains()</a></code> 
-        </dt>
-        <dd>Convergence plot for Multiply Imputed Data Sets</dd>
-      </dl><dl><dt>
-          
           <code><a href="plot_corr.html">plot_corr()</a></code> 
         </dt>
         <dd>Plot correlations between (incomplete) variables</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_flux.html">plot_flux()</a></code> 
+        </dt>
+        <dd>Influx and outflux plot of multivariate missing data patterns</dd>
       </dl><dl><dt>
           
           <code><a href="plot_pattern.html">plot_pattern()</a></code> 
@@ -89,6 +98,11 @@
           <code><a href="plot_pred.html">plot_pred()</a></code> 
         </dt>
         <dd>Plot predictorMatrix for <code><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice::mice()</a></code> argument</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_trace.html">plot_trace()</a></code> 
+        </dt>
+        <dd>Plot the trace lines of the MICE algorithm for convergence evaluation</dd>
       </dl><dl><dt>
           
           <code><a href="stripplot.html">stripplot()</a></code> 

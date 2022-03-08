@@ -16,10 +16,16 @@
     <loc>http://amices.org/ggmice/articles/index.html</loc>
   </url>
   <url>
+    <loc>http://amices.org/ggmice/articles/old_friends.html</loc>
+  </url>
+  <url>
     <loc>http://amices.org/ggmice/authors.html</loc>
   </url>
   <url>
     <loc>http://amices.org/ggmice/index.html</loc>
+  </url>
+  <url>
+    <loc>http://amices.org/ggmice/news/index.html</loc>
   </url>
   <url>
     <loc>http://amices.org/ggmice/reference/bwplot.html</loc>
@@ -37,16 +43,19 @@
     <loc>http://amices.org/ggmice/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>http://amices.org/ggmice/reference/plot_chains.html</loc>
+    <loc>http://amices.org/ggmice/reference/plot_corr.html</loc>
   </url>
   <url>
-    <loc>http://amices.org/ggmice/reference/plot_corr.html</loc>
+    <loc>http://amices.org/ggmice/reference/plot_flux.html</loc>
   </url>
   <url>
     <loc>http://amices.org/ggmice/reference/plot_pattern.html</loc>
   </url>
   <url>
     <loc>http://amices.org/ggmice/reference/plot_pred.html</loc>
+  </url>
+  <url>
+    <loc>http://amices.org/ggmice/reference/plot_trace.html</loc>
   </url>
   <url>
     <loc>http://amices.org/ggmice/reference/stripplot.html</loc>
