@@ -8,6 +8,8 @@ vignette: >
 ---
 # Create the `ggmice` equivalent of `mice` plots
 
+How to re-create the output of the plotting functions from `mice` with `ggmice`. In alphabetical order of the `mice` functions.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -16,6 +18,8 @@ knitr::opts_chunk$set(
   fig.height = 4
 )
 ```
+
+First load the `ggmice` package, some incomplete data and a `mice::mids` object into your workspace. 
 
 ```{r setup}
 # load packages
@@ -26,7 +30,6 @@ dat <- mice::boys
 imp <- mice::mice(dat, method = "pmm", printFlag = FALSE)
 ```
 
-How to re-create the output of the plotting functions from `mice` with `ggmice`. In alphabetical order of the `mice` functions.
 
 # `bwplot`
 
@@ -139,7 +142,7 @@ ggmice(imp, ggplot2::aes(age, bmi)) +
   ggplot2::geom_point()
 # extended reproduction with ggmice
 ggmice(imp, ggplot2::aes(age, bmi)) +
-  ggplot2::geom_point(shape = 1) +
+  ggplot2::geom_point(size = 2, shape = 1) +
   ggplot2::theme(legend.position = "none")
 ```
 

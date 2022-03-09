@@ -4,7 +4,7 @@
 \alias{plot_pattern}
 \title{Plot the missing data pattern of an incomplete dataset}
 \usage{
-plot_pattern(dat, square = FALSE, rotate = FALSE)
+plot_pattern(dat, square = FALSE, rotate = FALSE, cluster = NULL)
 }
 \arguments{
 \item{dat}{An incomplete dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
@@ -12,6 +12,8 @@ plot_pattern(dat, square = FALSE, rotate = FALSE)
 \item{square}{Logical indicating whether the plot tiles should be squares.}
 
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
+
+\item{cluster}{Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).}
 }
 \value{
 An object of class \code{ggplot}.

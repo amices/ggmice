@@ -4,20 +4,18 @@
 \alias{stripplot}
 \title{Stripplot of observed and imputed data}
 \usage{
-stripplot(imp, vrb = "all")
+stripplot(...)
 }
 \arguments{
-\item{imp}{A \code{mids} object, typically created by \code{mice::mice()} or \code{mice::mice.mids()} (see \code{?mice::mids}).}
-
-\item{vrb}{String or vector with variable name(s), default is "all".}
+\item{...}{Any arguments passed to the function.}
 }
 \value{
-A (list with) \code{ggplot} object(s).
+The output of \code{mice::stripplot(...)} and a message about the \code{ggmice} equivalent.
 }
 \description{
 Stripplot of observed and imputed data
 }
 \examples{
 imp <- mice::mice(mice::nhanes, printFlag = FALSE)
-stripplot(imp, "bmi")
+stripplot(imp)
 }
