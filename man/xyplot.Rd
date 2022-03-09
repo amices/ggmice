@@ -4,20 +4,18 @@
 \alias{xyplot}
 \title{Scatterplot of observed and imputed data}
 \usage{
-xyplot(imp, x, y)
+xyplot(...)
 }
 \arguments{
-\item{imp}{A \code{mids} object, typically created by \code{mice::mice()} or \code{mice::mice.mids()} (see \code{?mice::mids}).}
-
-\item{x, y}{String with a variable name.}
+\item{...}{Any arguments passed to the function.}
 }
 \value{
-A \code{ggplot} object
+The output of \code{mice::xyplot(...)} and a message about the \code{ggmice} equivalent.
 }
 \description{
 Scatterplot of observed and imputed data
 }
 \examples{
 imp <- mice::mice(mice::nhanes, printFlag = FALSE)
-xyplot(imp, "age", "bmi")
+xyplot(imp, bmi ~ age)
 }

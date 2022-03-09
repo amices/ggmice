@@ -16,6 +16,9 @@ knitr::opts_chunk$set(
   fig.width = 7.2,
   fig.height = 4
 )
+# TODO: add jitter to categorical variables
+# TODO: plot a single imp
+# TODO: plot all variables
 ```
 
 # Overview
@@ -40,11 +43,13 @@ In this vignette we'll use `ggmice` in combination with the imputation package `
 
 ```{r setup}
 # load packages
-library(ggmice)
 library(mice)
 library(ggplot2)
+library(ggmice)
+
 # load incomplete dataset 
 dat <- boys
+
 # generate imputations
 imp <- mice(dat, method = "pmm", printFlag = FALSE)
 ```
@@ -60,6 +65,7 @@ The `plot_pattern()` function displays the missing data pattern in an incomplete
 ```{r pattern}
 # create missing data pattern plot
 plot_pattern(dat)
+
 # specify optional arguments  
 plot_pattern(dat, square = TRUE, rotate = TRUE)
 ```
@@ -71,6 +77,7 @@ The `plot_flux()` function produces an influx-outflux plot. The influx of a vari
 ```{r flux}
 # create influx-outflux plot
 plot_flux(dat)
+
 # specify optional arguments  
 plot_flux(
   dat, 
@@ -87,6 +94,7 @@ The function `plot_corr()` can be used to investigate relations between variable
 ```{r correlations}
 # create correlation plot
 plot_corr(dat)
+
 # specify optional arguments  
 plot_corr(
   dat,
@@ -104,8 +112,10 @@ The function `plot_pred()` displays `mice` predictor matrices. A predictor matri
 ```{r predictormatrix}
 # create predictor matrix
 pred <- quickpred(dat)
+
 # create predictor matrix plot
 plot_pred(pred)
+
 # specify optional arguments  
 plot_pred(
   pred, 
@@ -122,6 +132,7 @@ The `ggmice` function processes incomplete data in such a way that it can be dis
 # create scatter plot with continuous variables
 ggmice(dat, aes(age, bmi)) +
   geom_point()
+
 # create scatter plot with a categorical variable
 ggmice(dat, aes(gen, bmi)) +
   geom_point()
@@ -148,12 +159,15 @@ The `ggmice` function is versatile. It produces a `ggplot` object that can be ex
 # create scatter plot with continuous variables
 ggmice(imp, aes(age, bmi)) +
   geom_point()
+
 # create scatter plot with a categorical variable
 ggmice(imp, aes(gen, bmi)) +
   geom_point()
+
 # create scatter plot with a transformed variable
 ggmice(imp, aes(log(wgt), hgt)) +
   geom_point()
+
 # create stripplot with boxplot overlay
 ggmice(imp, aes(x = .imp, y = bmi)) + 
   geom_jitter(height = 0) +

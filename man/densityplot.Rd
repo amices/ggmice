@@ -4,20 +4,18 @@
 \alias{densityplot}
 \title{Densityplot of observed and imputed data}
 \usage{
-densityplot(imp, vrb = "all")
+densityplot(...)
 }
 \arguments{
-\item{imp}{A \code{mids} object, typically created by \code{mice::mice()} or \code{mice::mice.mids()} (see \code{?mice::mids}).}
-
-\item{vrb}{String or vector with variable name(s), default is "all".}
+\item{...}{Any arguments passed to the function.}
 }
 \value{
-A (list with) \code{ggplot} object(s).
+The output of \code{mice::densityplot(...)} and a message about the \code{ggmice} equivalent.
 }
 \description{
 Densityplot of observed and imputed data
 }
 \examples{
 imp <- mice::mice(mice::nhanes, printFlag = FALSE)
-densityplot(imp, "bmi")
+densityplot(imp)
 }
