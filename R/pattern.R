@@ -16,8 +16,9 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
   }
   if (!is.null(cluster)) {
     if (cluster %nin% names(dat)) {
-    stop("Cluster variable not recognized, please provide the variable name as a character string.")
-  }}
+      stop("Cluster variable not recognized, please provide the variable name as a character string.")
+    }
+  }
   # get missing data pattern and extract info
   pat <- mice::md.pattern(dat, plot = FALSE)
   rws <- nrow(pat)
@@ -26,17 +27,18 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
   frq <- row.names(pat)[-rws]
   na_row <- pat[-rws, cls]
   na_col <- pat[rws, -cls]
-  #na_tot <- pat[rws, cls]
+  # na_tot <- pat[rws, cls]
 
   if (is.null(cluster)) {
     pat_clean <- cbind(.opacity = 1, pat[-rws, vrb])
-    } else {
-    pats <- purrr::map(split(dat, ~get(cluster)), ~{
+  } else {
+    pats <- purrr::map(split(dat, ~ get(cluster)), ~ {
       mice::md.pattern(., plot = FALSE) %>%
-      pat_to_chr(., ord = vrb)
-      })
-    pat_used <- purrr::map_dfr(pats, ~{
-      pat_to_chr(pat) %in% .x}) %>%
+        pat_to_chr(., ord = vrb)
+    })
+    pat_used <- purrr::map_dfr(pats, ~ {
+      pat_to_chr(pat) %in% .x
+    }) %>%
       rowMeans()
     pat_clean <- data.frame(.opacity = pat_used, pat[-rws, vrb]) # .5 + ((pat_used - 0.5)/2)
   }
@@ -51,7 +53,7 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
     )
 
   # create the plot
-  gg <- ggplot2::ggplot(long, ggplot2::aes(.data$x, .data$y, fill = .data$.where, alpha = 0.1 + .data$.opacity/2)) +
+  gg <- ggplot2::ggplot(long, ggplot2::aes(.data$x, .data$y, fill = .data$.where, alpha = 0.1 + .data$.opacity / 2)) +
     ggplot2::geom_tile(color = "black") +
     ggplot2::scale_fill_manual(values = c("observed" = "#006CC2B3", "missing" = "#B61A51B3")) +
     ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
@@ -75,8 +77,8 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
       x = "Variable\n(number of missing entries)",
       y = "Pattern\n(frequency)",
       fill = "",
-      alpha = ""#,
-      #caption = paste("*total number of missing entries =", na_tot)
+      alpha = "" # ,
+      # caption = paste("*total number of missing entries =", na_tot)
     ) +
     theme_minimice()
   if (square) {
@@ -94,6 +96,8 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
 #' @param pat Numeric matrix with a missing data pattern.
 #' @param ord Vector with variable names.
 pat_to_chr <- function(pat, ord = NULL) {
-  if (is.null(ord)) {ord <- colnames(pat)[-ncol(pat)]}
+  if (is.null(ord)) {
+    ord <- colnames(pat)[-ncol(pat)]
+  }
   apply(pat[-nrow(pat), ord], 1, function(x) paste(as.numeric(x), collapse = ""))
 }

@@ -52,7 +52,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
       ),
       .imp = factor(.imp, ordered = TRUE)
     )
-    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where)) #, fill = .where
+    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where)) # , fill = .where
     mice_colors <- c("observed" = "#006CC2B3", "imputed" = "#B61A51B3")
   } else {
     where_xy <- rowSums(is.na(as.matrix(data[, c(vrb_x, vrb_y)]))) > 0L
@@ -64,13 +64,13 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
       }),
       .where = factor(where_xy, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE)
     )
-    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where)) #, fill = .where
+    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where)) # , fill = .where
     mice_colors <- c("observed" = "#006CC2B3", "missing" = "#B61A51B3")
   }
   # create plot
   gg <- ggplot2::ggplot(data = mice_data, mapping = mice_mapping) +
     ggplot2::scale_color_manual(values = mice_colors, drop = TRUE, name = "") +
-    #ggplot2::scale_fill_manual(values = mice_colors, drop = TRUE, name = "") +
+    # ggplot2::scale_fill_manual(values = mice_colors, drop = TRUE, name = "") +
     theme_mice()
   if (!mice::is.mids(data)) {
     gg <- gg +
