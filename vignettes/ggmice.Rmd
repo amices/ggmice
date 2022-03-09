@@ -36,15 +36,17 @@ install.packages("devtools")
 devtools::install_github("amices/ggmice")
 ```
 
-It is recommended to load the imputation package `mice` and the plotting package `ggplot2` into your workspace as well.
+In this vignette we'll use `ggmice` in combination with the imputation package `mice` and the plotting package `ggplot2`. It is recommended to load `mice` and `ggplot2` into your workspace as well, but in your own workflow you could choose to call their functions directly instead (e.g., `mice::mice()` or `ggplot2::aes()`). In this vignette, we assume that all three packages are loaded, as well as an incomplete and imputed version of the `mice::boys` dataset.
 
 ```{r setup}
 # load packages
 library(ggmice)
+library(mice)
+library(ggplot2)
 # load incomplete dataset 
-dat <- mice::boys
+dat <- boys
 # generate imputations
-imp <- mice::mice(dat, method = "pmm", printFlag = FALSE)
+imp <- mice(dat, method = "pmm", printFlag = FALSE)
 ```
 
 # Incomplete data
@@ -64,13 +66,17 @@ plot_pattern(dat, square = TRUE, rotate = TRUE)
 
 ### Influx and outflux
 
-The `plot_flux()` function produces an influx-outflux plot. The influx of a variable quantifies how well its missing data connect to the observed data on other variables. The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. In general, higher influx and outflux values are preferred when building imputation models. The plotting function requires an incomplete daatset (argument `dat`), and takes optional arguments to adjust the legend and axis labels. 
+The `plot_flux()` function produces an influx-outflux plot. The influx of a variable quantifies how well its missing data connect to the observed data on other variables. The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. In general, higher influx and outflux values are preferred when building imputation models. The plotting function requires an incomplete dataset (argument `dat`), and takes optional arguments to adjust the legend and axis labels. 
 
 ```{r flux}
 # create influx-outflux plot
 plot_flux(dat)
 # specify optional arguments  
-plot_flux(dat, label = FALSE, caption = FALSE)
+plot_flux(
+  dat, 
+  label = FALSE, 
+  caption = FALSE
+)
 ```
 
 
@@ -82,7 +88,13 @@ The function `plot_corr()` can be used to investigate relations between variable
 # create correlation plot
 plot_corr(dat)
 # specify optional arguments  
-plot_corr(dat, vrb = c("hgt", "wgt", "bmi"), label = TRUE, square = FALSE, diagonal = TRUE)
+plot_corr(
+  dat,
+  vrb = c("hgt", "wgt", "bmi"),
+  label = TRUE,
+  square = FALSE,
+  diagonal = TRUE
+)
 ```
 
 ### Predictor matrix
@@ -91,11 +103,15 @@ The function `plot_pred()` displays `mice` predictor matrices. A predictor matri
 
 ```{r predictormatrix}
 # create predictor matrix
-pred <- mice::quickpred(dat)
+pred <- quickpred(dat)
 # create predictor matrix plot
 plot_pred(pred)
 # specify optional arguments  
-plot_pred(pred, label = TRUE, square = FALSE)
+plot_pred(
+  pred, 
+  label = TRUE, 
+  square = FALSE
+)
 ```
 
 ### The `ggmice()` function
@@ -104,11 +120,11 @@ The `ggmice` function processes incomplete data in such a way that it can be dis
 
 ```{r incomplete}
 # create scatter plot with continuous variables
-ggmice(dat, ggplot2::aes(age, bmi)) +
-  ggplot2::geom_point()
+ggmice(dat, aes(age, bmi)) +
+  geom_point()
 # create scatter plot with a categorical variable
-ggmice(dat, ggplot2::aes(gen, bmi)) +
-  ggplot2::geom_point()
+ggmice(dat, aes(gen, bmi)) +
+  geom_point()
 ```
 
 # Imputed data
@@ -130,17 +146,17 @@ The `ggmice` function is versatile. It produces a `ggplot` object that can be ex
 
 ```{r imputed}
 # create scatter plot with continuous variables
-ggmice(imp, ggplot2::aes(age, bmi)) +
-  ggplot2::geom_point()
+ggmice(imp, aes(age, bmi)) +
+  geom_point()
 # create scatter plot with a categorical variable
-ggmice(imp, ggplot2::aes(gen, bmi)) +
-  ggplot2::geom_point()
+ggmice(imp, aes(gen, bmi)) +
+  geom_point()
 # create scatter plot with a transformed variable
-ggmice(imp, ggplot2::aes(log(wgt), hgt)) +
-  ggplot2::geom_point()
-# create stripplot with bowplot overlay
-ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) + 
-  ggplot2::geom_jitter() +
-  ggplot2::geom_boxplot(size = 1, fill = "white", alpha = 0.5, outlier.shape = NA)
+ggmice(imp, aes(log(wgt), hgt)) +
+  geom_point()
+# create stripplot with boxplot overlay
+ggmice(imp, aes(x = .imp, y = bmi)) + 
+  geom_jitter(height = 0) +
+  geom_boxplot(fill = "white", alpha = 0.75, outlier.shape = NA)
 ```
 

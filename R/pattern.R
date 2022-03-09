@@ -21,7 +21,7 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE) {
   frq <- row.names(pat)[-rws]
   na_row <- pat[-rws, cls]
   na_col <- pat[rws, -cls]
-  na_tot <- pat[rws, cls]
+  #na_tot <- pat[rws, cls]
 
   # tidy the pattern
   long <- data.frame(y = 1:(rws - 1), pat[-rws, -cls], row.names = NULL) %>%
@@ -40,7 +40,7 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE) {
       labels = na_col,
       sec.axis = ggplot2::dup_axis(
         labels = vrb,
-        name = ""
+        name = "Variable\n(name)"
       )
     ) +
     ggplot2::scale_y_reverse(
@@ -48,21 +48,21 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE) {
       labels = frq,
       sec.axis = ggplot2::dup_axis(
         labels = na_row,
-        name = "Number of missing entries per pattern*\n"
+        name = "Pattern\n(number of missing entries)"
       )
     ) +
     ggplot2::labs(
-      x = "Number of missing entries per variable*",
-      y = "Pattern frequency",
-      fill = "",
-      caption = paste("*total number of missing entries =", na_tot)
+      x = "Variable\n(number of missing entries)",
+      y = "Pattern\n(frequency)",
+      fill = ""#,
+      #caption = paste("*total number of missing entries =", na_tot)
     ) +
     theme_minimice()
   if (square) {
     gg <- gg + ggplot2::coord_fixed()
   }
   if (rotate) {
-    gg <- gg + ggplot2::theme(axis.text.x.top = ggplot2::element_text(angle = 90))
+    gg <- gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
   }
 
   return(gg)
