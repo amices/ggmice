@@ -52,7 +52,7 @@ plot_trace <- function(imp, vrb = "all") {
     ggplot2::labs(
       x = "Iteration",
       y = "",
-      color = "Imputation"
+      color = "Imputation number"
     ) +
     theme_mice()
 }

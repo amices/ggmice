@@ -23,13 +23,15 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (!is.null(mapping$colour)) {
     warning("The aes() argument 'colour' has a special use in ggmmice() and will be overwritten. Try using 'shape' or 'linetype' for additional mapping, or use faceting.")
   }
+
   # extract variable names from mapping object
+  if (is.data.frame(data)) {
+    vrbs <- names(data)
+    vrbs_num <- vrbs[purrr::map_lgl(data, is.numeric)]
+  }
   if (mice::is.mids(data)) {
     vrbs <- names(data$data)
     vrbs_num <- vrbs[purrr::map_lgl(data$data, is.numeric)]
-  } else {
-    vrbs <- names(data)
-    vrbs_num <- vrbs[purrr::map_lgl(data, is.numeric)]
   }
   mapping_x <- ggplot2::as_label(mapping$x)
   mapping_y <- ggplot2::as_label(mapping$y)
@@ -43,6 +45,21 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   }
 
   # edit data and mapping objects
+  if (is.data.frame(data)) {
+    where_xy <- rowSums(is.na(as.matrix(data[, c(vrb_x, vrb_y)]))) > 0L
+    mice_data <- cbind(
+      .where = factor(where_xy == 1, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE),
+      data)
+    if (!is.null(mapping$x) & !is.null(mapping$y)) {
+      mice_data <- dplyr::mutate(mice_data,
+        dplyr::across(vrbs_num, ~ tidyr::replace_na(as.numeric(.x), -Inf)),
+      dplyr::across(vrbs[vrbs %nin% vrbs_num], ~ {
+        as.factor(tidyr::replace_na(as.character(.x), " "))
+      }))
+    }
+    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where))
+    mice_colors <- c("observed" = "#006CC2B3", "missing" = "#B61A51B3")
+  }
   if (mice::is.mids(data)) {
     where_xy <- rowSums(as.matrix(data$where[, c(vrb_x, vrb_y)])) > 0L
     mice_data <- dplyr::mutate(
@@ -54,25 +71,15 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     )
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where)) # , fill = .where
     mice_colors <- c("observed" = "#006CC2B3", "imputed" = "#B61A51B3")
-  } else {
-    where_xy <- rowSums(is.na(as.matrix(data[, c(vrb_x, vrb_y)]))) > 0L
-    mice_data <- dplyr::mutate(
-      data,
-      dplyr::across(vrbs_num, ~ tidyr::replace_na(as.numeric(.x), -Inf)),
-      dplyr::across(vrbs[vrbs %nin% vrbs_num], ~ {
-        as.factor(tidyr::replace_na(as.character(.x), " "))
-      }),
-      .where = factor(where_xy, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE)
-    )
-    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where)) # , fill = .where
-    mice_colors <- c("observed" = "#006CC2B3", "missing" = "#B61A51B3")
   }
+
   # create plot
   gg <- ggplot2::ggplot(data = mice_data, mapping = mice_mapping) +
-    ggplot2::scale_color_manual(values = mice_colors, drop = TRUE, name = "") +
-    # ggplot2::scale_fill_manual(values = mice_colors, drop = TRUE, name = "") +
+    ggplot2::scale_color_manual(values = mice_colors, name = "") +
     theme_mice()
-  if (!mice::is.mids(data)) {
+
+  # edit plot to display missing values on the axes
+  if (is.data.frame(data) & !is.null(mapping$x) & !is.null(mapping$y)) {
     gg <- gg +
       ggplot2::coord_cartesian(clip = "off")
     if (!is.null(mapping$x)) {
@@ -88,16 +95,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
       }
     }
   }
-  # if(mice::is.mids(data)){
-  #   gg <- gg +
-  #     ggplot2::facet_wrap(~ .imp)
-  # }
-  # else {
-  #   gg <- gg +
-  #     annotate("rect", xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = .2)
-  # }
+
   # output
   return(gg)
 }
-
-# TODO: add jitter to categorical variables?
