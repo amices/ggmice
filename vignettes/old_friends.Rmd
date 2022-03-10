@@ -89,6 +89,12 @@ Missing data pattern plot.
 md <- mice::md.pattern(dat)
 # ggmice equivalent
 plot_pattern(dat)
+# extended reproduction with ggmice
+plot_pattern(dat, square = TRUE) +
+  ggplot2::theme(legend.position = "none",
+                 axis.title = ggplot2::element_blank(),
+                 axis.title.x.top = ggplot2::element_blank(),
+                 axis.title.y.right = ggplot2::element_blank())
 ```
 
 # `plot.mids`

@@ -1,5 +1,5 @@
 ---
-title: "Visualize incomplete and imputed data with `ggmice`"
+title: "Get started"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{ggmice}
@@ -16,12 +16,14 @@ knitr::opts_chunk$set(
   fig.width = 7.2,
   fig.height = 4
 )
-# TODO: add jitter to categorical variables
-# TODO: plot a single imp
-# TODO: plot all variables
+# TODO add to vignette:
+# plotting conditional on missingness indicator
+# adding jitter to categorical variables
+# plotting a single imp
+# plotting all variables
 ```
 
-# Overview
+# Visualize incomplete and imputed data with `ggmice`
 
 The `ggmice` package provides plotting functions for the evaluation of incomplete data, `mice` imputation models, and multiply imputed data sets (`mice::mids`). The functions in `ggmice` adhere to the 'grammar of graphics' philosophy, popularized by the `ggplot2` package. With that, `ggmice` enhances imputation workflows and provides plotting objects that are easily extended and manipulated by each individual 'imputer'. 
 
