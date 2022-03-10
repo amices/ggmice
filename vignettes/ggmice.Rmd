@@ -173,6 +173,7 @@ ggmice(imp, aes(log(wgt), hgt)) +
 # create stripplot with boxplot overlay
 ggmice(imp, aes(x = .imp, y = bmi)) + 
   geom_jitter(height = 0) +
-  geom_boxplot(fill = "white", alpha = 0.75, outlier.shape = NA)
+  geom_boxplot(fill = "white", alpha = 0.75, outlier.shape = NA) +
+  labs(x = "Imputation number")
 ```
 
