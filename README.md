@@ -53,10 +53,12 @@ ggmice(imp, ggplot2::aes(age, bmi)) + ggplot2::geom_point()
 
 <img src="man/figures/README-example-2.png" width="100%" />
 
-## Acknowledgement
+## Acknowledgements
 
-The `ggmice` hex is based on the `ggplot2` hex and the `mice` hex
-(designed by Jaden M. Walters).
+The `ggmice` package is developed with guidance and feedback from Gerko
+Vink, Stef van Buuren, Thomas Debray, Valentijn de Jong, Johanna Muñoz,
+Thom Volker, Mingyang Cai and Anaïs Fopma. The `ggmice` hex is based on
+designs from the `ggplot2` hex and the `mice` hex (by Jaden Walters).
 
 ## Code of Conduct
 
