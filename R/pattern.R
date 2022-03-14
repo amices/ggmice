@@ -49,6 +49,7 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
     dplyr::mutate(
       x = as.numeric(factor(.data$x, levels = vrb, ordered = TRUE)),
       .where = factor(.data$.where, levels = c(0, 1), labels = c("missing", "observed")),
+      # TODO: always obs/always missing, add title, maybe make y axis prop to freq, add asterisk to clust var with caption that can tell that there is missingness in it
       .opacity = as.numeric(.data$.opacity)
     )
 
