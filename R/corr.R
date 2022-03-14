@@ -1,6 +1,6 @@
 #' Plot correlations between (incomplete) variables
 #'
-#' @param dat A dataset of class `data.frame`, `tibble`, or `matrix`.
+#' @param data A dataset of class `data.frame`, `tibble`, or `matrix`.
 #' @param vrb String or vector with variable name(s), default is "all".
 #' @param label Logical indicating whether correlation values should be displayed.
 #' @param square Logical indicating whether the plot tiles should be squares.
@@ -12,18 +12,18 @@
 #' @examples
 #' plot_corr(mice::nhanes, label = TRUE)
 #' @export
-plot_corr <- function(dat, vrb = "all", label = FALSE, square = TRUE, diagonal = FALSE, rotate = FALSE) {
-  if (!is.data.frame(dat) & !is.matrix(dat)) {
+plot_corr <- function(data, vrb = "all", label = FALSE, square = TRUE, diagonal = FALSE, rotate = FALSE) {
+  if (!is.data.frame(data) & !is.matrix(data)) {
     stop("Dataset should be a 'data.frame' or 'matrix'.")
   }
   if (vrb[1] == "all") {
-    vrb <- names(dat)
+    vrb <- names(data)
   }
   p <- length(vrb)
   corrs <- data.frame(
     vrb = rep(vrb, each = p),
     prd = vrb,
-    corr = matrix(round(stats::cov2cor(stats::cov(data.matrix(dat[, vrb]), use = "pairwise.complete.obs")), 2), nrow = p * p, byrow = TRUE)
+    corr = matrix(round(stats::cov2cor(stats::cov(data.matrix(data[, vrb]), use = "pairwise.complete.obs")), 2), nrow = p * p, byrow = TRUE)
   )
   if (!diagonal) {
     corrs[corrs$vrb == corrs$prd, "corr"] <- NA

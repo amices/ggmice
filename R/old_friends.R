@@ -1,4 +1,4 @@
-# mice plotting functions
+# Plotting functions from the `mice` package
 
 #' Box-and-whisker plot of observed and imputed data
 #'

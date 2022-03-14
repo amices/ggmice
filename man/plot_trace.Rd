@@ -2,20 +2,20 @@
 % Please edit documentation in R/trace.R
 \name{plot_trace}
 \alias{plot_trace}
-\title{Plot the trace lines of the MICE algorithm for convergence evaluation}
+\title{Plot the trace lines of the imputation algorithm}
 \usage{
-plot_trace(imp, vrb = "all")
+plot_trace(data, vrb = "all")
 }
 \arguments{
-\item{imp}{An object of class \code{mids}.}
+\item{data}{An object of class \code{mice::mids}.}
 
 \item{vrb}{String or vector with variable name(s), default is "all".}
 }
 \value{
-An object of class \code{ggplot}.
+An object of class \code{ggplot2::ggplot}.
 }
 \description{
-Plot the trace lines of the MICE algorithm for convergence evaluation
+Plot the trace lines of the imputation algorithm
 }
 \examples{
 imp <- mice::mice(mice::nhanes, print = FALSE)

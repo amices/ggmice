@@ -1,19 +1,21 @@
-#' Influx and outflux plot of multivariate missing data patterns
+#' Plot the influx and outflux of a multivariate missing data pattern
 #'
-#' @param dat An incomplete dataset of class `data.frame`, `tibble`, or `matrix`.
+#' @param data An incomplete dataset of class `data.frame` or `matrix`.
+#' @param vrb String or vector with variable name(s), default is "all".
 #' @param label Logical indicating whether variable names should be displayed within the plot (the default) or with colors in the legend.
 #' @param caption Logical indicating whether the figure caption should be displayed.
 #'
-#' @return An object of class `ggplot`.
+#' @return An object of class `ggplot2::ggplot`.
 #'
 #' @examples
 #' plot_flux(mice::nhanes)
 #' @export
-plot_flux <- function(dat, label = TRUE, caption = TRUE) {
-  # escape function if dataset is complete
-  # if(!any(is.na(dat))){return(plot_a_mouse())}
+plot_flux <- function(data, vrb = "all", label = TRUE, caption = TRUE) {
+  if (vrb == "all") {
+    vrb <- names(data)
+  }
   # plot in and outflux
-  flx <- mice::flux(dat)[, c("influx", "outflux")]
+  flx <- mice::flux(data[, vrb])[, c("influx", "outflux")]
   gg <- data.frame(vrb = rownames(flx), flx, outflux_nudge = flx$outflux - 0.025) %>%
     ggplot2::ggplot(ggplot2::aes(
       x = .data$influx,

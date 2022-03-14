@@ -4,10 +4,12 @@
 \alias{plot_pattern}
 \title{Plot the missing data pattern of an incomplete dataset}
 \usage{
-plot_pattern(dat, square = FALSE, rotate = FALSE, cluster = NULL)
+plot_pattern(data, vrb = "all", square = FALSE, rotate = FALSE, cluster = NULL)
 }
 \arguments{
-\item{dat}{An incomplete dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
+\item{data}{An incomplete dataset of class \code{data.frame} or \code{matrix}.}
+
+\item{vrb}{String or vector with variable name(s), default is "all".}
 
 \item{square}{Logical indicating whether the plot tiles should be squares.}
 
@@ -16,7 +18,7 @@ plot_pattern(dat, square = FALSE, rotate = FALSE, cluster = NULL)
 \item{cluster}{Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).}
 }
 \value{
-An object of class \code{ggplot}.
+An object of class \code{ggplot2::ggplot}.
 }
 \description{
 Plot the missing data pattern of an incomplete dataset
