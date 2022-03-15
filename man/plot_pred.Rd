@@ -2,12 +2,12 @@
 % Please edit documentation in R/pred.R
 \name{plot_pred}
 \alias{plot_pred}
-\title{Plot predictorMatrix for \code{mice::mice()} argument}
+\title{Plot the predictor matrix of an imputation model}
 \usage{
-plot_pred(pred, label = FALSE, square = TRUE, rotate = FALSE)
+plot_pred(data, label = FALSE, square = TRUE, rotate = FALSE)
 }
 \arguments{
-\item{pred}{A predictor matrix for \code{mice}.}
+\item{data}{A predictor matrix for \code{mice}, typically generated with \code{mice::make.predictorMatrix()} or \code{mice::quickpred()}. #TODO link!}
 
 \item{label}{Logical indicating whether predictor matrix values should be displayed.}
 
@@ -16,10 +16,10 @@ plot_pred(pred, label = FALSE, square = TRUE, rotate = FALSE)
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
 }
 \value{
-An object of class \code{ggplot}.
+An object of class \code{ggplot2::ggplot}.
 }
 \description{
-Plot predictorMatrix for \code{mice::mice()} argument
+Plot the predictor matrix of an imputation model
 }
 \examples{
 pred <- mice::make.predictorMatrix(mice::nhanes)

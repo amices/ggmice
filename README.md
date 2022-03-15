@@ -11,6 +11,8 @@ version](https://img.shields.io/github/r-package/v/amices/ggmice.svg)](https://g
 [![GitHub](https://img.shields.io/github/license/amices/ggmice.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Codecov test
+coverage](https://codecov.io/gh/amices/ggmice/branch/main/graph/badge.svg)](https://app.codecov.io/gh/amices/ggmice?branch=main)
 <!-- badges: end -->
 
 ## Plotting package for incomplete and imputed data
@@ -46,17 +48,19 @@ ggmice(dat, ggplot2::aes(age, bmi)) + ggplot2::geom_point()
 <img src="man/figures/README-example-1.png" width="100%" />
 
 ``` r
-# impute the data and visualize again
+# impute the data and visualize the imputed data
 imp <- mice::mice(dat, m = 1, printFlag = FALSE)
 ggmice(imp, ggplot2::aes(age, bmi)) + ggplot2::geom_point() 
 ```
 
 <img src="man/figures/README-example-2.png" width="100%" />
 
-## Acknowledgement
+## Acknowledgements
 
-The `ggmice` hex is based on the `ggplot2` hex and the `mice` hex
-(designed by Jaden M. Walters).
+The `ggmice` package is developed with guidance and feedback from Gerko
+Vink, Stef van Buuren, Thomas Debray, Valentijn de Jong, Johanna Muñoz,
+Thom Volker, Mingyang Cai and Anaïs Fopma. The `ggmice` hex is based on
+designs from the `ggplot2` hex and the `mice` hex (by Jaden Walters).
 
 ## Code of Conduct
 

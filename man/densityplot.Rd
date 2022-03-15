@@ -16,6 +16,6 @@ The output of \code{mice::densityplot(...)} and a message about the \code{ggmice
 Densityplot of observed and imputed data
 }
 \examples{
-imp <- mice::mice(mice::nhanes, printFlag = FALSE)
+imp <- mice::mice(mice::nhanes, maxit = 1, printFlag = FALSE)
 densityplot(imp)
 }

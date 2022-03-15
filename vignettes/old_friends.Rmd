@@ -152,3 +152,9 @@ ggmice(imp, ggplot2::aes(age, bmi)) +
   ggplot2::theme(legend.position = "none")
 ```
 
+___
+
+```{r session, class.source = 'fold-hide'}
+# this vignette was generated with R session
+sessionInfo()
+```

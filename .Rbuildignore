@@ -9,3 +9,5 @@
 ^docs$
 ^pkgdown$
 ^CODE_OF_CONDUCT\.md$
+^CRAN_COMMENTS\.md$
+^codecov\.yml$

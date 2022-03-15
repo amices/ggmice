@@ -1,26 +1,30 @@
-# md pattern plot
 #' Plot the missing data pattern of an incomplete dataset
 #'
-#' @param dat An incomplete dataset of class `data.frame`, `tibble`, or `matrix`.
+#' @param data An incomplete dataset of class `data.frame` or `matrix`.
+#' @param vrb String or vector with variable name(s), default is "all".
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
 #'
-#' @return An object of class `ggplot`.
+#' @return An object of class `ggplot2::ggplot`.
+#'
 #' @examples
 #' plot_pattern(mice::nhanes)
 #' @export
-plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
-  if (!is.data.frame(dat) & !is.matrix(dat)) {
+plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, cluster = NULL) {
+  if (!is.data.frame(data) & !is.matrix(data)) {
     stop("Dataset should be a 'data.frame' or 'matrix'.")
   }
+  if (vrb == "all") {
+    vrb <- names(data)
+  }
   if (!is.null(cluster)) {
-    if (cluster %nin% names(dat)) {
+    if (cluster %nin% names(data[, vrb])) {
       stop("Cluster variable not recognized, please provide the variable name as a character string.")
     }
   }
   # get missing data pattern and extract info
-  pat <- mice::md.pattern(dat, plot = FALSE)
+  pat <- mice::md.pattern(data[, vrb], plot = FALSE)
   rws <- nrow(pat)
   cls <- ncol(pat)
   vrb <- colnames(pat)[-cls]
@@ -32,7 +36,7 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
   if (is.null(cluster)) {
     pat_clean <- cbind(.opacity = 1, pat[-rws, vrb])
   } else {
-    pats <- purrr::map(split(dat, ~ get(cluster)), ~ {
+    pats <- purrr::map(split(data[, vrb], ~ get(cluster)), ~ {
       mice::md.pattern(., plot = FALSE) %>%
         pat_to_chr(., ord = vrb)
     })
@@ -49,6 +53,7 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
     dplyr::mutate(
       x = as.numeric(factor(.data$x, levels = vrb, ordered = TRUE)),
       .where = factor(.data$.where, levels = c(0, 1), labels = c("missing", "observed")),
+      # TODO: always obs/always missing, add title, maybe make y axis prop to freq, add asterisk to clust var with caption that can tell that there is missingness in it
       .opacity = as.numeric(.data$.opacity)
     )
 

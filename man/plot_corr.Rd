@@ -5,7 +5,7 @@
 \title{Plot correlations between (incomplete) variables}
 \usage{
 plot_corr(
-  dat,
+  data,
   vrb = "all",
   label = FALSE,
   square = TRUE,
@@ -14,7 +14,7 @@ plot_corr(
 )
 }
 \arguments{
-\item{dat}{A dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
+\item{data}{A dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
 
 \item{vrb}{String or vector with variable name(s), default is "all".}
 

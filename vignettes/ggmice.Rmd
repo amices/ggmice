@@ -62,7 +62,7 @@ The `ggmice` package contains functions to explore incomplete data.
 
 ### Missing data pattern
 
-The `plot_pattern()` function displays the missing data pattern in an incomplete dataset. The argument `dat` (the incomplete dataset) is required, the argument `square` is optional and determines whether the missing data pattern has square or rectangular tiles, and the optional argument `rotate` changes the angle of the variable names 90 degrees if requested.
+The `plot_pattern()` function displays the missing data pattern in an incomplete dataset. The argument `data` (the incomplete dataset) is required, the argument `square` is optional and determines whether the missing data pattern has square or rectangular tiles, and the optional argument `rotate` changes the angle of the variable names 90 degrees if requested.
 
 ```{r pattern}
 # create missing data pattern plot
@@ -74,7 +74,7 @@ plot_pattern(dat, square = TRUE, rotate = TRUE)
 
 ### Influx and outflux
 
-The `plot_flux()` function produces an influx-outflux plot. The influx of a variable quantifies how well its missing data connect to the observed data on other variables. The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. In general, higher influx and outflux values are preferred when building imputation models. The plotting function requires an incomplete dataset (argument `dat`), and takes optional arguments to adjust the legend and axis labels. 
+The `plot_flux()` function produces an influx-outflux plot. The influx of a variable quantifies how well its missing data connect to the observed data on other variables. The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. In general, higher influx and outflux values are preferred when building imputation models. The plotting function requires an incomplete dataset (argument `data`), and takes optional arguments to adjust the legend and axis labels. 
 
 ```{r flux}
 # create influx-outflux plot
@@ -91,7 +91,7 @@ plot_flux(
 
 ### Correlations between variables
 
-The function `plot_corr()` can be used to investigate relations between variables, for the development of imputation models. Only one of the arguments (`dat`, the incomplete dataset) is required, all other arguments are optional.
+The function `plot_corr()` can be used to investigate relations between variables, for the development of imputation models. Only one of the arguments (`data`, the incomplete dataset) is required, all other arguments are optional.
 
 ```{r correlations}
 # create correlation plot
@@ -109,7 +109,7 @@ plot_corr(
 
 ### Predictor matrix
 
-The function `plot_pred()` displays `mice` predictor matrices. A predictor matrix is typically created using `mice::make.predictorMatrix()`, `mice::quickpred()`, or by using the default in `mice::mice()` and extracting the `predictorMatrix` from the resulting `mids` object. The `plot_pred()` function only requires the `pred` argument, but other arguments can be provided.
+The function `plot_pred()` displays `mice` predictor matrices. A predictor matrix is typically created using `mice::make.predictorMatrix()`, `mice::quickpred()`, or by using the default in `mice::mice()` and extracting the `predictorMatrix` from the resulting `mids` object. The `plot_pred()` function requires a predictor matrix (the `data` argument), but other arguments can be provided too.
 
 ```{r predictormatrix}
 # create predictor matrix
@@ -146,7 +146,7 @@ The `ggmice` package contains two functions to evaluate observed and imputed dat
 
 ### Algorithmic convergence
 
-The function `plot_trace()` plots the trace lines of the MICE algorithm for convergence evaluation. The only required argument is `imp` (to supply a `mice::mids` object). The optional argument `vrb` defaults to `"all"`, which would display traceplots for all variables. 
+The function `plot_trace()` plots the trace lines of the MICE algorithm for convergence evaluation. The only required argument is `data` (to supply a `mice::mids` object). The optional argument `vrb` defaults to `"all"`, which would display traceplots for all variables. 
 
 ```{r convergence}
 # create traceplot for one variable
@@ -175,5 +175,12 @@ ggmice(imp, aes(x = .imp, y = bmi)) +
   geom_jitter(height = 0) +
   geom_boxplot(fill = "white", alpha = 0.75, outlier.shape = NA) +
   labs(x = "Imputation number")
+```
+
+___
+
+```{r session, class.source = 'fold-hide'}
+# this vignette was generated with R session
+sessionInfo()
 ```
 

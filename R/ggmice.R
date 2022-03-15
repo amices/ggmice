@@ -1,13 +1,14 @@
 #' Plot incomplete or imputed data
 #'
-#' @param data An incomplete dataset or an object of class `mids` (see `?mice::mids`).
-#' @param mapping A list of aesthetic mappings created with `ggplot2::aes()`.
+#' @param data An incomplete dataset (of class `data.frame` or `matrix`), or an object of class [`mice::mids`].
+#' @param mapping A list of aesthetic mappings created with [ggplot2::aes()].
 #'
-#' @return An object of class `ggplot` (see `?ggplot2::ggplot`).
+#' @return An object of class [`ggplot2::ggplot`].
 #'
 #' @examples
 #' dat <- mice::nhanes
 #' ggmice(dat, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
+#' @seealso See the `ggmice` vignette to use the `ggmice()` function on [incomplete data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function) or [imputed data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1).
 #' @export
 ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   # process inputs
@@ -49,13 +50,16 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     where_xy <- rowSums(is.na(as.matrix(data[, c(vrb_x, vrb_y)]))) > 0L
     mice_data <- cbind(
       .where = factor(where_xy == 1, levels = c(FALSE, TRUE), labels = c("observed", "missing"), ordered = TRUE),
-      data)
+      data
+    )
     if (!is.null(mapping$x) & !is.null(mapping$y)) {
-      mice_data <- dplyr::mutate(mice_data,
+      mice_data <- dplyr::mutate(
+        mice_data,
         dplyr::across(vrbs_num, ~ tidyr::replace_na(as.numeric(.x), -Inf)),
-      dplyr::across(vrbs[vrbs %nin% vrbs_num], ~ {
-        as.factor(tidyr::replace_na(as.character(.x), " "))
-      }))
+        dplyr::across(vrbs[vrbs %nin% vrbs_num], ~ {
+          as.factor(tidyr::replace_na(as.character(.x), " "))
+        })
+      )
     }
     mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where))
     mice_colors <- c("observed" = "#006CC2B3", "missing" = "#B61A51B3")
