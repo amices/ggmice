@@ -1,13 +1,14 @@
 #' Plot incomplete or imputed data
 #'
-#' @param data An incomplete dataset (of class `data.frame` or `matrix`), or an object of class `mice::mids`.
-#' @param mapping A list of aesthetic mappings created with `ggplot2::aes()`.
+#' @param data An incomplete dataset (of class `data.frame` or `matrix`), or an object of class [`mice::mids`].
+#' @param mapping A list of aesthetic mappings created with [ggplot2::aes()].
 #'
-#' @return An object of class `ggplot2::ggplot`.
+#' @return An object of class [`ggplot2::ggplot`].
 #'
 #' @examples
 #' dat <- mice::nhanes
 #' ggmice(dat, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
+#' @seealso See the `ggmice` vignette to use the `ggmice()` function on [incomplete data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function) or [imputed data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1).
 #' @export
 ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   # process inputs
