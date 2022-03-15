@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file and render with devtools::build_readme() -->
 
-# `ggmice` <a href='https://amices.github.io/ggmice/'><img src="man/figures/logo.png" align="right" height="139" /></a>
+# `ggmice` <a href='https://amices.org/ggmice/'><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
