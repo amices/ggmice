@@ -60,13 +60,15 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_pattern</span><span class="op">(</span><span class="va">dat</span>, square <span class="op">=</span> <span class="cn">FALSE</span>, rotate <span class="op">=</span> <span class="cn">FALSE</span>, cluster <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_pattern</span><span class="op">(</span><span class="va">data</span>, vrb <span class="op">=</span> <span class="st">"all"</span>, square <span class="op">=</span> <span class="cn">FALSE</span>, rotate <span class="op">=</span> <span class="cn">FALSE</span>, cluster <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>dat</dt>
-<dd><p>An incomplete dataset of class <code>data.frame</code>, <code>tibble</code>, or <code>matrix</code>.</p></dd>
+    <dl><dt>data</dt>
+<dd><p>An incomplete dataset of class <code>data.frame</code> or <code>matrix</code>.</p></dd>
+<dt>vrb</dt>
+<dd><p>String or vector with variable name(s), default is "all".</p></dd>
 <dt>square</dt>
 <dd><p>Logical indicating whether the plot tiles should be squares.</p></dd>
 <dt>rotate</dt>
@@ -76,7 +78,7 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>ggplot</code>.</p>
+    <p>An object of class <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot2::ggplot</a></code>.</p>
     </div>
 
     <div class="section level2">
