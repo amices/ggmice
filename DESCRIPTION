@@ -26,16 +26,16 @@ Imports:
     stats,
     stringr,
     tidyr,
-    tidyselect,
     utils
 Suggests:
     testthat (>= 3.0.0),
     plotly,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 URL: https://github.com/amices/ggmice,
     https://amices.org/,
-    http://amices.org/ggmice/
+    https://amices.org/ggmice/
 BugReports: https://github.com/amices/ggmice
 Config/testthat/edition: 3
 VignetteBuilder: knitr
