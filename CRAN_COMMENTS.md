@@ -18,7 +18,7 @@ This NOTE is expected with a new submission.
   Found the following files/directories:
     'lastMiKTeXException'
 
-This is a known and apparently harmless issue, see [rhub #503](https://github.com/r-hub/rhub/issues/503).
+This NOTE is due to a known and apparently harmless issue, see [rhub #503](https://github.com/r-hub/rhub/issues/503).
 
 ## Downstream dependencies
 There are no downstream dependencies of 'ggmice' yet.

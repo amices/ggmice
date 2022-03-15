@@ -48,7 +48,7 @@ ggmice(dat, ggplot2::aes(age, bmi)) + ggplot2::geom_point()
 <img src="man/figures/README-example-1.png" width="100%" />
 
 ``` r
-# impute the data and visualize again
+# impute the data and visualize the imputed data
 imp <- mice::mice(dat, m = 1, printFlag = FALSE)
 ggmice(imp, ggplot2::aes(age, bmi)) + ggplot2::geom_point() 
 ```
