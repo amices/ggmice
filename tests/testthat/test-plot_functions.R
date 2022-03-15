@@ -26,4 +26,3 @@ test_that("plot_trace creates ggplot object", {
   gg <- plot_trace(imp)
   expect_s3_class(gg, "ggplot")
 })
-
