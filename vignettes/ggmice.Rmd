@@ -177,3 +177,10 @@ ggmice(imp, aes(x = .imp, y = bmi)) +
   labs(x = "Imputation number")
 ```
 
+___
+
+```{r session, class.source = 'fold-hide'}
+# this vignette was generated with R session
+sessionInfo()
+```
+
