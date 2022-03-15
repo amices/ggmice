@@ -1,6 +1,6 @@
 Package: ggmice
 Title: Visualizations for 'mice' with 'ggplot2'
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     person("Hanne", "Oberman", , "h.i.oberman@uu.nl", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3276-2141"))

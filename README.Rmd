@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 set.seed(1)
 ```
 
-# `ggmice` <a href='https://amices.github.io/ggmice/'><img src="man/figures/logo.png" align="right" height="139" /></a>
+# `ggmice` <a href='https://amices.org/ggmice/'><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/amices/ggmice/workflows/R-CMD-check/badge.svg)](https://github.com/amices/ggmice/actions)
