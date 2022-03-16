@@ -58,4 +58,4 @@ The `ggmice` package is developed with guidance and feedback from Gerko Vink, St
 
 ## Code of Conduct
 
-Please note that the `ggmice` project is released with a [Contributor Code of Conduct](http://amices.org/ggmice/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+Please note that the `ggmice` project is released with a [Contributor Code of Conduct](https://amices.org/ggmice/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
