@@ -65,5 +65,5 @@ designs from the `ggplot2` hex and the `mice` hex (by Jaden Walters).
 ## Code of Conduct
 
 Please note that the `ggmice` project is released with a [Contributor
-Code of Conduct](http://amices.org/ggmice/CODE_OF_CONDUCT.html). By
+Code of Conduct](https://amices.org/ggmice/CODE_OF_CONDUCT.html). By
 contributing to this project, you agree to abide by its terms.

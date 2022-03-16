@@ -4,11 +4,11 @@ Version: 0.0.1
 Authors@R: 
     person("Hanne", "Oberman", , "h.i.oberman@uu.nl", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3276-2141"))
-Description: Enhance 'mice' imputation workflows with visualizations for 
-    incomplete and/or imputed data. The plotting functions produce 'ggplot' 
-    objects which may be easily manipulated or extended. Use 'ggmice' to 
-    inspect missing data, develop imputation models, evaluate algorithmic 
-    convergence, or compare observed versus imputed data. 
+Description: Enhance a 'mice' imputation workflow with visualizations for
+    incomplete and/or imputed data. The plotting functions produce
+    'ggplot' objects which may be easily manipulated or extended. Use
+    'ggmice' to inspect missing data, develop imputation models, evaluate
+    algorithmic convergence, or compare observed versus imputed data.
 License: GPL (>= 3)
 URL: https://github.com/amices/ggmice, https://amices.org/,
     https://amices.org/ggmice/

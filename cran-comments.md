@@ -1,3 +1,9 @@
+## Resubmission
+This is a resubmission. In this version I have:
+* Changed 'http' to 'https' in an invalid URL in the README file (as requested, thanks!).
+* Renamed the file CRAN_COMMENTS.md to cran-comments.md for compatibility with devtools::release().
+* Changed the word 'workflows' to 'workflow' in the DESCRIPTION to avoid a NOTE about spelling.
+
 ## R CMD check results
 There were no ERRORs, WARNINGs or NOTEs.
 

@@ -12,3 +12,4 @@
 ^CRAN_COMMENTS\.md$
 ^codecov\.yml$
 ^CRAN-SUBMISSION$
+^cran-comments\.md$
