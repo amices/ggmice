@@ -43,9 +43,9 @@ devtools::install_github("amices/ggmice")
 ## Example
 
 Visualize missing data in an incomplete dataset, or evaluate imputed
-data against the observed data.See the [`ggmice`
-vignette](https://amices.org/ggmice/articles/ggmice.html) for an
-overview of all functionalities.
+data against the observed data. See the [Get
+started](https://amices.org/ggmice/articles/ggmice.html) vignette for an
+overview of all `ggmice` functionalities.
 
 ``` r
 # load the package and some data

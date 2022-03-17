@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 The `ggmice` package provides plotting functions for the evaluation of incomplete data, `mice` imputation models, and multiply imputed data sets (`mice::mids`). The functions in `ggmice` adhere to the 'grammar of graphics' philosophy, popularized by the `ggplot2` package. With that, `ggmice` enhances imputation workflows and provides plotting objects that are easily extended and manipulated by each individual 'imputer'. 
 
-This vignette gives an overview of the core plotting functions in `ggmice`. Experienced `mice` users may already be familiar with the `lattice` style plotting functions in `mice`. These 'old friends' such as `mice::bwplot()` can be re-created with `ggmice`, see [this](https://amices.org/ggmice/articles/old_friends.html) vignette for advise.
+This vignette gives an overview of the core plotting functions in `ggmice`. Experienced `mice` users may already be familiar with the `lattice` style plotting functions in `mice`. These 'old friends' such as `mice::bwplot()` can be re-created with `ggmice`, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette for advice.
 
 <!-- Loading `ggmice` after `mice` masks these functions and provides suggestions for `ggplot2` equivalents these 'old friends'.  -->
 <!-- The `mice` package contains several plotting functions that may guide 'imputers' in their workflow.  `lattice` style plotting functions, `ggmice` provides `ggplot2` versions of these functions and more. The core function in the `ggmice` package, the `ggmice()` function, can be applied to obtain `ggplot2` objects for both incomplete *and* imputed data. This vignette provides an overview of the main functions included in `ggmice`. -->
