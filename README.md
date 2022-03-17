@@ -15,17 +15,25 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 coverage](https://codecov.io/gh/amices/ggmice/branch/main/graph/badge.svg)](https://app.codecov.io/gh/amices/ggmice?branch=main)
 <!-- badges: end -->
 
-## Plotting package for incomplete and imputed data
+## Visualizations for `mice` with `ggplot2`
 
-The `ggmice` package enhances imputation package `mice` with `ggplot2`
-visualizations. See the
-[vignette](https://amices.org/ggmice/articles/ggmice.html) for an
-overview of `ggmice`’s functionalities.
+Enhance a `mice` imputation workflow with visualizations for incomplete
+and/or imputed data. The plotting functions produce `ggplot` objects
+which may be easily manipulated or extended. Use `ggmice` to inspect
+missing data, develop imputation models, evaluate algorithmic
+convergence, or compare observed versus imputed data.
 
 ## Installation
 
-You can install the development version of `ggmice` from
-[GitHub](https://github.com/amices) with:
+You can install the latest `ggmice` release from
+[CRAN](https://cran.r-project.org/) with:
+
+``` r
+install.packages("ggmice")
+```
+
+Alternatively, you could install the development version of `ggmice`
+from [GitHub](https://github.com/amices) with:
 
 ``` r
 # install.packages("devtools")
@@ -35,7 +43,9 @@ devtools::install_github("amices/ggmice")
 ## Example
 
 Visualize missing data in an incomplete dataset, or evaluate imputed
-data against the observed data.
+data against the observed data.See the [`ggmice`
+vignette](https://amices.org/ggmice/articles/ggmice.html) for an
+overview of all functionalities.
 
 ``` r
 # load the package and some data
