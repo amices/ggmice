@@ -30,7 +30,7 @@ Enhance a `mice` imputation workflow with visualizations for incomplete and/or i
 
 ## Installation
 
-You can install the latest `ggmice` release from [CRAN](https://cran.r-project.org/) with:
+You can install the latest `ggmice` release from [CRAN](https://CRAN.R-project.org/package=ggmice) with:
 
 ``` r
 install.packages("ggmice")

@@ -16,51 +16,159 @@ knitr::opts_chunk$set(
   fig.width = 7.2,
   fig.height = 4
 )
-# TODO add to vignette:
-# plotting conditional on missingness indicator
-# adding jitter to categorical variables
-# plotting a single imp
-# plotting all variables
 ```
 
-# Visualize incomplete and imputed data with `ggmice`
+# The `ggmice` package
 
-The `ggmice` package provides plotting functions for the evaluation of incomplete data, `mice` imputation models, and multiply imputed data sets (`mice::mids`). The functions in `ggmice` adhere to the 'grammar of graphics' philosophy, popularized by the `ggplot2` package. With that, `ggmice` enhances imputation workflows and provides plotting objects that are easily extended and manipulated by each individual 'imputer'. 
+The `ggmice` package provides visualizations for the evaluation of incomplete data, `mice` imputation model arguments, and multiply imputed data sets (`mice::mids` objects). The functions in `ggmice` adhere to the 'grammar of graphics' philosophy, popularized by the `ggplot2` package. With that, `ggmice` enhances imputation workflows and provides plotting objects that are easily extended and manipulated by each individual 'imputer'. 
 
-This vignette gives an overview of the core plotting functions in `ggmice`. Experienced `mice` users may already be familiar with the `lattice` style plotting functions in `mice`. These 'old friends' such as `mice::bwplot()` can be re-created with `ggmice`, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette for advice.
+This vignette gives an overview of the different plotting function in `ggmice`. The core function, `ggmice()`, is a `ggplot2::ggplot()` wrapper function which handles missing and imputed values. In this vignette, you'll learn how to create and interpret `ggmice` visualizations. 
+
+Experienced `mice` users may already be familiar with the `lattice` style plotting functions in `mice`. These 'old friends' such as `mice::bwplot()` can be re-created with the `ggmice()` function, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette for advice.
 
 <!-- Loading `ggmice` after `mice` masks these functions and provides suggestions for `ggplot2` equivalents these 'old friends'.  -->
 <!-- The `mice` package contains several plotting functions that may guide 'imputers' in their workflow.  `lattice` style plotting functions, `ggmice` provides `ggplot2` versions of these functions and more. The core function in the `ggmice` package, the `ggmice()` function, can be applied to obtain `ggplot2` objects for both incomplete *and* imputed data. This vignette provides an overview of the main functions included in `ggmice`. -->
 
 # Set-up
 
-The `ggmice` package can be installed from GitHub as follows:
+You can install the latest `ggmice` release from [CRAN](https://CRAN.R-project.org/package=ggmice) with:
+
+``` r
+install.packages("ggmice")
+```
+
+The development version of the `ggmice` package can be installed from GitHub with: 
 
 ```{r install, echo=TRUE, eval=FALSE}
-install.packages("devtools")
+# install.packages("devtools")
 devtools::install_github("amices/ggmice")
 ```
 
-In this vignette we'll use `ggmice` in combination with the imputation package `mice` and the plotting package `ggplot2`. It is recommended to load `mice` and `ggplot2` into your workspace as well, but in your own workflow you could choose to call their functions directly instead (e.g., `mice::mice()` or `ggplot2::aes()`). In this vignette, we assume that all three packages are loaded, as well as an incomplete and imputed version of the `mice::boys` dataset.
+After installing `ggmice`, you can load the package into your `R` workspace. It is highly recommended to load the `mice` and `ggplot2` packages as well. This vignette assumes that all three packages are loaded:
 
-```{r setup}
-# load packages
-library(mice)
+```{r setup, warning = FALSE, message = FALSE}
+library(mice) 
 library(ggplot2)
 library(ggmice)
-
-# load incomplete dataset 
-dat <- boys
-
-# generate imputations
-imp <- mice(dat, method = "pmm", printFlag = FALSE)
 ```
 
-# Incomplete data
+We will use the `mice::boys` data for illustrations. This is an incomplete dataset ($n = 748$) with cross-sectional data on $9$ growth-related variables. We load the incomplete data with:
 
-The `ggmice` package contains functions to explore incomplete data. 
+```{r data}
+dat <- boys
+```
 
-### Missing data pattern
+For the purpose of this vignette, we impute all incomplete variables $m = 3$ times with predictive mean matching as imputation method. Imputations are generated with:
+
+```{r imp, results = "hide"}
+imp <- mice(dat, m = 3, method = "pmm")
+```
+
+We now have the necessary packages, an incomplete dataset (`dat`), and a `mice::mids` object (`imp`) loaded in our workspace.
+
+
+# The `ggmice()` function
+
+The core function in the `ggmice` package is `ggmice()`. This function mimics how the `ggplot2` function `ggplot()` works: both take a `data` argument and a `mapping` argument, and will return an object of class `ggplot`. Using `ggmice()` looks equivalent to a `ggplot()` call:
+
+```{r gg, eval=FALSE}
+ggplot(dat, aes(age, bmi))
+ggmice(dat, aes(age, bmi))
+```
+
+The main difference between the two functions is that `ggmice()` is actually a wrapper around `ggplot()`, including some pre-processing steps for incomplete and imputed data. Because of the internal processing in `ggmice()`, the `mapping` argument is *required* for each `ggmice()` call. This is in contrast to the aesthetic mapping in `ggplot()`, which may also be provided in subsequent plotting layers. After creating a `ggplot` object, any desired plotting layers may be added (e.g., with the family of `ggplot2::geom_*` functions), or adjusted (e.g., with the `ggplot2::labs()` function). This makes `ggmice()` a versatile plotting function for incomplete and/or imputed data. 
+
+The object supplied to the `data` argument in `ggmice()` should be an incomplete dataset of class `data.frame`, or an imputation object of class `mice::mids`. Depending on which one of these is provided, the resulting visualization will either differentiate between observed and *missing* data, or between observed and *imputed* data. By convention, observed data is plotted in blue and missing or imputed data is plotted in red. 
+
+The `mapping` argument in `ggmice()` cannot be empty. An `x` or `y` mapping (or both) has to be supplied for `ggmice()` to function. This aesthetic mapping can be provided with the `ggplot2` function `aes()` (or equivalents). Other mapping may be provided too, except for `colour`, which is already used to display observed versus missing or imputed data.
+
+
+## Incomplete data
+
+If the object supplied to the `data` argument in `ggmice()` is a `data.frame`, the visualization will contain observed data in blue and missing data in red. Since missing data points are by definition unobserved, the values themselves cannot be plotted. What we *can* plot are sets of variable pairs. Any missing values on one variable can be displayed on top of the axis of the other. This provides a visual cue that the missing data is distinct from the observed values, but still displays the observed value of the other variable. 
+
+For example, the variable `age` is completely observed, while there are some missing entries for `bmi`. We can create a scatter plot of these two variables with: 
+
+```{r inc-con}
+ggmice(dat, aes(age, bmi)) +
+  geom_point()
+```
+
+The `age` of cases with missing `bmi` are plotted on top of the horizontal axis. This is in contrast to a regular `ggplot()` call with the same arguments, which would leave out all cases with missing `bmi`. So, with `ggmice()` we loose less information, and may even gain valuable insight into the missingness in the data.
+
+Another example of `ggmice()` in action on incomplete data is when one of the variables is categorical. The incomplete continuous variable `bmi` is plotted against the incomplete categorical variable `reg` with:
+
+```{r inc-cat}
+ggmice(dat, aes(reg, bmi)) +
+  geom_point()
+```
+
+Again, missing values are plotted on top of the axes. Cases with observed `bmi` and missing `reg` are plotted on top of the vertical axis. Cases with observed `reg` and missing `bmi` are plotted on top of the horizontal axis. There are no cases were neither is observed, but otherwise these would be plotted on the intersection of the two axes. 
+
+The 'grammar of graphics' makes it easy to adjust the plots programmatically. For example, we could be interested in the differences in growth data between the city and other regions. Add facets based on a clustering variable with:
+
+```{r inc-clus}
+ggmice(dat, aes(wgt, hgt)) +
+  geom_point() +
+  facet_wrap(~ reg == "city", labeller = label_both)
+```
+
+Or, alternatively, we could convert the plotted values of the variable `hgt` from centimeters to inches and the variable `wgt` from kilograms to pounds with:
+
+```{r inc-trans}
+ggmice(dat, aes(wgt * 2.20, hgt / 2.54)) +
+  geom_point() +
+  labs(x = "Weight (lbs)", y = "Height (in)")
+```
+
+<!-- TODO: Add facets based on missingness indicator here! -->
+
+## Imputed data
+
+If the `data` argument in `ggmice()` is provided a `mice::mids` object, the resulting plot will contain observed data in blue and imputed data in red. There are many possible visualizations for imputed data, four of which are explicitly defined in the `mice` package. Each of these can be re-created with the `ggmice()` function (see the  [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette). But `ggmice()` can do even more. 
+
+For example, we could create the same scatter plots as the ones above, but now on the imputed data:
+
+```{r imp-same}
+ggmice(imp, aes(age, bmi)) +
+  geom_point()
+ggmice(imp, aes(reg, bmi)) +
+  geom_point()
+ggmice(imp, aes(wgt, hgt)) +
+  geom_point() +
+  facet_wrap(~ reg == "city", labeller = label_both)
+ggmice(imp, aes(wgt * 2.20, hgt / 2.54)) +
+  geom_point() +
+  labs(x = "Weight (lbs)", y = "Height (in)")
+```
+
+These figures show the observed data points once in blue, plus three imputed values in red for each missing entry. 
+
+It is also possible to use the imputation number as mapping variable in the plot. For example, we can create a stripplot of observed and imputed data with the imputation number `.imp` on the horizontal axis:
+
+```{r imp-strip}
+ggmice(imp, aes(x = .imp, y = bmi)) +
+  geom_jitter(height = 0, width = 0.25) +
+  labs(x = "Imputation number")
+```
+
+A major advantage of `ggmice()` over the equivalent function `mice::stripplot()` is that `ggmice` allows us to add subsequent plotting layes, such a boxplot overlay:
+
+```{r imp-box}
+ggmice(imp, aes(x = .imp, y = bmi)) + 
+  geom_jitter(height = 0, width = 0.25) +
+  geom_boxplot(width = 0.5, size = 1, alpha = 0.75, outlier.shape = NA) +
+  labs(x = "Imputation number")
+```
+
+To re-create any `mice` plot with `ggmice`, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette. 
+
+
+# Other functions
+
+The `ggmice` package contains some additional plotting functions to explore incomplete data and evaluate convergence of the imputation algorithm. These are presented in the order of a typical imputation workflow, where the missingness is first investigated using a missing data pattern and influx-outflux plot, then imputation models are built based on relations between variables, and finally the imputations are inspected visually to check for non-convergence. 
+
+## Missing data pattern
 
 The `plot_pattern()` function displays the missing data pattern in an incomplete dataset. The argument `data` (the incomplete dataset) is required, the argument `square` is optional and determines whether the missing data pattern has square or rectangular tiles, and the optional argument `rotate` changes the angle of the variable names 90 degrees if requested.
 
@@ -72,7 +180,7 @@ plot_pattern(dat)
 plot_pattern(dat, square = TRUE, rotate = TRUE)
 ```
 
-### Influx and outflux
+## Influx and outflux
 
 The `plot_flux()` function produces an influx-outflux plot. The influx of a variable quantifies how well its missing data connect to the observed data on other variables. The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. In general, higher influx and outflux values are preferred when building imputation models. The plotting function requires an incomplete dataset (argument `data`), and takes optional arguments to adjust the legend and axis labels. 
 
@@ -89,7 +197,7 @@ plot_flux(
 ```
 
 
-### Correlations between variables
+## Correlations between variables
 
 The function `plot_corr()` can be used to investigate relations between variables, for the development of imputation models. Only one of the arguments (`data`, the incomplete dataset) is required, all other arguments are optional.
 
@@ -107,7 +215,7 @@ plot_corr(
 )
 ```
 
-### Predictor matrix
+## Predictor matrix
 
 The function `plot_pred()` displays `mice` predictor matrices. A predictor matrix is typically created using `mice::make.predictorMatrix()`, `mice::quickpred()`, or by using the default in `mice::mice()` and extracting the `predictorMatrix` from the resulting `mids` object. The `plot_pred()` function requires a predictor matrix (the `data` argument), but other arguments can be provided too.
 
@@ -121,30 +229,13 @@ plot_pred(pred)
 # specify optional arguments  
 plot_pred(
   pred, 
-  label = TRUE, 
+  label = FALSE, 
   square = FALSE
 )
 ```
 
-### The `ggmice()` function
 
-The `ggmice` function processes incomplete data in such a way that it can be displayed with `ggplot2`. The missing values are displayed on the axes (i.e., a missing value for the x-variable is plotted on top of the y-axis, and vice versa). Note that, in contrast to the `ggplot()` function, `ggmice()` *requires* an aesthetic mapping (argument `mapping`).
-
-```{r incomplete}
-# create scatter plot with continuous variables
-ggmice(dat, aes(age, bmi)) +
-  geom_point()
-
-# create scatter plot with a categorical variable
-ggmice(dat, aes(gen, bmi)) +
-  geom_point()
-```
-
-# Imputed data
-
-The `ggmice` package contains two functions to evaluate observed and imputed data. 
-
-### Algorithmic convergence
+## Algorithmic convergence
 
 The function `plot_trace()` plots the trace lines of the MICE algorithm for convergence evaluation. The only required argument is `data` (to supply a `mice::mids` object). The optional argument `vrb` defaults to `"all"`, which would display traceplots for all variables. 
 
@@ -153,34 +244,14 @@ The function `plot_trace()` plots the trace lines of the MICE algorithm for conv
 plot_trace(imp, "bmi")
 ```
 
-### The `ggmice()` function
-
-The `ggmice` function is versatile. It produces a `ggplot` object that can be extended to mimic every type of plot for observed and imputed data in `mice`, see see [this](https://amices.org/ggmice/articles/old_friends.html) vignette for advise. Below are some examples of plots produced with `ggmice()`. Note that, in contrast to the `ggplot()` function, `ggmice()` *requires* an aesthetic mapping (argument `mapping`).
-
-```{r imputed}
-# create scatter plot with continuous variables
-ggmice(imp, aes(age, bmi)) +
-  geom_point()
-
-# create scatter plot with a categorical variable
-ggmice(imp, aes(gen, bmi)) +
-  geom_point()
-
-# create scatter plot with a transformed variable
-ggmice(imp, aes(log(wgt), hgt)) +
-  geom_point()
-
-# create stripplot with boxplot overlay
-ggmice(imp, aes(x = .imp, y = bmi)) + 
-  geom_jitter(height = 0) +
-  geom_boxplot(fill = "white", alpha = 0.75, outlier.shape = NA) +
-  labs(x = "Imputation number")
-```
 
 ___
 
+#
+
+This is the end of the vignette. This document was generated using:
+
 ```{r session, class.source = 'fold-hide'}
-# this vignette was generated with R session
 sessionInfo()
 ```
 

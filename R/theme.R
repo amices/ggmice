@@ -25,7 +25,8 @@ theme_minimice <- function() {
       legend.justification = "right",
       strip.placement = "outside",
       panel.grid.minor = ggplot2::element_blank(),
-      panel.grid.major = ggplot2::element_line(colour = "grey95"),
+      panel.grid.major = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_line(colour = "black"),
       axis.title.y.right = ggplot2::element_text(margin = ggplot2::margin(l = 6))
     )
 }

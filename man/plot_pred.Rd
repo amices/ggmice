@@ -4,7 +4,7 @@
 \alias{plot_pred}
 \title{Plot the predictor matrix of an imputation model}
 \usage{
-plot_pred(data, label = FALSE, square = TRUE, rotate = FALSE)
+plot_pred(data, label = TRUE, square = TRUE, rotate = FALSE)
 }
 \arguments{
 \item{data}{A predictor matrix for \code{mice}, typically generated with \code{mice::make.predictorMatrix()} or \code{mice::quickpred()}. #TODO link!}
@@ -22,6 +22,6 @@ An object of class \code{ggplot2::ggplot}.
 Plot the predictor matrix of an imputation model
 }
 \examples{
-pred <- mice::make.predictorMatrix(mice::nhanes)
-plot_pred(pred, label = TRUE)
+pred <- mice::quickpred(mice::nhanes)
+plot_pred(pred)
 }

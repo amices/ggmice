@@ -8,10 +8,10 @@
 #' @return An object of class `ggplot2::ggplot`.
 #'
 #' @examples
-#' pred <- mice::make.predictorMatrix(mice::nhanes)
-#' plot_pred(pred, label = TRUE)
+#' pred <- mice::quickpred(mice::nhanes)
+#' plot_pred(pred)
 #' @export
-plot_pred <- function(data, label = FALSE, square = TRUE, rotate = FALSE) {
+plot_pred <- function(data, label = TRUE, square = TRUE, rotate = FALSE) {
   if (!is.matrix(data) | dim(data)[1] != dim(data)[2]) {
     stop("Predictor matrix should be a square matrix, try using mice::make.predictorMatrix() or mice::quickpred().")
   }
@@ -26,7 +26,7 @@ plot_pred <- function(data, label = FALSE, square = TRUE, rotate = FALSE) {
     ggplot2::geom_tile(color = "black", alpha = 0.6) +
     ggplot2::scale_x_discrete(limits = vrbs, position = "top") +
     ggplot2::scale_y_discrete(limits = rev(vrbs)) +
-    ggplot2::scale_fill_manual(values = c("yes" = "grey75", "no" = "white")) + ## 006CC2B3
+    ggplot2::scale_fill_manual(values = c("yes" = "grey50", "no" = "grey90")) + ## 006CC2B3
     ggplot2::labs(
       x = "Imputation model predictor",
       y = "Variable to impute",
@@ -38,7 +38,9 @@ plot_pred <- function(data, label = FALSE, square = TRUE, rotate = FALSE) {
     gg <- gg + ggplot2::geom_text(color = "black", show.legend = FALSE)
   }
   if (square) {
-    gg <- gg + ggplot2::coord_fixed()
+    gg <- gg + ggplot2::coord_fixed(expand = FALSE)
+  } else {
+    gg <- gg + ggplot2::coord_cartesian(expand = FALSE)
   }
   if (rotate) {
     gg <- gg + ggplot2::theme(axis.text.x.top = ggplot2::element_text(angle = 90))
