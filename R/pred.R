@@ -11,7 +11,7 @@
 #' pred <- mice::make.predictorMatrix(mice::nhanes)
 #' plot_pred(pred, label = TRUE)
 #' @export
-plot_pred <- function(data, label = FALSE, square = TRUE, rotate = FALSE) {
+plot_pred <- function(data, label = TRUE, square = TRUE, rotate = FALSE) {
   if (!is.matrix(data) | dim(data)[1] != dim(data)[2]) {
     stop("Predictor matrix should be a square matrix, try using mice::make.predictorMatrix() or mice::quickpred().")
   }
@@ -38,7 +38,9 @@ plot_pred <- function(data, label = FALSE, square = TRUE, rotate = FALSE) {
     gg <- gg + ggplot2::geom_text(color = "black", show.legend = FALSE)
   }
   if (square) {
-    gg <- gg + ggplot2::coord_fixed()
+    gg <- gg + ggplot2::coord_fixed(expand = FALSE)
+  } else {
+    gg <- gg + ggplot2::coord_cartesian(expand = FALSE)
   }
   if (rotate) {
     gg <- gg + ggplot2::theme(axis.text.x.top = ggplot2::element_text(angle = 90))

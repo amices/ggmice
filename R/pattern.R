@@ -87,7 +87,9 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
     ) +
     theme_minimice()
   if (square) {
-    gg <- gg + ggplot2::coord_fixed()
+    gg <- gg + ggplot2::coord_fixed(expand = FALSE)
+  } else {
+    gg <- gg + ggplot2::coord_cartesian(expand = FALSE)
   }
   if (rotate) {
     gg <- gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))

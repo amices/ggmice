@@ -26,7 +26,7 @@ convergence, or compare observed versus imputed data.
 ## Installation
 
 You can install the latest `ggmice` release from
-[CRAN](https://cran.r-project.org/) with:
+[CRAN](https://CRAN.R-project.org/package=ggmice) with:
 
 ``` r
 install.packages("ggmice")

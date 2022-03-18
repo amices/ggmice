@@ -45,7 +45,9 @@ plot_corr <- function(data, vrb = "all", label = FALSE, square = TRUE, diagonal 
     gg <- gg + ggplot2::geom_text(color = "black", show.legend = FALSE, na.rm = TRUE)
   }
   if (square) {
-    gg <- gg + ggplot2::coord_fixed()
+    gg <- gg + ggplot2::coord_fixed(expand = FALSE)
+  } else {
+    gg <- gg + ggplot2::coord_cartesian(expand = FALSE)
   }
   if (rotate) {
     gg <- gg + ggplot2::theme(axis.text.x.top = ggplot2::element_text(angle = 90))
