@@ -22,6 +22,6 @@ An object of class \code{ggplot2::ggplot}.
 Plot the predictor matrix of an imputation model
 }
 \examples{
-pred <- mice::make.predictorMatrix(mice::nhanes)
-plot_pred(pred, label = TRUE)
+pred <- mice::quickpred(mice::nhanes)
+plot_pred(pred)
 }

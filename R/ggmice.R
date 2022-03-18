@@ -1,6 +1,6 @@
 #' Plot incomplete or imputed data
 #'
-#' @param data An incomplete dataset (of class `data.frame` or `matrix`), or an object of class [`mice::mids`].
+#' @param data An incomplete dataset (of class `data.frame`), or an object of class [`mice::mids`].
 #' @param mapping A list of aesthetic mappings created with [ggplot2::aes()].
 #'
 #' @return An object of class [`ggplot2::ggplot`].

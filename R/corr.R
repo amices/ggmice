@@ -32,7 +32,7 @@ plot_corr <- function(data, vrb = "all", label = FALSE, square = TRUE, diagonal 
     ggplot2::geom_tile(color = "black", alpha = 0.6) +
     ggplot2::scale_x_discrete(limits = vrb, position = "top") +
     ggplot2::scale_y_discrete(limits = rev(vrb)) +
-    ggplot2::scale_fill_gradient2(low = ggplot2::alpha("deepskyblue", 0.6), mid = "lightyellow", high = ggplot2::alpha("orangered", 0.6), na.value = "white", limits = c(-1, 1)) +
+    ggplot2::scale_fill_gradient2(low = ggplot2::alpha("deepskyblue", 0.6), mid = "lightyellow", high = ggplot2::alpha("orangered", 0.6), na.value = "grey90", limits = c(-1, 1)) +
     ggplot2::labs(
       x = "Imputation model predictor",
       y = "Variable to impute",
