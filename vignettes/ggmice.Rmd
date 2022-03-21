@@ -152,7 +152,7 @@ ggmice(imp, aes(x = .imp, y = bmi)) +
   labs(x = "Imputation number")
 ```
 
-A major advantage of `ggmice()` over the equivalent function `mice::stripplot()` is that `ggmice` allows us to add subsequent plotting layes, such a boxplot overlay:
+A major advantage of `ggmice()` over the equivalent function `mice::stripplot()` is that `ggmice` allows us to add subsequent plotting layes, such as a boxplot overlay:
 
 ```{r imp-box}
 ggmice(imp, aes(x = .imp, y = bmi)) + 

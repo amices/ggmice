@@ -23,6 +23,9 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
       stop("Cluster variable not recognized, please provide the variable name as a character string.")
     }
   }
+  if(".x" %in% vrb | ".y" %in% vrb) {
+    stop("The variable names '.x' and '.y' are used internally to produce the missing data pattern plot. Please exclude or rename your variable(s).")
+  }
   # get missing data pattern and extract info
   pat <- mice::md.pattern(data[, vrb], plot = FALSE)
   rws <- nrow(pat)
@@ -48,17 +51,17 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
   }
 
   # tidy the pattern
-  long <- data.frame(y = 1:(rws - 1), pat_clean, row.names = NULL) %>%
+  long <- data.frame(.y = 1:(rws - 1), pat_clean, row.names = NULL) %>%
     tidyr::pivot_longer(cols = vrb, names_to = "x", values_to = ".where") %>%
     dplyr::mutate(
-      x = as.numeric(factor(.data$x, levels = vrb, ordered = TRUE)),
+      .x = as.numeric(factor(.data$x, levels = vrb, ordered = TRUE)),
       .where = factor(.data$.where, levels = c(0, 1), labels = c("missing", "observed")),
       # TODO: always obs/always missing, add title, maybe make y axis prop to freq, add asterisk to clust var with caption that can tell that there is missingness in it
       .opacity = as.numeric(.data$.opacity)
     )
 
   # create the plot
-  gg <- ggplot2::ggplot(long, ggplot2::aes(.data$x, .data$y, fill = .data$.where, alpha = 0.1 + .data$.opacity / 2)) +
+  gg <- ggplot2::ggplot(long, ggplot2::aes(.data$.x, .data$.y, fill = .data$.where, alpha = 0.1 + .data$.opacity / 2)) +
     ggplot2::geom_tile(color = "black") +
     ggplot2::scale_fill_manual(values = c("observed" = "#006CC2B3", "missing" = "#B61A51B3")) +
     ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +

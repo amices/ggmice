@@ -48,4 +48,3 @@ plot_pred <- function(data, label = TRUE, square = TRUE, rotate = FALSE) {
   return(gg)
 }
 
-# TODO: add imputation method to pred plot
