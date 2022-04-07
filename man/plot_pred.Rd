@@ -4,10 +4,12 @@
 \alias{plot_pred}
 \title{Plot the predictor matrix of an imputation model}
 \usage{
-plot_pred(data, label = TRUE, square = TRUE, rotate = FALSE)
+plot_pred(data, method = NULL, label = TRUE, square = TRUE, rotate = FALSE)
 }
 \arguments{
-\item{data}{A predictor matrix for \code{mice}, typically generated with \code{mice::make.predictorMatrix()} or \code{mice::quickpred()}. #TODO link!}
+\item{data}{A predictor matrix for \code{mice}, typically generated with \link[mice:make.predictorMatrix]{mice::make.predictorMatrix} or \link[mice:quickpred]{mice::quickpred}.}
+
+\item{method}{Character string or vector with imputation methods (not implemented yet!).}
 
 \item{label}{Logical indicating whether predictor matrix values should be displayed.}
 

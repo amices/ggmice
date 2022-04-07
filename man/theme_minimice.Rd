@@ -2,13 +2,13 @@
 % Please edit documentation in R/theme.R
 \name{theme_minimice}
 \alias{theme_minimice}
-\title{Minimal theme for mice}
+\title{Minimal theme for \link{mice} style \link[ggplot2:ggplot]{ggplot2::ggplot} objects}
 \usage{
 theme_minimice()
 }
 \value{
-A ggplot2 theme.
+A \link{ggplot2} theme.
 }
 \description{
-Minimal theme for mice
+Minimal theme for \link{mice} style \link[ggplot2:ggplot]{ggplot2::ggplot} objects
 }

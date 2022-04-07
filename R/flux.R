@@ -5,7 +5,7 @@
 #' @param label Logical indicating whether variable names should be displayed within the plot (the default) or with colors in the legend.
 #' @param caption Logical indicating whether the figure caption should be displayed.
 #'
-#' @return An object of class `ggplot2::ggplot`.
+#' @return An object of class [ggplot2::ggplot].
 #'
 #' @examples
 #' plot_flux(mice::nhanes)

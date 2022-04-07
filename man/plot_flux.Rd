@@ -16,7 +16,7 @@ plot_flux(data, vrb = "all", label = TRUE, caption = TRUE)
 \item{caption}{Logical indicating whether the figure caption should be displayed.}
 }
 \value{
-An object of class \code{ggplot2::ggplot}.
+An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 }
 \description{
 Plot the influx and outflux of a multivariate missing data pattern

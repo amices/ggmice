@@ -1,6 +1,7 @@
 #' Plot the predictor matrix of an imputation model
 #'
-#' @param data A predictor matrix for `mice`, typically generated with `mice::make.predictorMatrix()` or `mice::quickpred()`. #TODO link!
+#' @param data A predictor matrix for `mice`, typically generated with [mice::make.predictorMatrix] or [mice::quickpred].
+#' @param method Character string or vector with imputation methods (not implemented yet!).
 #' @param label Logical indicating whether predictor matrix values should be displayed.
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
@@ -11,10 +12,11 @@
 #' pred <- mice::quickpred(mice::nhanes)
 #' plot_pred(pred)
 #' @export
-plot_pred <- function(data, label = TRUE, square = TRUE, rotate = FALSE) {
+plot_pred <- function(data, method = NULL, label = TRUE, square = TRUE, rotate = FALSE) {
   if (!is.matrix(data) | dim(data)[1] != dim(data)[2]) {
     stop("Predictor matrix should be a square matrix, try using mice::make.predictorMatrix() or mice::quickpred().")
   }
+  # if (!is.null(method)) {length(method)}
   vrbs <- row.names(data)
   p <- dim(data)[2]
   long <- data.frame(

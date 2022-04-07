@@ -1,9 +1,9 @@
 #' Plot the trace lines of the imputation algorithm
 #'
-#' @param data An object of class `mice::mids`.
+#' @param data An object of class [mice::mids].
 #' @param vrb String or vector with variable name(s), default is "all".
 #'
-#' @return An object of class `ggplot2::ggplot`.
+#' @return An object of class [ggplot2::ggplot].
 #'
 #' @examples
 #' imp <- mice::mice(mice::nhanes, print = FALSE)

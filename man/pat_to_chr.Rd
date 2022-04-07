@@ -14,3 +14,4 @@ pat_to_chr(pat, ord = NULL)
 \description{
 Utils function to process missing data pattern
 }
+\keyword{internal}

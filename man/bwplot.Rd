@@ -10,7 +10,7 @@ bwplot(...)
 \item{...}{Any arguments passed to the function.}
 }
 \value{
-The output of \code{mice::bwplot(...)} and a message about the \code{ggmice} equivalent.
+The output of \link[mice:bwplot.mids]{mice::bwplot} and a message about the \code{ggmice} equivalent.
 }
 \description{
 Box-and-whisker plot of observed and imputed data

@@ -4,7 +4,7 @@
 #'
 #' @param ... Any arguments passed to the function.
 #'
-#' @return The output of `mice::bwplot(...)` and a message about the `ggmice` equivalent.
+#' @return The output of [mice::bwplot] and a message about the `ggmice` equivalent.
 #' @export
 #'
 #' @examples
@@ -21,7 +21,7 @@ bwplot <- function(...) {
 #'
 #' @param ... Any arguments passed to the function.
 #'
-#' @return The output of `mice::densityplot(...)` and a message about the `ggmice` equivalent.
+#' @return The output of [mice::densityplot] and a message about the `ggmice` equivalent.
 #' @export
 #'
 #' @examples
@@ -38,7 +38,7 @@ densityplot <- function(...) {
 #'
 #' @param ... Any arguments passed to the function.
 #'
-#' @return The output of `mice::stripplot(...)` and a message about the `ggmice` equivalent.
+#' @return The output of [mice::stripplot] and a message about the `ggmice` equivalent.
 #' @export
 #'
 #' @examples
@@ -55,7 +55,7 @@ stripplot <- function(...) {
 #'
 #' @param ... Any arguments passed to the function.
 #'
-#' @return The output of `mice::xyplot(...)` and a message about the `ggmice` equivalent.
+#' @return The output of [mice::xyplot] and a message about the `ggmice` equivalent.
 #' @export
 #'
 #' @examples
