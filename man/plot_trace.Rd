@@ -7,12 +7,12 @@
 plot_trace(data, vrb = "all")
 }
 \arguments{
-\item{data}{An object of class \code{mice::mids}.}
+\item{data}{An object of class \link[mice:mids-class]{mice::mids}.}
 
 \item{vrb}{String or vector with variable name(s), default is "all".}
 }
 \value{
-An object of class \code{ggplot2::ggplot}.
+An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 }
 \description{
 Plot the trace lines of the imputation algorithm

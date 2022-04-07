@@ -10,7 +10,7 @@ densityplot(...)
 \item{...}{Any arguments passed to the function.}
 }
 \value{
-The output of \code{mice::densityplot(...)} and a message about the \code{ggmice} equivalent.
+The output of \link[mice:densityplot.mids]{mice::densityplot} and a message about the \code{ggmice} equivalent.
 }
 \description{
 Densityplot of observed and imputed data

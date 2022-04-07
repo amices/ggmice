@@ -18,7 +18,7 @@ plot_pattern(data, vrb = "all", square = FALSE, rotate = FALSE, cluster = NULL)
 \item{cluster}{Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).}
 }
 \value{
-An object of class \code{ggplot2::ggplot}.
+An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 }
 \description{
 Plot the missing data pattern of an incomplete dataset

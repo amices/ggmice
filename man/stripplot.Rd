@@ -10,7 +10,7 @@ stripplot(...)
 \item{...}{Any arguments passed to the function.}
 }
 \value{
-The output of \code{mice::stripplot(...)} and a message about the \code{ggmice} equivalent.
+The output of \link[mice:stripplot.mids]{mice::stripplot} and a message about the \code{ggmice} equivalent.
 }
 \description{
 Stripplot of observed and imputed data

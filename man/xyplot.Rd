@@ -10,7 +10,7 @@ xyplot(...)
 \item{...}{Any arguments passed to the function.}
 }
 \value{
-The output of \code{mice::xyplot(...)} and a message about the \code{ggmice} equivalent.
+The output of \link[mice:xyplot.mids]{mice::xyplot} and a message about the \code{ggmice} equivalent.
 }
 \description{
 Scatterplot of observed and imputed data

@@ -6,7 +6,7 @@
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
 #'
-#' @return An object of class `ggplot2::ggplot`.
+#' @return An object of class [ggplot2::ggplot].
 #'
 #' @examples
 #' plot_pattern(mice::nhanes)

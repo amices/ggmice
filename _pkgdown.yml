@@ -1,4 +1,20 @@
 url: http://amices.org/ggmice/
 template:
   bootstrap: 5
-
+reference:
+- subtitle: Core function
+- contents:
+  - ggmice
+- subtitle: Other plotting functions
+- contents:
+  - starts_with("plot_")
+- subtitle: Old friends
+- contents:
+  - bwplot
+  - densityplot
+  - stripplot
+  - xyplot
+- subtitle: Internal functions
+- contents:
+  - theme_mice
+  - theme_minimice
