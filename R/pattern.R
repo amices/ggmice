@@ -105,6 +105,7 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
 #'
 #' @param pat Numeric matrix with a missing data pattern.
 #' @param ord Vector with variable names.
+#' @keywords internal
 pat_to_chr <- function(pat, ord = NULL) {
   if (is.null(ord)) {
     ord <- colnames(pat)[-ncol(pat)]

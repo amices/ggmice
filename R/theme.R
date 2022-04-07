@@ -1,9 +1,6 @@
-# mice ggplot2 theme
-#' Theme for 'mice' style 'ggplot2' objects
+#' Theme for [mice] style [ggplot2::ggplot] objects
 #'
-#' @return A ggplot2 theme.
-#'
-#' @export
+#' @return A [ggplot2] theme.
 theme_mice <- function() {
   ggplot2::theme_classic() +
     ggplot2::theme(
@@ -14,9 +11,9 @@ theme_mice <- function() {
     )
 }
 
-#' Minimal theme for mice
+#' Minimal theme for [mice] style [ggplot2::ggplot] objects
 #'
-#' @return A ggplot2 theme.
+#' @return A [ggplot2] theme.
 theme_minimice <- function() {
   ggplot2::theme_minimal() +
     ggplot2::theme(
