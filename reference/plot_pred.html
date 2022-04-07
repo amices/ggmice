@@ -60,13 +60,15 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_pred</span><span class="op">(</span><span class="va">data</span>, label <span class="op">=</span> <span class="cn">TRUE</span>, square <span class="op">=</span> <span class="cn">TRUE</span>, rotate <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_pred</span><span class="op">(</span><span class="va">data</span>, method <span class="op">=</span> <span class="cn">NULL</span>, label <span class="op">=</span> <span class="cn">TRUE</span>, square <span class="op">=</span> <span class="cn">TRUE</span>, rotate <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>A predictor matrix for <code>mice</code>, typically generated with <code><a href="https://amices.org/mice/reference/make.predictorMatrix.html" class="external-link">mice::make.predictorMatrix()</a></code> or <code><a href="https://amices.org/mice/reference/quickpred.html" class="external-link">mice::quickpred()</a></code>. #TODO link!</p></dd>
+<dd><p>A predictor matrix for <code>mice</code>, typically generated with <a href="https://amices.org/mice/reference/make.predictorMatrix.html" class="external-link">mice::make.predictorMatrix</a> or <a href="https://amices.org/mice/reference/quickpred.html" class="external-link">mice::quickpred</a>.</p></dd>
+<dt>method</dt>
+<dd><p>Character string or vector with imputation methods (not implemented yet!).</p></dd>
 <dt>label</dt>
 <dd><p>Logical indicating whether predictor matrix values should be displayed.</p></dd>
 <dt>square</dt>
