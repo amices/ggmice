@@ -72,6 +72,10 @@ Vink, Stef van Buuren, Thomas Debray, Valentijn de Jong, Johanna Muñoz,
 Thom Volker, Mingyang Cai and Anaïs Fopma. The `ggmice` hex is based on
 designs from the `ggplot2` hex and the `mice` hex (by Jaden Walters).
 
+ This project has received funding from the European Union’s Horizon 
+ 2020 research and innovation programme under ReCoDID grant agreement 
+ No 825746.
+
 ## Code of Conduct
 
 Please note that the `ggmice` project is released with a [Contributor
