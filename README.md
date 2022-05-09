@@ -13,15 +13,19 @@ version](https://img.shields.io/github/r-package/v/amices/ggmice.svg)](https://g
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![Codecov test
 coverage](https://codecov.io/gh/amices/ggmice/branch/main/graph/badge.svg)](https://app.codecov.io/gh/amices/ggmice?branch=main)
+[![Total CRAN
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)
 <!-- badges: end -->
 
 ## Visualizations for `mice` with `ggplot2`
 
-Enhance a `mice` imputation workflow with visualizations for incomplete
-and/or imputed data. The plotting functions produce `ggplot` objects
-which may be easily manipulated or extended. Use `ggmice` to inspect
-missing data, develop imputation models, evaluate algorithmic
-convergence, or compare observed versus imputed data.
+Enhance a [`mice`](https://amices.org/mice) imputation workflow with
+visualizations for incomplete and/or imputed data. The `ggmice`
+functions produce
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot) objects which
+may be easily manipulated or extended. Use `ggmice` to inspect missing
+data, develop imputation models, evaluate algorithmic convergence, or
+compare observed versus imputed data.
 
 ## Installation
 
@@ -42,25 +46,30 @@ devtools::install_github("amices/ggmice")
 
 ## Example
 
-Visualize missing data in an incomplete dataset, or evaluate imputed
-data against the observed data. See the [Get
+Inspect the missing data in an incomplete dataset and subsequently
+evaluate the imputed data points against observed data. See the [Get
 started](https://amices.org/ggmice/articles/ggmice.html) vignette for an
-overview of all `ggmice` functionalities.
+overview of all functionalities. Example data from
+[`mice`](https://amices.org/mice/reference/boys).
 
 ``` r
-# load the package and some data
+# load packages
+library(ggplot2)
+library(mice)
 library(ggmice)
-dat <- mice::boys
+# load some data
+dat <- boys
 # visualize the incomplete data
-ggmice(dat, ggplot2::aes(age, bmi)) + ggplot2::geom_point()
+ggmice(dat, aes(age, bmi)) + geom_point()
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
 ``` r
-# impute the data and visualize the imputed data
-imp <- mice::mice(dat, m = 1, printFlag = FALSE)
-ggmice(imp, ggplot2::aes(age, bmi)) + ggplot2::geom_point() 
+# impute the incomplete data
+imp <- mice(dat, m = 1, printFlag = FALSE)
+# visualize the imputed data
+ggmice(imp, aes(age, bmi)) + geom_point() 
 ```
 
 <img src="man/figures/README-example-2.png" width="100%" />
@@ -72,8 +81,13 @@ Vink, Stef van Buuren, Thomas Debray, Valentijn de Jong, Johanna Muñoz,
 Thom Volker, Mingyang Cai and Anaïs Fopma. The `ggmice` hex is based on
 designs from the `ggplot2` hex and the `mice` hex (by Jaden Walters).
 
+This project has received funding from the European Union’s Horizon 2020
+research and innovation programme under ReCoDID grant agreement No
+825746.
+
 ## Code of Conduct
 
-Please note that the `ggmice` project is released with a [Contributor
-Code of Conduct](https://amices.org/ggmice/CODE_OF_CONDUCT.html). By
+You are invited to join the improvement and development of `ggmice`.
+Please note that the project is released with a [Contributor Code of
+Conduct](https://amices.org/ggmice/CODE_OF_CONDUCT.html). By
 contributing to this project, you agree to abide by its terms.
