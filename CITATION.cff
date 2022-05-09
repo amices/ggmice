@@ -1,0 +1,37 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: ggmice
+message: Please cite this software using these metadata.
+type: software
+authors:
+  - given-names: Hanne Ida
+    family-names: Oberman
+    email: h.i.oberman@uu.nl
+    name-particle: Hanne Ida Oberman
+    affiliation: Utrecht University
+    orcid: 'https://orcid.org/0000-0003-3276-2141'
+repository-code: 'https://github.com/amices/ggmice'
+url: 'https://amices.org/ggmice'
+repository: 'https://CRAN.R-project.org/package=ggmice'
+abstract: >-
+  Enhance a 'mice' imputation workflow with
+  visualizations for incomplete and/or imputed data.
+  The plotting functions produce 'ggplot' objects
+  which may be easily manipulated or extended. Use
+  'ggmice' to inspect missing data, develop
+  imputation models, evaluate algorithmic
+  convergence, or compare observed versus imputed
+  data.
+keywords:
+  - mice
+  - visualization
+  - ggplot2
+  - missing data
+  - r
+license: GPL-3.0+
+commit: >-
+  https://github.com/amices/ggmice/commit/fc5bb471a65307e8942a613f0f79423c893db1e2
+version: v0.0.1
+date-released: '2022-03-17'
