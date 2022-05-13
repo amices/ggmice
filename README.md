@@ -14,7 +14,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![GitHub](https://img.shields.io/github/license/amices/ggmice.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Codecov test
 coverage](https://codecov.io/gh/amices/ggmice/branch/main/graph/badge.svg)](https://app.codecov.io/gh/amices/ggmice?branch=main)
-[![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B-yellow)](https://fair-software.eu)
+[![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F-green)](https://fair-software.eu)
 [![CII Best
 Practices](https://bestpractices.coreinfrastructure.org/projects/6036/badge)](https://bestpractices.coreinfrastructure.org/projects/6036)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6532702.svg)](https://doi.org/10.5281/zenodo.6532702)
