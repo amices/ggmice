@@ -17,6 +17,7 @@ coverage](https://codecov.io/gh/amices/ggmice/branch/main/graph/badge.svg)](http
 [![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B-yellow)](https://fair-software.eu)
 [![CII Best
 Practices](https://bestpractices.coreinfrastructure.org/projects/6036/badge)](https://bestpractices.coreinfrastructure.org/projects/6036)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6532702.svg)](https://doi.org/10.5281/zenodo.6532702)
 [![Total CRAN
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)
 <!-- badges: end -->
@@ -71,7 +72,7 @@ ggmice(dat, aes(age, bmi)) + geom_point()
 
 ``` r
 # impute the incomplete data
-imp <- mice(dat, m = 1, printFlag = FALSE)
+imp <- mice(dat, m = 1, seed = 1, printFlag = FALSE)
 # visualize the imputed data
 ggmice(imp, aes(age, bmi)) + geom_point() 
 ```
