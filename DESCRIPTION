@@ -5,7 +5,9 @@ Authors@R: c(
     person("Hanne", "Oberman", , "h.i.oberman@uu.nl", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3276-2141")),
     person("Utrecht University", role = "fnd"), 
-    person("University Medical Centre Utrecht", role = "fnd")
+    person("University Medical Centre Utrecht", role = "fnd"),
+    person("Thom", "Volker", email = "t.b.volker@uu.nl", 
+           role = "ctb", comment = c(ORCID = "0000-0002-2408-7820"))
     )
 Description: Enhance a 'mice' imputation workflow with visualizations for
     incomplete and/or imputed data. The plotting functions produce
