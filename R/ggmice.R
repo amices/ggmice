@@ -72,9 +72,10 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
         data.frame(.where = "observed", .imp = 0, .id = rownames(data$data), data$data)[!miss_xy, ],
         data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy, ]
       ),
+      .where = factor(.where, levels = c("observed", "imputed"), ordered = TRUE),
       .imp = factor(.imp, ordered = TRUE)
     )
-    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where)) # , fill = .where
+    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where))
     mice_colors <- c("observed" = "#006CC2B3", "imputed" = "#B61A51B3")
   }
 
