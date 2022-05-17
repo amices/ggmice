@@ -27,7 +27,7 @@ plot_corr(
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
 }
 \value{
-An object of class \code{ggplot}.
+An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 }
 \description{
 Plot correlations between (incomplete) variables

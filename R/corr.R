@@ -7,7 +7,7 @@
 #' @param diagonal Logical indicating whether the correlation of each variable with itself should be displayed.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #'
-#' @return An object of class `ggplot`.
+#' @return An object of class [ggplot2::ggplot].
 #'
 #' @examples
 #' plot_corr(mice::nhanes, label = TRUE)

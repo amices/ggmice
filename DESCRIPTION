@@ -1,9 +1,12 @@
 Package: ggmice
 Title: Visualizations for 'mice' with 'ggplot2'
 Version: 0.0.1.9000
-Authors@R: 
+Authors@R: c(
     person("Hanne", "Oberman", , "h.i.oberman@uu.nl", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0003-3276-2141"))
+           comment = c(ORCID = "0000-0003-3276-2141")),
+    person("Utrecht University", role = "fnd"), 
+    person("University Medical Centre Utrecht", role = "fnd")
+    )
 Description: Enhance a 'mice' imputation workflow with visualizations for
     incomplete and/or imputed data. The plotting functions produce
     'ggplot' objects which may be easily manipulated or extended. Use
@@ -33,9 +36,7 @@ Suggests:
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
-Copyright: person("ggmice authors", role = "cph"), person("Utrecht
-    University", role = "fnd"), person("University Medical Centre
-    Utrecht", role = "fnd")
+Copyright: 'ggmice' authors
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
