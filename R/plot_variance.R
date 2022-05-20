@@ -51,8 +51,8 @@ plot_variance <- function(object){
     ggplot2::scale_x_discrete(position = "top") +
     ggplot2::scale_y_continuous(trans = "reverse") +
     ggplot2::theme_light() +
-    theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank())
+    ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+          panel.grid.minor = ggplot2::element_blank())
 
   # return the ggplot object
   return(gg)
