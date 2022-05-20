@@ -4,7 +4,7 @@
 \alias{plot_variance}
 \title{Plot as a heatmap the scaled between imputation variance for every cell}
 \usage{
-plot_variance(object, scaled = TRUE)
+plot_variance(object)
 }
 \arguments{
 \item{object}{A \code{mice} generated multiply imputed data set of class \code{mids}.}

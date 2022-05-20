@@ -28,7 +28,7 @@
 #' imp <- mice(nhanes)
 #' varianceplot(imp)
 #' @export
-plot_variance <- function(object, scaled = TRUE){
+plot_variance <- function(object){
   if (!mice::is.mids(object)) {
     stop("Input is not a Multiply Imputed Data Set of class mids. \n
          Perhaps function mice::as.mids() can be of use?")
