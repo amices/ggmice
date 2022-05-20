@@ -50,7 +50,9 @@ plot_variance <- function(object){
                   title =  "Heatmap-like plot of scaled between imputation variances for all cells") +
     ggplot2::scale_x_discrete(position = "top") +
     ggplot2::scale_y_continuous(trans = "reverse") +
-    ggplot2::theme_light()
+    ggplot2::theme_light() +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())
 
   # return the ggplot object
   return(gg)
