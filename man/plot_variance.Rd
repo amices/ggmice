@@ -25,5 +25,5 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 imp <- mice(nhanes)
-varianceplot(imp)
+plot_variance(imp)
 }

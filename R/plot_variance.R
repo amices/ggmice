@@ -26,7 +26,7 @@
 #' library(tidyr)
 #' library(ggplot2)
 #' imp <- mice(nhanes)
-#' varianceplot(imp)
+#' plot_variance(imp)
 #' @export
 plot_variance <- function(object){
   if (!mice::is.mids(object)) {
