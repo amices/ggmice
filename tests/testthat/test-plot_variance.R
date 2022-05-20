@@ -1,5 +1,5 @@
 test_that("plot_variance runs", {
-  imp <- mice(nhanes)
+  imp <- mice::mice(mice::nhanes)
   gg <- plot_variance(imp)
   expect_s3_class(gg, "ggplot")
 })
