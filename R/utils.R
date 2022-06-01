@@ -20,6 +20,6 @@
 NULL
 
 # suppress undefined global functions or variables note
-utils::globalVariables(c(".imp", ".where"))
+utils::globalVariables(c(".imp", ".where", ".id", "where", "name", "value"))
 
 # how to alias a function: foo <- function(...) pkgB::blah(...)

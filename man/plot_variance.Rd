@@ -4,26 +4,25 @@
 \alias{plot_variance}
 \title{Plot as a heatmap the scaled between imputation variance for every cell}
 \usage{
-plot_variance(object)
+plot_variance(data)
 }
 \arguments{
-\item{object}{A \code{mice} generated multiply imputed data set of class \code{mids}.}
+\item{data}{A package \code{mice} generated multiply imputed data set of class
+\code{mids}. Non-\code{mids} objects that have not been generated with \code{mice::mice()}
+can be converted through a pipeline with \code{mice::as.mids()}.}
 }
 \value{
 An object of class \code{ggplot}.
 }
 \description{
 This function plots the cell-level between imputation variance. The function
-scales the variances column-wise and plots the data image as a heatmap.
-Darker red cells indicate more variance, lighter cells indicate less variance.
-white cells represent observed cells or unobserved cells with zero between
+scales the variances column-wise, without centering cf. \code{base::scale(center=FALSE)}
+and plots the data image as a heatmap. Darker red cells indicate more variance,
+lighter cells indicate less variance. White cells represent observed cells or unobserved cells with zero between
 imputation variance.
 }
 \examples{
 library(mice)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
 imp <- mice(nhanes)
 plot_variance(imp)
 }
