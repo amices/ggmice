@@ -1,4 +1,4 @@
-# functions for internal use
+# Functions for internal use
 
 # util functions
 `%nin%` <- Negate(`%in%`)
@@ -22,4 +22,4 @@ NULL
 # suppress undefined global functions or variables note
 utils::globalVariables(c(".imp", ".where", ".id", "where", "name", "value"))
 
-# how to alias a function: foo <- function(...) pkgB::blah(...)
+# Alias a function with `foo <- function(...) pkgB::blah(...)`

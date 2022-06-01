@@ -1,29 +1,28 @@
-# plot convergence
-#' Plot the trace lines of the MICE algorithm for convergence evaluation
+#' Plot the trace lines of the imputation algorithm
 #'
-#' @param imp An object of class `mids`.
+#' @param data An object of class [mice::mids].
 #' @param vrb String or vector with variable name(s), default is "all".
 #'
-#' @return An object of class `ggplot`.
+#' @return An object of class [ggplot2::ggplot].
 #'
 #' @examples
 #' imp <- mice::mice(mice::nhanes, print = FALSE)
 #' plot_trace(imp)
 #' @export
-plot_trace <- function(imp, vrb = "all") {
-  if (!mice::is.mids(imp)) {
-    stop("argument 'imp' must be a 'mids' object", call. = FALSE)
+plot_trace <- function(data, vrb = "all") {
+  if (!mice::is.mids(data)) {
+    stop("argument 'data' must be a 'mids' object", call. = FALSE)
   }
-  if (is.null(imp$chainMean)) {
+  if (is.null(data$chainMean)) {
     stop("no convergence diagnostics found", call. = FALSE)
   }
 
   # extract chain means and chain standard deviations
-  mn <- imp$chainMean
-  sm <- sqrt(imp$chainVar)
+  mn <- data$chainMean
+  sm <- sqrt(data$chainVar)
 
   # select variable to plot from list of imputed variables
-  varlist <- names(imp$imp)[apply(!(is.nan(mn) | is.na(mn)), 1, all)]
+  varlist <- names(data$imp)[apply(!(is.nan(mn) | is.na(mn)), 1, all)]
   if (vrb %nin% varlist & vrb != "all") {
     stop(paste0("No convergence diagnostics found for variable '", vrb, "'. No plot can be produced. Are you sure this variable is imputed?"))
   }
@@ -31,8 +30,8 @@ plot_trace <- function(imp, vrb = "all") {
     vrb <- varlist
   }
   p <- length(vrb)
-  m <- imp$m
-  it <- imp$iteration
+  m <- data$m
+  it <- data$iteration
   long <- cbind(
     expand.grid(.it = seq_len(it), .m = seq_len(m)),
     data.frame(

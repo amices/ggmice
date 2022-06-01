@@ -2,22 +2,24 @@
 % Please edit documentation in R/flux.R
 \name{plot_flux}
 \alias{plot_flux}
-\title{Influx and outflux plot of multivariate missing data patterns}
+\title{Plot the influx and outflux of a multivariate missing data pattern}
 \usage{
-plot_flux(dat, label = TRUE, caption = TRUE)
+plot_flux(data, vrb = "all", label = TRUE, caption = TRUE)
 }
 \arguments{
-\item{dat}{An incomplete dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
+\item{data}{An incomplete dataset of class \code{data.frame} or \code{matrix}.}
+
+\item{vrb}{String or vector with variable name(s), default is "all".}
 
 \item{label}{Logical indicating whether variable names should be displayed within the plot (the default) or with colors in the legend.}
 
 \item{caption}{Logical indicating whether the figure caption should be displayed.}
 }
 \value{
-An object of class \code{ggplot}.
+An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 }
 \description{
-Influx and outflux plot of multivariate missing data patterns
+Plot the influx and outflux of a multivariate missing data pattern
 }
 \examples{
 plot_flux(mice::nhanes)

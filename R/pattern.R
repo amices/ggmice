@@ -1,26 +1,33 @@
-# md pattern plot
 #' Plot the missing data pattern of an incomplete dataset
 #'
-#' @param dat An incomplete dataset of class `data.frame`, `tibble`, or `matrix`.
+#' @param data An incomplete dataset of class `data.frame` or `matrix`.
+#' @param vrb String or vector with variable name(s), default is "all".
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
 #'
-#' @return An object of class `ggplot`.
+#' @return An object of class [ggplot2::ggplot].
+#'
 #' @examples
 #' plot_pattern(mice::nhanes)
 #' @export
-plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
-  if (!is.data.frame(dat) & !is.matrix(dat)) {
+plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, cluster = NULL) {
+  if (!is.data.frame(data) & !is.matrix(data)) {
     stop("Dataset should be a 'data.frame' or 'matrix'.")
   }
+  if (vrb == "all") {
+    vrb <- names(data)
+  }
   if (!is.null(cluster)) {
-    if (cluster %nin% names(dat)) {
+    if (cluster %nin% names(data[, vrb])) {
       stop("Cluster variable not recognized, please provide the variable name as a character string.")
     }
   }
+  if(".x" %in% vrb | ".y" %in% vrb) {
+    stop("The variable names '.x' and '.y' are used internally to produce the missing data pattern plot. Please exclude or rename your variable(s).")
+  }
   # get missing data pattern and extract info
-  pat <- mice::md.pattern(dat, plot = FALSE)
+  pat <- mice::md.pattern(data[, vrb], plot = FALSE)
   rws <- nrow(pat)
   cls <- ncol(pat)
   vrb <- colnames(pat)[-cls]
@@ -32,7 +39,7 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
   if (is.null(cluster)) {
     pat_clean <- cbind(.opacity = 1, pat[-rws, vrb])
   } else {
-    pats <- purrr::map(split(dat, ~ get(cluster)), ~ {
+    pats <- purrr::map(split(data[, vrb], ~ get(cluster)), ~ {
       mice::md.pattern(., plot = FALSE) %>%
         pat_to_chr(., ord = vrb)
     })
@@ -44,16 +51,17 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
   }
 
   # tidy the pattern
-  long <- data.frame(y = 1:(rws - 1), pat_clean, row.names = NULL) %>%
+  long <- data.frame(.y = 1:(rws - 1), pat_clean, row.names = NULL) %>%
     tidyr::pivot_longer(cols = vrb, names_to = "x", values_to = ".where") %>%
     dplyr::mutate(
-      x = as.numeric(factor(.data$x, levels = vrb, ordered = TRUE)),
+      .x = as.numeric(factor(.data$x, levels = vrb, ordered = TRUE)),
       .where = factor(.data$.where, levels = c(0, 1), labels = c("missing", "observed")),
+      # TODO: always obs/always missing, add title, maybe make y axis prop to freq, add asterisk to clust var with caption that can tell that there is missingness in it
       .opacity = as.numeric(.data$.opacity)
     )
 
   # create the plot
-  gg <- ggplot2::ggplot(long, ggplot2::aes(.data$x, .data$y, fill = .data$.where, alpha = 0.1 + .data$.opacity / 2)) +
+  gg <- ggplot2::ggplot(long, ggplot2::aes(.data$.x, .data$.y, fill = .data$.where, alpha = 0.1 + .data$.opacity / 2)) +
     ggplot2::geom_tile(color = "black") +
     ggplot2::scale_fill_manual(values = c("observed" = "#006CC2B3", "missing" = "#B61A51B3")) +
     ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
@@ -82,7 +90,9 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
     ) +
     theme_minimice()
   if (square) {
-    gg <- gg + ggplot2::coord_fixed()
+    gg <- gg + ggplot2::coord_fixed(expand = FALSE)
+  } else {
+    gg <- gg + ggplot2::coord_cartesian(expand = FALSE)
   }
   if (rotate) {
     gg <- gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
@@ -95,6 +105,7 @@ plot_pattern <- function(dat, square = FALSE, rotate = FALSE, cluster = NULL) {
 #'
 #' @param pat Numeric matrix with a missing data pattern.
 #' @param ord Vector with variable names.
+#' @keywords internal
 pat_to_chr <- function(pat, ord = NULL) {
   if (is.null(ord)) {
     ord <- colnames(pat)[-ncol(pat)]
