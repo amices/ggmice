@@ -25,7 +25,7 @@ plot_variance <- function(data){
     dplyr::mutate(dplyr::across(where(is.factor), as.numeric)) %>%
     dplyr::select(-.imp) %>%
     dplyr::group_by(.id) %>%
-    dplyr::summarise(dplyr::across(tidyselect::everything(),  stats::var)) %>%
+    dplyr::summarise(dplyr::across(dplyr::everything(),  stats::var)) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(dplyr::across(.cols = -.id, ~scale_above_zero(.))) %>%
     tidyr::pivot_longer(cols = -.id) %>%
