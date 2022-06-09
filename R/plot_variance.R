@@ -9,6 +9,7 @@
 #' @param data A package `mice` generated multiply imputed data set of class
 #' `mids`. Non-`mids` objects that have not been generated with `mice::mice()`
 #' can be converted through a pipeline with `mice::as.mids()`.
+#' @param grid Logical indicating whether grid lines should be displayed.
 #'
 #' @return An object of class `ggplot`.
 #' @examples
