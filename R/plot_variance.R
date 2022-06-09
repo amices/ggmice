@@ -13,7 +13,7 @@
 #'
 #' @return An object of class `ggplot`.
 #' @examples
-#' imp <- mice::mice(mice::nhanes)
+#' imp <- mice::mice(mice::nhanes, printFlag = FALSE)
 #' plot_variance(imp)
 #' @export
 plot_variance <- function(data, grid = TRUE){
