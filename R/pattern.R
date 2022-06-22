@@ -34,7 +34,6 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
   frq <- row.names(pat)[-rws]
   na_row <- pat[-rws, cls]
   na_col <- pat[rws, -cls]
-  # na_tot <- pat[rws, cls]
 
   if (is.null(cluster)) {
     pat_clean <- cbind(.opacity = 1, pat[-rws, vrb])
@@ -47,7 +46,7 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
       pat_to_chr(pat) %in% .x
     }) %>%
       rowMeans()
-    pat_clean <- data.frame(.opacity = pat_used, pat[-rws, vrb]) # .5 + ((pat_used - 0.5)/2)
+    pat_clean <- data.frame(.opacity = pat_used, pat[-rws, vrb])
   }
 
   # tidy the pattern
@@ -70,7 +69,7 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
       labels = na_col,
       sec.axis = ggplot2::dup_axis(
         labels = vrb,
-        name = "Variable\n(name)"
+        name = "Column name"
       )
     ) +
     ggplot2::scale_y_reverse(
@@ -78,15 +77,14 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
       labels = frq,
       sec.axis = ggplot2::dup_axis(
         labels = na_row,
-        name = "Pattern\n(number of missing entries)"
+        name = "Number of missing entries\nper pattern"
       )
     ) +
     ggplot2::labs(
-      x = "Variable\n(number of missing entries)",
-      y = "Pattern\n(frequency)",
+      x = "Number of missing entries\nper column",
+      y = "Pattern frequency",
       fill = "",
-      alpha = "" # ,
-      # caption = paste("*total number of missing entries =", na_tot)
+      alpha = ""
     ) +
     theme_minimice()
   if (square) {
