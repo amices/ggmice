@@ -36,7 +36,7 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
   na_col <- pat[rws, -cls]
 
   if (is.null(cluster)) {
-    pat_clean <- cbind(.opacity = 1, pat[-rws, vrb])
+    pat_clean <- cbind(.opacity = 1, pat[-rws, vrb, drop=F])
   } else {
     pats <- purrr::map(split(data[, vrb], ~ get(cluster)), ~ {
       mice::md.pattern(., plot = FALSE) %>%
@@ -46,7 +46,7 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
       pat_to_chr(pat) %in% .x
     }) %>%
       rowMeans()
-    pat_clean <- data.frame(.opacity = pat_used, pat[-rws, vrb])
+    pat_clean <- data.frame(.opacity = pat_used, pat[-rws, vrb, drop=F])
   }
 
   # tidy the pattern
