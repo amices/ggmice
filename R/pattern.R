@@ -5,13 +5,14 @@
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
+#' @param npat Optional integer specifying the number of missing data patterns to be visualized.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
 #' @examples
 #' plot_pattern(mice::nhanes)
 #' @export
-plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, cluster = NULL) {
+plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, cluster = NULL, npat = NULL) {
   if (!is.data.frame(data) & !is.matrix(data)) {
     stop("Dataset should be a 'data.frame' or 'matrix'.")
   }
@@ -28,6 +29,19 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
   }
   # get missing data pattern and extract info
   pat <- mice::md.pattern(data[, vrb], plot = FALSE)
+  
+  if(!is.null(npat)){
+    if(!is.integer(npat) | npat < 1){
+      stop("The number of patterns must be a positive integer.")
+    }
+    if(npat > nrow(pat)){
+      warning("Number of patterns specified is more that the total number of patterns. All missing data patterns are shown.")
+      npat <- nrow(pat)
+    }
+  names.common.patterns <- rownames(pat[order(as.numeric(row.names(pat)), decreasing = T),][1:npat,])
+  pat <- pat[rownames(pat) %in% names.common.patterns,]
+  }
+  
   rws <- nrow(pat)
   cls <- ncol(pat)
   vrb <- colnames(pat)[-cls]

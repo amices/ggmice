@@ -24,6 +24,6 @@ lighter cells indicate less variance. White cells represent observed cells or un
 imputation variance.
 }
 \examples{
-imp <- mice::mice(mice::nhanes)
+imp <- mice::mice(mice::nhanes, printFlag = FALSE)
 plot_variance(imp)
 }
