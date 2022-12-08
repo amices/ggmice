@@ -5,6 +5,7 @@
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
+#' @param npat Optional integer specifying the number of missing data patterns to be visualized.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
