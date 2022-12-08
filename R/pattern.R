@@ -31,7 +31,7 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
   pat <- mice::md.pattern(data[, vrb], plot = FALSE)
   
   if(!is.null(npat)){
-    if(!is.integer(npat) | npat < 1){
+    if(npat != round(npat) | npat < 1){
       stop("The number of patterns must be a positive integer.")
     }
     if(npat > nrow(pat)){
