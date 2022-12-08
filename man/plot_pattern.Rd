@@ -4,7 +4,14 @@
 \alias{plot_pattern}
 \title{Plot the missing data pattern of an incomplete dataset}
 \usage{
-plot_pattern(data, vrb = "all", square = FALSE, rotate = FALSE, cluster = NULL)
+plot_pattern(
+  data,
+  vrb = "all",
+  square = FALSE,
+  rotate = FALSE,
+  cluster = NULL,
+  npat = NULL
+)
 }
 \arguments{
 \item{data}{An incomplete dataset of class \code{data.frame} or \code{matrix}.}

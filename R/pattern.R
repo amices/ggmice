@@ -11,7 +11,7 @@
 #' @examples
 #' plot_pattern(mice::nhanes)
 #' @export
-plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, cluster = NULL) {
+plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, cluster = NULL, npat = NULL) {
   if (!is.data.frame(data) & !is.matrix(data)) {
     stop("Dataset should be a 'data.frame' or 'matrix'.")
   }
@@ -28,6 +28,16 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
   }
   # get missing data pattern and extract info
   pat <- mice::md.pattern(data[, vrb], plot = FALSE)
+  
+  if(!is.null(npat)){
+    if(npat > nrow(pat)){
+      warning("Number of patterns specified is more that the total number of patterns. All missing data patterns are shown.")
+      npat <- nrow(pat)
+    }
+  names.common.patterns <- rownames(pat[order(as.numeric(row.names(pat)), decreasing = T),][1:npat,])
+  pat <- pat[rownames(pat) %in% names.common.patterns,]
+  }
+  
   rws <- nrow(pat)
   cls <- ncol(pat)
   vrb <- colnames(pat)[-cls]
