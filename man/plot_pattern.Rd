@@ -23,6 +23,8 @@ plot_pattern(
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
 
 \item{cluster}{Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).}
+
+\item{npat}{Optional integer specifying the number of missing data patterns to be visualized.}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
