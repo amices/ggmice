@@ -24,7 +24,7 @@ plot_pattern(
 
 \item{cluster}{Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).}
 
-\item{npat}{Optional integer specifying the number of missing data patterns to be visualized.}
+\item{npat}{Optional numeric input specifying the number of missing data patterns to be visualized, defaults to all patterns.}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.

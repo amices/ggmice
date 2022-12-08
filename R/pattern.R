@@ -5,7 +5,7 @@
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
-#' @param npat Optional integer specifying the number of missing data patterns to be visualized.
+#' @param npat Optional numeric input specifying the number of missing data patterns to be visualized, defaults to all patterns.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
@@ -24,24 +24,29 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
       stop("Cluster variable not recognized, please provide the variable name as a character string.")
     }
   }
+  if(!is.null(npat)) {
+    if (!is.numeric(npat) | npat < 1) {
+      stop("Number of patterns should be one or more. Please provide a positive numeric value.")
+    }
+  }
   if(".x" %in% vrb | ".y" %in% vrb) {
     stop("The variable names '.x' and '.y' are used internally to produce the missing data pattern plot. Please exclude or rename your variable(s).")
   }
-  # get missing data pattern and extract info
+
+  # get missing data pattern
   pat <- mice::md.pattern(data[, vrb], plot = FALSE)
-  
-  if(!is.null(npat)){
-    if(npat != round(npat) | npat < 1){
-      stop("The number of patterns must be a positive integer.")
+
+  # filter npat most frequent patterns
+  if (!is.null(npat)) {
+    if (npat < (nrow(pat) - 1)) {
+      top_n_pat <- sort(as.numeric(row.names(pat)), decreasing = T)[1:npat]
+      pat <- pat[rownames(pat) %in% c(top_n_pat, ""),]
+      } else {
+      warning("Number of patterns specified is equal to or greater than the total number of patterns. All missing data patterns are shown.")
     }
-    if(npat > nrow(pat)){
-      warning("Number of patterns specified is more that the total number of patterns. All missing data patterns are shown.")
-      npat <- nrow(pat)
-    }
-  names.common.patterns <- rownames(pat[order(as.numeric(row.names(pat)), decreasing = T),][1:npat,])
-  pat <- pat[rownames(pat) %in% names.common.patterns,]
   }
-  
+
+  # extract pattern info
   rws <- nrow(pat)
   cls <- ncol(pat)
   vrb <- colnames(pat)[-cls]
@@ -49,6 +54,7 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
   na_row <- pat[-rws, cls]
   na_col <- pat[rws, -cls]
 
+  # add opacity for clustering
   if (is.null(cluster)) {
     pat_clean <- cbind(.opacity = 1, pat[-rws, vrb, drop=F])
   } else {
@@ -65,7 +71,7 @@ plot_pattern <- function(data, vrb = "all", square = FALSE, rotate = FALSE, clus
 
   # tidy the pattern
   long <- data.frame(.y = 1:(rws - 1), pat_clean, row.names = NULL) %>%
-    tidyr::pivot_longer(cols = vrb, names_to = "x", values_to = ".where") %>%
+    tidyr::pivot_longer(cols = tidyselect::all_of(vrb), names_to = "x", values_to = ".where") %>%
     dplyr::mutate(
       .x = as.numeric(factor(.data$x, levels = vrb, ordered = TRUE)),
       .where = factor(.data$.where, levels = c(0, 1), labels = c("missing", "observed")),
