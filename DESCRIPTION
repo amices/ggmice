@@ -32,6 +32,7 @@ Imports:
     stats,
     stringr,
     tidyr,
+    tidyselect,
     utils
 Suggests:
     covr,
