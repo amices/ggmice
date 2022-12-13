@@ -9,7 +9,7 @@ plot_pred(data, method = NULL, label = TRUE, square = TRUE, rotate = FALSE)
 \arguments{
 \item{data}{A predictor matrix for \code{mice}, typically generated with \link[mice:make.predictorMatrix]{mice::make.predictorMatrix} or \link[mice:quickpred]{mice::quickpred}.}
 
-\item{method}{Character string or vector with imputation methods (not implemented yet!).}
+\item{method}{Character string or vector with imputation methods.}
 
 \item{label}{Logical indicating whether predictor matrix values should be displayed.}
 
