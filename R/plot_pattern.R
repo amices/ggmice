@@ -2,7 +2,7 @@
 #'
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
 #' @param vrb String or vector with variable name(s), default is "all".
-#' @param square Logical indicating whether the plot tiles should be squares.
+#' @param square Logical indicating whether the plot tiles should be squares, defaults to squares to mimick `mice::md.pattern()`.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
 #' @param npat Optional numeric input specifying the number of missing data patterns to be visualized, defaults to all patterns.
@@ -15,7 +15,7 @@
 plot_pattern <-
   function(data,
            vrb = "all",
-           square = FALSE,
+           square = TRUE,
            rotate = FALSE,
            cluster = NULL,
            npat = NULL) {

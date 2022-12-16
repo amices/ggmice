@@ -7,7 +7,7 @@
 plot_pattern(
   data,
   vrb = "all",
-  square = FALSE,
+  square = TRUE,
   rotate = FALSE,
   cluster = NULL,
   npat = NULL
@@ -18,7 +18,7 @@ plot_pattern(
 
 \item{vrb}{String or vector with variable name(s), default is "all".}
 
-\item{square}{Logical indicating whether the plot tiles should be squares.}
+\item{square}{Logical indicating whether the plot tiles should be squares, defaults to squares to mimick \code{mice::md.pattern()}.}
 
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
 
