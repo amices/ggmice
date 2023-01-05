@@ -45,6 +45,11 @@ plot_pattern <-
 
     # get missing data pattern
     pat <- mice::md.pattern(data[, vrb], plot = FALSE)
+    
+    # exit function if data are complete
+    if(nrow(pat) == 0){
+      return()
+    }
 
     # filter npat most frequent patterns
     if (!is.null(npat)) {
