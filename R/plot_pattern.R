@@ -25,6 +25,9 @@ plot_pattern <-
     if (vrb == "all") {
       vrb <- names(data)
     }
+    if (any(vrb %nin% names(data))) {
+      stop("Supplied variable name(s) not found in the dataset.")
+    }
     if (".x" %in% vrb | ".y" %in% vrb) {
       stop(
         "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot. Please exclude or rename your variable(s)."

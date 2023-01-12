@@ -14,6 +14,9 @@ plot_flux <- function(data, vrb = "all", label = TRUE, caption = TRUE) {
   if (vrb == "all") {
     vrb <- names(data)
   }
+  if (any(vrb %nin% names(data))) {
+    stop("Supplied variable name(s) not found in the dataset.")
+  }
   # plot in and outflux
   flx <- mice::flux(data[, vrb])[, c("influx", "outflux")]
   gg <- data.frame(vrb = rownames(flx), flx, outflux_nudge = flx$outflux - 0.025) %>%
