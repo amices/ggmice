@@ -37,6 +37,11 @@ plot_pattern <-
         )
       }
     }
+    # message and return if there is no missing data
+    if (!any(is.na(data))){
+      message("This dataset is completely observed. No missing data patterns are shown.")
+      return()
+    }
     if (!is.null(npat)) {
       if (!is.numeric(npat) | npat < 1) {
         stop("Number of patterns should be one or more. Please provide a positive numeric value.")
@@ -46,17 +51,15 @@ plot_pattern <-
     # get missing data pattern
     pat <- mice::md.pattern(data[, vrb], plot = FALSE)
     
-    # exit function if data are complete
-    if(nrow(pat) == 0){
-      return()
-    }
-
     # filter npat most frequent patterns
     if (!is.null(npat)) {
       if (npat < (nrow(pat) - 1)) {
         top_n_pat <-
           sort(as.numeric(row.names(pat)), decreasing = TRUE)[1:npat]
+        rows_pat_full <- nrow(pat) # full number of missing data patterns
         pat <- pat[rownames(pat) %in% c(top_n_pat, ""), ]
+        # show number of requested, shown, and hidden missing data patterns
+        message(npat, " missing data patterns were requested and ", nrow(pat), " missing data patterns are shown. ", (rows_pat_full - nrow(pat)), " missing data patterns are hidden.")
       } else {
         warning(
           "Number of patterns specified is equal to or greater than the total number of patterns. All missing data patterns are shown."
