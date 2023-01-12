@@ -37,20 +37,18 @@ plot_pattern <-
         )
       }
     }
-    # message and return if there is no missing data
-    if (!any(is.na(data))){
-      message("This dataset is completely observed. No missing data patterns are shown.")
-      return()
-    }
     if (!is.null(npat)) {
       if (!is.numeric(npat) | npat < 1) {
         stop("Number of patterns should be one or more. Please provide a positive numeric value.")
       }
     }
+    if (!any(is.na(data))){
+      return(message("This dataset is completely observed. No missing data patterns are shown."))
+    }
 
     # get missing data pattern
     pat <- mice::md.pattern(data[, vrb], plot = FALSE)
-    
+
     # filter npat most frequent patterns
     if (!is.null(npat)) {
       if (npat < (nrow(pat) - 1)) {
