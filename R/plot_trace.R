@@ -29,6 +29,7 @@ plot_trace <- function(data, vrb = "all") {
   if (vrb == "all") {
     vrb <- varlist
   }
+
   p <- length(vrb)
   m <- data$m
   it <- data$iteration
