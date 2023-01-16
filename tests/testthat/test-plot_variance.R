@@ -1,5 +1,5 @@
 test_that("plot_variance produces ggplot object", {
-  imp <- mice::mice(mice::nhanes)
+  imp <- mice::mice(mice::nhanes, printFlag = FALSE)
   gg <- plot_variance(imp)
   expect_s3_class(gg, "ggplot")
 })

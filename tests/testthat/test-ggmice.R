@@ -35,9 +35,12 @@ test_that("ggmice with complete data", {
 
 test_that("ggmice with incorrect arguments", {
   dat <- mice::nhanes
+  expect_error(ggmice("test"))
+  expect_error(ggmice(dat))
   expect_error(ggmice(as.matrix(dat), ggplot2::aes(bmi)))
   expect_error(ggmice(dat, ggplot2::aes(shape = bmi)))
   expect_error(ggmice(dat, ggplot2::aes("bmi")))
   expect_warning(ggmice(dat, ggplot2::aes(bmi, color = bmi)))
-  expect_error(ggmice(dat, ggplot2::aes(abc)))
+  expect_error(ggmice(dat, ggplot2::aes(x = test)))
+  expect_error(ggmice(dat, ggplot2::aes(y = test)))
 })

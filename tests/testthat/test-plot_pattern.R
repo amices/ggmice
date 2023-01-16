@@ -3,6 +3,13 @@ test_that("plot_pattern produces plot", {
   expect_s3_class(gg, "ggplot")
 })
 
-test_that("plot_pattern returns message with complete data", {
+test_that("plot_pattern with incorrect arguments", {
+  # returns message with complete data
+  expect_message(plot_pattern(na.omit(mice::nhanes)))
+  expect_error(plot_pattern("test"))
+  expect_error(plot_pattern(mice::nhanes, vrb = "test"))
+  expect_error(plot_pattern(mice::nhanes, cluster = "test"))
+  expect_error(plot_pattern(cbind(mice::nhanes, .x = NA)))
+  expect_error(plot_pattern(mice::nhanes, npat = "test"))
   expect_message(plot_pattern(na.omit(mice::nhanes)))
 })
