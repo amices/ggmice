@@ -19,7 +19,7 @@ plot_corr <- function(data, vrb = "all", label = FALSE, square = TRUE, diagonal 
   if (vrb[1] == "all") {
     vrb <- names(data)
   } else {
-    vrb <- names(select(data, all_of({{vrb}})))
+    vrb <- names(dplyr::select(data, all_of({{vrb}})))
   }
   p <- length(vrb)
   corrs <- data.frame(

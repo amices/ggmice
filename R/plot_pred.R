@@ -36,10 +36,7 @@ plot_pred <- function(data, method = NULL, label = TRUE, square = TRUE, rotate =
 if(is.null(vrb)){
   vrbs <- row.names(data)
 } else {
-  vrbs <- data %>%
-    as.data.frame() %>%
-    select(all_of({vrb})) %>%
-    names()
+  vrbs <- names(dplyr::select(as.data.frame(data), all_of({vrb})))
 }
   vrbs <- row.names(data)
   long <- data.frame(
