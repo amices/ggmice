@@ -5,6 +5,7 @@
 #' @param label Logical indicating whether predictor matrix values should be displayed.
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
+#' @param vrb String or vector with variable name(s), default is "all".
 #'
 #' @return An object of class `ggplot2::ggplot`.
 #'

@@ -4,7 +4,14 @@
 \alias{plot_pred}
 \title{Plot the predictor matrix of an imputation model}
 \usage{
-plot_pred(data, method = NULL, label = TRUE, square = TRUE, rotate = FALSE)
+plot_pred(
+  data,
+  method = NULL,
+  label = TRUE,
+  square = TRUE,
+  rotate = FALSE,
+  vrb = NULL
+)
 }
 \arguments{
 \item{data}{A predictor matrix for \code{mice}, typically generated with \link[mice:make.predictorMatrix]{mice::make.predictorMatrix} or \link[mice:quickpred]{mice::quickpred}.}
@@ -16,6 +23,8 @@ plot_pred(data, method = NULL, label = TRUE, square = TRUE, rotate = FALSE)
 \item{square}{Logical indicating whether the plot tiles should be squares.}
 
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
+
+\item{vrb}{String or vector with variable name(s), default is "all".}
 }
 \value{
 An object of class \code{ggplot2::ggplot}.
