@@ -12,7 +12,7 @@
 #' pred <- mice::quickpred(mice::nhanes)
 #' plot_pred(pred)
 #' @export
-plot_pred <- function(data, method = NULL, label = TRUE, square = TRUE, rotate = FALSE) {
+plot_pred <- function(data, method = NULL, label = TRUE, square = TRUE, rotate = FALSE, vrb = NULL) {
   if (!is.matrix(data) | dim(data)[1] != dim(data)[2]) {
     stop("Predictor matrix should be a square matrix, try using mice::make.predictorMatrix() or mice::quickpred().")
   }
@@ -32,7 +32,14 @@ plot_pred <- function(data, method = NULL, label = TRUE, square = TRUE, rotate =
   if (!is.character(method) | length(method) != p) {
     stop("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
   }
-
+if(is.null(vrb)){
+  vrbs <- row.names(data)
+} else {
+  vrbs <- data %>%
+    as.data.frame() %>%
+    select(all_of({vrb})) %>%
+    names()
+}
   vrbs <- row.names(data)
   long <- data.frame(
     vrb = 1:p,

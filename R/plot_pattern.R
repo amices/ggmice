@@ -22,11 +22,10 @@ plot_pattern <-
     if (!is.data.frame(data) & !is.matrix(data)) {
       stop("Dataset should be a 'data.frame' or 'matrix'.")
     }
-    if (vrb == "all") {
+    if (vrb[1] == "all") {
       vrb <- names(data)
-    }
-    if (any(vrb %nin% names(data))) {
-      stop("Supplied variable name(s) not found in the dataset.")
+    } else {
+      vrb <- names(select(data, all_of({{vrb}})))
     }
     if (".x" %in% vrb | ".y" %in% vrb) {
       stop(

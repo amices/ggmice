@@ -23,10 +23,13 @@ plot_trace <- function(data, vrb = "all") {
 
   # select variable to plot from list of imputed variables
   varlist <- names(data$imp)[apply(!(is.nan(mn) | is.na(mn)), 1, all)]
-  if (vrb %nin% varlist & vrb != "all") {
+  if (vrb != "all"){
+    vrb <- names(select(data, all_of({{vrb}})))
+  }
+  if (vrb %nin% varlist & vrb[1] != "all") {
     stop(paste0("No convergence diagnostics found for variable '", vrb, "'. No plot can be produced. Are you sure this variable is imputed?"))
   }
-  if (vrb == "all") {
+  if (vrb[1] == "all") {
     vrb <- varlist
   }
 
