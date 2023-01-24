@@ -14,7 +14,7 @@ plot_flux <- function(data, vrb = "all", label = TRUE, caption = TRUE) {
   if (vrb[1] == "all") {
     vrb <- names(data)
   } else {
-    vrb <- names(dplyr::select(data, all_of({{vrb}})))
+    vrb <- names(dplyr::select(data, {{vrb}}))
   }
   # plot in and outflux
   flx <- mice::flux(data[, vrb])[, c("influx", "outflux")]
