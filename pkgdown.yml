@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   ggmice: ggmice.html
   old_friends: old_friends.html
-last_built: 2023-01-16T15:36Z
+last_built: 2023-01-25T16:38Z
 urls:
   reference: http://amices.org/ggmice/reference
   article: http://amices.org/ggmice/articles
