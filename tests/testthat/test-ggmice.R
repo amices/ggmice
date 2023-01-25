@@ -9,6 +9,8 @@ test_that("ggmice with continuous data", {
   imp <- mice::mice(dat, printFlag = FALSE)
   gg <- ggmice(imp, ggplot2::aes(bmi))
   expect_s3_class(gg, "ggplot")
+  gg <- ggmice(imp, ggplot2::aes(age, bmi))
+  expect_s3_class(gg, "ggplot")
 })
 
 test_that("ggmice with categorical data", {
