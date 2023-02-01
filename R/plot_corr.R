@@ -2,6 +2,7 @@
 #'
 #' @param data A dataset of class `data.frame`, `tibble`, or `matrix`.
 #' @param vrb String or vector with variable name(s), default is "all".
+#' @param nonresponse Logical indicating whether correlations are calculated with respect to the nonresponse indicators.
 #' @param label Logical indicating whether correlation values should be displayed.
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param diagonal Logical indicating whether the correlation of each variable with itself should be displayed.
@@ -12,7 +13,7 @@
 #' @examples
 #' plot_corr(mice::nhanes, label = TRUE)
 #' @export
-plot_corr <- function(data, vrb = "all", label = FALSE, square = TRUE, diagonal = FALSE, rotate = FALSE) {
+plot_corr <- function(data, vrb = "all", nonresponse = FALSE, label = FALSE, square = TRUE, diagonal = FALSE, rotate = FALSE) {
   if (!is.data.frame(data) & !is.matrix(data)) {
     stop("Dataset should be a 'data.frame' or 'matrix'.")
   }
@@ -23,11 +24,22 @@ plot_corr <- function(data, vrb = "all", label = FALSE, square = TRUE, diagonal 
     stop("Supplied variable name(s) not found in the dataset.")
   }
   p <- length(vrb)
-  corrs <- data.frame(
-    vrb = rep(vrb, each = p),
-    prd = vrb,
-    corr = matrix(round(stats::cov2cor(stats::cov(data.matrix(data[, vrb]), use = "pairwise.complete.obs")), 2), nrow = p * p, byrow = TRUE)
-  )
+  if (!nonresponse) {
+    corrs <- data.frame(
+      vrb = rep(vrb, each = p),
+      prd = vrb,
+      corr = matrix(round(suppressWarnings(stats::cor(data.matrix(data[, vrb]), use = "pairwise.complete.obs")), 2), nrow = p * p, byrow = TRUE)
+    )
+    legend = "*pairwise complete observations"
+  }
+  if (nonresponse) {
+    corrs <- data.frame(
+      vrb = rep(vrb, each = p),
+      prd = vrb,
+      corr = matrix(round(suppressWarnings(stats::cor(y = data.matrix(data[, vrb]), x = is.na(data[, vrb]), use = "pairwise.complete.obs")), 2), nrow = p * p, byrow = TRUE)
+    )
+    legend = "*with non-response indicator"
+  }
   if (!diagonal) {
     corrs[corrs$vrb == corrs$prd, "corr"] <- NA
   }
@@ -41,7 +53,7 @@ plot_corr <- function(data, vrb = "all", label = FALSE, square = TRUE, diagonal 
       y = "Variable to impute",
       fill = "Correlation*
       ",
-      caption = "*pairwise complete observations"
+      caption = legend
     ) +
     theme_minimice()
   if (label) {
@@ -58,5 +70,5 @@ plot_corr <- function(data, vrb = "all", label = FALSE, square = TRUE, diagonal 
   return(gg)
 }
 
-# TODO: add plot for missingness indicators predictors
-# TODO: maybe add model.matrix argument to correlation plot?
+# TODO: add plotting function for correlation with missingness indicators
+# TODO: add an argument 'levels' to use the model.matrix instead of treating factors as continuous

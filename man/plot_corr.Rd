@@ -7,6 +7,7 @@
 plot_corr(
   data,
   vrb = "all",
+  nonresponse = FALSE,
   label = FALSE,
   square = TRUE,
   diagonal = FALSE,
@@ -17,6 +18,8 @@ plot_corr(
 \item{data}{A dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
 
 \item{vrb}{String or vector with variable name(s), default is "all".}
+
+\item{nonresponse}{Logical indicating whether correlations are calculated with respect to the nonresponse indicators.}
 
 \item{label}{Logical indicating whether correlation values should be displayed.}
 
