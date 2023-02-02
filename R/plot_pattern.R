@@ -93,7 +93,8 @@ plot_pattern <-
 
     # tidy the pattern
     long <-
-      data.frame(.y = 1:(rws - 1), pat_clean, row.names = NULL) %>%
+      cbind(.y = 1:(rws - 1), pat_clean) %>%
+      as.data.frame(.) %>%
       tidyr::pivot_longer(
         cols = tidyselect::all_of(vrb),
         names_to = "x",
