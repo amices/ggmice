@@ -29,9 +29,9 @@ plot_trace <- function(data, vrb = "all") {
     vrb <- names(dplyr::select(data$data, {{vrb}}))
   }
   if (any(vrb %nin% varlist)) {
-    message(paste0("No convergence diagnostics found for variables '", which(vrb %nin% varlist), "'. No plots can be produced for these. Are you sure these variables are imputed?"))
+    message(paste0("No convergence diagnostics found for variable(s) '", vrb[which(vrb %nin% varlist)], "'. No plots can be produced for these. Are you sure these variables are imputed?"))
     if (any(vrb %in% varlist)){
-      vrb <- which(vrb %in% varlist)
+      vrb <- vrb[which(vrb %in% varlist)]
     } else {
       stop("None of the variables are imputed. No plots can be produced.")
     }
