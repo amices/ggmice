@@ -1,7 +1,7 @@
 #' Plot the trace lines of the imputation algorithm
 #'
 #' @param data An object of class [mice::mids].
-#' @param vrb String or vector with variable name(s), default is "all".
+#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
@@ -22,8 +22,9 @@ plot_trace <- function(data, vrb = "all") {
   sm <- sqrt(data$chainVar)
 
   # select variable to plot from list of imputed variables
+  vrb <- substitute(vrb)
   varlist <- names(data$imp)[apply(!(is.nan(mn) | is.na(mn)), 1, all)]
-  if (vrb[1] == "all") {
+  if (as.character(vrb)[1] == "all") {
     vrb <- varlist
   } else {
     vrb <- names(dplyr::select(data$data, {{vrb}}))

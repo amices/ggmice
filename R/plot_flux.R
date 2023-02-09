@@ -1,7 +1,7 @@
 #' Plot the influx and outflux of a multivariate missing data pattern
 #'
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
-#' @param vrb String or vector with variable name(s), default is "all".
+#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param label Logical indicating whether variable names should be displayed within the plot (the default) or with colors in the legend.
 #' @param caption Logical indicating whether the figure caption should be displayed.
 #'
@@ -11,6 +11,7 @@
 #' plot_flux(mice::nhanes)
 #' @export
 plot_flux <- function(data, vrb = "all", label = TRUE, caption = TRUE) {
+  vrb <- substitute(vrb)
   if (vrb[1] == "all") {
     vrb <- names(data)
   } else {

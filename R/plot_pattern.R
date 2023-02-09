@@ -1,7 +1,7 @@
 #' Plot the missing data pattern of an incomplete dataset
 #'
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
-#' @param vrb String or vector with variable name(s), default is "all".
+#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param square Logical indicating whether the plot tiles should be squares, defaults to squares to mimick `mice::md.pattern()`.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
@@ -22,6 +22,7 @@ plot_pattern <-
     if (!is.data.frame(data) & !is.matrix(data)) {
       stop("Dataset should be a 'data.frame' or 'matrix'.")
     }
+    vrb <- substitute(vrb)
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
@@ -58,6 +59,9 @@ plot_pattern <-
           sort(as.numeric(row.names(pat)), decreasing = TRUE)[1:npat]
         rows_pat_full <- nrow(pat) # full number of missing data patterns
         pat <- pat[rownames(pat) %in% c(top_n_pat, ""), ]
+        if (is.vector(pat)){
+          pat <- as.matrix(pat)
+        }
         # show number of requested, shown, and hidden missing data patterns
         message(npat, " missing data patterns were requested and ", nrow(pat), " missing data patterns are shown. ", (rows_pat_full - nrow(pat)), " missing data patterns are hidden.")
       } else {

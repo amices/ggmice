@@ -1,7 +1,7 @@
 #' Plot correlations between (incomplete) variables
 #'
 #' @param data A dataset of class `data.frame`, `tibble`, or `matrix`.
-#' @param vrb String or vector with variable name(s), default is "all".
+#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param label Logical indicating whether correlation values should be displayed.
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param diagonal Logical indicating whether the correlation of each variable with itself should be displayed.
@@ -16,6 +16,7 @@ plot_corr <- function(data, vrb = "all", label = FALSE, square = TRUE, diagonal 
   if (!is.data.frame(data) & !is.matrix(data)) {
     stop("Dataset should be a 'data.frame' or 'matrix'.")
   }
+  vrb <- substitute(vrb)
   if (vrb[1] == "all") {
     vrb <- names(data)
   } else {

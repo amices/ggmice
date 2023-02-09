@@ -10,7 +10,7 @@ plot_pred(
   label = TRUE,
   square = TRUE,
   rotate = FALSE,
-  vrb = NULL
+  vrb = "all"
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ plot_pred(
 
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
 
-\item{vrb}{String or vector with variable name(s), default is "all".}
+\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 }
 \value{
 An object of class \code{ggplot2::ggplot}.

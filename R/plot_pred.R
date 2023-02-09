@@ -5,7 +5,7 @@
 #' @param label Logical indicating whether predictor matrix values should be displayed.
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
-#' @param vrb String or vector with variable name(s), default is "all".
+#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #'
 #' @return An object of class `ggplot2::ggplot`.
 #'
@@ -13,7 +13,7 @@
 #' pred <- mice::quickpred(mice::nhanes)
 #' plot_pred(pred)
 #' @export
-plot_pred <- function(data, method = NULL, label = TRUE, square = TRUE, rotate = FALSE, vrb = NULL) {
+plot_pred <- function(data, method = NULL, label = TRUE, square = TRUE, rotate = FALSE, vrb = "all") {
   if (!is.matrix(data) | dim(data)[1] != dim(data)[2]) {
     stop("Predictor matrix should be a square matrix, try using mice::make.predictorMatrix() or mice::quickpred().")
   }
@@ -33,11 +33,12 @@ plot_pred <- function(data, method = NULL, label = TRUE, square = TRUE, rotate =
   if (!is.character(method) | length(method) != p) {
     stop("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
   }
-if(is.null(vrb)){
-  vrbs <- row.names(data)
-} else {
-  vrbs <- names(dplyr::select(as.data.frame(data), {vrb}))
-}
+  vrb <- substitute(vrb)
+  if(vrb == "all"){
+    vrbs <- row.names(data)
+  } else {
+    vrbs <- names(dplyr::select(as.data.frame(data), {vrb}))
+  }
   vrbs <- row.names(data)
   long <- data.frame(
     vrb = 1:p,

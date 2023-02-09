@@ -37,7 +37,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   mapping_x <- ggplot2::as_label(mapping$x)
   mapping_y <- ggplot2::as_label(mapping$y)
   if (stringr::str_detect(mapping_x, "log\\(") | stringr::str_detect(mapping_y, "log\\(")){
-    stop("ggmice currently does not support log transformations in the mapping argument. Please transform the data before input, or use the scale_log() function.")
+    stop("ggmice currently does not support log transformations in the mapping argument. Please transform the data before input, or use the ggplot2::scale_*_continuous(trans='log10') function.")
   }
   vrb_x <- vrbs[stringr::str_detect(mapping_x, vrbs)]
   vrb_y <- vrbs[stringr::str_detect(mapping_y, vrbs)]
