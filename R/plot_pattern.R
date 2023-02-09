@@ -19,9 +19,6 @@ plot_pattern <-
            rotate = FALSE,
            cluster = NULL,
            npat = NULL) {
-    # if (!is.data.frame(data) & !is.matrix(data)) {
-    #   stop("Dataset should be a 'data.frame' or 'matrix'.")
-    # }
     verify_data(data, df = TRUE)
     vrb <- substitute(vrb)
     if (vrb[1] == "all") {

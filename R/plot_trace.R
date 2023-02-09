@@ -10,9 +10,6 @@
 #' plot_trace(imp)
 #' @export
 plot_trace <- function(data, vrb = "all") {
-  # if (!mice::is.mids(data)) {
-  #   stop("argument 'data' must be a 'mids' object", call. = FALSE)
-  # }
   verify_data(data, imp = TRUE)
   if (is.null(data$chainMean)) {
     stop("no convergence diagnostics found", call. = FALSE)

@@ -20,9 +20,6 @@ plot_pred <-
            square = TRUE,
            rotate = FALSE,
            vrb = "all") {
-    # if (!is.matrix(data) | dim(data)[1] != dim(data)[2]) {
-    #   stop("Predictor matrix should be a square matrix, try using mice::make.predictorMatrix() or mice::quickpred().")
-    # }
     verify_data(data, pred = TRUE)
     p <- nrow(data)
     if (!is.null(method) & is.character(method)) {

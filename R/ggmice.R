@@ -13,9 +13,6 @@
 ggmice <- function(data = NULL,
                    mapping = ggplot2::aes()) {
   # process inputs
-  # if (!(is.data.frame(data) | mice::is.mids(data))) {
-  #   stop("Dataset (e.g., 'data.frame' or 'tibble') or 'mids' object (e.g. created with mice::mice()) is required.")
-  # }
   verify_data(data = data, df = TRUE, imp = TRUE)
   if (is.null(mapping$x) & is.null(mapping$y)) {
     stop(

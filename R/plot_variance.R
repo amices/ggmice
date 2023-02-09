@@ -17,10 +17,6 @@
 #' plot_variance(imp)
 #' @export
 plot_variance <- function(data, grid = TRUE) {
-  # if (!mice::is.mids(data)) {
-  #   stop("Input is not a Multiply Imputed Data Set of class mids. \n
-  #        Perhaps function mice::as.mids() can be of use?")
-  # }
   verify_data(data, imp = TRUE)
   if (data$m < 2) {
     stop(
