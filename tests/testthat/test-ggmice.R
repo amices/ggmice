@@ -11,6 +11,10 @@ test_that("ggmice with continuous data", {
   expect_s3_class(gg, "ggplot")
   gg <- ggmice(imp, ggplot2::aes(age, bmi))
   expect_s3_class(gg, "ggplot")
+  gg <- ggmice(cbind(dat, age2 = 0), ggplot2::aes(age2, bmi))
+  expect_s3_class(gg, "ggplot")
+  gg <- ggmice(cbind(dat, age2 = NA), ggplot2::aes(age2, bmi))
+  expect_s3_class(gg, "ggplot")
 })
 
 test_that("ggmice with categorical data", {
@@ -45,4 +49,5 @@ test_that("ggmice with incorrect arguments", {
   expect_warning(ggmice(dat, ggplot2::aes(bmi, color = bmi)))
   expect_error(ggmice(dat, ggplot2::aes(x = test)))
   expect_error(ggmice(dat, ggplot2::aes(y = test)))
+  expect_error(ggmice(cbind(dat, dat), ggplot2::aes(bmi)))
 })

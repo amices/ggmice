@@ -34,10 +34,25 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     vrbs <- names(data$data)
     vrbs_num <- vrbs[purrr::map_lgl(data$data, is.numeric)]
   }
+  if (length(vrbs) > length(unique(vrbs))) {
+    stop(paste0("The data must have unique column names. Columns ", vrbs[duplicated(vrbs)], " are duplicated."))
+  }
   mapping_x <- ggplot2::as_label(mapping$x)
   mapping_y <- ggplot2::as_label(mapping$y)
-  vrb_x <- vrbs[stringr::str_detect(mapping_x, vrbs)]
-  vrb_y <- vrbs[stringr::str_detect(mapping_y, vrbs)]
+  if (mapping_x %in% vrbs) {
+    vrb_x <- mapping_x
+  }
+  if (mapping_x %nin% vrbs) {
+    vrb_x <- vrbs[stringr::str_detect(mapping_x, vrbs)]
+    warning(paste0("Mapping variable '", mapping_x, "' recognized internally as '", vrb_x, "', please verify (and rename if incorrect)."))
+  }
+  if (mapping_y %in% vrbs) {
+    vrb_y <-mapping_y
+  }
+  if (mapping_y %nin% vrbs) {
+    vrb_y <- vrbs[stringr::str_detect(mapping_y, vrbs)]
+    warning(paste0("Mapping variable '", mapping_y, "' recognized internally as '", vrb_y, "', please verify (and rename if incorrect)."))
+  }
   if (!is.null(mapping$x) & mapping_x %nin% c(".id", ".imp", ".where") & identical(vrb_x, character(0))) {
     stop(paste0("Mapping variable '", mapping_x, "' not found in the data or imputations."))
   }
@@ -55,8 +70,8 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     if (!is.null(mapping$x) & !is.null(mapping$y)) {
       mice_data <- dplyr::mutate(
         mice_data,
-        dplyr::across(vrbs_num, ~ tidyr::replace_na(as.numeric(.x), -Inf)),
-        dplyr::across(vrbs[vrbs %nin% vrbs_num], ~ {
+        dplyr::across(tidyselect::all_of(vrbs_num), ~ tidyr::replace_na(as.numeric(.x), -Inf)),
+        dplyr::across(tidyselect::all_of(vrbs[vrbs %nin% vrbs_num]), ~ {
           as.factor(tidyr::replace_na(as.character(.x), " "))
         })
       )
