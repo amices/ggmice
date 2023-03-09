@@ -34,6 +34,9 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     vrbs <- names(data$data)
     vrbs_num <- vrbs[purrr::map_lgl(data$data, is.numeric)]
   }
+  if (length(vrbs) > length(unique(vrbs))) {
+    stop(paste0("The data must have unique column names. Columns ", vrbs[duplicated(vrbs)], " are duplicated."))
+  }
   mapping_x <- ggplot2::as_label(mapping$x)
   mapping_y <- ggplot2::as_label(mapping$y)
   vrb_x <- vrbs[stringr::str_detect(mapping_x, vrbs)]
