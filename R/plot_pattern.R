@@ -45,8 +45,10 @@ plot_pattern <-
         stop("Number of patterns should be one or more. Please provide a positive numeric value.")
       }
     }
-    if (!any(is.na(data))){
-      return(message("This dataset is completely observed. No missing data patterns are shown."))
+    if (!any(is.na(data))) {
+      return(message(
+        "This dataset is completely observed. No missing data patterns are shown."
+      ))
     }
 
     # get missing data pattern
@@ -57,10 +59,18 @@ plot_pattern <-
       if (npat < (nrow(pat) - 1)) {
         top_n_pat <-
           sort(as.numeric(row.names(pat)), decreasing = TRUE)[1:npat]
-        rows_pat_full <- nrow(pat) # full number of missing data patterns
-        pat <- pat[rownames(pat) %in% c(top_n_pat, ""), ]
+        rows_pat_full <-
+          nrow(pat) # full number of missing data patterns
+        pat <- pat[rownames(pat) %in% c(top_n_pat, ""),]
         # show number of requested, shown, and hidden missing data patterns
-        message(npat, " missing data patterns were requested and ", nrow(pat), " missing data patterns are shown. ", (rows_pat_full - nrow(pat)), " missing data patterns are hidden.")
+        message(
+          npat,
+          " missing data patterns were requested and ",
+          nrow(pat),
+          " missing data patterns are shown. ",
+          (rows_pat_full - nrow(pat)),
+          " missing data patterns are hidden."
+        )
       } else {
         warning(
           "Number of patterns specified is equal to or greater than the total number of patterns. All missing data patterns are shown."
@@ -74,7 +84,7 @@ plot_pattern <-
     vrb <- colnames(pat)[-cls]
     frq <- row.names(pat)[-rws]
     na_row <- pat[-rws, cls]
-    na_col <- pat[rws,-cls]
+    na_col <- pat[rws, -cls]
 
     # add opacity for clustering
     if (is.null(cluster)) {
@@ -93,8 +103,7 @@ plot_pattern <-
 
     # tidy the pattern
     long <-
-      cbind(.y = 1:(rws - 1), pat_clean) %>%
-      as.data.frame(.) %>%
+      as.data.frame(cbind(.y = 1:(rws - 1), pat_clean)) %>%
       tidyr::pivot_longer(
         cols = tidyselect::all_of(vrb),
         names_to = "x",
@@ -125,7 +134,10 @@ plot_pattern <-
         )
       ) +
       ggplot2::geom_tile(color = "black") +
-      ggplot2::scale_fill_manual(values = c("observed" = "#006CC2B3", "missing" = "#B61A51B3")) +
+      ggplot2::scale_fill_manual(values = c(
+        "observed" = "#006CC2B3",
+        "missing" = "#B61A51B3"
+      )) +
       ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
       ggplot2::scale_x_continuous(
         breaks = 1:(cls - 1),
