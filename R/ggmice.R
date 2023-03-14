@@ -42,22 +42,30 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (mapping_x %in% vrbs) {
     vrb_x <- mapping_x
   }
-  if (mapping_x %nin% vrbs) {
+  if (is.null(mapping$x)) {
+    vrb_x <- NULL
+  }
+  if (mapping_x %nin% c(vrbs, ".id", ".imp", ".where") & !is.null(mapping$x)) {
     vrb_x <- vrbs[stringr::str_detect(mapping_x, vrbs)]
-    warning(paste0("Mapping variable '", mapping_x, "' recognized internally as '", vrb_x, "', please verify (and rename if incorrect)."))
-  }
+    if (identical(vrb_x, character(0))) {
+      stop(paste0("Mapping variable '", mapping_x, "' not found in the data or imputations."))
+    } else {
+      warning(paste0("Mapping variable '", mapping_x, "' recognized internally as '", vrb_x, "', please verify (and rename if incorrect)."))
+  }}
   if (mapping_y %in% vrbs) {
-    vrb_y <-mapping_y
+    vrb_y <- mapping_y
   }
-  if (mapping_y %nin% vrbs) {
+  if (is.null(mapping$y)) {
+    vrb_y <- NULL
+  }
+  if (mapping_y %nin% c(vrbs, ".id", ".imp", ".where") & !is.null(mapping$y)) {
     vrb_y <- vrbs[stringr::str_detect(mapping_y, vrbs)]
+    if (identical(vrb_y, character(0))) {
+      stop(paste0("Mapping variable '", mapping_y, "' not found in the data or imputations."))
+    } else{
     warning(paste0("Mapping variable '", mapping_y, "' recognized internally as '", vrb_y, "', please verify (and rename if incorrect)."))
-  }
-  if (!is.null(mapping$x) & mapping_x %nin% c(".id", ".imp", ".where") & identical(vrb_x, character(0))) {
-    stop(paste0("Mapping variable '", mapping_x, "' not found in the data or imputations."))
-  }
-  if (!is.null(mapping$y) & mapping_y %nin% c(".id", ".imp", ".where") & identical(vrb_y, character(0))) {
-    stop(paste0("Mapping variable '", mapping_y, "' not found in the data or imputations."))
+  }}
+  if (!is.null(mapping$y) & mapping_y %nin% c(vrbs, ".id", ".imp", ".where")) {
   }
 
   # edit data and mapping objects
