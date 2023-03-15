@@ -42,7 +42,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (mapping_x %in% vrbs) {
     vrb_x <- mapping_x
   }
-  if (is.null(mapping$x)) {
+  if (is.null(mapping$x) | (mice::is.mids(data) & mapping_x %in% c(".id", ".imp", ".where"))) {
     vrb_x <- NULL
   }
   if (mapping_x %nin% c(vrbs, ".id", ".imp", ".where") & !is.null(mapping$x)) {
@@ -55,7 +55,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (mapping_y %in% vrbs) {
     vrb_y <- mapping_y
   }
-  if (is.null(mapping$y)) {
+  if (is.null(mapping$y) | (mice::is.mids(data) & mapping_y %in% c(".id", ".imp", ".where"))) {
     vrb_y <- NULL
   }
   if (mapping_y %nin% c(vrbs, ".id", ".imp", ".where") & !is.null(mapping$y)) {
@@ -65,8 +65,6 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     } else{
     warning(paste0("Mapping variable '", mapping_y, "' recognized internally as '", vrb_y, "', please verify (and rename if incorrect)."))
   }}
-  if (!is.null(mapping$y) & mapping_y %nin% c(vrbs, ".id", ".imp", ".where")) {
-  }
 
   # edit data and mapping objects
   if (is.data.frame(data)) {
