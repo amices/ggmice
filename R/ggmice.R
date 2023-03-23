@@ -42,10 +42,10 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (mapping_x %in% vrbs) {
     vrb_x <- mapping_x
   }
-  if (is.null(mapping$x) | (mice::is.mids(data) & mapping_x %in% c(".id", ".imp", ".where"))) {
+  if (is.null(mapping$x) | ((mice::is.mids(data) & mapping_x %in% c(".id", ".imp", ".where")))) {
     vrb_x <- NULL
   }
-  if (mapping_x %nin% c(vrbs, ".id", ".imp", ".where") & !is.null(mapping$x)) {
+  if (!is.null(mapping$x) & mapping_x %nin% c(vrbs, ".id", ".imp", ".where")) {
     vrb_x <- vrbs[stringr::str_detect(mapping_x, vrbs)]
     if (identical(vrb_x, character(0))) {
       stop(paste0("Mapping variable '", mapping_x, "' not found in the data or imputations."))
@@ -55,7 +55,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (mapping_y %in% vrbs) {
     vrb_y <- mapping_y
   }
-  if (is.null(mapping$y) | (mice::is.mids(data) & mapping_y %in% c(".id", ".imp", ".where"))) {
+  if (is.null(mapping$y) | ((mice::is.mids(data) & mapping_y %in% c(".id", ".imp", ".where")))) {
     vrb_y <- NULL
   }
   if (mapping_y %nin% c(vrbs, ".id", ".imp", ".where") & !is.null(mapping$y)) {
