@@ -34,16 +34,37 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     vrbs <- names(data$data)
     vrbs_num <- vrbs[purrr::map_lgl(data$data, is.numeric)]
   }
+  if (length(vrbs) > length(unique(vrbs))) {
+    stop(paste0("The data must have unique column names. Columns ", vrbs[duplicated(vrbs)], " are duplicated."))
+  }
   mapping_x <- ggplot2::as_label(mapping$x)
   mapping_y <- ggplot2::as_label(mapping$y)
-  vrb_x <- vrbs[stringr::str_detect(mapping_x, vrbs)]
-  vrb_y <- vrbs[stringr::str_detect(mapping_y, vrbs)]
-  if (!is.null(mapping$x) & mapping_x %nin% c(".id", ".imp", ".where") & identical(vrb_x, character(0))) {
-    stop(paste0("Mapping variable '", mapping_x, "' not found in the data or imputations."))
+  if (mapping_x %in% vrbs) {
+    vrb_x <- mapping_x
   }
-  if (!is.null(mapping$y) & mapping_y %nin% c(".id", ".imp", ".where") & identical(vrb_y, character(0))) {
-    stop(paste0("Mapping variable '", mapping_y, "' not found in the data or imputations."))
+  if (is.null(mapping$x) | (mice::is.mids(data) & mapping_x %in% c(".id", ".imp", ".where"))) {
+    vrb_x <- NULL
   }
+  if (mapping_x %nin% c(vrbs, ".id", ".imp", ".where") & !is.null(mapping$x)) {
+    vrb_x <- vrbs[stringr::str_detect(mapping_x, vrbs)]
+    if (identical(vrb_x, character(0))) {
+      stop(paste0("Mapping variable '", mapping_x, "' not found in the data or imputations."))
+    } else {
+      warning(paste0("Mapping variable '", mapping_x, "' recognized internally as '", vrb_x, "', please verify (and rename if incorrect)."))
+  }}
+  if (mapping_y %in% vrbs) {
+    vrb_y <- mapping_y
+  }
+  if (is.null(mapping$y) | (mice::is.mids(data) & mapping_y %in% c(".id", ".imp", ".where"))) {
+    vrb_y <- NULL
+  }
+  if (mapping_y %nin% c(vrbs, ".id", ".imp", ".where") & !is.null(mapping$y)) {
+    vrb_y <- vrbs[stringr::str_detect(mapping_y, vrbs)]
+    if (identical(vrb_y, character(0))) {
+      stop(paste0("Mapping variable '", mapping_y, "' not found in the data or imputations."))
+    } else{
+    warning(paste0("Mapping variable '", mapping_y, "' recognized internally as '", vrb_y, "', please verify (and rename if incorrect)."))
+  }}
 
   # edit data and mapping objects
   if (is.data.frame(data)) {
@@ -55,8 +76,8 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     if (!is.null(mapping$x) & !is.null(mapping$y)) {
       mice_data <- dplyr::mutate(
         mice_data,
-        dplyr::across(vrbs_num, ~ tidyr::replace_na(as.numeric(.x), -Inf)),
-        dplyr::across(vrbs[vrbs %nin% vrbs_num], ~ {
+        dplyr::across(tidyselect::all_of(vrbs_num), ~ tidyr::replace_na(as.numeric(.x), -Inf)),
+        dplyr::across(tidyselect::all_of(vrbs[vrbs %nin% vrbs_num]), ~ {
           as.factor(tidyr::replace_na(as.character(.x), " "))
         })
       )
