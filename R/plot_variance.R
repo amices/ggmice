@@ -90,44 +90,13 @@ plot_variance <- function(data, grid = TRUE) {
         fill = legend,
         caption = caption
       ) +
-      # ggplot2::scale_x_discrete(position = "top", expand = c(0, 0)) +
-      # ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
+      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
       theme_minimice()
-
-    # summ <- long %>%
-    #   dplyr::group_by(.id) %>%
-    #   dplyr::summarise(avg = mean(pred), vrn = var(pred)) %>%
-    #   # dplyr::arrange(avg) %>%
-    #   dplyr::mutate(.id = reorder(.id, -avg), .rws = as.numeric(row.names(.)))
-
-    # long <- long %>%
-    #   # dplyr::summarise(dplyr::across(dplyr::everything(),  stats::var)) %>%
-    #   dplyr::ungroup() %>%
-    #   dplyr::mutate(.id = as.numeric(.id),
-    #                 name = "")
-
-    # ggplot2::ggplot(long, ggplot2::aes(x = avg, y = .rws, color = vrn)) +
-    #   ggplot2::geom_point() +
-    # ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0))
-
-
-    # ggplot2::ggplot(long, ggplot2::aes(x = pred, y = .id, color = .imp)) +
-    #   ggplot2::geom_point()
-
-    # dplyr::bind_cols(., DV = dat[,dv]) %>%
-    # dplyr::rowwise() %>%
-    # dplyr::mutate(means = mean(dplyr::c_across(-DV)),
-    #               vars = var(dplyr::c_across(-DV)))
-
   }
 
-
-
-
-  if (!grid) {
     gg <-
       gg + ggplot2::theme(panel.border = ggplot2::element_rect(fill = NA))
-  }
+
 
   # return the ggplot object
   return(gg)

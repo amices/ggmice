@@ -7,9 +7,7 @@
 plot_variance(data, grid = TRUE)
 }
 \arguments{
-\item{data}{A package \code{mice} generated multiply imputed data set of class
-\code{mids}. Non-\code{mids} objects that have not been generated with \code{mice::mice()}
-can be converted through a pipeline with \code{mice::as.mids()}.}
+\item{data}{A multiply imputed object of class \code{\link[mice:mids-class]{mice::mids}} or \code{\link[mice:mira-class]{mice::mira}}.}
 
 \item{grid}{Logical indicating whether grid lines should be displayed.}
 }
