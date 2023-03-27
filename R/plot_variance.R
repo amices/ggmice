@@ -42,8 +42,23 @@ plot_variance <- function(data, grid = TRUE) {
       dplyr::ungroup() %>%
       dplyr::mutate(dplyr::across(.cols = -.id, ~ scale_above_zero(.))) %>%
       tidyr::pivot_longer(cols = -.id)
-    lab_x <- "Column name"
+
+    legend <- "Imputation variability*\n "
     caption <- "*scaled cell-level between imputation variance"
+
+    gg <-
+      ggplot2::ggplot(long, ggplot2::aes(name, .id, fill = value)) +
+      ggplot2::geom_tile(color = gridcol) +
+      ggplot2::scale_fill_gradient(low = "white", high = mice::mdc(2)) +
+      ggplot2::labs(
+        x = "Column name",
+        y = "Row number",
+        fill = legend,
+        caption = caption
+      ) +
+      ggplot2::scale_x_discrete(position = "top", expand = c(0, 0)) +
+      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
+      theme_minimice()
   }
 
   if (mice::is.mira(data)) {
@@ -57,7 +72,27 @@ plot_variance <- function(data, grid = TRUE) {
       )
     }) %>%
       dplyr::group_by(.id) %>%
-      dplyr::summarise(value = stats::var(pred))
+      dplyr::summarise(avg = mean(pred), vrn = var(pred)) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(.id = as.numeric(.id))
+
+    legend <- "Imputation variability*\n "
+    caption <-
+      "*absolute prediction-level between imputation variance"
+
+    gg <- ggplot2::ggplot(long, ggplot2::aes(avg, .id, fill = vrn, size = vrn)) +
+      ggplot2::geom_point(color = gridcol, shape = 21) +
+      ggplot2::scale_fill_gradient(low = "white", high = mice::mdc(2), guide = "legend") +
+      ggplot2::labs(
+        x = "Predicted value",
+        y = "Row number",
+        size = legend,
+        fill = legend,
+        caption = caption
+      ) +
+      # ggplot2::scale_x_discrete(position = "top", expand = c(0, 0)) +
+      # ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
+      theme_minimice()
 
     # summ <- long %>%
     #   dplyr::group_by(.id) %>%
@@ -65,11 +100,11 @@ plot_variance <- function(data, grid = TRUE) {
     #   # dplyr::arrange(avg) %>%
     #   dplyr::mutate(.id = reorder(.id, -avg), .rws = as.numeric(row.names(.)))
 
-    long <- long %>%
-      # dplyr::summarise(dplyr::across(dplyr::everything(),  stats::var)) %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(.id = as.numeric(.id),
-                    name = "")
+    # long <- long %>%
+    #   # dplyr::summarise(dplyr::across(dplyr::everything(),  stats::var)) %>%
+    #   dplyr::ungroup() %>%
+    #   dplyr::mutate(.id = as.numeric(.id),
+    #                 name = "")
 
     # ggplot2::ggplot(long, ggplot2::aes(x = avg, y = .rws, color = vrn)) +
     #   ggplot2::geom_point() +
@@ -84,25 +119,9 @@ plot_variance <- function(data, grid = TRUE) {
     # dplyr::mutate(means = mean(dplyr::c_across(-DV)),
     #               vars = var(dplyr::c_across(-DV)))
 
-    lab_x <- "Predicted values"
-    caption <-
-      "*scaled prediction-level between imputation variance"
   }
 
-  gg <-
-    ggplot2::ggplot(long, ggplot2::aes(name, .id, fill = value)) +
-    ggplot2::geom_tile(color = gridcol) +
-    ggplot2::scale_fill_gradient(low = "white", high = mice::mdc(2)) +
-    ggplot2::labs(
-      x = lab_x,
-      y = "Row number",
-      fill = "Imputation variability*
-      ",
-      caption = caption
-    ) +
-    ggplot2::scale_x_discrete(position = "top", expand = c(0, 0)) +
-    ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
-    theme_minimice()
+
 
 
   if (!grid) {
