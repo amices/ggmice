@@ -15,18 +15,17 @@
 #' plot_variance(imp)
 #' @export
 plot_variance <- function(data, grid = TRUE) {
-  if (!(mice::is.mids(data) | mice::is.mira(data))) {
-    stop(
-      "Input is not a Multiply Imputed Data Set of class `mids`/ `mira`. \n
-         Perhaps function mice::as.mids() can be of use?"
-    )
-  }
   if (mice::is.mids(data)) {
-      stopifnot("The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2)." = data$m > 1)
-  } else {
-      stopifnot("The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2)." = length(data$analyses) > 1)
-    }
-
+    if (data$m < 2) {
+      stop("The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2).")
+    }} else if (mice::is.mira(data)) {
+      if(length(data$analyses) < 2) {
+      stop("The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2).")
+      }} else {
+        stop(
+          "Input is not a Multiply Imputed Data Set of class `mids`/ `mira`. \n
+         Perhaps function mice::as.mids() can be of use?")
+      }
   if (grid) {
     gridcol <- "black"
   } else {
