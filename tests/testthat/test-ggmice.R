@@ -1,48 +1,52 @@
-test_that("ggmice with continuous data", {
-  dat <- dplyr::mutate(mice::nhanes,
-    age = as.integer(age),
-    bmi = bmi,
-    .keep = "used"
-  )
-  gg <- ggmice(dat, ggplot2::aes(bmi))
-  expect_s3_class(gg, "ggplot")
-  imp <- mice::mice(dat, printFlag = FALSE)
-  gg <- ggmice(imp, ggplot2::aes(bmi))
-  expect_s3_class(gg, "ggplot")
-  gg <- ggmice(imp, ggplot2::aes(age, bmi))
-  expect_s3_class(gg, "ggplot")
+# create test objects
+dat <- dplyr::mutate(
+  mice::nhanes,
+  bmi = as.numeric(bmi),
+  hyp = as.factor(hyp),
+  age2 = as.character(age)
+)
+imp <- suppressWarnings(mice::mice(dat, printFlag = FALSE))
+
+# tests
+test_that("continuous data plot", {
+  expect_s3_class(ggmice(dat, ggplot2::aes(bmi)), "ggplot")
+  expect_s3_class(ggmice(imp, ggplot2::aes(bmi)), "ggplot")
 })
 
-test_that("ggmice with categorical data", {
-  dat <- dplyr::mutate(mice::nhanes,
-    age = as.factor(age),
-    hyp = hyp,
-    .keep = "used"
-  )
-  gg <- ggmice(dat, ggplot2::aes(age))
-  expect_s3_class(gg, "ggplot")
-  imp <- mice::mice(dat, printFlag = FALSE)
-  gg <- ggmice(imp, ggplot2::aes(age))
-  expect_s3_class(gg, "ggplot")
+test_that("categorical data plot", {
+  expect_s3_class(ggmice(dat, ggplot2::aes(hyp)), "ggplot")
+  expect_s3_class(ggmice(imp, ggplot2::aes(hyp)), "ggplot")
+  expect_s3_class(ggmice(dat, ggplot2::aes(age2)), "ggplot")
+  expect_s3_class(ggmice(imp, ggplot2::aes(age2)), "ggplot")
 })
 
-test_that("ggmice with complete data", {
-  dat <- na.omit(mice::nhanes)
-  gg <- ggmice(dat, ggplot2::aes(bmi))
-  expect_s3_class(gg, "ggplot")
-  imp <- mice::mice(dat, printFlag = FALSE, seed = 1)
-  gg <- ggmice(imp, ggplot2::aes(bmi))
-  expect_s3_class(gg, "ggplot")
+test_that("mixed data plot", {
+  expect_s3_class(ggmice(dat, ggplot2::aes(age, bmi)), "ggplot")
+  expect_s3_class(ggmice(imp, ggplot2::aes(age, bmi)), "ggplot")
+  expect_s3_class(ggmice(dat, ggplot2::aes(age, hyp)), "ggplot")
+  expect_s3_class(ggmice(imp, ggplot2::aes(age, hyp)), "ggplot")
+  expect_s3_class(ggmice(dat, ggplot2::aes(age, age2)), "ggplot")
+  expect_s3_class(ggmice(imp, ggplot2::aes(age, age2)), "ggplot")
 })
 
-test_that("ggmice with incorrect arguments", {
-  dat <- mice::nhanes
+test_that("complete data plot", {
+  expect_s3_class(ggmice(na.omit(dat), ggplot2::aes(bmi)), "ggplot")
+  imp2 <- suppressWarnings(mice::mice(na.omit(dat), printFlag = FALSE, seed = 1))
+  expect_s3_class(ggmice(imp2, ggplot2::aes(bmi)), "ggplot")
+})
+
+test_that("incorrect data", {
+  expect_error(ggmice(NA))
   expect_error(ggmice("test"))
+  expect_error(ggmice(as.matrix(dat)))
+  expect_error(ggmice(cbind(dat, dat), ggplot2::aes(bmi)))
+})
+
+test_that("incorrect mapping", {
   expect_error(ggmice(dat))
-  expect_error(ggmice(as.matrix(dat), ggplot2::aes(bmi)))
-  expect_error(ggmice(dat, ggplot2::aes(shape = bmi)))
+  expect_error(ggmice(dat, ggplot2::aes(x = test)))
+  expect_error(ggmice(dat, ggplot2::aes(group = age)))
   expect_error(ggmice(dat, ggplot2::aes("bmi")))
   expect_warning(ggmice(dat, ggplot2::aes(bmi, color = bmi)))
-  expect_error(ggmice(dat, ggplot2::aes(x = test)))
-  expect_error(ggmice(dat, ggplot2::aes(y = test)))
 })
+
