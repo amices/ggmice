@@ -63,7 +63,7 @@ plot_pattern <-
           sort(as.numeric(row.names(pat)), decreasing = TRUE)[1:npat]
         rows_pat_full <-
           nrow(pat) # full number of missing data patterns
-        pat <- pat[rownames(pat) %in% c(top_n_pat, ""), drop = FALSE]
+        pat <- pat[rownames(pat) %in% c(top_n_pat, ""), , drop = FALSE]
         # show number of requested, shown, and hidden missing data patterns
         message(
           npat,
