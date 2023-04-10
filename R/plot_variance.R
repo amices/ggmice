@@ -20,7 +20,7 @@ plot_variance <- function(data, grid = TRUE) {
       stop("The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2).")
     }} else if (mice::is.mira(data)) {
       if(length(data$analyses) < 2) {
-      stop("The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2).")
+        stop("The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2).")
       }} else {
         stop(
           "Input is not a Multiply Imputed Data Set of class `mids`/ `mira`. \n
@@ -56,45 +56,48 @@ plot_variance <- function(data, grid = TRUE) {
         caption = caption
       ) +
       ggplot2::scale_x_discrete(position = "top", expand = c(0, 0)) +
-      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
-      theme_minimice()
+      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0))
+    theme_minimice()
   }
 
   if (mice::is.mira(data)) {
+    dv <- data[["call"]][["expr"]][[2]][[2]]
     long <- purrr::map_dfr(1:length(data$analyses), ~ {
-      pred = predict(data$analyses[[.x]])
-      data.frame(
-        .imp = .x,
-        .id = names(pred),
-        pred = pred,
-        row.names = NULL
+      broom::augment(data$analyses[[.x]])
+    }, .id="m") %>%
+      ### extract row numbers :/ :/ :/
+      dplyr::mutate(row = rep(1:(nrow(.)/dplyr::n_distinct(m)),
+                              dplyr::n_distinct(m))) %>%
+      tidyr::pivot_wider(id_cols = row, names_from = m,
+                         values_from = c(dv, .fitted, .resid)) %>%
+      dplyr::rowwise() %>%
+      dplyr::summarize(
+        ### extract observed dat :/ :/ :/
+        observed = ifelse(dplyr::n_distinct(dplyr::c_across(
+          dplyr::starts_with(rlang::as_string(dv))))==1, get(paste0(dv,"_1")), NA),
+        avg = mean(dplyr::c_across(dplyr::starts_with(".fitted"))),
+        vrn = var(dplyr::c_across(dplyr::starts_with(".fitted")))
       )
-    }) %>%
-      dplyr::group_by(.id) %>%
-      dplyr::summarise(avg = mean(pred), vrn = var(pred)) %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(.id = as.numeric(.id))
 
     legend <- "Imputation variability*\n "
     caption <-
       "*absolute prediction-level between imputation variance"
-
-    gg <- ggplot2::ggplot(long, ggplot2::aes(avg, .id, fill = vrn, size = vrn)) +
+    gg <- ggplot2::ggplot(long, ggplot2::aes(x = avg, y = observed, fill = vrn, size = vrn)) +
       ggplot2::geom_point(color = gridcol, shape = 21) +
       ggplot2::scale_fill_gradient(low = "white", high = mice::mdc(2), guide = "legend") +
       ggplot2::labs(
-        x = "Predicted value",
-        y = "Row number",
+        x = "Average Predicted value",
+        y = paste("observed", dv),
         size = legend,
         fill = legend,
         caption = caption
       ) +
-      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
-      theme_minimice()
+      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0))
+    theme_minimice()
   }
 
-    gg <-
-      gg + ggplot2::theme(panel.border = ggplot2::element_rect(fill = NA))
+  gg <-
+    gg + ggplot2::theme(panel.border = ggplot2::element_rect(fill = NA))
 
 
   # return the ggplot object
