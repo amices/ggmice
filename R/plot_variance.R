@@ -56,8 +56,8 @@ plot_variance <- function(data, grid = TRUE) {
         caption = caption
       ) +
       ggplot2::scale_x_discrete(position = "top", expand = c(0, 0)) +
-      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0))
-    theme_minimice()
+      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
+      theme_minimice()
   }
 
   if (mice::is.mira(data)) {
@@ -76,7 +76,7 @@ plot_variance <- function(data, grid = TRUE) {
         observed = ifelse(dplyr::n_distinct(dplyr::c_across(
           dplyr::starts_with(rlang::as_string(dv))))==1, get(paste0(dv,"_1")), NA),
         avg = mean(dplyr::c_across(dplyr::starts_with(".fitted"))),
-        vrn = var(dplyr::c_across(dplyr::starts_with(".fitted")))
+        vrn = stats::var(dplyr::c_across(dplyr::starts_with(".fitted")))
       )
 
     legend <- "Imputation variability*\n "
