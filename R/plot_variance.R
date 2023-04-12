@@ -22,9 +22,11 @@ plot_variance <- function(data, grid = TRUE) {
       if(length(data$analyses) < 2) {
         stop("The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2).")
       }} else {
-        stop(
-          "Input is not a Multiply Imputed Data Set of class `mids`/ `mira`. \n
-         Perhaps function mice::as.mids() can be of use?")
+        if (!is.list(data)) stop("Argument 'data' not a list", call. = FALSE)
+        data <- mice::as.mira(data)
+        # stop(
+        #   "Input is not a Multiply Imputed Data Set of class `mids`/ `mira`. \n
+        #  Perhaps function mice::as.mids() can be of use?")
       }
   if (grid) {
     gridcol <- "black"
@@ -61,7 +63,7 @@ plot_variance <- function(data, grid = TRUE) {
   }
 
   if (mice::is.mira(data)) {
-    dv <- data[["call"]][["expr"]][[2]][[2]]
+    dv <- data[["analyses"]][[1]][["terms"]][[2]]
     long <- purrr::map_dfr(1:length(data$analyses), ~ {
       broom::augment(data$analyses[[.x]])
     }, .id="m") %>%
@@ -92,7 +94,7 @@ plot_variance <- function(data, grid = TRUE) {
         fill = legend,
         caption = caption
       ) +
-      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0))
+      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
     theme_minimice()
   }
 
@@ -110,3 +112,4 @@ scale_above_zero <- function(x) {
   x[x != 0] <- scale(x[x != 0], center = FALSE)
   return(x)
 }
+
