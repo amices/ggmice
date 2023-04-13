@@ -88,14 +88,13 @@ plot_variance <- function(data, grid = TRUE) {
       ggplot2::geom_point(color = gridcol, shape = 21) +
       ggplot2::scale_fill_gradient(low = "white", high = mice::mdc(2), guide = "legend") +
       ggplot2::labs(
-        x = "Average Predicted value",
-        y = paste("observed", dv),
-        size = legend,
+        x = paste("Average predicted", dv),
+        y = paste("Observed", dv),
         fill = legend,
         caption = caption
       ) +
-      ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
-    theme_minimice()
+      ggplot2::guides(size = FALSE, fill = "colorbar") +
+      theme_minimice()
   }
 
   gg <-
