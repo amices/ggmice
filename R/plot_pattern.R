@@ -41,8 +41,8 @@ plot_pattern <-
       }
     }
     if (!is.null(npat)) {
-      if (!is.numeric(npat) | npat < 1) {
-        stop("Number of patterns should be one or more. Please provide a positive numeric value.")
+      if (!is.numeric(npat) | npat < 2) {
+        stop("The minimum number of patterns to display is two. Please provide an integer greater than one.")
       }
     }
     if (!any(is.na(data))) {
@@ -61,12 +61,12 @@ plot_pattern <-
           sort(as.numeric(row.names(pat)), decreasing = TRUE)[1:npat]
         rows_pat_full <-
           nrow(pat) # full number of missing data patterns
-        pat <- pat[rownames(pat) %in% c(top_n_pat, ""),]
+        pat <- pat[rownames(pat) %in% c(top_n_pat, ""), , drop = FALSE]
         # show number of requested, shown, and hidden missing data patterns
         message(
           npat,
           " missing data patterns were requested and ",
-          nrow(pat),
+          nrow(pat) - 1,
           " missing data patterns are shown. ",
           (rows_pat_full - nrow(pat)),
           " missing data patterns are hidden."
