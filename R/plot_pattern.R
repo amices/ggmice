@@ -1,7 +1,7 @@
 #' Plot the missing data pattern of an incomplete dataset
 #'
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
-#' @param vrb String or vector with variable name(s), default is "all".
+#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param square Logical indicating whether the plot tiles should be squares, defaults to squares to mimick `mice::md.pattern()`.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
@@ -19,14 +19,19 @@ plot_pattern <-
            rotate = FALSE,
            cluster = NULL,
            npat = NULL) {
-    if (!is.data.frame(data) & !is.matrix(data)) {
-      stop("Dataset should be a 'data.frame' or 'matrix'.")
+    verify_data(data, df = TRUE)
+    vrb <- substitute(vrb)
+    if (vrb != "all" & length(vrb) < 2) {
+      stop("The number of variables should be two or more to compute missing data patterns.")
     }
-    if (vrb == "all") {
+    if (vrb[1] == "all") {
       vrb <- names(data)
-    }
-    if (any(vrb %nin% names(data))) {
-      stop("Supplied variable name(s) not found in the dataset.")
+    } else {
+      vrb <- names(dplyr::select(data, {
+        {
+          vrb
+        }
+      }))
     }
     if (".x" %in% vrb | ".y" %in% vrb) {
       stop(
@@ -103,7 +108,7 @@ plot_pattern <-
 
     # tidy the pattern
     long <-
-      as.data.frame(cbind(.y = 1:(rws - 1), pat_clean)) %>%
+      data.frame(.y = 1:(rws - 1), pat_clean, row.names = NULL) %>%
       tidyr::pivot_longer(
         cols = tidyselect::all_of(vrb),
         names_to = "x",

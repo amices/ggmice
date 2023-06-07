@@ -9,7 +9,7 @@ plot_trace(data, vrb = "all")
 \arguments{
 \item{data}{An object of class \link[mice:mids-class]{mice::mids}.}
 
-\item{vrb}{String or vector with variable name(s), default is "all".}
+\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.

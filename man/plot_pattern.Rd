@@ -16,7 +16,7 @@ plot_pattern(
 \arguments{
 \item{data}{An incomplete dataset of class \code{data.frame} or \code{matrix}.}
 
-\item{vrb}{String or vector with variable name(s), default is "all".}
+\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 
 \item{square}{Logical indicating whether the plot tiles should be squares, defaults to squares to mimick \code{mice::md.pattern()}.}
 

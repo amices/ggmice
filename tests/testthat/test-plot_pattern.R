@@ -3,9 +3,15 @@ test_that("plot_pattern produces plot", {
   expect_s3_class(gg, "ggplot")
   gg <- plot_pattern(mice::nhanes, square = FALSE, rotate = TRUE, cluster = "age", npat = 2)
   expect_s3_class(gg, "ggplot")
-  gg <- plot_pattern(cbind(mice::nhanes, "test var" = NA))
+  gg <- plot_pattern(cbind(mice::nhanes, "testvar" = NA))
   expect_s3_class(gg, "ggplot")
 })
+
+test_that("plot_pattern works with different inputs", {
+  expect_s3_class(plot_pattern(mice::nhanes, c("age", "bmi")), "ggplot")
+  expect_s3_class(plot_pattern(mice::nhanes, c(age, bmi)), "ggplot")
+})
+
 
 test_that("plot_pattern with incorrect argument(s)", {
   expect_message(plot_pattern(na.omit(mice::nhanes)))
