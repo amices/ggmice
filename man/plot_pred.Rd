@@ -6,15 +6,17 @@
 \usage{
 plot_pred(
   data,
+  vrb = "all",
   method = NULL,
   label = TRUE,
   square = TRUE,
-  rotate = FALSE,
-  vrb = "all"
+  rotate = FALSE
 )
 }
 \arguments{
 \item{data}{A predictor matrix for \code{mice}, typically generated with \link[mice:make.predictorMatrix]{mice::make.predictorMatrix} or \link[mice:quickpred]{mice::quickpred}.}
+
+\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 
 \item{method}{Character string or vector with imputation methods.}
 
@@ -23,8 +25,6 @@ plot_pred(
 \item{square}{Logical indicating whether the plot tiles should be squares.}
 
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
-
-\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 }
 \value{
 An object of class \code{ggplot2::ggplot}.

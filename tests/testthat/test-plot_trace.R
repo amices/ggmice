@@ -5,6 +5,8 @@ test_that("plot_trace creates ggplot object", {
   expect_s3_class(plot_trace(imp, vrb = c("bmi", "hyp")), "ggplot")
   expect_s3_class(plot_trace(imp, vrb = "all"), "ggplot")
   expect_s3_class(plot_trace(imp, vrb = bmi), "ggplot")
+  expect_s3_class(plot_trace(imp, vrb = c("bmi", "hyp")), "ggplot")
+  expect_s3_class(plot_trace(imp, vrb = c(bmi, hyp)), "ggplot")
 })
 
 test_that("plot_trace returns error with incorrect argument(s)", {

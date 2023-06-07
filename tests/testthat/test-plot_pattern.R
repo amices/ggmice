@@ -7,6 +7,12 @@ test_that("plot_pattern produces plot", {
   expect_s3_class(gg, "ggplot")
 })
 
+test_that("plot_pattern works with different inputs", {
+  expect_s3_class(plot_pattern(mice::nhanes, c("age", "bmi")), "ggplot")
+  expect_s3_class(plot_pattern(mice::nhanes, c(age, bmi)), "ggplot")
+})
+
+
 test_that("plot_pattern with incorrect argument(s)", {
   expect_message(plot_pattern(na.omit(mice::nhanes)))
   expect_error(plot_pattern("test"))

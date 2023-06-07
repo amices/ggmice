@@ -21,6 +21,9 @@ plot_corr <-
            rotate = FALSE) {
     verify_data(data = data, df = TRUE)
     vrb <- substitute(vrb)
+    if (vrb != "all" & length(vrb) < 2) {
+      stop("The number of variables should be two or more to compute correlations.")
+    }
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {

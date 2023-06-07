@@ -1,11 +1,11 @@
 #' Plot the predictor matrix of an imputation model
 #'
 #' @param data A predictor matrix for `mice`, typically generated with [mice::make.predictorMatrix] or [mice::quickpred].
+#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param method Character string or vector with imputation methods.
 #' @param label Logical indicating whether predictor matrix values should be displayed.
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
-#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #'
 #' @return An object of class `ggplot2::ggplot`.
 #'
@@ -15,11 +15,11 @@
 #' @export
 plot_pred <-
   function(data,
+           vrb = "all",
            method = NULL,
            label = TRUE,
            square = TRUE,
-           rotate = FALSE,
-           vrb = "all") {
+           rotate = FALSE) {
     verify_data(data, pred = TRUE)
     p <- nrow(data)
     if (!is.null(method) & is.character(method)) {
@@ -38,11 +38,13 @@ plot_pred <-
       stop("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
     }
     vrb <- substitute(vrb)
-    if (vrb == "all") {
-      vrbs <- row.names(data)
+    if (vrb[1] == "all") {
+      vrb <- names(data)
     } else {
-      vrbs <- names(dplyr::select(as.data.frame(data), {
-        vrb
+      vrb <- names(dplyr::select(as.data.frame(data), {
+        {
+          vrb
+        }
       }))
     }
     vrbs <- row.names(data)
