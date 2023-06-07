@@ -136,6 +136,23 @@ ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) +
   ggplot2::theme(legend.position = "none")
 ```
 
+Faceted stripplot for multiple variables.
+
+```{r stripplot-facet}
+# original plot
+mice::stripplot(imp, wgt + hgt + bmi ~ .imp)
+# ggmice equivalent
+purrr::map(list("wgt", "hgt", "bmi"), function(x){
+  # ggmice equivalent
+  ggmice(imp, ggplot2::aes(x = .imp, y = .data[[x]])) +
+    geom_jitter(height = 0, width = 0.25) +
+    geom_boxplot(width = 0.5, size = 1, alpha = 0.75, outlier.shape = NA) +
+    ggplot2::labs(x = "Imputation number")
+}) %>%
+  patchwork::wrap_plots()
+```
+
+
 # `xyplot`
 
 Scatterplot of observed and imputed data.
