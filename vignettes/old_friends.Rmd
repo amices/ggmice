@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
   fig.width = 7.2,
   fig.height = 4
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 First load the `ggmice` package, some incomplete data and a `mice::mids` object into your workspace. 
@@ -142,11 +143,10 @@ Faceted stripplot for multiple variables.
 # original plot
 mice::stripplot(imp, wgt + hgt + bmi ~ .imp)
 # ggmice equivalent
-purrr::map(list("wgt", "hgt", "bmi"), function(x){
+purrr::map(c("wgt", "hgt", "bmi"), ~{
   # ggmice equivalent
-  ggmice(imp, ggplot2::aes(x = .imp, y = .data[[x]])) +
-    geom_jitter(height = 0, width = 0.25) +
-    geom_boxplot(width = 0.5, size = 1, alpha = 0.75, outlier.shape = NA) +
+  ggmice(imp, ggplot2::aes(x = .imp, y = .data[[.x]])) +
+    ggplot2::geom_jitter(height = 0, width = 0.25) +
     ggplot2::labs(x = "Imputation number")
 }) %>%
   patchwork::wrap_plots()

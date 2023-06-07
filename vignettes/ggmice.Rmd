@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
   fig.width = 7.2,
   fig.height = 4
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 # The `ggmice` package
@@ -164,12 +165,10 @@ ggmice(imp, aes(x = .imp, y = bmi)) +
 You may want to create a plot visualizing the imputations of multiple variables as one object. This can be done by combining `ggmice` with `purrr` and `patchwork`. For example, we could obtain boxplots of different imputed variables as one object.
 
 ```{r facet}
-purrr::map(list("wgt", "hgt", "bmi"), function(x){
-  # ggmice equivalent
-  ggmice(imp, ggplot2::aes(x = .imp, y = .data[[x]])) +
-    geom_jitter(height = 0, width = 0.25) +
-    geom_boxplot(width = 0.5, size = 1, alpha = 0.75, outlier.shape = NA) +
-    ggplot2::labs(x = "Imputation number")
+purrr::map(c("wgt", "hgt", "bmi"), ~{
+  ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
+    geom_boxplot() +
+    labs(x = "Imputation number")
 }) %>%
   patchwork::wrap_plots()
 ```
