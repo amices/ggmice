@@ -305,6 +305,19 @@ overlay:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.5</span>, size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.75</span>, outlier.shape <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Imputation number"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ggmice_files/figure-html/imp-box-1.png" width="691.2"></p>
+<p>You may want to create a plot visualizing the imputations of multiple
+variables as one object. This can be done by combining
+<code>ggmice</code> with <code>purrr</code> and <code>patchwork</code>.
+For example, we could obtain boxplots of different imputed variables as
+one object.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wgt"</span>, <span class="st">"hgt"</span>, <span class="st">"bmi"</span><span class="op">)</span>, <span class="op">~</span><span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.imp</span>, y <span class="op">=</span> <span class="va">.data</span><span class="op">[[</span><span class="va">.x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Imputation number"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">patchwork</span><span class="fu">::</span><span class="fu"><a href="https://patchwork.data-imaginist.com/reference/wrap_plots.html" class="external-link">wrap_plots</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="ggmice_files/figure-html/facet-1.png" width="691.2"></p>
 <p>To re-create any <code>mice</code> plot with <code>ggmice</code>, see
 the <a href="https://amices.org/ggmice/articles/old_friends.html" class="external-link">Old
 friends</a> vignette.</p>
@@ -329,11 +342,11 @@ incomplete dataset) is required, the argument <code>square</code> is
 optional and determines whether the missing data pattern has square or
 rectangular tiles, and the optional argument <code>rotate</code> changes
 the angle of the variable names 90 degrees if requested.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create missing data pattern plot</span></span>
 <span><span class="fu"><a href="../reference/plot_pattern.html">plot_pattern</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ggmice_files/figure-html/pattern-1.png" width="691.2"></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># specify optional arguments  </span></span>
 <span><span class="fu"><a href="../reference/plot_pattern.html">plot_pattern</a></span><span class="op">(</span><span class="va">dat</span>, square <span class="op">=</span> <span class="cn">TRUE</span>, rotate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -350,11 +363,11 @@ data on other variables. In general, higher influx and outflux values
 are preferred when building imputation models. The plotting function
 requires an incomplete dataset (argument <code>data</code>), and takes
 optional arguments to adjust the legend and axis labels.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create influx-outflux plot</span></span>
 <span><span class="fu"><a href="../reference/plot_flux.html">plot_flux</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ggmice_files/figure-html/flux-1.png" width="691.2"></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># specify optional arguments  </span></span>
 <span><span class="fu"><a href="../reference/plot_flux.html">plot_flux</a></span><span class="op">(</span></span>
@@ -371,11 +384,11 @@ optional arguments to adjust the legend and axis labels.</p>
 relations between variables, for the development of imputation models.
 Only one of the arguments (<code>data</code>, the incomplete dataset) is
 required, all other arguments are optional.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create correlation plot</span></span>
 <span><span class="fu"><a href="../reference/plot_corr.html">plot_corr</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ggmice_files/figure-html/correlations-1.png" width="691.2"></p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># specify optional arguments  </span></span>
 <span><span class="fu"><a href="../reference/plot_corr.html">plot_corr</a></span><span class="op">(</span></span>
@@ -399,14 +412,14 @@ predictor matrices. A predictor matrix is typically created using
 object. The <code><a href="../reference/plot_pred.html">plot_pred()</a></code> function requires a predictor
 matrix (the <code>data</code> argument), but other arguments can be
 provided too.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create predictor matrix</span></span>
 <span><span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://amices.org/mice/reference/quickpred.html" class="external-link">quickpred</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create predictor matrix plot</span></span>
 <span><span class="fu"><a href="../reference/plot_pred.html">plot_pred</a></span><span class="op">(</span><span class="va">pred</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ggmice_files/figure-html/predictormatrix-1.png" width="691.2"></p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># specify optional arguments  </span></span>
 <span><span class="fu"><a href="../reference/plot_pred.html">plot_pred</a></span><span class="op">(</span></span>
@@ -424,7 +437,7 @@ MICE algorithm for convergence evaluation. The only required argument is
 <code>data</code> (to supply a <code><a href="https://amices.org/mice/reference/mids-class.html" class="external-link">mice::mids</a></code> object). The
 optional argument <code>vrb</code> defaults to <code>"all"</code>, which
 would display traceplots for all variables.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create traceplot for one variable</span></span>
 <span><span class="fu"><a href="../reference/plot_trace.html">plot_trace</a></span><span class="op">(</span><span class="va">imp</span>, <span class="st">"bmi"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ggmice_files/figure-html/convergence-1.png" width="691.2"></p>
@@ -435,7 +448,7 @@ would display traceplots for all variables.</p>
 <h2 id="section"></h2>
 <p>This is the end of the vignette. This document was generated
 using:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.3.0 (2023-04-21)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
@@ -458,23 +471,28 @@ using:</p>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] ggmice_0.0.1.9000 ggplot2_3.4.2     mice_3.15.0      </span></span>
+<span><span class="co">#&gt; [1] ggmice_0.0.1.9000 ggplot2_3.4.2     mice_3.16.0      </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] sass_0.4.6        utf8_1.2.3        generics_0.1.3    tidyr_1.3.0      </span></span>
-<span><span class="co">#&gt;  [5] stringi_1.7.12    lattice_0.21-8    digest_0.6.31     magrittr_2.0.3   </span></span>
-<span><span class="co">#&gt;  [9] evaluate_0.21     grid_4.3.0        fastmap_1.1.1     rprojroot_2.0.3  </span></span>
-<span><span class="co">#&gt; [13] jsonlite_1.8.4    backports_1.4.1   purrr_1.0.1       fansi_1.0.4      </span></span>
-<span><span class="co">#&gt; [17] scales_1.2.1      textshaping_0.3.6 jquerylib_0.1.4   cli_3.6.1        </span></span>
-<span><span class="co">#&gt; [21] rlang_1.1.1       munsell_0.5.0     withr_2.5.0       cachem_1.0.8     </span></span>
-<span><span class="co">#&gt; [25] yaml_2.3.7        tools_4.3.0       memoise_2.0.1     dplyr_1.1.2      </span></span>
-<span><span class="co">#&gt; [29] colorspace_2.1-0  broom_1.0.4       vctrs_0.6.2       R6_2.5.1         </span></span>
-<span><span class="co">#&gt; [33] lifecycle_1.0.3   stringr_1.5.0     fs_1.6.2          ragg_1.2.5       </span></span>
-<span><span class="co">#&gt; [37] pkgconfig_2.0.3   desc_1.4.2        pkgdown_2.0.7     pillar_1.9.0     </span></span>
-<span><span class="co">#&gt; [41] bslib_0.4.2       gtable_0.3.3      glue_1.6.2        Rcpp_1.0.10      </span></span>
-<span><span class="co">#&gt; [45] systemfonts_1.0.4 highr_0.10        xfun_0.39         tibble_3.2.1     </span></span>
-<span><span class="co">#&gt; [49] tidyselect_1.2.0  knitr_1.43        farver_2.1.1      htmltools_0.5.5  </span></span>
-<span><span class="co">#&gt; [53] labeling_0.4.2    rmarkdown_2.21    compiler_4.3.0</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] gtable_0.3.3      shape_1.4.6       xfun_0.39         bslib_0.4.2      </span></span>
+<span><span class="co">#&gt;  [5] lattice_0.21-8    vctrs_0.6.2       tools_4.3.0       generics_0.1.3   </span></span>
+<span><span class="co">#&gt;  [9] tibble_3.2.1      fansi_1.0.4       highr_0.10        pan_1.6          </span></span>
+<span><span class="co">#&gt; [13] pkgconfig_2.0.3   jomo_2.7-6        Matrix_1.5-4      desc_1.4.2       </span></span>
+<span><span class="co">#&gt; [17] lifecycle_1.0.3   farver_2.1.1      compiler_4.3.0    stringr_1.5.0    </span></span>
+<span><span class="co">#&gt; [21] textshaping_0.3.6 munsell_0.5.0     codetools_0.2-19  htmltools_0.5.5  </span></span>
+<span><span class="co">#&gt; [25] sass_0.4.6        yaml_2.3.7        glmnet_4.1-7      pillar_1.9.0     </span></span>
+<span><span class="co">#&gt; [29] pkgdown_2.0.7     nloptr_2.0.3      jquerylib_0.1.4   tidyr_1.3.0      </span></span>
+<span><span class="co">#&gt; [33] MASS_7.3-58.4     cachem_1.0.8      iterators_1.0.14  rpart_4.1.19     </span></span>
+<span><span class="co">#&gt; [37] boot_1.3-28.1     foreach_1.5.2     mitml_0.4-5       nlme_3.1-162     </span></span>
+<span><span class="co">#&gt; [41] tidyselect_1.2.0  digest_0.6.31     stringi_1.7.12    dplyr_1.1.2      </span></span>
+<span><span class="co">#&gt; [45] purrr_1.0.1       labeling_0.4.2    splines_4.3.0     rprojroot_2.0.3  </span></span>
+<span><span class="co">#&gt; [49] fastmap_1.1.1     grid_4.3.0        colorspace_2.1-0  cli_3.6.1        </span></span>
+<span><span class="co">#&gt; [53] magrittr_2.0.3    patchwork_1.1.2   survival_3.5-5    utf8_1.2.3       </span></span>
+<span><span class="co">#&gt; [57] broom_1.0.4       withr_2.5.0       scales_1.2.1      backports_1.4.1  </span></span>
+<span><span class="co">#&gt; [61] rmarkdown_2.22    nnet_7.3-18       lme4_1.1-33       ragg_1.2.5       </span></span>
+<span><span class="co">#&gt; [65] memoise_2.0.1     evaluate_0.21     knitr_1.43        rlang_1.1.1      </span></span>
+<span><span class="co">#&gt; [69] Rcpp_1.0.10       glue_1.6.2        minqa_1.2.5       jsonlite_1.8.5   </span></span>
+<span><span class="co">#&gt; [73] R6_2.5.1          systemfonts_1.0.4 fs_1.6.2</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
