@@ -10,6 +10,7 @@ test_that("plot_pattern produces plot", {
 test_that("plot_pattern works with different inputs", {
   expect_s3_class(plot_pattern(mice::nhanes, c("age", "bmi")), "ggplot")
   expect_s3_class(plot_pattern(mice::nhanes, c(age, bmi)), "ggplot")
+  expect_s3_class(plot_pattern(data.frame(age = mice::nhanes$age, testvar = NA)), "ggplot")
 })
 
 
