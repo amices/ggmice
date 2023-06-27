@@ -16,7 +16,7 @@ plot_corr(
 \arguments{
 \item{data}{A dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
 
-\item{vrb}{String or vector with variable name(s), default is "all".}
+\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 
 \item{label}{Logical indicating whether correlation values should be displayed.}
 

@@ -64,7 +64,13 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
       stop(paste0("Mapping variable '", mapping_y, "' not found in the data or imputations."))
     } else{
     warning(paste0("Mapping variable '", mapping_y, "' recognized internally as '", vrb_y, "', please verify (and rename if incorrect)."))
-  }}
+    }}
+  if (stringr::str_detect(mapping_x, "log\\(") |
+      stringr::str_detect(mapping_y, "log\\(")) {
+    stop(
+      "ggmice currently does not support log transformations in the mapping argument. Please transform the data before input, or use the ggplot2::scale_*_continuous(trans='log10') function."
+    )
+  }
 
   # edit data and mapping objects
   if (is.data.frame(data)) {
