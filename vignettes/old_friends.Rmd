@@ -20,14 +20,14 @@ knitr::opts_chunk$set(
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
-First load the `ggmice` package, the `ggplot2` package, the `mice` package, some incomplete data, and a `mice::mids` object into your workspace. 
+First load the `ggmice`, `mice`, and `ggplot2` packages, some incomplete data and a `mids` object into your workspace. 
 
-```{r setup}
+```{r setup, warning = FALSE, message = FALSE}
 # load packages
 library(ggmice)
-library(ggplot2)
 library(mice)
-# load incomplete dataset 
+library(ggplot2)
+# load incomplete dataset from mice
 dat <- boys
 # generate imputations
 imp <- mice(dat, method = "pmm", printFlag = FALSE)
@@ -40,7 +40,7 @@ Box-and-whisker plot of observed and imputed data.
 
 ```{r bwplot}
 # original plot
-bwplot(imp, bmi ~ .imp)
+mice::bwplot(imp, bmi ~ .imp)
 # ggmice equivalent
 ggmice(imp, aes(x = .imp, y = bmi)) +
       geom_boxplot() +
@@ -52,6 +52,16 @@ ggmice(imp, aes(x = .imp, y = bmi)) +
   labs(x = "Imputation number") +
   theme(legend.position = "none")
 ```
+
+It is also possible to display box-and-whisker plots for all imputed variables.
+
+```{r bwplot2}
+# original plot
+bwplot(imp)
+# ggmice equivalent
+## [to be added]
+```
+
 
 # `densityplot`
 
@@ -117,7 +127,7 @@ Stripplot of observed and imputed data.
 
 ```{r stripplot}
 # original plot
-stripplot(imp, bmi ~ .imp)
+mice::stripplot(imp, bmi ~ .imp)
 # ggmice equivalent
 ggmice(imp, aes(x = .imp, y = bmi)) +
   geom_jitter(width = 0.25) +
@@ -143,13 +153,13 @@ Faceted stripplot for multiple variables.
 
 ```{r stripplot-facet}
 # original plot
-stripplot(imp, wgt + hgt + bmi ~ .imp)
+mice::stripplot(imp, wgt + hgt + bmi ~ .imp)
 # ggmice equivalent
 purrr::map(c("wgt", "hgt", "bmi"), ~{
   # ggmice equivalent
-  ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
-    geom_jitter(height = 0, width = 0.25) +
-    labs(x = "Imputation number")
+  ggmice(imp, ggplot2::aes(x = .imp, y = .data[[.x]])) +
+    ggplot2::geom_jitter(height = 0, width = 0.25) +
+    ggplot2::labs(x = "Imputation number")
 }) %>%
   patchwork::wrap_plots()
 ```
