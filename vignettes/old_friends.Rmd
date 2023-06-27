@@ -20,15 +20,17 @@ knitr::opts_chunk$set(
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
-First load the `ggmice` package, some incomplete data and a `mice::mids` object into your workspace. 
+First load the `ggmice` package, the `ggplot2` package, the `mice` package, some incomplete data, and a `mice::mids` object into your workspace. 
 
 ```{r setup}
 # load packages
 library(ggmice)
+library(ggplot2)
+library(mice)
 # load incomplete dataset 
-dat <- mice::boys
+dat <- boys
 # generate imputations
-imp <- mice::mice(dat, method = "pmm", printFlag = FALSE)
+imp <- mice(dat, method = "pmm", printFlag = FALSE)
 ```
 
 
@@ -38,17 +40,17 @@ Box-and-whisker plot of observed and imputed data.
 
 ```{r bwplot}
 # original plot
-mice::bwplot(imp, bmi ~ .imp)
+bwplot(imp, bmi ~ .imp)
 # ggmice equivalent
-ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) +
-      ggplot2::geom_boxplot() +
-      ggplot2::labs(x = "Imputation number")
+ggmice(imp, aes(x = .imp, y = bmi)) +
+      geom_boxplot() +
+      labs(x = "Imputation number")
 # extended reproduction with ggmice
-ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) +
-  ggplot2::stat_boxplot(geom = 'errorbar', linetype = "dashed") +
-  ggplot2::geom_boxplot(outlier.colour = "grey", outlier.shape = 1) +
-  ggplot2::labs(x = "Imputation number") +
-  ggplot2::theme(legend.position = "none")
+ggmice(imp, aes(x = .imp, y = bmi)) +
+  stat_boxplot(geom = 'errorbar', linetype = "dashed") +
+  geom_boxplot(outlier.colour = "grey", outlier.shape = 1) +
+  labs(x = "Imputation number") +
+  theme(legend.position = "none")
 ```
 
 # `densityplot`
@@ -57,16 +59,16 @@ Density plot of observed and imputed data.
 
 ```{r densityplot}
 # original plot
-mice::densityplot(imp, ~bmi)
+densityplot(imp, ~bmi)
 # ggmice equivalent
-ggmice(imp, ggplot2::aes(x = bmi, group = .imp)) +
-      ggplot2::geom_density() 
+ggmice(imp, aes(x = bmi, group = .imp)) +
+      geom_density() 
 # extended reproduction with ggmice
-ggmice(imp, ggplot2::aes(x = bmi, group = .imp, size = .where)) +
-  ggplot2::geom_density() +
-  ggplot2::scale_size_manual(values = c("observed" = 1, "imputed" = 0.5),
+ggmice(imp, aes(x = bmi, group = .imp, size = .where)) +
+  geom_density() +
+  scale_size_manual(values = c("observed" = 1, "imputed" = 0.5),
                              guide = "none") +
-  ggplot2::theme(legend.position = "none")
+  theme(legend.position = "none")
 ```
 
 # `fluxplot`
@@ -75,7 +77,7 @@ Influx and outflux plot of multivariate missing data patterns.
 
 ```{r flux}
 # original plot
-mice::fluxplot(dat)
+fluxplot(dat)
 # ggmice equivalent
 plot_flux(dat)
 ```
@@ -87,15 +89,15 @@ Missing data pattern plot.
 
 ```{r md.pattern}
 # original plot
-md <- mice::md.pattern(dat)
+md <- md.pattern(dat)
 # ggmice equivalent
 plot_pattern(dat)
 # extended reproduction with ggmice
 plot_pattern(dat, square = TRUE) +
-  ggplot2::theme(legend.position = "none",
-                 axis.title = ggplot2::element_blank(),
-                 axis.title.x.top = ggplot2::element_blank(),
-                 axis.title.y.right = ggplot2::element_blank())
+  theme(legend.position = "none",
+                 axis.title = element_blank(),
+                 axis.title.x.top = element_blank(),
+                 axis.title.y.right = element_blank())
 ```
 
 # `plot.mids`
@@ -115,14 +117,14 @@ Stripplot of observed and imputed data.
 
 ```{r stripplot}
 # original plot
-mice::stripplot(imp, bmi ~ .imp)
+stripplot(imp, bmi ~ .imp)
 # ggmice equivalent
-ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) +
-  ggplot2::geom_jitter(width = 0.25) +
-  ggplot2::labs(x = "Imputation number")
+ggmice(imp, aes(x = .imp, y = bmi)) +
+  geom_jitter(width = 0.25) +
+  labs(x = "Imputation number")
 # extended reproduction with ggmice (not recommended)
-ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) +
-  ggplot2::geom_jitter(
+ggmice(imp, aes(x = .imp, y = bmi)) +
+  geom_jitter(
     shape = 1,
     width = 0.1,
     na.rm = TRUE,
@@ -132,22 +134,22 @@ ggmice(imp, ggplot2::aes(x = .imp, y = bmi)) +
       .where = "observed"
     )
   ) +
-  ggplot2::geom_jitter(shape = 1, width = 0.1) +
-  ggplot2::labs(x = "Imputation number") +
-  ggplot2::theme(legend.position = "none")
+  geom_jitter(shape = 1, width = 0.1) +
+  labs(x = "Imputation number") +
+  theme(legend.position = "none")
 ```
 
 Faceted stripplot for multiple variables.
 
 ```{r stripplot-facet}
 # original plot
-mice::stripplot(imp, wgt + hgt + bmi ~ .imp)
+stripplot(imp, wgt + hgt + bmi ~ .imp)
 # ggmice equivalent
 purrr::map(c("wgt", "hgt", "bmi"), ~{
   # ggmice equivalent
-  ggmice(imp, ggplot2::aes(x = .imp, y = .data[[.x]])) +
-    ggplot2::geom_jitter(height = 0, width = 0.25) +
-    ggplot2::labs(x = "Imputation number")
+  ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
+    geom_jitter(height = 0, width = 0.25) +
+    labs(x = "Imputation number")
 }) %>%
   patchwork::wrap_plots()
 ```
@@ -159,14 +161,14 @@ Scatterplot of observed and imputed data.
 
 ```{r}
 # original plot
-mice::xyplot(imp, bmi ~ age)
+xyplot(imp, bmi ~ age)
 # ggmice equivalent
-ggmice(imp, ggplot2::aes(age, bmi)) +
-  ggplot2::geom_point()
+ggmice(imp, aes(age, bmi)) +
+  geom_point()
 # extended reproduction with ggmice
-ggmice(imp, ggplot2::aes(age, bmi)) +
-  ggplot2::geom_point(size = 2, shape = 1) +
-  ggplot2::theme(legend.position = "none")
+ggmice(imp, aes(age, bmi)) +
+  geom_point(size = 2, shape = 1) +
+  theme(legend.position = "none")
 ```
 
 #
