@@ -97,6 +97,9 @@ plot_pred <-
       ) +
       theme_minimice()
 
+    if (all(method == "")) {
+      gg <- gg + ggplot2::theme(axis.ticks.y.right = ggplot2::element_blank())
+    }
     if (label) {
       gg <- gg + ggplot2::geom_text(color = "black", show.legend = FALSE)
     }
