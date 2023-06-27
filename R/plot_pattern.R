@@ -27,11 +27,7 @@ plot_pattern <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(data, {{ vrb }}))
     }
     if (".x" %in% vrb | ".y" %in% vrb) {
       stop(
@@ -116,7 +112,8 @@ plot_pattern <-
       ) %>%
       dplyr::mutate(
         .x = as.numeric(factor(
-          .data$x, levels = vrb, ordered = TRUE
+          .data$x,
+          levels = vrb, ordered = TRUE
         )),
         .where = factor(
           .data$.where,
@@ -147,14 +144,18 @@ plot_pattern <-
       ggplot2::scale_x_continuous(
         breaks = 1:(cls - 1),
         labels = na_col,
-        sec.axis = ggplot2::dup_axis(labels = vrb,
-                                     name = "Column name")
+        sec.axis = ggplot2::dup_axis(
+          labels = vrb,
+          name = "Column name"
+        )
       ) +
       ggplot2::scale_y_reverse(
         breaks = 1:(rws - 1),
         labels = frq,
-        sec.axis = ggplot2::dup_axis(labels = na_row,
-                                     name = "Number of missing entries\nper pattern")
+        sec.axis = ggplot2::dup_axis(
+          labels = na_row,
+          name = "Number of missing entries\nper pattern"
+        )
       ) +
       ggplot2::labs(
         x = "Number of missing entries\nper column",
@@ -185,6 +186,7 @@ pat_to_chr <- function(pat, ord = NULL) {
   if (is.null(ord)) {
     ord <- colnames(pat)[-ncol(pat)]
   }
-  apply(pat[-nrow(pat), ord], 1, function(x)
-    paste(as.numeric(x), collapse = ""))
+  apply(pat[-nrow(pat), ord], 1, function(x) {
+    paste(as.numeric(x), collapse = "")
+  })
 }

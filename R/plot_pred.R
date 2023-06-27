@@ -41,11 +41,7 @@ plot_pred <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(as.data.frame(data), {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(as.data.frame(data), {{ vrb }}))
     }
     vrbs <- row.names(data)
     long <- data.frame(
@@ -66,13 +62,15 @@ plot_pred <-
     ))
 
     gg <-
-      ggplot2::ggplot(long,
-                      ggplot2::aes(
-                        x = .data$prd,
-                        y = .data$vrb,
-                        label = .data$ind,
-                        fill = .data$clr
-                      )) +
+      ggplot2::ggplot(
+        long,
+        ggplot2::aes(
+          x = .data$prd,
+          y = .data$vrb,
+          label = .data$ind,
+          fill = .data$clr
+        )
+      ) +
       ggplot2::geom_tile(color = "black", alpha = 0.6) +
       ggplot2::scale_x_discrete(limits = vrbs, position = "top") +
       ggplot2::scale_y_reverse(

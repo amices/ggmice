@@ -48,7 +48,7 @@ devtools::install_github("amices/ggmice")
 After installing `ggmice`, you can load the package into your `R` workspace. It is highly recommended to load the `mice` and `ggplot2` packages as well. This vignette assumes that all three packages are loaded:
 
 ```{r setup, warning = FALSE, message = FALSE}
-library(mice) 
+library(mice)
 library(ggplot2)
 library(ggmice)
 ```
@@ -156,7 +156,7 @@ ggmice(imp, aes(x = .imp, y = bmi)) +
 A major advantage of `ggmice()` over the equivalent function `mice::stripplot()` is that `ggmice` allows us to add subsequent plotting layes, such as a boxplot overlay:
 
 ```{r imp-box}
-ggmice(imp, aes(x = .imp, y = bmi)) + 
+ggmice(imp, aes(x = .imp, y = bmi)) +
   geom_jitter(height = 0, width = 0.25) +
   geom_boxplot(width = 0.5, size = 1, alpha = 0.75, outlier.shape = NA) +
   labs(x = "Imputation number")
@@ -165,7 +165,7 @@ ggmice(imp, aes(x = .imp, y = bmi)) +
 You may want to create a plot visualizing the imputations of multiple variables as one object. This can be done by combining `ggmice` with `purrr` and `patchwork`. For example, we could obtain boxplots of different imputed variables as one object.
 
 ```{r facet}
-purrr::map(c("wgt", "hgt", "bmi"), ~{
+purrr::map(c("wgt", "hgt", "bmi"), ~ {
   ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
     geom_boxplot() +
     labs(x = "Imputation number")
@@ -188,7 +188,7 @@ The `plot_pattern()` function displays the missing data pattern in an incomplete
 # create missing data pattern plot
 plot_pattern(dat)
 
-# specify optional arguments  
+# specify optional arguments
 plot_pattern(dat, square = TRUE, rotate = TRUE)
 ```
 
@@ -200,10 +200,10 @@ The `plot_flux()` function produces an influx-outflux plot. The influx of a vari
 # create influx-outflux plot
 plot_flux(dat)
 
-# specify optional arguments  
+# specify optional arguments
 plot_flux(
-  dat, 
-  label = FALSE, 
+  dat,
+  label = FALSE,
   caption = FALSE
 )
 ```
@@ -217,7 +217,7 @@ The function `plot_corr()` can be used to investigate relations between variable
 # create correlation plot
 plot_corr(dat)
 
-# specify optional arguments  
+# specify optional arguments
 plot_corr(
   dat,
   vrb = c("hgt", "wgt", "bmi"),
@@ -238,10 +238,10 @@ pred <- quickpred(dat)
 # create predictor matrix plot
 plot_pred(pred)
 
-# specify optional arguments  
+# specify optional arguments
 plot_pred(
-  pred, 
-  label = FALSE, 
+  pred,
+  label = FALSE,
   square = FALSE
 )
 ```

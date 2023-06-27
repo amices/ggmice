@@ -26,11 +26,7 @@ plot_trace <- function(data, vrb = "all") {
   if (as.character(vrb)[1] == "all") {
     vrb <- varlist
   } else {
-    vrb <- names(dplyr::select(data$data, {
-      {
-        vrb
-      }
-    }))
+    vrb <- names(dplyr::select(data$data, {{ vrb }}))
   }
   if (any(vrb %nin% varlist)) {
     message(
@@ -50,25 +46,31 @@ plot_trace <- function(data, vrb = "all") {
   p <- length(vrb)
   m <- data$m
   it <- data$iteration
-  long <- cbind(expand.grid(.it = seq_len(it), .m = seq_len(m)),
-                data.frame(
-                  .ms = rep(c("mean", "sd"), each = m * it * p),
-                  vrb = rep(vrb, each = m * it, times = 2),
-                  val = c(matrix(aperm(mn[vrb, , , drop = FALSE], c(
-                    2, 3, 1
-                  )), nrow = m * it * p),
-                  matrix(aperm(sm[vrb, , , drop = FALSE], c(
-                    2, 3, 1
-                  )), nrow = m * it * p))
-                ))
+  long <- cbind(
+    expand.grid(.it = seq_len(it), .m = seq_len(m)),
+    data.frame(
+      .ms = rep(c("mean", "sd"), each = m * it * p),
+      vrb = rep(vrb, each = m * it, times = 2),
+      val = c(
+        matrix(aperm(mn[vrb, , , drop = FALSE], c(
+          2, 3, 1
+        )), nrow = m * it * p),
+        matrix(aperm(sm[vrb, , , drop = FALSE], c(
+          2, 3, 1
+        )), nrow = m * it * p)
+      )
+    )
+  )
 
   # plot the convergence diagnostics
-  ggplot2::ggplot(long,
-                  ggplot2::aes(
-                    x = .data$.it,
-                    y = .data$val,
-                    color = as.factor(.data$.m)
-                  )) +
+  ggplot2::ggplot(
+    long,
+    ggplot2::aes(
+      x = .data$.it,
+      y = .data$val,
+      color = as.factor(.data$.m)
+    )
+  ) +
     ggplot2::geom_line() +
     ggplot2::facet_wrap(
       vrb ~ .ms,
@@ -76,9 +78,11 @@ plot_trace <- function(data, vrb = "all") {
       ncol = 2,
       strip.position = "left"
     ) +
-    ggplot2::labs(x = "Iteration",
-                  y = "",
-                  color = "Imputation number") +
+    ggplot2::labs(
+      x = "Iteration",
+      y = "",
+      color = "Imputation number"
+    ) +
     theme_mice()
 }
 

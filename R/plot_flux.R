@@ -23,19 +23,17 @@ plot_flux <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(data, {{ vrb }}))
     }
     # verify_vrb(data, vrb)
     # plot in and outflux
     flx <- mice::flux(data[, vrb])[, c("influx", "outflux")]
     gg <-
-      data.frame(vrb = rownames(flx),
-                 flx,
-                 outflux_nudge = flx$outflux - 0.025) %>%
+      data.frame(
+        vrb = rownames(flx),
+        flx,
+        outflux_nudge = flx$outflux - 0.025
+      ) %>%
       ggplot2::ggplot(
         ggplot2::aes(
           x = .data$influx,
@@ -44,31 +42,41 @@ plot_flux <-
           label = .data$vrb
         )
       ) +
-      ggplot2::geom_abline(intercept = 1,
-                           slope = -1,
-                           linetype = "dashed") +
+      ggplot2::geom_abline(
+        intercept = 1,
+        slope = -1,
+        linetype = "dashed"
+      ) +
       ggplot2::lims(x = c(-0.05, 1.05), y = c(-0.05, 1.05)) +
       ggplot2::coord_cartesian(clip = "off") +
       theme_mice()
     if (label) {
       gg <- gg +
-        ggplot2::geom_text(color = "black",
-                           position = ggplot2::position_nudge(y = 0.025)) # position = ggplot2::position_jitter(width = 0.05, height = 0),  hjust = "outward"
+        ggplot2::geom_text(
+          color = "black",
+          position = ggplot2::position_nudge(y = 0.025)
+        ) # position = ggplot2::position_jitter(width = 0.05, height = 0),  hjust = "outward"
     } else {
       gg <- gg +
-        ggplot2::geom_point(shape = 1,
-                            position = ggplot2::position_nudge(y = 0.025)) +
+        ggplot2::geom_point(
+          shape = 1,
+          position = ggplot2::position_nudge(y = 0.025)
+        ) +
         ggplot2::labs(color = "")
     }
     if (caption) {
       gg <- gg +
-        ggplot2::labs(x = "Influx*",
-                      y = "Outflux**",
-                      caption = "*connection of a variable's missingness indicator with observed data on other variables\n **connection of a variable's observed data with missing data on other variables")
+        ggplot2::labs(
+          x = "Influx*",
+          y = "Outflux**",
+          caption = "*connection of a variable's missingness indicator with observed data on other variables\n **connection of a variable's observed data with missing data on other variables"
+        )
     } else {
       gg <- gg +
-        ggplot2::labs(x = "Influx",
-                      y = "Outflux")
+        ggplot2::labs(
+          x = "Influx",
+          y = "Outflux"
+        )
     }
     # output
     return(gg)

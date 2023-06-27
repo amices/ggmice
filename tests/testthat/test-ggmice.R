@@ -56,4 +56,3 @@ test_that("incorrect mapping", {
   expect_error(ggmice(dat, ggplot2::aes(group = age)))
   expect_error(ggmice(dat, ggplot2::aes("bmi")))
 })
-

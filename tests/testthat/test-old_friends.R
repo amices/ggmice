@@ -13,5 +13,3 @@ test_that("set of old friends functions generate plot", {
   expect_s3_class(stripplot(imp), "trellis")
   expect_s3_class(xyplot(imp, bmi ~ age), "trellis")
 })
-
-

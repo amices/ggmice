@@ -40,7 +40,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   mapping_x <- ggplot2::as_label(mapping$x)
   mapping_y <- ggplot2::as_label(mapping$y)
   if (stringr::str_detect(mapping_x, "log\\(") |
-      stringr::str_detect(mapping_y, "log\\(")) {
+    stringr::str_detect(mapping_y, "log\\(")) {
     stop(
       "ggmice currently does not support log transformations in the mapping argument.\nPlease transform the data before input, or use the ggplot2::scale_*_continuous(trans='log10') function."
     )
@@ -57,7 +57,8 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
       stop(paste0("Mapping variable '", mapping_x, "' not found in the data or imputations."))
     } else {
       warning(paste0("Mapping variable '", mapping_x, "' recognized internally as '", vrb_x, "', please verify (and rename if incorrect)."))
-    }}
+    }
+  }
   if (mapping_y %in% vrbs) {
     vrb_y <- mapping_y
   }
@@ -68,9 +69,10 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     vrb_y <- vrbs[stringr::str_detect(mapping_y, vrbs)]
     if (identical(vrb_y, character(0))) {
       stop(paste0("Mapping variable '", mapping_y, "' not found in the data or imputations."))
-    } else{
-    warning(paste0("Mapping variable '", mapping_y, "' recognized internally as '", vrb_y, "', please verify (and rename if incorrect)."))
-    }}
+    } else {
+      warning(paste0("Mapping variable '", mapping_y, "' recognized internally as '", vrb_y, "', please verify (and rename if incorrect)."))
+    }
+  }
 
   # edit data and mapping objects
   if (is.data.frame(data)) {
@@ -93,7 +95,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   }
   if (mice::is.mids(data)) {
     where_xy <- rowSums(as.matrix(data$where[, c(vrb_x, vrb_y)])) > 0L
-    miss_xy  <- rowSums(as.matrix(is.na(data$data[, c(vrb_x, vrb_y)]))) > 0L
+    miss_xy <- rowSums(as.matrix(is.na(data$data[, c(vrb_x, vrb_y)]))) > 0L
     mice_data <- dplyr::mutate(
       rbind(
         data.frame(.where = "observed", .imp = 0, .id = rownames(data$data), data$data)[!miss_xy, ],

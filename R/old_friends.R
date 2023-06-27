@@ -17,7 +17,7 @@ bwplot <- function(...) {
     ggplot2::geom_boxplot() \n\nSee amices.org/ggmice for more info.",
     .frequency = "once",
     .frequency_id = "bwplot"
-    )
+  )
   mice::bwplot(...)
 }
 
@@ -59,7 +59,7 @@ stripplot <- function(...) {
     ggplot2::geom_jitter() \n\nSee amices.org/ggmice for more info.",
     .frequency = "once",
     .frequency_id = "stripplot"
-    )
+  )
   mice::stripplot(...)
 }
 
@@ -79,6 +79,6 @@ xyplot <- function(...) {
     ggplot2::geom_point() \n\nSee amices.org/ggmice for more info.",
     .frequency = "once",
     .frequency_id = "xyplot"
-    )
+  )
   mice::xyplot(...)
 }

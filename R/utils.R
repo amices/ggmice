@@ -32,12 +32,13 @@ verify_data <- function(data,
   if (df & !imp) {
     if (!(is.data.frame(data) | is.matrix(data))) {
       stop("The 'data' argument requires an object of class 'data.frame' or 'matrix'.",
-           call. = FALSE)
+        call. = FALSE
+      )
     }
   }
   if (df & imp) {
     if (!(is.data.frame(data) |
-          is.matrix(data) | mice::is.mids(data))) {
+      is.matrix(data) | mice::is.mids(data))) {
       stop(
         "The 'data' argument requires an object of class 'data.frame', 'matrix', or 'mids'.",
         call. = FALSE
@@ -47,13 +48,15 @@ verify_data <- function(data,
   if (imp & !df) {
     if (!mice::is.mids(data)) {
       stop("The 'data' argument requires an object of class 'mids'.",
-           call. = FALSE)
+        call. = FALSE
+      )
     }
   }
   if (pred) {
     if (!is.matrix(data)) {
       stop("The 'data' argument requires an object of class 'matrix'.",
-           call. = FALSE)
+        call. = FALSE
+      )
     }
     if (dim(data)[1] != dim(data)[2] | is.null(rownames(data)) | is.null(colnames(data))) {
       warning(
@@ -69,11 +72,7 @@ verify_vrb <- function(data, vrb) {
   if (vrb[1] == "all") {
     vrb <- names(data)
   } else {
-    vrb <- names(dplyr::select(data, {
-      {
-        vrb
-      }
-    }))
+    vrb <- names(dplyr::select(data, {{ vrb }}))
   }
   return(vrb)
 }
