@@ -93,7 +93,7 @@ plot_pattern <-
 
     # add opacity for clustering
     if (is.null(cluster)) {
-      pat_clean <- cbind(.opacity = 1, pat[-rws, vrb])
+      pat_clean <- cbind(.opacity = 1, pat[-rws, vrb, drop = FALSE])
     } else {
       pats <- purrr::map(split(data[, vrb], ~ get(cluster)), ~ {
         mice::md.pattern(., plot = FALSE) %>%
