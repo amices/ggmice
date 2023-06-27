@@ -40,7 +40,7 @@ Box-and-whisker plot of observed and imputed data.
 
 ```{r bwplot}
 # original plot
-bwplot(imp, bmi ~ .imp)
+mice::bwplot(imp, bmi ~ .imp)
 # ggmice equivalent
 ggmice(imp, aes(x = .imp, y = bmi)) +
       geom_boxplot() +
@@ -127,7 +127,7 @@ Stripplot of observed and imputed data.
 
 ```{r stripplot}
 # original plot
-stripplot(imp, bmi ~ .imp)
+mice::stripplot(imp, bmi ~ .imp)
 # ggmice equivalent
 ggmice(imp, aes(x = .imp, y = bmi)) +
   geom_jitter(width = 0.25) +
