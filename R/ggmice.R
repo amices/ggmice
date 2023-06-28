@@ -12,21 +12,30 @@
 #' [incomplete data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function)
 #' or [imputed data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1).
 #' @export
-ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
+ggmice <- function(data = NULL,
+                   mapping = ggplot2::aes()) {
   # validate inputs
   if (!(is.data.frame(data) || mice::is.mids(data))) {
-    stop("Dataset (e.g., 'data.frame' or 'tibble') or 'mids' object (e.g. created with mice::mice()) is required.")
+    stop(
+      "Dataset (e.g., 'data.frame' or 'tibble') or 'mids' object (e.g. created with mice::mice()) is required."
+    )
   }
   if (is.null(mapping$x) && is.null(mapping$y)) {
-    stop("At least one of the mapping arguments 'x' or 'y' is required. Supply variable name(s) with ggplot2::aes().")
+    stop(
+      "At least one of the mapping arguments 'x' or 'y' is required. Supply variable name(s) with ggplot2::aes()."
+    )
   }
   if (is.character(mapping$x) || is.character(mapping$y)) {
-    stop("The mapping argument requires variable name(s) of type 'quosure', typically created with ggplot2::aes().\n
-         To supply a string instead, try using ggplot2::aes_string()")
+    stop(
+      "The mapping argument requires variable name(s) of type 'quosure', typically created with ggplot2::aes().\n
+         To supply a string instead, try using ggplot2::aes_string()"
+    )
   }
   if (!is.null(mapping$colour)) {
-    warning("The aes() argument 'colour' has a special use in ggmmice() and will be overwritten.\n
-            Try using 'shape' or 'linetype' for additional mapping, or use faceting.")
+    warning(
+      "The aes() argument 'colour' has a special use in ggmmice() and will be overwritten.\n
+            Try using 'shape' or 'linetype' for additional mapping, or use faceting."
+    )
   }
 
   # extract variable names from mapping object
@@ -39,65 +48,70 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     vrbs_num <- vrbs[purrr::map_lgl(data$data, is.numeric)]
   }
   if (length(vrbs) > length(unique(vrbs))) {
-    stop(paste0("The data must have unique column names. Columns ", vrbs[duplicated(vrbs)], " are duplicated."))
+    stop(paste0(
+      "The data must have unique column names. Columns ",
+      vrbs[duplicated(vrbs)],
+      " are duplicated."
+    ))
   }
   # extract mapping variables
   vrb_x <- extract_mapping(data, vrbs, mapping$x)
   vrb_y <- extract_mapping(data, vrbs, mapping$y)
 
-  # # same for y
-  # if (mapping_y %in% vrbs) {
-  #   vrb_y <- mapping_y
-  # }
-  # if (is.null(mapping$y) || ((mice::is.mids(data) && mapping_y %in% c(".id", ".imp", ".where")))) {
-  #   vrb_y <- NULL
-  # }
-  # if (mapping_y %nin% c(vrbs, ".id", ".imp", ".where") && !is.null(mapping$y)) {
-  #   vrb_y <- vrbs[stringr::str_detect(mapping_y, vrbs)]
-  #   if (identical(vrb_y, character(0))) {
-  #     stop(paste0("Mapping variable '", mapping_y, "' not found in the data or imputations."))
-  #   } else {
-  #     warning(paste0("Mapping variable '", mapping_y, "' recognized internally as '", vrb_y, "',
-  #                    please verify (and rename if incorrect)."))
-  #   }
-  # }
-
   # edit data and mapping objects
   if (is.data.frame(data)) {
     where_xy <- rowSums(is.na(as.matrix(data[, c(vrb_x, vrb_y)]))) > 0L
-    mice_data <- cbind(
-      .where = factor(
-        where_xy == 1,
-        levels = c(FALSE, TRUE),
-        labels = c("observed", "missing"),
-        ordered = TRUE),
-      data
-    )
+    mice_data <- cbind(.where = factor(
+      where_xy == 1,
+      levels = c(FALSE, TRUE),
+      labels = c("observed", "missing"),
+      ordered = TRUE
+    ),
+    data)
     if (!is.null(mapping$x) && !is.null(mapping$y)) {
       mice_data <- dplyr::mutate(
         mice_data,
-        dplyr::across(tidyselect::all_of(vrbs_num), ~ tidyr::replace_na(as.numeric(.x), -Inf)),
+        dplyr::across(
+          tidyselect::all_of(vrbs_num),
+          ~ tidyr::replace_na(as.numeric(.x), -Inf)
+        ),
         dplyr::across(tidyselect::all_of(vrbs[vrbs %nin% vrbs_num]), ~ {
           as.factor(tidyr::replace_na(as.character(.x), " "))
         })
       )
     }
-    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where))
-    mice_colors <- c("observed" = "#006CC2B3", "missing" = "#B61A51B3")
+    mice_mapping <-
+      utils::modifyList(mapping, ggplot2::aes(colour = .where))
+    mice_colors <-
+      c("observed" = "#006CC2B3",
+        "missing" = "#B61A51B3")
   }
   if (mice::is.mids(data)) {
     where_xy <- rowSums(as.matrix(data$where[, c(vrb_x, vrb_y)])) > 0L
-    miss_xy <- rowSums(as.matrix(is.na(data$data[, c(vrb_x, vrb_y)]))) > 0L
+    miss_xy <-
+      rowSums(as.matrix(is.na(data$data[, c(vrb_x, vrb_y)]))) > 0L
     mice_data <- dplyr::mutate(
       rbind(
-        data.frame(.where = "observed", .imp = 0, .id = rownames(data$data), data$data)[!miss_xy, ],
-        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy, ]
+        data.frame(
+          .where = "observed",
+          .imp = 0,
+          .id = rownames(data$data),
+          data$data
+        )[!miss_xy,],
+        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy,]
       ),
-      .where = factor(.where, levels = c("observed", "imputed"), ordered = TRUE),
+      .where = factor(
+        .where,
+        levels = c("observed", "imputed"),
+        ordered = TRUE
+      ),
       .imp = factor(.imp, ordered = TRUE)
     )
-    mice_mapping <- utils::modifyList(mapping, ggplot2::aes(colour = .where))
-    mice_colors <- c("observed" = "#006CC2B3", "imputed" = "#B61A51B3")
+    mice_mapping <-
+      utils::modifyList(mapping, ggplot2::aes(colour = .where))
+    mice_colors <-
+      c("observed" = "#006CC2B3",
+        "imputed" = "#B61A51B3")
   }
 
   # create plot
@@ -106,7 +120,8 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
     theme_mice()
 
   # edit plot to display missing values on the axes
-  if (is.data.frame(data) && !is.null(mapping$x) && !is.null(mapping$y)) {
+  if (is.data.frame(data) &&
+      !is.null(mapping$x) && !is.null(mapping$y)) {
     gg <- gg +
       ggplot2::coord_cartesian(clip = "off")
     if (!is.null(mapping$x)) {
@@ -156,21 +171,36 @@ extract_mapping <- function(data, vrbs, mapping_in) {
   if (mapping_text %in% vrbs) {
     mapping_out <- mapping_text
   }
-  if ((mice::is.mids(data) && mapping_text %in% c(".id", ".imp", ".where"))) {
+  if ((mice::is.mids(data) &&
+       mapping_text %in% c(".id", ".imp", ".where"))) {
     mapping_out <- NULL
   }
-  if (!is.null(mapping_in) && mapping_text %nin% c(vrbs, ".id", ".imp", ".where")) {
+  if (!is.null(mapping_in) &&
+      mapping_text %nin% c(vrbs, ".id", ".imp", ".where")) {
     mapping_out <- vrbs[stringr::str_detect(mapping_text, vrbs)]
     if (identical(mapping_out, character(0)) ||
-        inherits(
-          try(
-            dplyr::mutate(mapping_data, !!rlang::parse_quo(mapping_text, env = rlang::current_env())),
-          silent = TRUE),
-          "try-error")) {
-      stop(paste0("Mapping variable '", mapping_text, "' not found in the data or imputations."))
+        inherits(try(dplyr::mutate(mapping_data,
+                                   !!rlang::parse_quo(mapping_text, env = rlang::current_env())),
+                     silent = TRUE)
+                 ,
+                 "try-error")) {
+      stop(
+        paste0(
+          "Mapping variable '",
+          mapping_text,
+          "' not found in the data or imputations."
+        )
+      )
     } else {
-      warning(paste0("Mapping variable '", mapping_text, "' recognized internally as '", mapping_out,
-                     "', please verify whether this matches the requested mapping variable."))
+      warning(
+        paste0(
+          "Mapping variable '",
+          mapping_text,
+          "' recognized internally as '",
+          mapping_out,
+          "', please verify whether this matches the requested mapping variable."
+        )
+      )
     }
   }
   # output
