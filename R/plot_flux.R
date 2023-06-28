@@ -25,7 +25,6 @@ plot_flux <-
     } else {
       vrb <- names(dplyr::select(data, {{ vrb }}))
     }
-    # verify_vrb(data, vrb)
     # plot in and outflux
     flx <- mice::flux(data[, vrb])[, c("influx", "outflux")]
     gg <-
@@ -55,7 +54,7 @@ plot_flux <-
         ggplot2::geom_text(
           color = "black",
           position = ggplot2::position_nudge(y = 0.025)
-        ) # position = ggplot2::position_jitter(width = 0.05, height = 0),  hjust = "outward"
+        )
     } else {
       gg <- gg +
         ggplot2::geom_point(
@@ -69,7 +68,8 @@ plot_flux <-
         ggplot2::labs(
           x = "Influx*",
           y = "Outflux**",
-          caption = "*connection of a variable's missingness indicator with observed data on other variables\n **connection of a variable's observed data with missing data on other variables"
+          caption = "*connection of a variable's missingness indicator with observed data on other variables\n
+          **connection of a variable's observed data with missing data on other variables"
         )
     } else {
       gg <- gg +

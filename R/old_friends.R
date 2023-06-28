@@ -12,7 +12,8 @@
 #' bwplot(imp)
 bwplot <- function(...) {
   rlang::inform(
-    "Hint: Did you know, an equivalent figure can be created with `ggmice()`?\nFor example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run: \n
+    "Hint: Did you know, an equivalent figure can be created with `ggmice()`?\n
+    For example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run: \n
     ggmice(my_mids, ggplot2::aes(x = .imp, y = my_vrb)) +
     ggplot2::geom_boxplot() \n\nSee amices.org/ggmice for more info.",
     .frequency = "once",
@@ -33,7 +34,8 @@ bwplot <- function(...) {
 #' densityplot(imp)
 densityplot <- function(...) {
   rlang::inform(
-    "Hint: Did you know, an equivalent figure can be created with `ggmice()`?\nFor example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run: \n
+    "Hint: Did you know, an equivalent figure can be created with `ggmice()`?\n
+    For example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run: \n
     ggmice(my_mids, ggplot2::aes(x = my_vrb, group = .imp)) +
     ggplot2::geom_density() \n\nSee amices.org/ggmice for more info.",
     .frequency = "once",
@@ -54,7 +56,8 @@ densityplot <- function(...) {
 #' stripplot(imp)
 stripplot <- function(...) {
   rlang::inform(
-    "Hint: Did you know, an equivalent figure can be created with `ggmice()`?\nFor example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run: \n
+    "Hint: Did you know, an equivalent figure can be created with `ggmice()`?\n
+    For example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run: \n
     ggmice(my_mids, ggplot2::aes(x = .imp, y = my_vrb)) +
     ggplot2::geom_jitter() \n\nSee amices.org/ggmice for more info.",
     .frequency = "once",
@@ -74,7 +77,8 @@ stripplot <- function(...) {
 #' imp <- mice::mice(mice::nhanes, maxit = 1, printFlag = FALSE)
 #' xyplot(imp, bmi ~ age)
 xyplot <- function(...) {
-  rlang::inform("Hint: Did you know, an equivalent figure can be created with `ggmice()`?\nFor example, to plot 2 variables named 'my_x' and 'my_y' from a mids object called 'my_mids', run: \n
+  rlang::inform("Hint: Did you know, an equivalent figure can be created with `ggmice()`?\n
+                For example, to plot 2 variables named 'my_x' and 'my_y' from a mids object called 'my_mids', run: \n
     ggmice(my_mids, ggplot2::aes(x = my_x, y = my_y)) +
     ggplot2::geom_point() \n\nSee amices.org/ggmice for more info.",
     .frequency = "once",

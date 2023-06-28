@@ -31,7 +31,8 @@ plot_pattern <-
     }
     if (".x" %in% vrb || ".y" %in% vrb) {
       stop(
-        "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot. Please exclude or rename your variable(s)."
+        "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot.\n
+        Please exclude or rename your variable(s)."
       )
     }
     if (!is.null(cluster)) {
@@ -74,7 +75,8 @@ plot_pattern <-
         )
       } else {
         warning(
-          "Number of patterns specified is equal to or greater than the total number of patterns. All missing data patterns are shown."
+          "Number of patterns specified is equal to or greater than the total number of patterns.\n
+          All missing data patterns are shown."
         )
       }
     }
@@ -120,7 +122,6 @@ plot_pattern <-
           levels = c(0, 1),
           labels = c("missing", "observed")
         ),
-        # TODO: always obs/always missing, add title, maybe make y axis prop to freq, add asterisk to clust var with caption that can tell that there is missingness in it
         .opacity = as.numeric(.data$.opacity)
       )
 

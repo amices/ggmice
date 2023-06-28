@@ -40,7 +40,7 @@ install.packages("ggmice")
 
 The development version of the `ggmice` package can be installed from GitHub with: 
 
-```{r install, echo=TRUE, eval=FALSE}
+``` r
 # install.packages("devtools")
 devtools::install_github("amices/ggmice")
 ```
