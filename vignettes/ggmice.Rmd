@@ -132,11 +132,11 @@ A final example of `ggmice()` applied to incomplete data is faceting based on a 
 # continuous variable
 ggmice(dat, aes(age)) +
   geom_density() +
-  facet_wrap( ~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
+  facet_wrap(~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
 # categorical variable
 ggmice(dat, aes(reg)) +
   geom_bar(fill = "white") +
-  facet_wrap( ~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
+  facet_wrap(~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
 ```
 
 
@@ -206,8 +206,8 @@ plot_pattern(dat)
 
 # specify optional arguments
 plot_pattern(
-  dat, 
-  square = TRUE, 
+  dat,
+  square = TRUE,
   rotate = TRUE,
   npat = 3,
   cluster = "reg"

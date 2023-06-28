@@ -8,17 +8,19 @@
 #' @examples
 #' dat <- mice::nhanes
 #' ggmice(dat, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
-#' @seealso See the `ggmice` vignette to use the `ggmice()` function on [incomplete data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function) or [imputed data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1).
+#' @seealso See the `ggmice` vignette to use the `ggmice()` function on
+#' [incomplete data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function)
+#' or [imputed data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1).
 #' @export
 ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   # process inputs
-  if (!(is.data.frame(data) | mice::is.mids(data))) {
+  if (!(is.data.frame(data) || mice::is.mids(data))) {
     stop("Dataset (e.g., 'data.frame' or 'tibble') or 'mids' object (e.g. created with mice::mice()) is required.")
   }
   if (is.null(mapping$x) & is.null(mapping$y)) {
     stop("At least one of the mapping arguments 'x' or 'y' is required. Supply variable name(s) with ggplot2::aes().")
   }
-  if (is.character(mapping$x) | is.character(mapping$y)) {
+  if (is.character(mapping$x) || is.character(mapping$y)) {
     stop("The mapping argument requires variable name(s) of type 'quosure', typically created with ggplot2::aes(). To supply a string instead, try using ggplot2::aes_string()")
   }
   if (!is.null(mapping$colour)) {
@@ -48,7 +50,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (mapping_x %in% vrbs) {
     vrb_x <- mapping_x
   }
-  if (is.null(mapping$x) | ((mice::is.mids(data) & mapping_x %in% c(".id", ".imp", ".where")))) {
+  if (is.null(mapping$x) || ((mice::is.mids(data) & mapping_x %in% c(".id", ".imp", ".where")))) {
     vrb_x <- NULL
   }
   if (!is.null(mapping$x) & mapping_x %nin% c(vrbs, ".id", ".imp", ".where")) {
@@ -62,7 +64,7 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (mapping_y %in% vrbs) {
     vrb_y <- mapping_y
   }
-  if (is.null(mapping$y) | ((mice::is.mids(data) & mapping_y %in% c(".id", ".imp", ".where")))) {
+  if (is.null(mapping$y) || ((mice::is.mids(data) & mapping_y %in% c(".id", ".imp", ".where")))) {
     vrb_y <- NULL
   }
   if (mapping_y %nin% c(vrbs, ".id", ".imp", ".where") & !is.null(mapping$y)) {

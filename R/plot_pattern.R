@@ -21,7 +21,7 @@ plot_pattern <-
            npat = NULL) {
     verify_data(data, df = TRUE)
     vrb <- substitute(vrb)
-    if (vrb != "all" & length(vrb) < 2) {
+    if (vrb != "all" && length(vrb) < 2) {
       stop("The number of variables should be two or more to compute missing data patterns.")
     }
     if (vrb[1] == "all") {
@@ -29,7 +29,7 @@ plot_pattern <-
     } else {
       vrb <- names(dplyr::select(data, {{ vrb }}))
     }
-    if (".x" %in% vrb | ".y" %in% vrb) {
+    if (".x" %in% vrb || ".y" %in% vrb) {
       stop(
         "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot. Please exclude or rename your variable(s)."
       )
@@ -42,7 +42,7 @@ plot_pattern <-
       }
     }
     if (!is.null(npat)) {
-      if (!is.numeric(npat) | npat < 2) {
+      if (!is.numeric(npat) || npat < 2) {
         stop("The minimum number of patterns to display is two. Please provide an integer greater than one.")
       }
     }

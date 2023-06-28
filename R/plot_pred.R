@@ -22,7 +22,7 @@ plot_pred <-
            rotate = FALSE) {
     verify_data(data, pred = TRUE)
     p <- nrow(data)
-    if (!is.null(method) & is.character(method)) {
+    if (!is.null(method) && is.character(method)) {
       if (length(method) == 1) {
         method <- rep(method, p)
       }
@@ -34,7 +34,7 @@ plot_pred <-
       method <- rep("", p)
       ylabel <- ""
     }
-    if (!is.character(method) | length(method) != p) {
+    if (!is.character(method) || length(method) != p) {
       stop("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
     }
     vrb <- substitute(vrb)
