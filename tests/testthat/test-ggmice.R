@@ -46,7 +46,7 @@ test_that("incorrect data", {
 
 test_that("advanced mapping", {
   expect_error(ggmice(dat, ggplot2::aes(log(age))))
-  expect_warning(ggmice(dat, ggplot2::aes(age3)))
+  expect_error(ggmice(dat, ggplot2::aes(age3)))
   expect_warning(ggmice(dat, ggplot2::aes(bmi, color = bmi)))
 })
 

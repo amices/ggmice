@@ -13,7 +13,7 @@
 #' or [imputed data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1).
 #' @export
 ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
-  # process inputs
+  # validate inputs
   if (!(is.data.frame(data) || mice::is.mids(data))) {
     stop("Dataset (e.g., 'data.frame' or 'tibble') or 'mids' object (e.g. created with mice::mice()) is required.")
   }
@@ -41,45 +41,26 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
   if (length(vrbs) > length(unique(vrbs))) {
     stop(paste0("The data must have unique column names. Columns ", vrbs[duplicated(vrbs)], " are duplicated."))
   }
-  mapping_x <- ggplot2::as_label(mapping$x)
-  mapping_y <- ggplot2::as_label(mapping$y)
-  if (stringr::str_detect(mapping_x, "log\\(") ||
-    stringr::str_detect(mapping_y, "log\\(")) {
-    stop(
-      "ggmice currently does not support log transformations in the mapping argument.\n
-      Please transform the data before input, or use the ggplot2::scale_*_continuous(trans='log10') function."
-    )
-  }
-  if (mapping_x %in% vrbs) {
-    vrb_x <- mapping_x
-  }
-  if (is.null(mapping$x) || ((mice::is.mids(data) && mapping_x %in% c(".id", ".imp", ".where")))) {
-    vrb_x <- NULL
-  }
-  if (!is.null(mapping$x) && mapping_x %nin% c(vrbs, ".id", ".imp", ".where")) {
-    vrb_x <- vrbs[stringr::str_detect(mapping_x, vrbs)]
-    if (identical(vrb_x, character(0))) {
-      stop(paste0("Mapping variable '", mapping_x, "' not found in the data or imputations."))
-    } else {
-      warning(paste0("Mapping variable '", mapping_x, "' recognized internally as '", vrb_x, "',
-                     please verify (and rename if incorrect)."))
-    }
-  }
-  if (mapping_y %in% vrbs) {
-    vrb_y <- mapping_y
-  }
-  if (is.null(mapping$y) || ((mice::is.mids(data) && mapping_y %in% c(".id", ".imp", ".where")))) {
-    vrb_y <- NULL
-  }
-  if (mapping_y %nin% c(vrbs, ".id", ".imp", ".where") && !is.null(mapping$y)) {
-    vrb_y <- vrbs[stringr::str_detect(mapping_y, vrbs)]
-    if (identical(vrb_y, character(0))) {
-      stop(paste0("Mapping variable '", mapping_y, "' not found in the data or imputations."))
-    } else {
-      warning(paste0("Mapping variable '", mapping_y, "' recognized internally as '", vrb_y, "',
-                     please verify (and rename if incorrect)."))
-    }
-  }
+  # extract mapping variables
+  vrb_x <- extract_mapping(data, vrbs, mapping$x)
+  vrb_y <- extract_mapping(data, vrbs, mapping$y)
+
+  # # same for y
+  # if (mapping_y %in% vrbs) {
+  #   vrb_y <- mapping_y
+  # }
+  # if (is.null(mapping$y) || ((mice::is.mids(data) && mapping_y %in% c(".id", ".imp", ".where")))) {
+  #   vrb_y <- NULL
+  # }
+  # if (mapping_y %nin% c(vrbs, ".id", ".imp", ".where") && !is.null(mapping$y)) {
+  #   vrb_y <- vrbs[stringr::str_detect(mapping_y, vrbs)]
+  #   if (identical(vrb_y, character(0))) {
+  #     stop(paste0("Mapping variable '", mapping_y, "' not found in the data or imputations."))
+  #   } else {
+  #     warning(paste0("Mapping variable '", mapping_y, "' recognized internally as '", vrb_y, "',
+  #                    please verify (and rename if incorrect)."))
+  #   }
+  # }
 
   # edit data and mapping objects
   if (is.data.frame(data)) {
@@ -144,4 +125,54 @@ ggmice <- function(data = NULL, mapping = ggplot2::aes()) {
 
   # output
   return(gg)
+}
+
+
+#' Utils function to extract mapping variables
+#'
+#' @param data Incomplete dataset or mids object.
+#' @param vrbs Column names.
+#' @param mapping_in Mapping provided to ggmice().
+#' @return Variable name from mapping_in argument matched on vrbs argument.
+#' @keywords internal
+extract_mapping <- function(data, vrbs, mapping_in) {
+  if (is.null(mapping_in)) {
+    return(NULL)
+  }
+  # parse data
+  if (mice::is.mids(data)) {
+    mapping_data <- data$data
+  } else {
+    mapping_data <- data
+  }
+  # parse mapping
+  mapping_text <- ggplot2::as_label(mapping_in)
+  if (stringr::str_detect(mapping_text, "log\\(")) {
+    stop(
+      "Log transformations are currently not supported by ggmice() in the mapping input.\n
+     Please transform the data input, or use the ggplot2::scale_*_continuous(trans='log10') function."
+    )
+  }
+  if (mapping_text %in% vrbs) {
+    mapping_out <- mapping_text
+  }
+  if ((mice::is.mids(data) && mapping_text %in% c(".id", ".imp", ".where"))) {
+    mapping_out <- NULL
+  }
+  if (!is.null(mapping_in) && mapping_text %nin% c(vrbs, ".id", ".imp", ".where")) {
+    mapping_out <- vrbs[stringr::str_detect(mapping_text, vrbs)]
+    if (identical(mapping_out, character(0)) ||
+        inherits(
+          try(
+            dplyr::mutate(mapping_data, !!rlang::parse_quo(mapping_text, env = rlang::current_env())),
+          silent = TRUE),
+          "try-error")) {
+      stop(paste0("Mapping variable '", mapping_text, "' not found in the data or imputations."))
+    } else {
+      warning(paste0("Mapping variable '", mapping_text, "' recognized internally as '", mapping_out,
+                     "', please verify whether this matches the requested mapping variable."))
+    }
+  }
+  # output
+  return(mapping_out)
 }
