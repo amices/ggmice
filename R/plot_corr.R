@@ -19,19 +19,18 @@ plot_corr <-
            square = TRUE,
            diagonal = FALSE,
            rotate = FALSE) {
+    if (is.matrix(data) && ncol(data) > 1) {
+      data <- as.data.frame(data)
+    }
     verify_data(data = data, df = TRUE)
     vrb <- substitute(vrb)
-    if (vrb != "all" & length(vrb) < 2) {
+    if (vrb != "all" && length(vrb) < 2) {
       stop("The number of variables should be two or more to compute correlations.")
     }
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(data, {{vrb}}))
     }
     p <- length(vrb)
     corrs <- data.frame(

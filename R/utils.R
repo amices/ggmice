@@ -29,35 +29,39 @@ verify_data <- function(data,
                         df = FALSE,
                         imp = FALSE,
                         pred = FALSE) {
-  if (df & !imp) {
-    if (!(is.data.frame(data) | is.matrix(data))) {
+  if (df && !imp) {
+    if (!(is.data.frame(data) || is.matrix(data))) {
       stop("The 'data' argument requires an object of class 'data.frame' or 'matrix'.",
-           call. = FALSE)
+        call. = FALSE
+      )
     }
   }
-  if (df & imp) {
-    if (!(is.data.frame(data) |
-          is.matrix(data) | mice::is.mids(data))) {
+  if (df && imp) {
+    if (!(is.data.frame(data) ||
+      is.matrix(data) || mice::is.mids(data))) {
       stop(
         "The 'data' argument requires an object of class 'data.frame', 'matrix', or 'mids'.",
         call. = FALSE
       )
     }
   }
-  if (imp & !df) {
+  if (imp && !df) {
     if (!mice::is.mids(data)) {
       stop("The 'data' argument requires an object of class 'mids'.",
-           call. = FALSE)
+        call. = FALSE
+      )
     }
   }
   if (pred) {
     if (!is.matrix(data)) {
       stop("The 'data' argument requires an object of class 'matrix'.",
-           call. = FALSE)
+        call. = FALSE
+      )
     }
-    if (dim(data)[1] != dim(data)[2] | is.null(rownames(data)) | is.null(colnames(data))) {
+    if (dim(data)[1] != dim(data)[2] || is.null(rownames(data)) || is.null(colnames(data))) {
       warning(
-        "The 'data' argument expects a square predictor matrix with equal row and column names. Try using `mice::make.predictorMatrix()` or `mice::quickpred()`.",
+        "The 'data' argument expects a square predictor matrix with equal row and column names.\n
+        Try using `mice::make.predictorMatrix()` or `mice::quickpred()`.",
         call. = FALSE
       )
     }
@@ -69,11 +73,7 @@ verify_vrb <- function(data, vrb) {
   if (vrb[1] == "all") {
     vrb <- names(data)
   } else {
-    vrb <- names(dplyr::select(data, {
-      {
-        vrb
-      }
-    }))
+    vrb <- names(dplyr::select(data, {{ vrb }}))
   }
   return(vrb)
 }
