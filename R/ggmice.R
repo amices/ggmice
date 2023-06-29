@@ -97,8 +97,8 @@ ggmice <- function(data = NULL,
           .imp = 0,
           .id = rownames(data$data),
           data$data
-        )[!miss_xy,],
-        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy,]
+        )[!miss_xy, ],
+        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy, ]
       ),
       .where = factor(
         .where,
