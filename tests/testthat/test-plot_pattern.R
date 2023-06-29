@@ -16,7 +16,7 @@ test_that("plot_pattern works with different inputs", {
 
 
 test_that("plot_pattern with incorrect argument(s)", {
-  expect_message(plot_pattern(na.omit(dat)))
+  expect_output(plot_pattern(na.omit(dat)))
   expect_error(plot_pattern("test"))
   expect_error(plot_pattern(dat, vrb = "test"))
   expect_error(plot_pattern(dat, cluster = "test"))

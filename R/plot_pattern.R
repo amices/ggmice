@@ -43,15 +43,15 @@ plot_pattern <-
       }
     }
     if (!is.null(npat)) {
-      if (!is.numeric(npat) || npat < 2) {
-        stop("The minimum number of patterns to display is two. Please provide an integer greater than one.")
+      if (!is.numeric(npat) || npat < 1) {
+        stop("The minimum number of patterns to display is one. Please provide a positive integer.")
       }
     }
-    if (!any(is.na(data))) {
-      return(message(
-        "This dataset is completely observed. No missing data patterns are shown."
-      ))
-    }
+    # if (!any(is.na(data))) {
+    #   return(message(
+    #     "This dataset is completely observed. No missing data patterns are shown."
+    #   ))
+    # }
 
     # get missing data pattern
     pat <- mice::md.pattern(data[, vrb], plot = FALSE)
