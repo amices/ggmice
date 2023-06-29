@@ -19,7 +19,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## Visualizations for `mice` with `ggplot2`
 
-Enhance a [`mice`](https://amices.org/mice) imputation workflow with
+Enhance a [`mice`](https://amices.org/mice/) imputation workflow with
 visualizations for incomplete and/or imputed data. The `ggmice`
 functions produce
 [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot) objects which

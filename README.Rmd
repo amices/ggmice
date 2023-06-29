@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 ## Visualizations for `mice` with `ggplot2`
 
-Enhance a [`mice`](https://amices.org/mice) imputation workflow with visualizations for incomplete and/or imputed data. The `ggmice` functions produce [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot) objects which may be easily manipulated or extended. Use `ggmice` to inspect missing data, develop imputation models, evaluate algorithmic convergence, or compare observed versus imputed data. 
+Enhance a [`mice`](https://amices.org/mice/) imputation workflow with visualizations for incomplete and/or imputed data. The `ggmice` functions produce [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot) objects which may be easily manipulated or extended. Use `ggmice` to inspect missing data, develop imputation models, evaluate algorithmic convergence, or compare observed versus imputed data. 
 
 ## Installation
 

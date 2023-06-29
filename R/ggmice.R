@@ -150,6 +150,7 @@ ggmice <- function(data = NULL,
 #' @param mapping_in Mapping provided to ggmice().
 #' @return Variable name from mapping_in argument matched on vrbs argument.
 #' @keywords internal
+#' @noRd
 match_mapping <- function(data, vrbs, mapping_in) {
   if (is.null(mapping_in)) {
     return(NULL)
