@@ -55,8 +55,8 @@ ggmice <- function(data = NULL,
     ))
   }
   # extract mapping variables
-  vrb_x <- extract_mapping(data, vrbs, mapping$x)
-  vrb_y <- extract_mapping(data, vrbs, mapping$y)
+  vrb_x <- match_mapping(data, vrbs, mapping$x)
+  vrb_y <- match_mapping(data, vrbs, mapping$y)
 
   # edit data and mapping objects
   if (is.data.frame(data)) {
@@ -150,7 +150,7 @@ ggmice <- function(data = NULL,
 #' @param mapping_in Mapping provided to ggmice().
 #' @return Variable name from mapping_in argument matched on vrbs argument.
 #' @keywords internal
-extract_mapping <- function(data, vrbs, mapping_in) {
+match_mapping <- function(data, vrbs, mapping_in) {
   if (is.null(mapping_in)) {
     return(NULL)
   }
