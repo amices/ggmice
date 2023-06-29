@@ -19,7 +19,7 @@ plot_corr <-
            square = TRUE,
            diagonal = FALSE,
            rotate = FALSE) {
-    if (is.matrix(data) && ncol(data) > 1){
+    if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
     verify_data(data = data, df = TRUE)
@@ -30,7 +30,7 @@ plot_corr <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {{ vrb }}))
+      vrb <- names(dplyr::select(data, {{vrb}}))
     }
     p <- length(vrb)
     corrs <- data.frame(
@@ -48,15 +48,13 @@ plot_corr <-
       corrs[corrs$vrb == corrs$prd, "corr"] <- NA
     }
     gg <-
-      ggplot2::ggplot(
-        corrs,
-        ggplot2::aes(
-          x = .data$prd,
-          y = .data$vrb,
-          label = .data$corr,
-          fill = .data$corr
-        )
-      ) +
+      ggplot2::ggplot(corrs,
+                      ggplot2::aes(
+                        x = .data$prd,
+                        y = .data$vrb,
+                        label = .data$corr,
+                        fill = .data$corr
+                      )) +
       ggplot2::geom_tile(color = "black", alpha = 0.6) +
       ggplot2::scale_x_discrete(limits = vrb, position = "top") +
       ggplot2::scale_y_discrete(limits = rev(vrb)) +
@@ -72,16 +70,14 @@ plot_corr <-
         y = "Variable to impute",
         fill = "Correlation*
       ",
-        caption = "*pairwise complete observations"
+      caption = "*pairwise complete observations"
       ) +
       theme_minimice()
     if (label) {
       gg <-
-        gg + ggplot2::geom_text(
-          color = "black",
-          show.legend = FALSE,
-          na.rm = TRUE
-        )
+        gg + ggplot2::geom_text(color = "black",
+                                show.legend = FALSE,
+                                na.rm = TRUE)
     }
     if (square) {
       gg <- gg + ggplot2::coord_fixed(expand = FALSE)

@@ -30,11 +30,7 @@ plot_pattern <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(data, {{vrb}}))
     }
     if (".x" %in% vrb || ".y" %in% vrb) {
       stop(
