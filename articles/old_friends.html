@@ -122,13 +122,13 @@ plots<a class="anchor" aria-label="anchor" href="#create-the-ggmice-equivalent-o
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># ggmice equivalent</span></span>
 <span><span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.imp</span>, y <span class="op">=</span> <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Imputation number"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Imputation number"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="old_friends_files/figure-html/bwplot-2.png" width="691.2"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extended reproduction with ggmice</span></span>
 <span><span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.imp</span>, y <span class="op">=</span> <span class="va">bmi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">stat_boxplot</a></span><span class="op">(</span>geom <span class="op">=</span> <span class="st">'errorbar'</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">stat_boxplot</a></span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"errorbar"</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span>outlier.colour <span class="op">=</span> <span class="st">"grey"</span>, outlier.shape <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Imputation number"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
@@ -155,14 +155,16 @@ variables.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># ggmice equivalent</span></span>
 <span><span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bmi</span>, group <span class="op">=</span> <span class="va">.imp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="old_friends_files/figure-html/densityplot-2.png" width="691.2"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extended reproduction with ggmice</span></span>
 <span><span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bmi</span>, group <span class="op">=</span> <span class="va">.imp</span>, size <span class="op">=</span> <span class="va">.where</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_size_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observed"</span> <span class="op">=</span> <span class="fl">1</span>, <span class="st">"imputed"</span> <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>                             guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_size_manual</a></span><span class="op">(</span></span>
+<span>    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observed"</span> <span class="op">=</span> <span class="fl">1</span>, <span class="st">"imputed"</span> <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>    guide <span class="op">=</span> <span class="st">"none"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="old_friends_files/figure-html/densityplot-3.png" width="691.2"></p>
 </div>
@@ -196,10 +198,12 @@ variables.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extended reproduction with ggmice</span></span>
 <span><span class="fu"><a href="../reference/plot_pattern.html">plot_pattern</a></span><span class="op">(</span><span class="va">dat</span>, square <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span>,</span>
-<span>                 axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>                 axis.title.x.top <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>                 axis.title.y.right <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
+<span>    legend.position <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>    axis.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    axis.title.x.top <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    axis.title.y.right <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="old_friends_files/figure-html/md.pattern-3.png" width="691.2"></p>
 </div>
 <div class="section level2">
@@ -255,7 +259,7 @@ variables.</p>
 <p><img src="old_friends_files/figure-html/stripplot-facet-1.png" width="691.2"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># ggmice equivalent</span></span>
-<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wgt"</span>, <span class="st">"hgt"</span>, <span class="st">"bmi"</span><span class="op">)</span>, <span class="op">~</span><span class="op">{</span></span>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wgt"</span>, <span class="st">"hgt"</span>, <span class="st">"bmi"</span><span class="op">)</span>, <span class="op">~</span> <span class="op">{</span></span>
 <span>  <span class="co"># ggmice equivalent</span></span>
 <span>  <span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.imp</span>, y <span class="op">=</span> <span class="va">.data</span><span class="op">[[</span><span class="va">.x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html" class="external-link">geom_jitter</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0</span>, width <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span> <span class="op">+</span></span>
@@ -317,7 +321,7 @@ using:</p>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] gtable_0.3.3      shape_1.4.6       xfun_0.39         bslib_0.5.0      </span></span>
 <span><span class="co">#&gt;  [5] lattice_0.21-8    vctrs_0.6.3       tools_4.3.1       generics_0.1.3   </span></span>
-<span><span class="co">#&gt;  [9] tibble_3.2.1      fansi_1.0.4       highr_0.10        pan_1.6          </span></span>
+<span><span class="co">#&gt;  [9] tibble_3.2.1      fansi_1.0.4       highr_0.10        pan_1.8          </span></span>
 <span><span class="co">#&gt; [13] pkgconfig_2.0.3   jomo_2.7-6        Matrix_1.5-4.1    desc_1.4.2       </span></span>
 <span><span class="co">#&gt; [17] lifecycle_1.0.3   farver_2.1.1      compiler_4.3.1    stringr_1.5.0    </span></span>
 <span><span class="co">#&gt; [21] textshaping_0.3.6 munsell_0.5.0     codetools_0.2-19  htmltools_0.5.5  </span></span>
@@ -325,7 +329,7 @@ using:</p>
 <span><span class="co">#&gt; [29] pkgdown_2.0.7     nloptr_2.0.3      jquerylib_0.1.4   tidyr_1.3.0      </span></span>
 <span><span class="co">#&gt; [33] MASS_7.3-60       cachem_1.0.8      iterators_1.0.14  rpart_4.1.19     </span></span>
 <span><span class="co">#&gt; [37] boot_1.3-28.1     foreach_1.5.2     mitml_0.4-5       nlme_3.1-162     </span></span>
-<span><span class="co">#&gt; [41] tidyselect_1.2.0  digest_0.6.31     stringi_1.7.12    dplyr_1.1.2      </span></span>
+<span><span class="co">#&gt; [41] tidyselect_1.2.0  digest_0.6.32     stringi_1.7.12    dplyr_1.1.2      </span></span>
 <span><span class="co">#&gt; [45] purrr_1.0.1       labeling_0.4.2    splines_4.3.1     rprojroot_2.0.3  </span></span>
 <span><span class="co">#&gt; [49] fastmap_1.1.1     grid_4.3.1        colorspace_2.1-0  cli_3.6.1        </span></span>
 <span><span class="co">#&gt; [53] magrittr_2.0.3    patchwork_1.1.2   survival_3.5-5    utf8_1.2.3       </span></span>
