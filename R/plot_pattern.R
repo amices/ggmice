@@ -19,6 +19,9 @@ plot_pattern <-
            rotate = FALSE,
            cluster = NULL,
            npat = NULL) {
+    if (is.matrix(data) && ncol(data) > 1){
+      data <- as.data.frame(data)
+    }
     verify_data(data, df = TRUE)
     vrb <- substitute(vrb)
     if (vrb != "all" && length(vrb) < 2) {
@@ -47,11 +50,6 @@ plot_pattern <-
         stop("The minimum number of patterns to display is one. Please provide a positive integer.")
       }
     }
-    # if (!any(is.na(data))) {
-    #   return(message(
-    #     "This dataset is completely observed. No missing data patterns are shown."
-    #   ))
-    # }
 
     # get missing data pattern
     pat <- mice::md.pattern(data[, vrb], plot = FALSE)

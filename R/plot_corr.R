@@ -19,6 +19,9 @@ plot_corr <-
            square = TRUE,
            diagonal = FALSE,
            rotate = FALSE) {
+    if (is.matrix(data) && ncol(data) > 1){
+      data <- as.data.frame(data)
+    }
     verify_data(data = data, df = TRUE)
     vrb <- substitute(vrb)
     if (vrb != "all" && length(vrb) < 2) {
