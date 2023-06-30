@@ -186,7 +186,7 @@ purrr::map(c("wgt", "hgt", "bmi"), ~ {
     geom_boxplot() +
     labs(x = "Imputation number")
 }) %>%
-  patchwork::wrap_plots()
+  patchwork::wrap_plots() 
 ```
 
 To re-create any `mice` plot with `ggmice`, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette. 
