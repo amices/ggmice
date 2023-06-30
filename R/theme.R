@@ -4,7 +4,6 @@
 theme_mice <- function() {
   ggplot2::theme_classic() +
     ggplot2::theme(
-      # text = ggplot2::element_text(family="sans"),
       legend.position = "bottom",
       legend.justification = "right",
       strip.placement = "outside"
@@ -17,7 +16,6 @@ theme_mice <- function() {
 theme_minimice <- function() {
   ggplot2::theme_minimal() +
     ggplot2::theme(
-      # text = ggplot2::element_text(family="sans"),
       legend.position = "bottom",
       legend.justification = "right",
       strip.placement = "outside",
@@ -27,5 +25,3 @@ theme_minimice <- function() {
       axis.title.y.right = ggplot2::element_text(margin = ggplot2::margin(l = 6))
     )
 }
-
-# TODO: make facets in plot_trace() look more pretty

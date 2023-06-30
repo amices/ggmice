@@ -19,23 +19,23 @@ plot_pattern <-
            rotate = FALSE,
            cluster = NULL,
            npat = NULL) {
+    if (is.matrix(data) && ncol(data) > 1) {
+      data <- as.data.frame(data)
+    }
     verify_data(data, df = TRUE)
     vrb <- substitute(vrb)
-    if (vrb != "all" & length(vrb) < 2) {
+    if (vrb != "all" && length(vrb) < 2) {
       stop("The number of variables should be two or more to compute missing data patterns.")
     }
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(data, {{vrb}}))
     }
-    if (".x" %in% vrb | ".y" %in% vrb) {
+    if (".x" %in% vrb || ".y" %in% vrb) {
       stop(
-        "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot. Please exclude or rename your variable(s)."
+        "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot.\n
+        Please exclude or rename your variable(s)."
       )
     }
     if (!is.null(cluster)) {
@@ -46,14 +46,11 @@ plot_pattern <-
       }
     }
     if (!is.null(npat)) {
-      if (!is.numeric(npat) | npat < 2) {
-        stop("The minimum number of patterns to display is two. Please provide an integer greater than one.")
+      if (!is.numeric(npat) || npat < 1) {
+        stop(
+          "The minimum number of patterns to display is one. Please provide a positive integer."
+        )
       }
-    }
-    if (!any(is.na(data))) {
-      return(message(
-        "This dataset is completely observed. No missing data patterns are shown."
-      ))
     }
 
     # get missing data pattern
@@ -66,7 +63,8 @@ plot_pattern <-
           sort(as.numeric(row.names(pat)), decreasing = TRUE)[1:npat]
         rows_pat_full <-
           nrow(pat) # full number of missing data patterns
-        pat <- pat[rownames(pat) %in% c(top_n_pat, ""), , drop = FALSE]
+        pat <-
+          pat[rownames(pat) %in% c(top_n_pat, ""), , drop = FALSE]
         # show number of requested, shown, and hidden missing data patterns
         message(
           npat,
@@ -78,7 +76,8 @@ plot_pattern <-
         )
       } else {
         warning(
-          "Number of patterns specified is equal to or greater than the total number of patterns. All missing data patterns are shown."
+          "Number of patterns specified is equal to or greater than the total number of patterns.\n
+          All missing data patterns are shown."
         )
       }
     }
@@ -116,14 +115,14 @@ plot_pattern <-
       ) %>%
       dplyr::mutate(
         .x = as.numeric(factor(
-          .data$x, levels = vrb, ordered = TRUE
+          .data$x,
+          levels = vrb, ordered = TRUE
         )),
         .where = factor(
           .data$.where,
           levels = c(0, 1),
           labels = c("missing", "observed")
         ),
-        # TODO: always obs/always missing, add title, maybe make y axis prop to freq, add asterisk to clust var with caption that can tell that there is missingness in it
         .opacity = as.numeric(.data$.opacity)
       )
 
@@ -185,6 +184,7 @@ pat_to_chr <- function(pat, ord = NULL) {
   if (is.null(ord)) {
     ord <- colnames(pat)[-ncol(pat)]
   }
-  apply(pat[-nrow(pat), ord], 1, function(x)
-    paste(as.numeric(x), collapse = ""))
+  apply(pat[-nrow(pat), ord], 1, function(x) {
+    paste(as.numeric(x), collapse = "")
+  })
 }
