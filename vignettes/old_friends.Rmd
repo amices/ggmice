@@ -204,7 +204,7 @@ wrap_plots(p, guides = "collect") &
 
 Display density plots for all variables.
 
-```{r densityplots}
+```{r densityplots, message=FALSE, warning=FALSE}
 # original plot
 mice::densityplot(imp)
 # ggmice equivalent
@@ -231,6 +231,8 @@ p <- map(vrb, ~ {
 wrap_plots(p, guides = "collect") &
   theme(legend.position = "bottom")
 ```
+
+---
 
 #
 
