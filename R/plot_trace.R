@@ -72,11 +72,11 @@ plot_trace <- function(data, vrb = "all") {
     )
   ) +
     ggplot2::geom_line() +
-    ggplot2::facet_wrap(
+    ggplot2::facet_grid(
       vrb ~ .ms,
       scales = "free",
-      ncol = 2,
-      strip.position = "left"
+      switch = "y",
+      labeller = ggplot2::labeller(.ms = function(x){paste("Imputation", x)})
     ) +
     ggplot2::labs(
       x = "Iteration",
@@ -85,5 +85,3 @@ plot_trace <- function(data, vrb = "all") {
     ) +
     theme_mice()
 }
-
-# TODO: make iterations and statistic arguments as well
