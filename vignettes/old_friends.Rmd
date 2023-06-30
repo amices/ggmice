@@ -197,8 +197,9 @@ p <- map(vrb, ~ {
   ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
     geom_boxplot() +
     labs(x = "Imputation number")
-}) 
-wrap_plots(p, guides = "collect") & theme(legend.position = 'bottom')
+})
+wrap_plots(p, guides = "collect") &
+  theme(legend.position = "bottom")
 ```
 
 Display density plots for all variables.
@@ -211,8 +212,9 @@ p <- map(vrb, ~ {
   ggmice(imp, aes(x = .data[[.x]])) +
     geom_density() +
     labs(x = "Imputation number")
-}) 
-wrap_plots(p, guides = "collect") & theme(legend.position = 'bottom')
+})
+wrap_plots(p, guides = "collect") &
+  theme(legend.position = "bottom")
 ```
 
 Display strip plots for all variables.
@@ -225,8 +227,9 @@ p <- map(vrb, ~ {
   ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
     geom_jitter() +
     labs(x = "Imputation number")
-}) 
-wrap_plots(p, guides = "collect") & theme(legend.position = 'bottom')
+})
+wrap_plots(p, guides = "collect") &
+  theme(legend.position = "bottom")
 ```
 
 #
