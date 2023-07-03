@@ -282,7 +282,7 @@ plot_trace(imp, "hgt")
 ```
 
 
-___
+---
 
 #
 
@@ -291,4 +291,3 @@ This is the end of the vignette. This document was generated using:
 ```{r session, class.source = 'fold-hide'}
 sessionInfo()
 ```
-

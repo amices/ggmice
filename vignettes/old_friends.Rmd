@@ -15,7 +15,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.width = 7.2,
-  fig.height = 4
+  fig.height = 4,
+  warning = FALSE,
+  message = FALSE
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
@@ -40,26 +42,17 @@ Box-and-whisker plot of observed and imputed data.
 
 ```{r bwplot}
 # original plot
-mice::bwplot(imp, bmi ~ .imp)
+mice::bwplot(imp, hgt ~ .imp)
 # ggmice equivalent
-ggmice(imp, aes(x = .imp, y = bmi)) +
+ggmice(imp, aes(x = .imp, y = hgt)) +
   geom_boxplot() +
   labs(x = "Imputation number")
 # extended reproduction with ggmice
-ggmice(imp, aes(x = .imp, y = bmi)) +
+ggmice(imp, aes(x = .imp, y = hgt)) +
   stat_boxplot(geom = "errorbar", linetype = "dashed") +
   geom_boxplot(outlier.colour = "grey", outlier.shape = 1) +
   labs(x = "Imputation number") +
   theme(legend.position = "none")
-```
-
-It is also possible to display box-and-whisker plots for all imputed variables.
-
-```{r bwplot2}
-# original plot
-bwplot(imp)
-# ggmice equivalent
-## [to be added]
 ```
 
 
@@ -69,12 +62,12 @@ Density plot of observed and imputed data.
 
 ```{r densityplot}
 # original plot
-densityplot(imp, ~bmi)
+mice::densityplot(imp, ~hgt)
 # ggmice equivalent
-ggmice(imp, aes(x = bmi, group = .imp)) +
+ggmice(imp, aes(x = hgt, group = .imp)) +
   geom_density()
 # extended reproduction with ggmice
-ggmice(imp, aes(x = bmi, group = .imp, size = .where)) +
+ggmice(imp, aes(x = hgt, group = .imp, size = .where)) +
   geom_density() +
   scale_size_manual(
     values = c("observed" = 1, "imputed" = 0.5),
@@ -120,9 +113,9 @@ Plot the trace lines of the MICE algorithm.
 
 ```{r plot.mids}
 # original plot
-plot(imp, bmi ~ .it | .ms)
+plot(imp, hgt ~ .it | .ms)
 # ggmice equivalent
-plot_trace(imp, "bmi")
+plot_trace(imp, "hgt")
 ```
 
 # `stripplot`
@@ -131,19 +124,19 @@ Stripplot of observed and imputed data.
 
 ```{r stripplot}
 # original plot
-mice::stripplot(imp, bmi ~ .imp)
+mice::stripplot(imp, hgt ~ .imp)
 # ggmice equivalent
-ggmice(imp, aes(x = .imp, y = bmi)) +
+ggmice(imp, aes(x = .imp, y = hgt)) +
   geom_jitter(width = 0.25) +
   labs(x = "Imputation number")
 # extended reproduction with ggmice (not recommended)
-ggmice(imp, aes(x = .imp, y = bmi)) +
+ggmice(imp, aes(x = .imp, y = hgt)) +
   geom_jitter(
     shape = 1,
     width = 0.1,
     na.rm = TRUE,
     data = data.frame(
-      bmi = dat$bmi,
+      hgt = dat$hgt,
       .imp = factor(rep(1:imp$m, each = nrow(dat))),
       .where = "observed"
     )
@@ -153,21 +146,6 @@ ggmice(imp, aes(x = .imp, y = bmi)) +
   theme(legend.position = "none")
 ```
 
-Faceted stripplot for multiple variables.
-
-```{r stripplot-facet}
-# original plot
-mice::stripplot(imp, wgt + hgt + bmi ~ .imp)
-# ggmice equivalent
-purrr::map(c("wgt", "hgt", "bmi"), ~ {
-  # ggmice equivalent
-  ggmice(imp, ggplot2::aes(x = .imp, y = .data[[.x]])) +
-    ggplot2::geom_jitter(height = 0, width = 0.25) +
-    ggplot2::labs(x = "Imputation number")
-}) %>%
-  patchwork::wrap_plots()
-```
-
 
 # `xyplot`
 
@@ -175,15 +153,87 @@ Scatterplot of observed and imputed data.
 
 ```{r}
 # original plot
-xyplot(imp, bmi ~ age)
+mice::xyplot(imp, hgt ~ age)
 # ggmice equivalent
-ggmice(imp, aes(age, bmi)) +
+ggmice(imp, aes(age, hgt)) +
   geom_point()
 # extended reproduction with ggmice
-ggmice(imp, aes(age, bmi)) +
+ggmice(imp, aes(age, hgt)) +
   geom_point(size = 2, shape = 1) +
   theme(legend.position = "none")
 ```
+
+# Extensions
+
+## Interactive plots
+
+To make `ggmice` visualizations interactive, the `plotly` package can be used. For example, an interactive influx and outflux plot may be more legible than a static one.
+
+```{r plotly}
+# load packages
+library(plotly)
+# influx and outflux plot
+p <- plot_flux(dat)
+ggplotly(p)
+```
+
+## Plot multiple variables
+
+You may want to create a plot visualizing the imputations of multiple variables as one object. To visualize multiple variables at once, the variable names are saved in a vector. This vector is used together with the functional programming package `purrr` and visualization package `patchwork` to `map()` over the variables and subsequently `wrap_plots` to create a single figure.
+
+```{r mapping}
+# load packages
+library(purrr)
+library(patchwork)
+# create vector with variable names
+vrb <- names(dat)
+```
+
+Display box-and-whisker plots for all variables.
+
+```{r bwplots}
+# original plot
+mice::bwplot(imp)
+# ggmice equivalent
+p <- map(vrb, ~ {
+  ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
+    geom_boxplot() +
+    labs(x = "Imputation number")
+})
+wrap_plots(p, guides = "collect") &
+  theme(legend.position = "bottom")
+```
+
+Display density plots for all variables.
+
+```{r densityplots, message=FALSE, warning=FALSE}
+# original plot
+mice::densityplot(imp)
+# ggmice equivalent
+p <- map(vrb, ~ {
+  ggmice(imp, aes(x = .data[[.x]])) +
+    geom_density()
+})
+wrap_plots(p, guides = "collect") &
+  theme(legend.position = "bottom")
+```
+
+Display strip plots for all variables.
+
+```{r stripplots}
+# original plot
+mice::stripplot(imp)
+# ggmice equivalent
+p <- map(vrb, ~ {
+  ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
+    geom_jitter() +
+    labs(x = "Imputation number")
+})
+wrap_plots(p, guides = "collect") &
+  theme(legend.position = "bottom")
+```
+
+---
 
 #
 
