@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.width = 7.2,
   fig.height = 4,
-  warning = FALSE, 
+  warning = FALSE,
   message = FALSE
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
@@ -212,7 +212,7 @@ mice::densityplot(imp)
 # ggmice equivalent
 p <- map(vrb, ~ {
   ggmice(imp, aes(x = .data[[.x]])) +
-    geom_density() 
+    geom_density()
 })
 wrap_plots(p, guides = "collect") &
   theme(legend.position = "bottom")
