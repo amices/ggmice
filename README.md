@@ -68,7 +68,7 @@ ggmice(dat, aes(age, hgt)) + geom_point()
 
 ``` r
 # impute the incomplete data
-imp <- mice(dat, m = 1, seed = 1, printFlag = FALSE)
+imp <- mice(dat, m = 1, seed = 1)
 # visualize the imputed data
 ggmice(imp, aes(age, hgt)) + geom_point()
 ```

@@ -48,7 +48,7 @@ devtools::install_github("amices/ggmice")
 
 Inspect the missing data in an incomplete dataset and subsequently evaluate the imputed data points against observed data. See the [Get started](https://amices.org/ggmice/articles/ggmice.html) vignette for an overview of all functionalities. Example data from [`mice`](https://amices.org/mice/reference/boys), showing height (in cm) by age (in years).
 
-```{r example, message=FALSE, warning=FALSE}
+```{r example, message=FALSE, warning=FALSE, echo=TRUE, results='hide', fig.keep='all'}
 # load packages
 library(ggplot2)
 library(mice)
@@ -58,7 +58,7 @@ dat <- boys
 # visualize the incomplete data
 ggmice(dat, aes(age, hgt)) + geom_point()
 # impute the incomplete data
-imp <- mice(dat, m = 1, seed = 1, printFlag = FALSE)
+imp <- mice(dat, m = 1, seed = 1)
 # visualize the imputed data
 ggmice(imp, aes(age, hgt)) + geom_point()
 ```
