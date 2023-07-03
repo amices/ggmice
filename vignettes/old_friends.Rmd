@@ -198,6 +198,7 @@ mice::bwplot(imp)
 p <- map(vrb, ~ {
   ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
     geom_boxplot() +
+    scale_x_discrete(drop = FALSE) +
     labs(x = "Imputation number")
 })
 wrap_plots(p, guides = "collect") &
