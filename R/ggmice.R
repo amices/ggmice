@@ -15,11 +15,7 @@
 ggmice <- function(data = NULL,
                    mapping = ggplot2::aes()) {
   # validate inputs
-  if (!(is.data.frame(data) || mice::is.mids(data))) {
-    stop(
-      "Dataset (e.g., 'data.frame' or 'tibble') or 'mids' object (e.g. created with mice::mice()) is required."
-    )
-  }
+  verify_data(data, df = TRUE, imp = TRUE)
   if (is.null(mapping$x) && is.null(mapping$y)) {
     stop(
       "At least one of the mapping arguments 'x' or 'y' is required. Supply variable name(s) with ggplot2::aes()."
@@ -49,9 +45,8 @@ ggmice <- function(data = NULL,
   }
   if (length(vrbs) > length(unique(vrbs))) {
     stop(paste0(
-      "The data must have unique column names. Columns ",
-      vrbs[duplicated(vrbs)],
-      " are duplicated."
+      "The data must have unique column names. Duplication found in ",
+      vrbs[duplicated(vrbs)]
     ))
   }
   # extract mapping variables
