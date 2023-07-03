@@ -105,7 +105,7 @@ ggmice <- function(data = NULL,
         levels = c("observed", "imputed"),
         ordered = TRUE
       ),
-      .imp = factor(.imp, ordered = TRUE)
+      .imp = factor(.imp, levels = 0:data$m, ordered = TRUE)
     )
     mice_mapping <-
       utils::modifyList(mapping, ggplot2::aes(colour = .where))
@@ -116,7 +116,7 @@ ggmice <- function(data = NULL,
 
   # create plot
   gg <- ggplot2::ggplot(data = mice_data, mapping = mice_mapping) +
-    ggplot2::scale_color_manual(values = mice_colors, name = "") +
+    ggplot2::scale_color_manual(values = mice_colors, name = "", drop = FALSE) +
     theme_mice()
 
   # edit plot to display missing values on the axes
