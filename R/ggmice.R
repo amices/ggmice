@@ -23,8 +23,7 @@ ggmice <- function(data = NULL,
   }
   if (is.character(mapping$x) || is.character(mapping$y)) {
     stop(
-      "The mapping argument requires variable name(s) of type 'quosure', typically created with ggplot2::aes().\n
-         To supply a string instead, try using ggplot2::aes_string()"
+      "The mapping argument requires variable name(s) of type 'quosure', not string, supplied with ggplot2::aes()."
     )
   }
   if (!is.null(mapping$colour)) {
