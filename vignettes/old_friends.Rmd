@@ -198,6 +198,7 @@ mice::bwplot(imp)
 p <- map(vrb, ~ {
   ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
     geom_boxplot() +
+    scale_x_discrete(drop = FALSE) +
     labs(x = "Imputation number")
 })
 wrap_plots(p, guides = "collect") &
@@ -211,7 +212,7 @@ Display density plots for all variables.
 mice::densityplot(imp)
 # ggmice equivalent
 p <- map(vrb, ~ {
-  ggmice(imp, aes(x = .data[[.x]])) +
+  ggmice(imp, aes(x = .data[[.x]], group = .imp)) +
     geom_density()
 })
 wrap_plots(p, guides = "collect") &
