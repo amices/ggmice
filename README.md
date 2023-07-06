@@ -77,14 +77,23 @@ ggmice(imp, aes(age, hgt)) + geom_point()
 
 ## Acknowledgements
 
-The `ggmice` package is developed with guidance and feedback from Gerko
-Vink, Stef van Buuren, Thomas Debray, Valentijn de Jong, Johanna Muñoz,
-Thom Volker, Mingyang Cai and Anaïs Fopma. The `ggmice` hex is based on
-designs from the `ggplot2` hex and the `mice` hex (by Jaden Walters).
+The `ggmice` package is developed with guidance and feedback from the
+[Amices](https://github.com/amices) team. The `ggmice` hex is based on
+the [`ggplot2`](https://github.com/tidyverse/ggplot2/) and
+[`mice`](https://github.com/amices/mice) hex designs.
 
 This project has received funding from the European Union’s Horizon 2020
 research and innovation programme under ReCoDID grant agreement No
 825746.
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## Code of Conduct
 
