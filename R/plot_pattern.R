@@ -65,8 +65,7 @@ plot_pattern <-
 
     # get missing data pattern
     pat <- mice::md.pattern(data[, vrb], plot = FALSE)
-    rows_pat_full <-
-      (nrow(pat) - 1) # full number of missing data patterns
+    rows_pat_full <- (nrow(pat) - 1) # full number of missing data patterns
 
     # filter npat most frequent patterns
     if (!is.null(npat)) {
@@ -187,7 +186,7 @@ plot_pattern <-
         gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
     }
     if (caption) {
-      if (!is.null(npat) & npat < rows_pat_full) {
+      if (!is.null(npat) && npat < rows_pat_full) {
         gg <- gg +
           ggplot2::labs(
             caption = paste0(
