@@ -6,6 +6,7 @@
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param diagonal Logical indicating whether the correlation of each variable with itself should be displayed.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
+#' @param caption Logical indicating whether the figure caption should be displayed.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
@@ -18,19 +19,24 @@ plot_corr <-
            label = FALSE,
            square = TRUE,
            diagonal = FALSE,
-           rotate = FALSE) {
+           rotate = FALSE,
+           caption = TRUE) {
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
     verify_data(data = data, df = TRUE)
     vrb <- substitute(vrb)
     if (vrb != "all" && length(vrb) < 2) {
-      stop("The number of variables should be two or more to compute correlations.")
+      cli::cli_abort("The number of variables should be two or more to compute correlations.")
     }
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {{vrb}}))
+      vrb <- names(dplyr::select(data, {
+        {
+          vrb
+        }
+      }))
     }
     p <- length(vrb)
     corrs <- data.frame(
@@ -64,15 +70,23 @@ plot_corr <-
         high = ggplot2::alpha("orangered", 0.6),
         na.value = "grey90",
         limits = c(-1, 1)
-      ) +
-      ggplot2::labs(
-        x = "Imputation model predictor",
-        y = "Variable to impute",
-        fill = "Correlation*
-      ",
-      caption = "*pairwise complete observations"
-      ) +
+      )  +
       theme_minimice()
+    if (caption) {
+      gg <- gg +
+        ggplot2::labs(
+          x = "Imputation model predictor",
+          y = "Variable to impute",
+          fill = "Correlation*
+      ",
+          caption = "*pairwise complete observations"
+        )
+    } else{
+      gg <- gg +
+        ggplot2::labs(x = "Imputation model predictor",
+                      y = "Variable to impute",
+                      fill = "Correlation")
+    }
     if (label) {
       gg <-
         gg + ggplot2::geom_text(color = "black",

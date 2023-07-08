@@ -19,8 +19,11 @@
 plot_variance <- function(data, grid = TRUE) {
   verify_data(data, imp = TRUE)
   if (data$m < 2) {
-    stop(
-      "The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2)."
+    cli::cli_abort(
+      c(
+        "The between imputation variance cannot be computed if there are fewer than two imputations (m < 2).",
+        "i" = "Please provide an object with 2 or more imputations"
+      )
     )
   }
   if (grid) {

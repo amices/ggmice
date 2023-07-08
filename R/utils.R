@@ -31,37 +31,55 @@ verify_data <- function(data,
                         pred = FALSE) {
   if (df && !imp) {
     if (!(is.data.frame(data) || is.matrix(data))) {
-      stop("The 'data' argument requires an object of class 'data.frame' or 'matrix'.",
+      cli:cli_abort(
+        c(
+          "The 'data' argument requires an object of class 'data.frame' or 'matrix'.",
+          "i" = "You provided an object of class {class(data}"
+        ),
         call. = FALSE
       )
     }
   }
   if (df && imp) {
     if (!(is.data.frame(data) ||
-      is.matrix(data) || mice::is.mids(data))) {
-      stop(
-        "The 'data' argument requires an object of class 'data.frame', 'matrix', or 'mids'.",
+          is.matrix(data) || mice::is.mids(data))) {
+      cli::cli_abort(
+        c(
+          "The 'data' argument requires an object of class 'data.frame', 'matrix', or 'mids'.",
+          "i" = "You provided an object of class {class(data}"
+        ),
         call. = FALSE
       )
     }
   }
   if (imp && !df) {
     if (!mice::is.mids(data)) {
-      stop("The 'data' argument requires an object of class 'mids'.",
+      cli::cli_abort(
+        c(
+          "The 'data' argument requires an object of class 'mids'.",
+          "i" = "You provided an object of class {class(data}"
+        ),
         call. = FALSE
       )
     }
   }
   if (pred) {
     if (!is.matrix(data)) {
-      stop("The 'data' argument requires an object of class 'matrix'.",
+      cli::cli_abort(
+        c(
+          "The 'data' argument requires an object of class 'matrix'.",
+          "i" = "You provided an object of class {class(data}"
+        ),
         call. = FALSE
       )
     }
-    if (dim(data)[1] != dim(data)[2] || is.null(rownames(data)) || is.null(colnames(data))) {
-      warning(
-        "The 'data' argument expects a square predictor matrix with equal row and column names.\n
-        Try using `mice::make.predictorMatrix()` or `mice::quickpred()`.",
+    if (dim(data)[1] != dim(data)[2] ||
+        is.null(rownames(data)) || is.null(colnames(data))) {
+      cli::cli_warn(
+        c(
+          "The 'data' argument expects a square predictor matrix with equal row and column names.",
+          "i" = "Try using `mice::make.predictorMatrix()` or `mice::quickpred()`."
+        ),
         call. = FALSE
       )
     }
@@ -73,7 +91,11 @@ verify_vrb <- function(data, vrb) {
   if (vrb[1] == "all") {
     vrb <- names(data)
   } else {
-    vrb <- names(dplyr::select(data, {{ vrb }}))
+    vrb <- names(dplyr::select(data, {
+      {
+        vrb
+      }
+    }))
   }
   return(vrb)
 }

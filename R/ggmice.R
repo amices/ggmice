@@ -17,19 +17,27 @@ ggmice <- function(data = NULL,
   # validate inputs
   verify_data(data, df = TRUE, imp = TRUE)
   if (is.null(mapping$x) && is.null(mapping$y)) {
-    stop(
-      "At least one of the mapping arguments 'x' or 'y' is required. Supply variable name(s) with ggplot2::aes()."
+    cli::cli_abort(
+      c(
+        "At least one of the mapping arguments 'x' or 'y' is required.",
+        "i" = "Supply variable name(s) with ggplot2::aes()."
+      )
     )
   }
   if (is.character(mapping$x) || is.character(mapping$y)) {
-    stop(
-      "The mapping argument requires variable name(s) of type 'quosure', not string, supplied with ggplot2::aes()."
+    cli::cli_abort(
+      c(
+        "The mapping argument requires variable name(s) of type 'quosure', supplied with ggplot2::aes().",
+        "x" = "You have supplied a string."
+      )
     )
   }
   if (!is.null(mapping$colour)) {
-    warning(
-      "The aes() argument 'colour' has a special use in ggmmice() and will be overwritten.\n
-            Try using 'shape' or 'linetype' for additional mapping, or use faceting."
+    cli::cli_warn(
+      c(
+        "The aes() argument 'colour' has a special use in ggmmice() and will be overwritten.",
+        "i" = "Try using 'shape' or 'linetype' for additional mapping, or use faceting."
+      )
     )
   }
 
@@ -43,10 +51,10 @@ ggmice <- function(data = NULL,
     vrbs_num <- vrbs[purrr::map_lgl(data$data, is.numeric)]
   }
   if (length(vrbs) > length(unique(vrbs))) {
-    stop(paste0(
-      "The data must have unique column names. Duplication found in ",
-      vrbs[duplicated(vrbs)]
-    ))
+    cli::cli_abort(
+      c("The data must have unique column names.",
+        "x" = "Duplication found in {vrbs[duplicated(vrbs)]}")
+    )
   }
   # extract mapping variables
   vrb_x <- match_mapping(data, vrbs, mapping$x)
@@ -67,7 +75,7 @@ ggmice <- function(data = NULL,
         mice_data,
         dplyr::across(
           tidyselect::all_of(vrbs_num),
-          ~ tidyr::replace_na(as.numeric(.x), -Inf)
+          ~ tidyr::replace_na(as.numeric(.x),-Inf)
         ),
         dplyr::across(tidyselect::all_of(vrbs[vrbs %nin% vrbs_num]), ~ {
           as.factor(tidyr::replace_na(as.character(.x), " "))
@@ -91,8 +99,8 @@ ggmice <- function(data = NULL,
           .imp = 0,
           .id = rownames(data$data),
           data$data
-        )[!miss_xy, ],
-        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy, ]
+        )[!miss_xy,],
+        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy,]
       ),
       .where = factor(
         .where,
@@ -110,7 +118,9 @@ ggmice <- function(data = NULL,
 
   # create plot
   gg <- ggplot2::ggplot(data = mice_data, mapping = mice_mapping) +
-    ggplot2::scale_color_manual(values = mice_colors, name = "", drop = FALSE) +
+    ggplot2::scale_color_manual(values = mice_colors,
+                                name = "",
+                                drop = FALSE) +
     theme_mice()
 
   # edit plot to display missing values on the axes
@@ -158,9 +168,11 @@ match_mapping <- function(data, vrbs, mapping_in) {
   # parse mapping
   mapping_text <- ggplot2::as_label(mapping_in)
   if (stringr::str_detect(mapping_text, "log\\(")) {
-    stop(
-      "Log transformations are currently not supported by ggmice() in the mapping input.\n
-     Please transform the data input, or use the ggplot2::scale_*_continuous(trans='log10') function."
+    cli::cli_abort(
+      c(
+        "Log transformations are currently not supported by ggmice() in the mapping input.",
+        "i" = "Please transform the data input, or use the ggplot2::scale_*_continuous(trans='log10') function."
+      )
     )
   }
   if (mapping_text %in% vrbs) {
@@ -174,26 +186,19 @@ match_mapping <- function(data, vrbs, mapping_in) {
       mapping_text %nin% c(vrbs, ".id", ".imp", ".where")) {
     mapping_out <- vrbs[stringr::str_detect(mapping_text, vrbs)]
     if (identical(mapping_out, character(0)) ||
-        inherits(try(dplyr::mutate(mapping_data,
-                                   !!rlang::parse_quo(mapping_text, env = rlang::current_env())),
+        inherits(try(dplyr::mutate(mapping_data,!!rlang::parse_quo(mapping_text, env = rlang::current_env())),
                      silent = TRUE)
                  ,
                  "try-error")) {
-      stop(
-        paste0(
-          "Mapping variable '",
-          mapping_text,
-          "' not found in the data or imputations."
-        )
+      cli::cli_abort(
+        c("Must provide a valid mapping variable.",
+          "x" = "Mapping variable '{mapping_text}' not found in the data or imputations.")
       )
     } else {
-      warning(
-        paste0(
-          "Mapping variable '",
-          mapping_text,
-          "' recognized internally as '",
-          mapping_out,
-          "', please verify whether this matches the requested mapping variable."
+      cli::cli_warn(
+        c(
+          "Mapping variable '{mapping_text}' recognized internally as {mapping_out}.",
+          "Please verify whether this matches the requested mapping variable."
         )
       )
     }

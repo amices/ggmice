@@ -12,7 +12,7 @@
 plot_trace <- function(data, vrb = "all") {
   verify_data(data, imp = TRUE)
   if (is.null(data$chainMean)) {
-    stop("no convergence diagnostics found", call. = FALSE)
+    cli::cli_abort("no convergence diagnostics found", call. = FALSE)
   }
 
   # extract chain means and chain standard deviations
@@ -26,7 +26,11 @@ plot_trace <- function(data, vrb = "all") {
   if (as.character(vrb)[1] == "all") {
     vrb <- varlist
   } else {
-    vrb <- names(dplyr::select(data$data, {{vrb}}))
+    vrb <- names(dplyr::select(data$data, {
+      {
+        vrb
+      }
+    }))
   }
   if (any(vrb %nin% varlist)) {
     message(
@@ -39,7 +43,8 @@ plot_trace <- function(data, vrb = "all") {
     if (any(vrb %in% varlist)) {
       vrb <- vrb[which(vrb %in% varlist)]
     } else {
-      stop("None of the variables are imputed. No plots can be produced.")
+      cli:abort(c("x" = "None of the variables are imputed.",
+                  "No plots can be produced."))
     }
   }
 
