@@ -19,7 +19,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## Visualizations for `mice` with `ggplot2`
 
-Enhance a [`mice`](https://amices.org/mice) imputation workflow with
+Enhance a [`mice`](https://amices.org/mice/) imputation workflow with
 visualizations for incomplete and/or imputed data. The `ggmice`
 functions produce
 [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot) objects which
@@ -50,7 +50,8 @@ Inspect the missing data in an incomplete dataset and subsequently
 evaluate the imputed data points against observed data. See the [Get
 started](https://amices.org/ggmice/articles/ggmice.html) vignette for an
 overview of all functionalities. Example data from
-[`mice`](https://amices.org/mice/reference/boys).
+[`mice`](https://amices.org/mice/reference/boys), showing height (in cm)
+by age (in years).
 
 ``` r
 # load packages
@@ -60,16 +61,16 @@ library(ggmice)
 # load some data
 dat <- boys
 # visualize the incomplete data
-ggmice(dat, aes(age, bmi)) + geom_point()
+ggmice(dat, aes(age, hgt)) + geom_point()
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
 ``` r
 # impute the incomplete data
-imp <- mice(dat, m = 1, seed = 1, printFlag = FALSE)
+imp <- mice(dat, m = 1, seed = 1)
 # visualize the imputed data
-ggmice(imp, aes(age, bmi)) + geom_point() 
+ggmice(imp, aes(age, hgt)) + geom_point()
 ```
 
 <img src="man/figures/README-example-2.png" width="100%" />

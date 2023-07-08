@@ -16,13 +16,12 @@
 #' imp <- mice::mice(mice::nhanes, printFlag = FALSE)
 #' plot_variance(imp)
 #' @export
-plot_variance <- function(data, grid = TRUE){
-  if (!mice::is.mids(data)) {
-    stop("Input is not a Multiply Imputed Data Set of class mids. \n
-         Perhaps function mice::as.mids() can be of use?")
-  }
+plot_variance <- function(data, grid = TRUE) {
+  verify_data(data, imp = TRUE)
   if (data$m < 2) {
-    stop("The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2).")
+    stop(
+      "The between inmputation variance cannot be computed if there are fewer than two imputations (m < 2)."
+    )
   }
   if (grid) {
     gridcol <- "black"
@@ -30,28 +29,31 @@ plot_variance <- function(data, grid = TRUE){
     gridcol <- NA
   }
 
-  gg <- mice::complete(data, "long")  %>%
+  gg <- mice::complete(data, "long") %>%
     dplyr::mutate(dplyr::across(where(is.factor), as.numeric)) %>%
     dplyr::select(-.imp) %>%
     dplyr::group_by(.id) %>%
-    dplyr::summarise(dplyr::across(dplyr::everything(),  stats::var)) %>%
+    dplyr::summarise(dplyr::across(dplyr::everything(), stats::var)) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(dplyr::across(.cols = -.id, ~scale_above_zero(.))) %>%
+    dplyr::mutate(dplyr::across(.cols = -.id, ~ scale_above_zero(.))) %>%
     tidyr::pivot_longer(cols = -.id) %>%
-    ggplot2::ggplot(ggplot2::aes(name, .id, fill= value)) +
+    ggplot2::ggplot(ggplot2::aes(name, .id, fill = value)) +
     ggplot2::geom_tile(color = gridcol) +
     ggplot2::scale_fill_gradient(low = "white", high = mice::mdc(2)) +
-    ggplot2::labs(x = "Column name",
-                  y = "Row number",
-                  fill = "Imputation variability*
+    ggplot2::labs(
+      x = "Column name",
+      y = "Row number",
+      fill = "Imputation variability*
       ",
-      caption = "*scaled cell-level between imputation variance") + # "Cell-level between imputation\nvariance (scaled)\n\n"
-    ggplot2::scale_x_discrete(position = "top", expand = c(0,0)) +
-    ggplot2::scale_y_continuous(trans = "reverse", expand = c(0,0)) +
+      caption = "*scaled cell-level between imputation variance"
+    ) + # "Cell-level between imputation\nvariance (scaled)\n\n"
+    ggplot2::scale_x_discrete(position = "top", expand = c(0, 0)) +
+    ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
     theme_minimice()
 
   if (!grid) {
-    gg <- gg + ggplot2::theme(panel.border = ggplot2::element_rect(fill = NA))
+    gg <-
+      gg + ggplot2::theme(panel.border = ggplot2::element_rect(fill = NA))
   }
 
   # return the ggplot object
@@ -59,8 +61,8 @@ plot_variance <- function(data, grid = TRUE){
 }
 
 # function to scale only non-zero values without centering
-scale_above_zero <- function(x){
+scale_above_zero <- function(x) {
   x <- as.matrix(x)
-  x[x!=0] <- scale(x[x!=0], center = FALSE)
+  x[x != 0] <- scale(x[x != 0], center = FALSE)
   return(x)
 }

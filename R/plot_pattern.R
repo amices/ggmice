@@ -1,7 +1,7 @@
 #' Plot the missing data pattern of an incomplete dataset
 #'
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
-#' @param vrb String or vector with variable name(s), default is "all".
+#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param square Logical indicating whether the plot tiles should be squares, defaults to squares to mimick `mice::md.pattern()`.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
@@ -19,15 +19,23 @@ plot_pattern <-
            rotate = FALSE,
            cluster = NULL,
            npat = NULL) {
-    if (!is.data.frame(data) & !is.matrix(data)) {
-      stop("Dataset should be a 'data.frame' or 'matrix'.")
+    if (is.matrix(data) && ncol(data) > 1) {
+      data <- as.data.frame(data)
     }
-    if (vrb == "all") {
+    verify_data(data, df = TRUE)
+    vrb <- substitute(vrb)
+    if (vrb != "all" && length(vrb) < 2) {
+      stop("The number of variables should be two or more to compute missing data patterns.")
+    }
+    if (vrb[1] == "all") {
       vrb <- names(data)
+    } else {
+      vrb <- names(dplyr::select(data, {{vrb}}))
     }
-    if (".x" %in% vrb | ".y" %in% vrb) {
+    if (".x" %in% vrb || ".y" %in% vrb) {
       stop(
-        "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot. Please exclude or rename your variable(s)."
+        "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot.\n
+        Please exclude or rename your variable(s)."
       )
     }
     if (!is.null(cluster)) {
@@ -38,28 +46,38 @@ plot_pattern <-
       }
     }
     if (!is.null(npat)) {
-      if (!is.numeric(npat) | npat < 1) {
-        stop("Number of patterns should be one or more. Please provide a positive numeric value.")
+      if (!is.numeric(npat) || npat < 1) {
+        stop(
+          "The minimum number of patterns to display is one. Please provide a positive integer."
+        )
       }
     }
 
     # get missing data pattern
     pat <- mice::md.pattern(data[, vrb], plot = FALSE)
-    
-    # exit function if data are complete
-    if(nrow(pat) == 0){
-      return()
-    }
 
     # filter npat most frequent patterns
     if (!is.null(npat)) {
       if (npat < (nrow(pat) - 1)) {
         top_n_pat <-
           sort(as.numeric(row.names(pat)), decreasing = TRUE)[1:npat]
-        pat <- pat[rownames(pat) %in% c(top_n_pat, ""), ]
+        rows_pat_full <-
+          nrow(pat) # full number of missing data patterns
+        pat <-
+          pat[rownames(pat) %in% c(top_n_pat, ""), , drop = FALSE]
+        # show number of requested, shown, and hidden missing data patterns
+        message(
+          npat,
+          " missing data patterns were requested and ",
+          nrow(pat) - 1,
+          " missing data patterns are shown. ",
+          (rows_pat_full - nrow(pat)),
+          " missing data patterns are hidden."
+        )
       } else {
         warning(
-          "Number of patterns specified is equal to or greater than the total number of patterns. All missing data patterns are shown."
+          "Number of patterns specified is equal to or greater than the total number of patterns.\n
+          All missing data patterns are shown."
         )
       }
     }
@@ -70,11 +88,11 @@ plot_pattern <-
     vrb <- colnames(pat)[-cls]
     frq <- row.names(pat)[-rws]
     na_row <- pat[-rws, cls]
-    na_col <- pat[rws,-cls]
+    na_col <- pat[rws, -cls]
 
     # add opacity for clustering
     if (is.null(cluster)) {
-      pat_clean <- cbind(.opacity = 1, pat[-rws, vrb])
+      pat_clean <- cbind(.opacity = 1, pat[-rws, vrb, drop = FALSE])
     } else {
       pats <- purrr::map(split(data[, vrb], ~ get(cluster)), ~ {
         mice::md.pattern(., plot = FALSE) %>%
@@ -97,14 +115,14 @@ plot_pattern <-
       ) %>%
       dplyr::mutate(
         .x = as.numeric(factor(
-          .data$x, levels = vrb, ordered = TRUE
+          .data$x,
+          levels = vrb, ordered = TRUE
         )),
         .where = factor(
           .data$.where,
           levels = c(0, 1),
           labels = c("missing", "observed")
         ),
-        # TODO: always obs/always missing, add title, maybe make y axis prop to freq, add asterisk to clust var with caption that can tell that there is missingness in it
         .opacity = as.numeric(.data$.opacity)
       )
 
@@ -120,7 +138,10 @@ plot_pattern <-
         )
       ) +
       ggplot2::geom_tile(color = "black") +
-      ggplot2::scale_fill_manual(values = c("observed" = "#006CC2B3", "missing" = "#B61A51B3")) +
+      ggplot2::scale_fill_manual(values = c(
+        "observed" = "#006CC2B3",
+        "missing" = "#B61A51B3"
+      )) +
       ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
       ggplot2::scale_x_continuous(
         breaks = 1:(cls - 1),
@@ -163,6 +184,7 @@ pat_to_chr <- function(pat, ord = NULL) {
   if (is.null(ord)) {
     ord <- colnames(pat)[-ncol(pat)]
   }
-  apply(pat[-nrow(pat), ord], 1, function(x)
-    paste(as.numeric(x), collapse = ""))
+  apply(pat[-nrow(pat), ord], 1, function(x) {
+    paste(as.numeric(x), collapse = "")
+  })
 }
