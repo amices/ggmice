@@ -12,6 +12,7 @@ test_that("plot_pattern works with different inputs", {
   expect_s3_class(plot_pattern(dat, c("age", "bmi")), "ggplot")
   expect_s3_class(plot_pattern(dat, c(age, bmi)), "ggplot")
   expect_s3_class(plot_pattern(data.frame(age = dat$age, testvar = NA)), "ggplot")
+  expect_s3_class(plot_pattern(cbind(dat, "empty var" = NA)), "ggplot")
 })
 
 
