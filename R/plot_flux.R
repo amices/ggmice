@@ -31,12 +31,12 @@ plot_flux <-
       data.frame(
         vrb = rownames(flx),
         flx,
-        outflux_nudge = flx$outflux - 0.025
+        outflux = flx$outflux - 0.025
       ) %>%
       ggplot2::ggplot(
         ggplot2::aes(
           x = .data$influx,
-          y = .data$outflux_nudge,
+          y = .data$outflux,
           color = .data$vrb,
           label = .data$vrb
         )
