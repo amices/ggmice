@@ -81,13 +81,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu">mice</span><span class="fu">::</span><span class="fu"><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice</a></span><span class="op">(</span><span class="fu">mice</span><span class="fu">::</span><span class="va"><a href="https://amices.org/mice/reference/nhanes.html" class="external-link">nhanes</a></span>, maxit <span class="op">=</span> <span class="fl">1</span>, printFlag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">stripplot</span><span class="op">(</span><span class="va">imp</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Hint: Did you know, an equivalent figure can be created with `ggmice()`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     For example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run: </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     ggmice(my_mids, ggplot2::aes(x = .imp, y = my_vrb)) +</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     ggplot2::geom_jitter() </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> See amices.org/ggmice for more info.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For example, to plot a variable named 'my_vrb' from a mids object called</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'my_mids', run:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ggmice(my_mids, ggplot2::aes(x = .imp, y = my_vrb)) + ggplot2::geom_jitter()</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> See amices.org/ggmice for more info.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This message is displayed once per session.</span></span>
 <span class="r-plt img"><img src="stripplot-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>

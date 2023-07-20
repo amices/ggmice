@@ -246,12 +246,10 @@ variable <code>hgt</code> from centimeters to inches and the variable
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">dat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wgt</span> <span class="op">*</span> <span class="fl">2.20</span>, <span class="va">hgt</span> <span class="op">/</span> <span class="fl">2.54</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Weight (lbs)"</span>, y <span class="op">=</span> <span class="st">"Height (in)"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in match_mapping(data, vrbs, mapping$x): Mapping variable 'wgt * 2.2'</span></span>
-<span><span class="co">#&gt; recognized internally as 'wgt', please verify whether this matches the</span></span>
-<span><span class="co">#&gt; requested mapping variable.</span></span>
-<span><span class="co">#&gt; Warning in match_mapping(data, vrbs, mapping$y): Mapping variable 'hgt/2.54'</span></span>
-<span><span class="co">#&gt; recognized internally as 'hgt', please verify whether this matches the</span></span>
-<span><span class="co">#&gt; requested mapping variable.</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: Mapping variable 'wgt * 2.2' recognized internally as wgt.</span></span>
+<span><span class="co">#&gt; Please verify whether this matches the requested mapping variable.</span></span>
+<span><span class="co">#&gt; Warning: Mapping variable 'hgt/2.54' recognized internally as hgt.</span></span>
+<span><span class="co">#&gt; Please verify whether this matches the requested mapping variable.</span></span></code></pre></div>
 <p><img src="ggmice_files/figure-html/inc-trans-1.png" width="691.2"></p>
 <p>A final example of <code><a href="../reference/ggmice.html">ggmice()</a></code> applied to incomplete data
 is faceting based on a missingness indicator. Doing so may help explore
@@ -301,12 +299,10 @@ above, but now on the imputed data:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ggmice.html">ggmice</a></span><span class="op">(</span><span class="va">imp</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wgt</span> <span class="op">*</span> <span class="fl">2.20</span>, <span class="va">hgt</span> <span class="op">/</span> <span class="fl">2.54</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Weight (lbs)"</span>, y <span class="op">=</span> <span class="st">"Height (in)"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in match_mapping(data, vrbs, mapping$x): Mapping variable 'wgt * 2.2'</span></span>
-<span><span class="co">#&gt; recognized internally as 'wgt', please verify whether this matches the</span></span>
-<span><span class="co">#&gt; requested mapping variable.</span></span>
-<span><span class="co">#&gt; Warning in match_mapping(data, vrbs, mapping$y): Mapping variable 'hgt/2.54'</span></span>
-<span><span class="co">#&gt; recognized internally as 'hgt', please verify whether this matches the</span></span>
-<span><span class="co">#&gt; requested mapping variable.</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: Mapping variable 'wgt * 2.2' recognized internally as wgt.</span></span>
+<span><span class="co">#&gt; Please verify whether this matches the requested mapping variable.</span></span>
+<span><span class="co">#&gt; Warning: Mapping variable 'hgt/2.54' recognized internally as hgt.</span></span>
+<span><span class="co">#&gt; Please verify whether this matches the requested mapping variable.</span></span></code></pre></div>
 <p><img src="ggmice_files/figure-html/imp-same-4.png" width="691.2"></p>
 <p>These figures show the observed data points once in blue, plus three
 imputed values in red for each missing entry.</p>
@@ -381,8 +377,7 @@ arguments are <code>cluster</code> and <code>npat</code>.</p>
 <span>  rotate <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  npat <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  cluster <span class="op">=</span> <span class="st">"reg"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; 3 missing data patterns were requested and 3 missing data patterns are shown. 10 missing data patterns are hidden.</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="ggmice_files/figure-html/pattern-2.png" width="691.2"></p>
 </div>
 <div class="section level3">
