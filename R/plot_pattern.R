@@ -21,6 +21,7 @@ plot_pattern <-
            cluster = NULL,
            npat = NULL,
            caption = TRUE) {
+    # input processing
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
@@ -63,6 +64,7 @@ plot_pattern <-
     pat <- mice::md.pattern(data[, vrb], plot = FALSE)
     rows_pat_full <-
       (nrow(pat) - 1) # full number of missing data patterns
+
 
     # filter npat most frequent patterns
     if (!is.null(npat)) {
@@ -164,36 +166,17 @@ plot_pattern <-
         breaks = 1:(rws - 1),
         labels = frq,
         sec.axis = ggplot2::dup_axis(labels = na_row,
-                                     name = "Number of missing entries\nper pattern*")
+                                     name = "Number of missing entries\nper pattern")
+      ) +
+      ggplot2::labs(
+        x = "Number of missing entries\nper column",
+        y = "Pattern frequency",
+        fill = "",
+        alpha = ""
       ) +
       theme_minimice()
-    if (caption) {
-      if (!is.null(npat) && npat < rows_pat_full) {
-       gg <- gg +
-          ggplot2::labs(
-            x = "Number of missing entries\nper column*",
-            y = "Pattern frequency**",
-            fill = "",
-            alpha = ""
-          )
-      } else {
-        gg <- gg +
-          ggplot2::labs(
-            x = "Number of missing entries\nper column*",
-            y = "Pattern frequency",
-            fill = "",
-            alpha = ""
-          )
-      }
-    } else {
-      gg <- gg +
-        ggplot2::labs(
-          x = "Number of missing entries\nper column",
-          y = "Pattern frequency",
-          fill = "",
-          alpha = ""
-        )
-    }
+
+    # additional arguments
     if (square) {
       gg <- gg + ggplot2::coord_fixed(expand = FALSE)
     } else {
@@ -207,6 +190,8 @@ plot_pattern <-
       if (!is.null(npat) && npat < rows_pat_full) {
         gg <- gg +
           ggplot2::labs(
+            x = "Number of missing entries\nper column*",
+            y = "Pattern frequency**",
             caption = paste0(
               "*total number of missing entries: ",
               pat[rws, cls],
@@ -219,7 +204,9 @@ plot_pattern <-
           )
       } else {
         gg <- gg +
-          ggplot2::labs(caption = paste0("*total number of missing entries: ",
+          ggplot2::labs(
+            x = "Number of missing entries\nper column*",
+            caption = paste0("*total number of missing entries: ",
                                          pat[rws, cls]))
       }
     }
