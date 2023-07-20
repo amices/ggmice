@@ -164,11 +164,11 @@ plot_pattern <-
         breaks = 1:(rws - 1),
         labels = frq,
         sec.axis = ggplot2::dup_axis(labels = na_row,
-                                     name = "Number of missing entries\nper pattern")
+                                     name = "Number of missing entries\nper pattern*")
       ) +
       ggplot2::labs(
-        x = "Number of missing entries\nper column",
-        y = "Pattern frequency",
+        x = "Number of missing entries\nper column*",
+        y = "Pattern frequency**",
         fill = "",
         alpha = ""
       ) +
@@ -187,18 +187,19 @@ plot_pattern <-
         gg <- gg +
           ggplot2::labs(
             caption = paste0(
-              "There are a total of ",
-              sum(is.na(data[, vrb])),
-              " empty cells. \n ",
-              rows_pat_full - (nrow(pat) - 1),
-              " missing data patterns are hidden."
+              "*total number of missing entries: ",
+              pat[rws, cls],
+              "\n**number of patterns shown: ",
+              (nrow(pat) - 1),
+              " out of ",
+              rows_pat_full,
+              ""
             )
           )
       } else {
         gg <- gg +
-          ggplot2::labs(caption = paste0("There are a total of ",
-                                         sum(is.na(data[, vrb])),
-                                         " empty cells."))
+          ggplot2::labs(caption = paste0("*total number of missing entries: ",
+                                         pat[rws, cls]))
       }
     }
 
