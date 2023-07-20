@@ -11,6 +11,15 @@
 * ggmice() now displays all imputed data, not just the filled in missing data (i.e. also over-imputed data; #39, PR #54) and is able to match variable names more effectively (#89, PR #90)
 * new feature: plot_variance(imp) (#48, PR #56)
 
+## Major changes
+
+* 
+
+## Minor improvements and bug fixes
+
+* 
+
+
 # `ggmice 0.0.1`
 
 * First release of the package.
