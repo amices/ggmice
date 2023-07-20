@@ -23,7 +23,7 @@ plot_flux <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {{ vrb }}))
+      vrb <- names(dplyr::select(data, {{vrb}}))
     }
     # plot in and outflux
     flx <- mice::flux(data[, vrb])[, c("influx", "outflux")]
@@ -31,12 +31,12 @@ plot_flux <-
       data.frame(
         vrb = rownames(flx),
         flx,
-        outflux_nudge = flx$outflux - 0.025
+        outflux = flx$outflux - 0.025
       ) %>%
       ggplot2::ggplot(
         ggplot2::aes(
           x = .data$influx,
-          y = .data$outflux_nudge,
+          y = .data$outflux,
           color = .data$vrb,
           label = .data$vrb
         )
