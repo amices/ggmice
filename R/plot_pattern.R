@@ -166,13 +166,34 @@ plot_pattern <-
         sec.axis = ggplot2::dup_axis(labels = na_row,
                                      name = "Number of missing entries\nper pattern*")
       ) +
-      ggplot2::labs(
-        x = "Number of missing entries\nper column*",
-        y = "Pattern frequency**",
-        fill = "",
-        alpha = ""
-      ) +
       theme_minimice()
+    if (caption) {
+      if (!is.null(npat) && npat < rows_pat_full) {
+       gg <- gg +
+          ggplot2::labs(
+            x = "Number of missing entries\nper column*",
+            y = "Pattern frequency**",
+            fill = "",
+            alpha = ""
+          )
+      } else {
+        gg <- gg +
+          ggplot2::labs(
+            x = "Number of missing entries\nper column*",
+            y = "Pattern frequency",
+            fill = "",
+            alpha = ""
+          )
+      }
+    } else {
+      gg <- gg +
+        ggplot2::labs(
+          x = "Number of missing entries\nper column",
+          y = "Pattern frequency",
+          fill = "",
+          alpha = ""
+        )
+    }
     if (square) {
       gg <- gg + ggplot2::coord_fixed(expand = FALSE)
     } else {
