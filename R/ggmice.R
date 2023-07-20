@@ -75,7 +75,7 @@ ggmice <- function(data = NULL,
         mice_data,
         dplyr::across(
           tidyselect::all_of(vrbs_num),
-          ~ tidyr::replace_na(as.numeric(.x),-Inf)
+          ~ tidyr::replace_na(as.numeric(.x), -Inf)
         ),
         dplyr::across(tidyselect::all_of(vrbs[vrbs %nin% vrbs_num]), ~ {
           as.factor(tidyr::replace_na(as.character(.x), " "))
@@ -99,8 +99,8 @@ ggmice <- function(data = NULL,
           .imp = 0,
           .id = rownames(data$data),
           data$data
-        )[!miss_xy,],
-        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy,]
+        )[!miss_xy, ],
+        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy, ]
       ),
       .where = factor(
         .where,
@@ -186,7 +186,8 @@ match_mapping <- function(data, vrbs, mapping_in) {
       mapping_text %nin% c(vrbs, ".id", ".imp", ".where")) {
     mapping_out <- vrbs[stringr::str_detect(mapping_text, vrbs)]
     if (identical(mapping_out, character(0)) ||
-        inherits(try(dplyr::mutate(mapping_data,!!rlang::parse_quo(mapping_text, env = rlang::current_env())),
+        inherits(try(dplyr::mutate(mapping_data,
+                                   !!rlang::parse_quo(mapping_text, env = rlang::current_env())),
                      silent = TRUE)
                  ,
                  "try-error")) {

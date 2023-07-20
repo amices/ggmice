@@ -18,45 +18,49 @@ plot_flux <-
     verify_data(data, df = TRUE)
     vrb <- substitute(vrb)
     if (vrb != "all" && length(vrb) < 2) {
-      cli::cli_abort("The number of variables should be two or more to compute flux.")
+      stop("The number of variables should be two or more to compute flux.")
     }
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(data, {{vrb}}))
     }
     # plot in and outflux
     flx <- mice::flux(data[, vrb])[, c("influx", "outflux")]
     gg <-
-      data.frame(vrb = rownames(flx),
-                 flx,
-                 outflux_nudge = flx$outflux - 0.025) %>%
+      data.frame(
+        vrb = rownames(flx),
+        flx,
+        outflux = flx$outflux - 0.025
+      ) %>%
       ggplot2::ggplot(
         ggplot2::aes(
           x = .data$influx,
-          y = .data$outflux_nudge,
+          y = .data$outflux,
           color = .data$vrb,
           label = .data$vrb
         )
       ) +
-      ggplot2::geom_abline(intercept = 1,
-                           slope = -1,
-                           linetype = "dashed") +
+      ggplot2::geom_abline(
+        intercept = 1,
+        slope = -1,
+        linetype = "dashed"
+      ) +
       ggplot2::lims(x = c(-0.05, 1.05), y = c(-0.05, 1.05)) +
       ggplot2::coord_cartesian(clip = "off") +
       theme_mice()
     if (label) {
       gg <- gg +
-        ggplot2::geom_text(color = "black",
-                           position = ggplot2::position_nudge(y = 0.025))
+        ggplot2::geom_text(
+          color = "black",
+          position = ggplot2::position_nudge(y = 0.025)
+        )
     } else {
       gg <- gg +
-        ggplot2::geom_point(shape = 1,
-                            position = ggplot2::position_nudge(y = 0.025)) +
+        ggplot2::geom_point(
+          shape = 1,
+          position = ggplot2::position_nudge(y = 0.025)
+        ) +
         ggplot2::labs(color = "")
     }
     if (caption) {
@@ -69,8 +73,10 @@ plot_flux <-
         )
     } else {
       gg <- gg +
-        ggplot2::labs(x = "Influx",
-                      y = "Outflux")
+        ggplot2::labs(
+          x = "Influx",
+          y = "Outflux"
+        )
     }
     # output
     return(gg)

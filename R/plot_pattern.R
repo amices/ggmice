@@ -20,7 +20,7 @@ plot_pattern <-
            rotate = FALSE,
            cluster = NULL,
            npat = NULL,
-           caption = T) {
+           caption = TRUE) {
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
@@ -32,11 +32,7 @@ plot_pattern <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(data, {{vrb}}))
     }
     if (".x" %in% vrb || ".y" %in% vrb) {
       cli::cli_abort(
@@ -65,7 +61,8 @@ plot_pattern <-
 
     # get missing data pattern
     pat <- mice::md.pattern(data[, vrb], plot = FALSE)
-    rows_pat_full <- (nrow(pat) - 1) # full number of missing data patterns
+    rows_pat_full <-
+      (nrow(pat) - 1) # full number of missing data patterns
 
     # filter npat most frequent patterns
     if (!is.null(npat)) {
@@ -197,7 +194,7 @@ plot_pattern <-
               " missing data patterns are hidden."
             )
           )
-      } else{
+      } else {
         gg <- gg +
           ggplot2::labs(caption = paste0("There are a total of ",
                                          sum(is.na(data[, vrb])),
