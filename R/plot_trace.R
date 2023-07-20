@@ -26,11 +26,7 @@ plot_trace <- function(data, vrb = "all") {
   if (as.character(vrb)[1] == "all") {
     vrb <- varlist
   } else {
-    vrb <- names(dplyr::select(data$data, {
-      {
-        vrb
-      }
-    }))
+    vrb <- names(dplyr::select(data$data, {{vrb}}))
   }
   if (any(vrb %nin% varlist)) {
     message(
@@ -43,7 +39,7 @@ plot_trace <- function(data, vrb = "all") {
     if (any(vrb %in% varlist)) {
       vrb <- vrb[which(vrb %in% varlist)]
     } else {
-      cli:abort(c("x" = "None of the variables are imputed.",
+      cli::cli_abort(c("x" = "None of the variables are imputed.",
                   "No plots can be produced."))
     }
   }

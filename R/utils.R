@@ -31,7 +31,7 @@ verify_data <- function(data,
                         pred = FALSE) {
   if (df && !imp) {
     if (!(is.data.frame(data) || is.matrix(data))) {
-      cli:cli_abort(
+      cli::cli_abort(
         c(
           "The 'data' argument requires an object of class 'data.frame' or 'matrix'.",
           "i" = "You provided an object of class {class(data}"
@@ -91,11 +91,7 @@ verify_vrb <- function(data, vrb) {
   if (vrb[1] == "all") {
     vrb <- names(data)
   } else {
-    vrb <- names(dplyr::select(data, {
-      {
-        vrb
-      }
-    }))
+    vrb <- names(dplyr::select(data, {{vrb}}))
   }
   return(vrb)
 }

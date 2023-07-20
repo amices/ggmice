@@ -11,7 +11,7 @@ plot_pattern(
   rotate = FALSE,
   cluster = NULL,
   npat = NULL,
-  caption = T
+  caption = TRUE
 )
 }
 \arguments{

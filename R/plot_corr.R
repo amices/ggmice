@@ -32,11 +32,7 @@ plot_corr <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(data, {{vrb}}))
     }
     p <- length(vrb)
     corrs <- data.frame(
@@ -79,9 +75,9 @@ plot_corr <-
           y = "Variable to impute",
           fill = "Correlation*
       ",
-          caption = "*pairwise complete observations"
+      caption = "*pairwise complete observations"
         )
-    } else{
+    } else {
       gg <- gg +
         ggplot2::labs(x = "Imputation model predictor",
                       y = "Variable to impute",
