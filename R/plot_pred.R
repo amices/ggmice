@@ -41,7 +41,7 @@ plot_pred <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data$data, {{vrb}}))
+      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
     }
     vrbs <- row.names(data)
     long <- data.frame(
