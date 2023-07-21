@@ -35,7 +35,7 @@ ggmice <- function(data = NULL,
   if (!is.null(mapping$colour)) {
     cli::cli_warn(
       c(
-        "The aes() argument 'colour' has a special use in ggmmice() and will be overwritten.",
+        "The aes() argument 'colour' has a special use in ggmice() and will be overwritten.",
         "i" = "Try using 'shape' or 'linetype' for additional mapping, or use faceting."
       )
     )

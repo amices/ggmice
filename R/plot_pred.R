@@ -35,7 +35,9 @@ plot_pred <-
       ylabel <- ""
     }
     if (!is.character(method) || length(method) != p) {
-      stop("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
+      cli::cli_abort(
+        "Method should be NULL or a character string or vector (of length 1 or `ncol(data)`)."
+        )
     }
     vrb <- substitute(vrb)
     if (vrb[1] == "all") {

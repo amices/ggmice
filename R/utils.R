@@ -34,7 +34,7 @@ verify_data <- function(data,
       cli::cli_abort(
         c(
           "The 'data' argument requires an object of class 'data.frame' or 'matrix'.",
-          "i" = "You provided an object of class {class(data}"
+          "i" = "Input object is of class {class(data)}."
         ),
         call. = FALSE
       )
@@ -46,7 +46,7 @@ verify_data <- function(data,
       cli::cli_abort(
         c(
           "The 'data' argument requires an object of class 'data.frame', 'matrix', or 'mids'.",
-          "i" = "You provided an object of class {class(data}"
+          "i" = "Input object is of class {class(data)}."
         ),
         call. = FALSE
       )
@@ -57,7 +57,7 @@ verify_data <- function(data,
       cli::cli_abort(
         c(
           "The 'data' argument requires an object of class 'mids'.",
-          "i" = "You provided an object of class {class(data}"
+          "i" = "Input object is of class {class(data)}."
         ),
         call. = FALSE
       )
@@ -68,13 +68,22 @@ verify_data <- function(data,
       cli::cli_abort(
         c(
           "The 'data' argument requires an object of class 'matrix'.",
-          "i" = "You provided an object of class {class(data}"
+          "i" = "Input object is of class {class(data)}."
         ),
         call. = FALSE
       )
     }
-    if (dim(data)[1] != dim(data)[2] ||
-        is.null(rownames(data)) || is.null(colnames(data))) {
+    if (dim(data)[1] != dim(data)[2]) {
+      cli::cli_abort(
+        c(
+          "The 'data' argument requires a square predictor matrix.",
+          "i" = "Input object has {dim(data)[1]} rows and {dim(data)[2]} columns."
+        ),
+        call. = FALSE
+      )
+    }
+    if (is.null(rownames(data)) || is.null(colnames(data)) ||
+        !all.equal(rownames(data), colnames(data))) {
       cli::cli_warn(
         c(
           "The 'data' argument expects a square predictor matrix with equal row and column names.",

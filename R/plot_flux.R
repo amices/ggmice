@@ -18,7 +18,7 @@ plot_flux <-
     verify_data(data, df = TRUE)
     vrb <- substitute(vrb)
     if (vrb != "all" && length(vrb) < 2) {
-      stop("The number of variables should be two or more to compute flux.")
+      cli::cli_abort("The number of variables should be two or more to compute flux.")
     }
     if (vrb[1] == "all") {
       vrb <- names(data)
