@@ -38,15 +38,17 @@ plot_corr <-
     # check if any column is constant
     constants <- apply(data, MARGIN = 2, function(x) {
       all(is.na(x)) || max(x, na.rm = TRUE) == min(x, na.rm = TRUE)
-      })
+    })
     if (any(constants)) {
-      data <- data[,!constants]
+      data <- data[, !constants]
       vrb <- names(data)
-      cli::cli_inform(c(
-        "No correlations computed for variable(s):",
-        " " = paste(names(constants[which(constants)]), collapse = ", "),
-        "x" = "Correlation undefined for constants."
-        ))
+      cli::cli_inform(
+        c(
+          "No correlations computed for variable(s):",
+          " " = paste(names(constants[which(constants)]), collapse = ", "),
+          "x" = "Correlation undefined for constants."
+        )
+      )
     }
 
     p <- length(vrb)

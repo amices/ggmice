@@ -17,9 +17,9 @@ test_that("plot_corr creates ggplot object", {
 test_that("plot_corr takes non-default input arguments", {
   expect_s3_class(plot_corr(dat, c("age", "bmi")), "ggplot")
   expect_s3_class(plot_corr(dat, c(age, bmi)), "ggplot")
-  expect_s3_class(plot_corr(
-    cbind(dat, "with space" = stats::rnorm(nrow(dat)))
-    ), "ggplot")
+  expect_s3_class(plot_corr(cbind(dat, "with space" = stats::rnorm(nrow(
+    dat
+  )))), "ggplot")
 })
 
 test_that("plot_corr returns error with incorrect argument(s)", {

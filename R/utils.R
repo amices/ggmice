@@ -100,7 +100,7 @@ verify_vrb <- function(data, vrb) {
   if (vrb[1] == "all") {
     vrb <- names(data)
   } else {
-    vrb <- names(dplyr::select(data, {{vrb}}))
+    vrb <- names(dplyr::select(data$data, {{vrb}}))
   }
   return(vrb)
 }

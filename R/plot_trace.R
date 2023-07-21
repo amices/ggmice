@@ -30,17 +30,17 @@ plot_trace <- function(data, vrb = "all") {
   }
   if (any(vrb %nin% varlist)) {
     cli::cli_inform(
-      c("Trace plot could not be produced for variable(s):",
+      c(
+        "Trace plot could not be produced for variable(s):",
         " " = paste(vrb[which(vrb %nin% varlist)], collapse = ", "),
         "x" = "No convergence diagnostics found."
-        )
+      )
     )
     if (any(vrb %in% varlist)) {
       vrb <- vrb[which(vrb %in% varlist)]
     } else {
-      cli::cli_abort(
-        c("x" = "None of the variables are imputed.",
-          "No plots can be produced."))
+      cli::cli_abort(c("x" = "None of the variables are imputed.",
+                       "No plots can be produced."))
     }
   }
 
