@@ -10,7 +10,8 @@ plot_pattern(
   square = TRUE,
   rotate = FALSE,
   cluster = NULL,
-  npat = NULL
+  npat = NULL,
+  caption = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ plot_pattern(
 \item{cluster}{Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).}
 
 \item{npat}{Optional numeric input specifying the number of missing data patterns to be visualized, defaults to all patterns.}
+
+\item{caption}{Logical indicating whether the figure caption should be displayed.}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.

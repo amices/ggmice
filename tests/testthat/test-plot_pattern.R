@@ -5,7 +5,7 @@ dat <- mice::nhanes
 test_that("plot_pattern produces plot", {
   expect_s3_class(plot_pattern(dat), "ggplot")
   expect_s3_class(plot_pattern(dat, square = FALSE, rotate = TRUE, cluster = "age", npat = 2), "ggplot")
-  expect_s3_class(plot_pattern(cbind(dat, "testvar" = NA)), "ggplot")
+  expect_s3_class(plot_pattern(cbind(dat, "testvar" = NA), caption = FALSE), "ggplot")
 })
 
 test_that("plot_pattern works with different inputs", {
