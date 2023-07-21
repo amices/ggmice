@@ -4,7 +4,7 @@ dat <- dplyr::mutate(
   bmi = as.numeric(bmi),
   hyp = as.factor(hyp),
   age2 = as.character(age)
-)
+  )
 imp <- suppressWarnings(mice::mice(dat, printFlag = FALSE))
 
 # tests
@@ -48,6 +48,7 @@ test_that("advanced mapping", {
   expect_error(ggmice(dat, ggplot2::aes(log(age))))
   expect_error(ggmice(dat, ggplot2::aes(age3)))
   expect_warning(ggmice(dat, ggplot2::aes(bmi, color = bmi)))
+  # expect_s3_class(ggmice(dat, ggplot2::aes(`with space`)), "ggplot")
 })
 
 test_that("incorrect mapping", {

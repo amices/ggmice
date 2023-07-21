@@ -10,6 +10,7 @@ test_that("plot_flux creates ggplot object", {
 test_that("plot_flux works with different inputs", {
   expect_s3_class(plot_flux(dat, c("age", "bmi")), "ggplot")
   expect_s3_class(plot_flux(na.omit(dat)), "ggplot")
+  expect_s3_class(plot_flux(cbind(dat, "with space" = NA)), "ggplot")
 })
 
 test_that("plot_flux returns error with incorrect argument(s)", {
