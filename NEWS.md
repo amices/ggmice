@@ -2,26 +2,33 @@
 
 ## Breaking changes
 
-* breaking changes in defaults `plot_pred()` and `plot_pattern()` #33, #73
+* Default plotting behavior `plot_pattern()` creates missing data pattern plot with square tiles (#74)
+* Default plotting behavior `plot_pred()` creates predictor matrix plot with colored tiles and shows predictor values (#71, #74)
 
 ## New features
 
-* `plot_pred()` has more arguments and different color scheme (#37)
-* new argument `plot_pattern()` to hide less frequent patterns (#75)
-* new feature: `plot_variance()` (#48, PR #56)
+* New plotting function `plot_variance()` visualizes post-imputation variability (#56)
+* New optional argument `plot_pred()` shows methods vector with predictor matrix plot (#71)
+* New optional argument `plot_pattern()` hides less frequent patterns (#77)
+* New optional argument `plot_pattern()` hides legend caption (#111)
 
 ## Bug fixes 
 
-* input validation for `data` and `vrb` arguments: error message about log transformations (#34), variable selection actually works (#41, #42, #63), input validation (#85)
-* Make jitter work with incomplete categorical variables bug #25
-* `plot_pattern()` now works with variable called 'y' (#36) and complete data (#44) and completely missing variable (#103).
-* `ggmice()` now displays all imputed data, not just the filled in missing data (i.e. also over-imputed data; #39, PR #54) and is able to match variable names more effectively (#89, PR #90)
+* The `ggmice()` function now displays all imputed data (incl. over-imputed data; #54)
+* The `ggmice()` function now catches errors when `mapping` input contains log-transformation (#80)
+* The family of `plot_*` functions now handle vector inputs for `vrb` argument (#80)
+* The family of `plot_*` functions now handle `matrix` inputs for `data` argument (#108)
+* The family of `plot_*` functions now omit grid lines from tile plots (#35)
+* The `plot_pattern()` function now handles any `data.frame` input for `data` argument (#38, #77, #104, #112)
+
 
 ## Minor changes
 
-* Vignette updates (PRs #31, #35, #38) and other documentation (PRs #45, #51)
-* grid lines #32
-* renamed axes `plot_pattern()` #57
+* Input validation for `data` argument `plot_*` functions (#85)
+* Input validation for `vrb` argument `plot_*` functions (#80)
+* Input validation for `mapping` argument `ggmice()` (#34, #90)
+* Vignette updates (PRs #31, #35, #38) and other documentation (#45, #51)
+* The `plot_pattern()` function creates missing data pattern plot with more informative labels (#59, #111)
 
 ---
 
