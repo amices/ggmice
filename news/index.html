@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ggmice</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,20 +54,39 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0" id="ggmice-010"><code>ggmice 0.1.0</code><a class="anchor" aria-label="anchor" href="#ggmice-010"></a></h2>
-<ul><li>Vignette updates (PRs <a href="https://github.com/amices/ggmice/issues/31" class="external-link">#31</a>, <a href="https://github.com/amices/ggmice/issues/35" class="external-link">#35</a>, <a href="https://github.com/amices/ggmice/issues/38" class="external-link">#38</a>) and other documentation (PRs <a href="https://github.com/amices/ggmice/issues/45" class="external-link">#45</a>, <a href="https://github.com/amices/ggmice/issues/51" class="external-link">#51</a>)</li>
-<li>input validation for data and vrb arguments: error message about log transformations (<a href="https://github.com/amices/ggmice/issues/34" class="external-link">#34</a>), variable selection actually works (<a href="https://github.com/amices/ggmice/issues/41" class="external-link">#41</a>, <a href="https://github.com/amices/ggmice/issues/42" class="external-link">#42</a>, <a href="https://github.com/amices/ggmice/issues/63" class="external-link">#63</a>), input validation (<a href="https://github.com/amices/ggmice/issues/85" class="external-link">#85</a>)</li>
-<li>Make jitter work with incomplete categorical variables bug <a href="https://github.com/amices/ggmice/issues/25" class="external-link">#25</a></li>
-<li>grid lines <a href="https://github.com/amices/ggmice/issues/32" class="external-link">#32</a></li>
-<li>breaking changes in defaults plot_pred and plot_pattern <a href="https://github.com/amices/ggmice/issues/33" class="external-link">#33</a>, <a href="https://github.com/amices/ggmice/issues/73" class="external-link">#73</a>, and renamed axes plot_pattern() <a href="https://github.com/amices/ggmice/issues/57" class="external-link">#57</a></li>
-<li>plot_pattern() now works with variable called ‘y’ (<a href="https://github.com/amices/ggmice/issues/36" class="external-link">#36</a>) and complete data (<a href="https://github.com/amices/ggmice/issues/44" class="external-link">#44</a>) and completely missing variable (<a href="https://github.com/amices/ggmice/issues/103" class="external-link">#103</a>).</li>
-<li>new argument plot_pattern() to hide less frequent patterns (<a href="https://github.com/amices/ggmice/issues/75" class="external-link">#75</a>)</li>
-<li>plot_pred has more arguments and different color scheme (<a href="https://github.com/amices/ggmice/issues/37" class="external-link">#37</a>)</li>
-<li>ggmice() now displays all imputed data, not just the filled in missing data (i.e. also over-imputed data; <a href="https://github.com/amices/ggmice/issues/39" class="external-link">#39</a>, PR <a href="https://github.com/amices/ggmice/issues/54" class="external-link">#54</a>) and is able to match variable names more effectively (<a href="https://github.com/amices/ggmice/issues/89" class="external-link">#89</a>, PR <a href="https://github.com/amices/ggmice/issues/90" class="external-link">#90</a>)</li>
-<li>new feature: plot_variance(imp) (<a href="https://github.com/amices/ggmice/issues/48" class="external-link">#48</a>, PR <a href="https://github.com/amices/ggmice/issues/56" class="external-link">#56</a>)</li>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="ggmice-100">ggmice 1.0.0<a class="anchor" aria-label="anchor" href="#ggmice-100"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-1-0-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-0"></a></h3>
+<ul><li>Default plotting behavior <code><a href="../reference/plot_pattern.html">plot_pattern()</a></code> creates missing data pattern plot with square tiles (<a href="https://github.com/amices/ggmice/issues/74" class="external-link">#74</a>)</li>
+<li>Default plotting behavior <code><a href="../reference/plot_pred.html">plot_pred()</a></code> creates predictor matrix plot with colored tiles and shows predictor values (<a href="https://github.com/amices/ggmice/issues/71" class="external-link">#71</a>, <a href="https://github.com/amices/ggmice/issues/74" class="external-link">#74</a>)</li>
 </ul></div>
+<div class="section level3">
+<h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
+<ul><li>New plotting function <code><a href="../reference/plot_variance.html">plot_variance()</a></code> visualizes post-imputation variability (<a href="https://github.com/amices/ggmice/issues/56" class="external-link">#56</a>)</li>
+<li>New optional argument <code><a href="../reference/plot_pred.html">plot_pred()</a></code> shows methods vector with predictor matrix plot (<a href="https://github.com/amices/ggmice/issues/71" class="external-link">#71</a>)</li>
+<li>New optional argument <code><a href="../reference/plot_pattern.html">plot_pattern()</a></code> hides less frequent patterns (<a href="https://github.com/amices/ggmice/issues/77" class="external-link">#77</a>)</li>
+<li>New optional argument <code><a href="../reference/plot_pattern.html">plot_pattern()</a></code> hides legend caption (<a href="https://github.com/amices/ggmice/issues/111" class="external-link">#111</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-0"></a></h3>
+<ul><li>The <code><a href="../reference/ggmice.html">ggmice()</a></code> function now displays all imputed data (incl. over-imputed data; <a href="https://github.com/amices/ggmice/issues/54" class="external-link">#54</a>)</li>
+<li>The <code><a href="../reference/ggmice.html">ggmice()</a></code> function now catches errors when <code>mapping</code> input contains log-transformation (<a href="https://github.com/amices/ggmice/issues/80" class="external-link">#80</a>)</li>
+<li>The family of <code>plot_*</code> functions now handle vector inputs for <code>vrb</code> argument (<a href="https://github.com/amices/ggmice/issues/80" class="external-link">#80</a>)</li>
+<li>The family of <code>plot_*</code> functions now handle <code>matrix</code> inputs for <code>data</code> argument (<a href="https://github.com/amices/ggmice/issues/108" class="external-link">#108</a>)</li>
+<li>The family of <code>plot_*</code> functions now omit grid lines from tile plots (<a href="https://github.com/amices/ggmice/issues/35" class="external-link">#35</a>)</li>
+<li>The <code><a href="../reference/plot_pattern.html">plot_pattern()</a></code> function now handles any <code>data.frame</code> input for <code>data</code> argument (<a href="https://github.com/amices/ggmice/issues/38" class="external-link">#38</a>, <a href="https://github.com/amices/ggmice/issues/77" class="external-link">#77</a>, <a href="https://github.com/amices/ggmice/issues/104" class="external-link">#104</a>, <a href="https://github.com/amices/ggmice/issues/112" class="external-link">#112</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-changes-1-0-0">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-1-0-0"></a></h3>
+<ul><li>Input validation for <code>data</code> argument <code>plot_*</code> functions (<a href="https://github.com/amices/ggmice/issues/85" class="external-link">#85</a>)</li>
+<li>Input validation for <code>vrb</code> argument <code>plot_*</code> functions (<a href="https://github.com/amices/ggmice/issues/80" class="external-link">#80</a>)</li>
+<li>Input validation for <code>mapping</code> argument <code><a href="../reference/ggmice.html">ggmice()</a></code> (<a href="https://github.com/amices/ggmice/issues/34" class="external-link">#34</a>, <a href="https://github.com/amices/ggmice/issues/90" class="external-link">#90</a>)</li>
+<li>Vignette updates (PRs <a href="https://github.com/amices/ggmice/issues/31" class="external-link">#31</a>, <a href="https://github.com/amices/ggmice/issues/35" class="external-link">#35</a>, <a href="https://github.com/amices/ggmice/issues/38" class="external-link">#38</a>) and other documentation (<a href="https://github.com/amices/ggmice/issues/45" class="external-link">#45</a>, <a href="https://github.com/amices/ggmice/issues/51" class="external-link">#51</a>)</li>
+<li>The <code><a href="../reference/plot_pattern.html">plot_pattern()</a></code> function creates missing data pattern plot with more informative labels (<a href="https://github.com/amices/ggmice/issues/59" class="external-link">#59</a>, <a href="https://github.com/amices/ggmice/issues/111" class="external-link">#111</a>)</li>
+</ul><hr></div>
+</div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.1" id="ggmice-001"><code>ggmice 0.0.1</code><a class="anchor" aria-label="anchor" href="#ggmice-001"></a></h2><p class="text-muted">CRAN release: 2022-03-17</p>
+<h2 class="pkg-version" data-toc-text="0.0.1" id="ggmice-001">ggmice 0.0.1<a class="anchor" aria-label="anchor" href="#ggmice-001"></a></h2><p class="text-muted">CRAN release: 2022-03-17</p>
 <ul><li>First release of the package.</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

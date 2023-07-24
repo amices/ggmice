@@ -18,7 +18,7 @@ imputation variance."><meta property="og:image" content="http://amices.org/ggmic
     
     <a class="navbar-brand me-2" href="../index.html">ggmice</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,19 +72,21 @@ imputation variance.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_variance</span><span class="op">(</span><span class="va">data</span>, grid <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_variance</span><span class="op">(</span><span class="va">data</span>, grid <span class="op">=</span> <span class="cn">TRUE</span>, caption <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>A package <code>mice</code> generated multiply imputed data set of class
-<code>mids</code>. Non-<code>mids</code> objects that have not been generated with <code><a href="https://amices.org/mice/reference/mice.html" class="external-link">mice::mice()</a></code>
-can be converted through a pipeline with <code><a href="https://amices.org/mice/reference/as.mids.html" class="external-link">mice::as.mids()</a></code>.</p></dd>
+<dd><p>A multiply imputed object of class <code><a href="https://amices.org/mice/reference/mids-class.html" class="external-link">mice::mids</a></code>.</p></dd>
 
 
 <dt>grid</dt>
 <dd><p>Logical indicating whether grid lines should be displayed.</p></dd>
+
+
+<dt>caption</dt>
+<dd><p>Logical indicating whether the figure caption should be displayed.</p></dd>
 
 </dl></div>
     <div class="section level2">
