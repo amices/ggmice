@@ -86,15 +86,6 @@ This project has received funding from the European Union’s Horizon 2020
 research and innovation programme under ReCoDID grant agreement No
 825746.
 
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
 ## Code of Conduct
 
 You are invited to join the improvement and development of `ggmice`.

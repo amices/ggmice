@@ -162,7 +162,7 @@ To improve the `ggmice` documentation, please suggest changes to the `README.Rmd
 
 Please adhere to the [tidyverse style guide](https://style.tidyverse.org/). 
 
-We're very happy that you'd like to contribute. To get the appropriate acknowledgement for your contribution, please follow the [AllContributors](https://allcontributors.org/docs/en/bot/usage) guidelines.
+We're very happy that you'd like to contribute. To get the appropriate acknowledgement for your contribution, please add your name and [ORCID](https://orcid.org/) to the DESCRIPTION file at the root of the package.
 
 
 <!-- omit in toc -->
