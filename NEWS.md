@@ -1,4 +1,4 @@
-# `ggmice 0.1.0`
+# ggmice 1.0.0
 
 ## Breaking changes
 
@@ -32,6 +32,6 @@
 
 ---
 
-# `ggmice 0.0.1`
+# ggmice 0.0.1
 
 * First release of the package.
