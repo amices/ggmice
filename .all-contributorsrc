@@ -1,0 +1,27 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "hanneoberman",
+      "name": "Hanne Oberman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38891540?v=4",
+      "profile": "http://hanneoberman.github.io",
+      "contributions": [
+        "test",
+        "ideas"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "ggmice",
+  "projectOwner": "amices"
+}
