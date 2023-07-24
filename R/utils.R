@@ -20,11 +20,21 @@
 NULL
 
 # suppress undefined global functions or variables note
-utils::globalVariables(c(".imp", ".where", ".id", "where", "name", "value"))
+utils::globalVariables(c(".id", ".imp", ".where", ".id", "where", "name", "value"))
 
 # Alias a function with `foo <- function(...) pkgB::blah(...)`
 
-# argument preprocessing
+#' Utils function to validate data argument inputs
+#'
+#' @param data The input supplied to the 'data' argument.
+#' @param df Logical indicating whether 'data.frame' inputs are permitted.
+#' @param imp Logical indicating whether 'mids' inputs are permitted.
+#' @param pred Logical indicating whether predictor matrix inputs are permitted.
+#'
+#' @return Either nothing or an error.
+#'
+#' @keywords internal
+#' @noRd
 verify_data <- function(data,
                         df = FALSE,
                         imp = FALSE,
@@ -93,14 +103,4 @@ verify_data <- function(data,
       )
     }
   }
-}
-
-verify_vrb <- function(data, vrb) {
-  vrb <- substitute(vrb)
-  if (vrb[1] == "all") {
-    vrb <- names(data)
-  } else {
-    vrb <- names(dplyr::select(data$data, {{vrb}}))
-  }
-  return(vrb)
 }
