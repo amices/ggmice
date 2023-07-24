@@ -10,10 +10,10 @@
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6532702.svg)](https://doi.org/10.5281/zenodo.6532702)
 
-[![GitHub R package
-version](https://img.shields.io/github/r-package/v/amices/ggmice?color=yellow&label=dev)](https://github.com/amices/ggmice/blob/main/DESCRIPTION)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![GitHub R package
+version](https://img.shields.io/github/r-package/v/amices/ggmice?color=yellow&label=dev)](https://github.com/amices/ggmice/blob/main/DESCRIPTION)
 [![R-CMD-check](https://github.com/amices/ggmice/workflows/R-CMD-check/badge.svg)](https://github.com/amices/ggmice/actions)
 <!-- badges: end -->
 
@@ -99,5 +99,3 @@ coverage](https://codecov.io/gh/amices/ggmice/branch/main/graph/badge.svg)](http
 [![CII Best
 Practices](https://bestpractices.coreinfrastructure.org/projects/6036/badge)](https://bestpractices.coreinfrastructure.org/projects/6036)
 [![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8F-green)](https://fair-software.eu)
-[![All
-Contributors](https://img.shields.io/github/all-contributors/amices/ggmice?color=ee8449&style=flat-square)](#contributors)
