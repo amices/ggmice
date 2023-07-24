@@ -1,3 +1,17 @@
+# ggmice 1.0.0
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+## Downstream dependencies
+
+There are no downstream dependencies of 'ggmice' yet.
+
+---
+
+# ggmice 0.0.1
+
 ## Resubmission
 This is a resubmission. In this version I have:
 * Changed 'http' to 'https' in an invalid URL in the README file (as requested, thanks!).

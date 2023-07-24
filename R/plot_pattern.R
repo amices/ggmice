@@ -33,7 +33,7 @@ plot_pattern <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {{vrb}}))
+      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
     }
     if (".x" %in% vrb || ".y" %in% vrb) {
       cli::cli_abort(
@@ -204,9 +204,8 @@ plot_pattern <-
           )
       } else {
         gg <- gg +
-          ggplot2::labs(
-            x = "Number of missing entries\nper column*",
-            caption = paste0("*total number of missing entries: ",
+          ggplot2::labs(x = "Number of missing entries\nper column*",
+                        caption = paste0("*total number of missing entries: ",
                                          pat[rws, cls]))
       }
     }
@@ -219,6 +218,7 @@ plot_pattern <-
 #' @param pat Numeric matrix with a missing data pattern.
 #' @param ord Vector with variable names.
 #' @keywords internal
+#' @noRd
 pat_to_chr <- function(pat, ord = NULL) {
   if (is.null(ord)) {
     ord <- colnames(pat)[-ncol(pat)]

@@ -35,13 +35,13 @@ plot_pred <-
       ylabel <- ""
     }
     if (!is.character(method) || length(method) != p) {
-      stop("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
+      cli::cli_abort("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
     }
     vrb <- substitute(vrb)
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(as.data.frame(data), {{ vrb }}))
+      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
     }
     vrbs <- row.names(data)
     long <- data.frame(
@@ -62,15 +62,13 @@ plot_pred <-
     ))
 
     gg <-
-      ggplot2::ggplot(
-        long,
-        ggplot2::aes(
-          x = .data$prd,
-          y = .data$vrb,
-          label = .data$ind,
-          fill = .data$clr
-        )
-      ) +
+      ggplot2::ggplot(long,
+                      ggplot2::aes(
+                        x = .data$prd,
+                        y = .data$vrb,
+                        label = .data$ind,
+                        fill = .data$clr
+                      )) +
       ggplot2::geom_tile(color = "black", alpha = 0.6) +
       ggplot2::scale_x_discrete(limits = vrbs, position = "top") +
       ggplot2::scale_y_reverse(
@@ -96,7 +94,8 @@ plot_pred <-
       theme_minimice()
 
     if (all(method == "")) {
-      gg <- gg + ggplot2::theme(axis.ticks.y.right = ggplot2::element_blank())
+      gg <-
+        gg + ggplot2::theme(axis.ticks.y.right = ggplot2::element_blank())
     }
     if (label) {
       gg <- gg + ggplot2::geom_text(color = "black", show.legend = FALSE)

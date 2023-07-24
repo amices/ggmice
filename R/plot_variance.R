@@ -6,23 +6,22 @@
 #' lighter cells indicate less variance. White cells represent observed cells or unobserved cells with zero between
 #' imputation variance.
 #'
-#' @param data A package `mice` generated multiply imputed data set of class
-#' `mids`. Non-`mids` objects that have not been generated with `mice::mice()`
-#' can be converted through a pipeline with `mice::as.mids()`.
+#' @param data A multiply imputed object of class [`mice::mids`].
 #' @param grid Logical indicating whether grid lines should be displayed.
+#' @param caption Logical indicating whether the figure caption should be displayed.
 #'
 #' @return An object of class `ggplot`.
 #' @examples
 #' imp <- mice::mice(mice::nhanes, printFlag = FALSE)
 #' plot_variance(imp)
 #' @export
-plot_variance <- function(data, grid = TRUE) {
+plot_variance <- function(data, grid = TRUE, caption = TRUE) {
   verify_data(data, imp = TRUE)
   if (data$m < 2) {
     cli::cli_abort(
       c(
         "The between imputation variance cannot be computed if there are fewer than two imputations (m < 2).",
-        "i" = "Please provide an object with 2 or more imputations"
+        "i" = "Please provide an object with 2 or more imputations."
       )
     )
   }
@@ -30,6 +29,14 @@ plot_variance <- function(data, grid = TRUE) {
     gridcol <- "black"
   } else {
     gridcol <- NA
+  }
+  if (caption) {
+    lab_fill <- "Imputation variability*
+      "
+    lab_cap <- "*scaled cell-level between imputation variance"
+  } else {
+    lab_fill <- "Imputation variability"
+    lab_cap <- NULL
   }
 
   gg <- mice::complete(data, "long") %>%
@@ -46,10 +53,9 @@ plot_variance <- function(data, grid = TRUE) {
     ggplot2::labs(
       x = "Column name",
       y = "Row number",
-      fill = "Imputation variability*
-      ",
-      caption = "*scaled cell-level between imputation variance"
-    ) + # "Cell-level between imputation\nvariance (scaled)\n\n"
+      fill = lab_fill,
+      caption = lab_cap
+    ) +
     ggplot2::scale_x_discrete(position = "top", expand = c(0, 0)) +
     ggplot2::scale_y_continuous(trans = "reverse", expand = c(0, 0)) +
     theme_minimice()
@@ -63,7 +69,14 @@ plot_variance <- function(data, grid = TRUE) {
   return(gg)
 }
 
-# function to scale only non-zero values without centering
+#' Utils function to scale only non-zero values without centering
+#'
+#' @param x An object of class 'matrix' or 'data.frame'
+#'
+#' @return A matrix with the scaled data
+#'
+#' @keywords internal
+#' @noRd
 scale_above_zero <- function(x) {
   x <- as.matrix(x)
   x[x != 0] <- scale(x[x != 0], center = FALSE)

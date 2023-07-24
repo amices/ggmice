@@ -10,10 +10,10 @@
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6532702.svg)](https://doi.org/10.5281/zenodo.6532702)
 
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![GitHub R package
 version](https://img.shields.io/github/r-package/v/amices/ggmice?color=yellow&label=dev)](https://github.com/amices/ggmice/blob/main/DESCRIPTION)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/amices/ggmice/workflows/R-CMD-check/badge.svg)](https://github.com/amices/ggmice/actions)
 <!-- badges: end -->
 
@@ -77,10 +77,10 @@ ggmice(imp, aes(age, hgt)) + geom_point()
 
 ## Acknowledgements
 
-The `ggmice` package is developed with guidance and feedback from Gerko
-Vink, Stef van Buuren, Thomas Debray, Valentijn de Jong, Johanna Muñoz,
-Thom Volker, Mingyang Cai and Anaïs Fopma. The `ggmice` hex is based on
-designs from the `ggplot2` hex and the `mice` hex (by Jaden Walters).
+The `ggmice` package is developed with guidance and feedback from the
+[Amices](https://github.com/amices) team. The `ggmice` hex is based on
+the [`ggplot2`](https://github.com/tidyverse/ggplot2/) and
+[`mice`](https://github.com/amices/mice) hex designs.
 
 This project has received funding from the European Union’s Horizon 2020
 research and innovation programme under ReCoDID grant agreement No

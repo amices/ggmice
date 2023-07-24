@@ -11,11 +11,13 @@
 #' imp <- mice::mice(mice::nhanes, maxit = 1, printFlag = FALSE)
 #' bwplot(imp)
 bwplot <- function(...) {
-  rlang::inform(
-    "Hint: Did you know, an equivalent figure can be created with `ggmice()`?\n
-    For example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run: \n
-    ggmice(my_mids, ggplot2::aes(x = .imp, y = my_vrb)) +
-    ggplot2::geom_boxplot() \n\nSee amices.org/ggmice for more info.",
+  cli::cli_inform(
+    c(
+      "Hint: Did you know, an equivalent figure can be created with `ggmice()`?",
+      "For example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run: ",
+      " " = "ggmice(my_mids, ggplot2::aes(x = .imp, y = my_vrb)) +",
+      " " = "ggplot2::geom_boxplot()",
+      "i" = "See amices.org/ggmice for more info."),
     .frequency = "once",
     .frequency_id = "bwplot"
   )
@@ -37,8 +39,8 @@ densityplot <- function(...) {
     c(
       "Hint: Did you know, an equivalent figure can be created with `ggmice()`?",
       "For example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run:",
-      "ggmice(my_mids, ggplot2::aes(x = my_vrb, group = .imp)) +
-    ggplot2::geom_density()",
+      " " = "ggmice(my_mids, ggplot2::aes(x = my_vrb, group = .imp)) +",
+      " " = "ggplot2::geom_density()",
       "i" = "See amices.org/ggmice for more info."
     ),
     .frequency = "once",
@@ -62,8 +64,8 @@ stripplot <- function(...) {
     c(
       "Hint: Did you know, an equivalent figure can be created with `ggmice()`?",
       "For example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run:",
-      "ggmice(my_mids, ggplot2::aes(x = .imp, y = my_vrb)) +
-    ggplot2::geom_jitter()",
+      " " = "ggmice(my_mids, ggplot2::aes(x = .imp, y = my_vrb)) +",
+      " " = "ggplot2::geom_jitter()",
       "i" = "See amices.org/ggmice for more info."
     ),
     .frequency = "once",
@@ -87,8 +89,8 @@ xyplot <- function(...) {
     c(
       "Hint: Did you know, an equivalent figure can be created with `ggmice()`?",
       "For example, to plot 2 variables named 'my_x' and 'my_y' from a mids object called 'my_mids', run:",
-      "ggmice(my_mids, ggplot2::aes(x = my_x, y = my_y)) +
-    ggplot2::geom_point()",
+      " " = "ggmice(my_mids, ggplot2::aes(x = my_x, y = my_y)) +",
+      " " = "ggplot2::geom_point()",
       "i" = "See amices.org/ggmice for more info."
     ),
     .frequency = "once",

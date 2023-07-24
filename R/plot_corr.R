@@ -32,8 +32,24 @@ plot_corr <-
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(data, {{vrb}}))
+      data <- dplyr::select(data, {{vrb}})
+      vrb <- names(data)
     }
+    # check if any column is constant
+    constants <- apply(data, MARGIN = 2, function(x) {
+      all(is.na(x)) || max(x, na.rm = TRUE) == min(x, na.rm = TRUE)
+    })
+    if (any(constants)) {
+      vrb <- names(data[, !constants])
+      cli::cli_inform(
+        c(
+          "No correlations computed for variable(s):",
+          " " = paste(names(constants[which(constants)]), collapse = ", "),
+          "x" = "Correlation undefined for constants."
+        )
+      )
+    }
+
     p <- length(vrb)
     corrs <- data.frame(
       vrb = rep(vrb, each = p),
@@ -100,6 +116,3 @@ plot_corr <-
     }
     return(gg)
   }
-
-# TODO: add plot for missingness indicators predictors
-# TODO: maybe add model.matrix argument to correlation plot?
