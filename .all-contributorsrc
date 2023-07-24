@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "thomvolker",
+      "name": "Thom Volker",
+      "avatar_url": "https://avatars.githubusercontent.com/u/59019602?v=4",
+      "profile": "https://thomvolker.github.io",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "ggmice",
+  "projectOwner": "amices"
+}
