@@ -1,4 +1,4 @@
-# ggmice 1.0.0
+# ggmice 0.1.0
 
 ## Breaking changes
 
@@ -20,7 +20,6 @@
 * The family of `plot_*` functions now handle `matrix` inputs for `data` argument (#108)
 * The family of `plot_*` functions now omit grid lines from tile plots (#35)
 * The `plot_pattern()` function now handles any `data.frame` input for `data` argument (#38, #77, #104, #112)
-
 
 ## Minor changes
 
