@@ -281,14 +281,6 @@ The function `plot_trace()` plots the trace lines of the MICE algorithm for conv
 plot_trace(imp, "hgt")
 ```
 
-## Between-imputation variance
-
-The function `plot_variance()` visualizes the cell-level between-imputation variance as a heatmap. The color of the tiles in the plot represent the scaled between-imputation variance for the imputed cells in the data. The `data` argument requires an object of class `mice::mids`.
-
-```{r variance}
-# create heatmap of between-imputation variance
-plot_variance(imp)
-```
 
 ---
 
