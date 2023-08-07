@@ -1,4 +1,4 @@
-# ggmice 1.0.0
+# ggmice 0.1.0
 
 ## R CMD check results
 
