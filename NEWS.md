@@ -7,7 +7,6 @@
 
 ## New features
 
-* New plotting function `plot_variance()` visualizes post-imputation variability (#56)
 * New optional argument `plot_pred()` shows methods vector with predictor matrix plot (#71)
 * New optional argument `plot_pattern()` hides less frequent patterns (#77)
 * New optional argument `plot_pattern()` hides legend caption (#111)
