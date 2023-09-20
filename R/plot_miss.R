@@ -1,0 +1,100 @@
+#' Plot missingness in a dataset
+#'
+#' @param data An incomplete dataset of class `data.frame` or `matrix`.
+#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
+#' @param border Logical indicating whether borders should be present between tiles.
+#' @param row.breaks Optional numeric input specifying the number of breaks to be visualized on the y axis.
+#'
+#' @return An object of class [ggplot2::ggplot].
+#'
+#' @examples
+#' plot_miss(mice::nhanes)
+#' @export
+
+plot_miss <-
+  function(data,
+           vrb = "all",
+           border = FALSE,
+           row.breaks = nrow(data)) {
+    # input processing
+    if (is.matrix(data) && ncol(data) > 1) {
+      data <- as.data.frame(data)
+    }
+    verify_data(data, df = TRUE)
+    vrb <- substitute(vrb)
+    if (vrb[1] == "all") {
+      vrb <- names(data)
+    } else {
+      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
+    }
+    if (".x" %in% vrb || ".y" %in% vrb) {
+      cli::cli_abort(
+        c(
+          "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot.",
+          "i" = "Please exclude or rename your variable(s)."
+        )
+      )
+    }
+    # Create missingness indicator matrix
+    na.mat <- purrr::map_df(data[,vrb], function(y) as.numeric(is.na(y)))
+
+    # extract pattern info
+    vrb <- colnames(na.mat)
+    rws <- nrow(na.mat)
+    cls <- ncol(na.mat)
+    rownr <- rownames(na.mat)
+    na_row <- na.mat[, cls]
+    na_col <- na.mat[rws, ]
+
+    # transform to long format
+    long <-
+      as.data.frame(cbind(.y = 1:rws, na.mat)) %>%
+      tidyr::pivot_longer(cols = tidyselect::all_of(vrb),
+                          names_to = "x",
+                          values_to = ".where"
+      ) %>%
+      dplyr::mutate(
+        .x = as.numeric(factor(
+          .data$x,
+          levels = vrb, ordered = TRUE
+        )),
+        .where = factor(
+          .data$.where,
+          levels = c(0, 1),
+          labels = c("missing", "observed")
+        )
+      )
+    gg <-
+      ggplot2::ggplot(
+        long,
+        ggplot2::aes(
+          .data$.x,
+          .data$.y,
+          fill = .data$.where
+        )
+      ) +
+      ggplot2::scale_fill_manual(values = c(
+        "observed" = "#006CC2B3",
+        "missing" = "#B61A51B3"
+      )) +
+      ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
+      ggplot2::scale_x_continuous(
+        breaks = 1:cls,
+        labels = vrb) +
+      ggplot2::scale_y_reverse(
+        n.breaks = row.breaks
+      ) +
+      ggplot2::labs(
+        x = "Variables",
+        y = "Rows in dataset",
+        fill = "",
+        alpha = ""
+      ) +
+      theme_minimice()
+    if(border){
+      gg <- gg + ggplot2::geom_tile(color = "black")
+    } else{
+      gg <- gg + ggplot2::geom_tile()
+    }
+    return(gg)
+  }
