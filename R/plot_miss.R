@@ -42,9 +42,6 @@ plot_miss <-
     vrb <- colnames(na.mat)
     rws <- nrow(na.mat)
     cls <- ncol(na.mat)
-    rownr <- rownames(na.mat)
-    na_row <- na.mat[, cls]
-    na_col <- na.mat[rws, ]
 
     # transform to long format
     long <-
