@@ -4,6 +4,7 @@
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param border Logical indicating whether borders should be present between tiles.
 #' @param row.breaks Optional numeric input specifying the number of breaks to be visualized on the y axis.
+#' @param ordered Logical indicating whether rows should be ordered according to their pattern.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
@@ -15,7 +16,8 @@ plot_miss <-
   function(data,
            vrb = "all",
            border = FALSE,
-           row.breaks = nrow(data)) {
+           row.breaks = nrow(data),
+           ordered = FALSE) {
     # input processing
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
@@ -35,9 +37,23 @@ plot_miss <-
         )
       )
     }
-    # Create missingness indicator matrix
-    na.mat <- purrr::map_df(data[,vrb], function(y) as.numeric(is.na(y)))
+    if(ordered){
+      # extract md.pattern matrix
+      mdpat <- mice::md.pattern(data, plot = FALSE) %>%
+        head(., -1)
+      # save frequency of patterns
+      freq.pat <- rownames(mdpat) %>%
+        as.numeric()
 
+      na.mat <- mdpat %>%
+        as.data.frame() %>%
+        dplyr::select(-ncol(.)) %>%
+        dplyr::mutate(nmis = freq.pat) %>%
+        tidyr::uncount(nmis)
+    } else{
+    # Create missingness indicator matrix
+    na.mat <- purrr::map_df(data[,vrb], function(y) as.numeric(!is.na(y)))
+    }
     # extract pattern info
     vrb <- colnames(na.mat)
     rws <- nrow(na.mat)
@@ -87,11 +103,18 @@ plot_miss <-
         fill = "",
         alpha = ""
       ) +
+      ggplot2::coord_cartesian(expand = FALSE) +
       theme_minimice()
     if(border){
       gg <- gg + ggplot2::geom_tile(color = "black")
     } else{
       gg <- gg + ggplot2::geom_tile()
+    }
+    if(ordered){
+      gg <- gg +
+        ggplot2::theme(axis.text.y = ggplot2::element_blank(),
+                       axis.ticks.y = ggplot2::element_blank()
+      )
     }
     return(gg)
   }
