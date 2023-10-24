@@ -1,12 +1,6 @@
 # create test objects
 dat <- mice::nhanes
 imp <- mice::mice(dat, printFlag = FALSE)
-head(dat)
-mice::densityplot(imp, ~ bmi | .imp)
-plot_density(data = imp, vrb = "bmi", panels = TRUE)
-
-mice::densityplot(imp)
-plot_density(data = imp, vrb = "all", panels = FALSE)
 
 # tests
 test_that("plot_density creates ggplot object", {
