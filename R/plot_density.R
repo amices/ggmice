@@ -106,7 +106,7 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
             ggplot2::ggplot(
                 ggplot2::aes(
                     x = value,
-                    linetype = group
+                    color = group
                 )
             ) +
             ggplot2::geom_density(
@@ -131,14 +131,11 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
 
         # Cosmetics
         plot_list[[i]] <- plot_list[[i]] +
-            ggplot2::scale_linetype_manual(
+            ggplot2::scale_color_manual(
                 values = c(
-                    5,
-                    rep(1, length(unique(imps_ggplot$.imp)) - 1)
+                    "#006CC2B3",
+                    rep("#B61A51B3", length(unique(imps_ggplot$.imp)) - 1)
                 )
-            ) +
-            ggplot2::scale_y_continuous(
-                position = "right"
             ) +
             ggplot2::scale_x_continuous(
                 breaks = seq(
