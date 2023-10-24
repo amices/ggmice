@@ -85,10 +85,6 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
         )
     )
 
-    # Active data for plot
-    imps_ggplot_active <- imps_ggplot %>%
-        dplyr::filter(.data$variable %in% varlist)
-
     # Create empty list
     plot_list <- list()
 
@@ -145,8 +141,10 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
                     max(imps_ggplot_active$value) + sd(imps_ggplot_active$value)
                 )
             ) +
+            ggplot2::labs(x = varlist[i]) +
             theme_mice() +
             ggplot2::theme(
+                strip.text.x = ggplot2::element_blank(),
                 strip.background = ggplot2::element_blank(),
                 strip.placement = "outside",
                 strip.switch.pad.wrap = ggplot2::unit(0, "cm"),
