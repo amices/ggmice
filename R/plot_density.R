@@ -154,9 +154,13 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
             )
     }
     # Collect plot together with patchwork
-    if (panels == TRUE) {
-        patchwork::wrap_plots(plot_list, nrow = min(c(length(varlist), 5)))
+    if(length(plot_list) > 1){
+        if (panels == TRUE) {
+            patchwork::wrap_plots(plot_list, nrow = min(c(length(varlist), 5)))
+        } else {
+            patchwork::wrap_plots(plot_list, ncol = min(c(length(varlist), 5)))
+        }
     } else {
-        patchwork::wrap_plots(plot_list, ncol = min(c(length(varlist), 5)))
+        plot_list[[1]]
     }
 }
