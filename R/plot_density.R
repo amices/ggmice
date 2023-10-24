@@ -16,12 +16,9 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
         cli::cli_abort("No convergence diagnostics found", call. = FALSE)
     }
 
-    # Create a matrix of response indicators
-    RI <- is.na(data$data)
-
     # Select variables
     if (vrb == "all") {
-        varlist <- colnames(RI[, colSums(RI) != 0])
+        varlist <- colnames(data$where[, colSums(data$where) != 0])
     } else {
         varlist <- vrb
     }
@@ -33,10 +30,10 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
     shelf <- list()
 
     # Loop over the variables
-    for (j in 1:ncol(RI)) {
-        if (any(RI[, j])) {
+    for (j in 1:ncol(data$where)) {
+        if (any(data$where[, j])) {
             # What variable are we considering
-            J <- colnames(RI)[j]
+            J <- colnames(data$where)[j]
 
             # Keep only the .imp identifier and the variable value
             active_data <- imps[, c(".imp", J)]
@@ -47,7 +44,7 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
             # attach the response indicator
             active_data <- cbind(
                 active_data,
-                miss = RI[, J]
+                miss = data$where[, J]
             )
 
             # Melt values
