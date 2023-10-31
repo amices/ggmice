@@ -75,16 +75,6 @@ ggmice(imp, aes(x = hgt, group = .imp, size = .where)) +
   ) +
   theme(legend.position = "none")
 
-# original plot
-mice::densityplot(imp)
-# ggmice equivalent
-p <- map(vrb, ~ {
-  ggmice(imp, aes(x = .data[[.x]], group = .imp)) +
-    geom_density()
-})
-wrap_plots(p, guides = "collect") &
-  theme(legend.position = "bottom")
-
 # Can make the same plot
 mice::densityplot(imp, ~hgt)
 plot_density(data = imp, vrb = "hgt", panels = FALSE)
