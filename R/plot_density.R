@@ -2,7 +2,7 @@
 #'
 #' @param data An object of class [mice::mids].
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
-#' @param panels String, vector specifying whether the density plots should be returned in a single panel or not
+#' @param panels Logical, vector of length 1 specifying whether the density plots should be broken into panels (TRUE) or not (FALSE)
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
@@ -10,7 +10,7 @@
 #' imp <- mice::mice(mice::nhanes, print = FALSE)
 #' plot_density(data = imp)
 #' @export
-plot_density <- function(data, vrb = "all", panels = "multiple") {
+plot_density <- function(data, vrb = "all", panels = FALSE) {
     verify_data(data, imp = TRUE)
     if (is.null(data$chainMean) && is.null(data$chainVar)) {
         cli::cli_abort("No convergence diagnostics found", call. = FALSE)
