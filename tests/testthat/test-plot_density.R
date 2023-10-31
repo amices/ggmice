@@ -11,6 +11,9 @@ test_that("plot_density creates ggplot object", {
     expect_s3_class(plot_density(imp, vrb = bmi), "ggplot")
     expect_s3_class(plot_density(imp, vrb = c("bmi", "hyp")), "ggplot")
     expect_s3_class(plot_density(imp, vrb = c(bmi, hyp)), "ggplot")
+    expect_s3_class(plot_density(imp, vrb = c("bmi"), panels = TRUE), "ggplot")
+    expect_s3_class(plot_density(imp, vrb = c("bmi", "hyp"), panels = TRUE), "ggplot")
+    expect_s3_class(plot_density(imp, vrb = "all", panels = TRUE), "ggplot")
 })
 
 test_that("plot_density returns error with incorrect argument(s)", {
