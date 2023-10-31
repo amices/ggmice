@@ -104,3 +104,73 @@ verify_data <- function(data,
     }
   }
 }
+
+#' Utils function to reshape mids object into a super-long format for density plots
+#'
+#' @param data A mids object.
+#' @details
+#' 
+#' ggplot works best with long format data. This function takes a mids object and returns a super-long format version of the mids object that is easy to process with ggplot
+#' This super-long format has 5 columns:
+#' - .imp: reference imputation data set (same as in mids object)
+#' - .id: observation id (same as in mids object)
+#' - miss: response vector (logical vector indicating whether the case was missing (1) or not (0))
+#' - variable: vector of names of the variables in the original data set
+#' - value: the data point (observed, na, or imputation value)
+#' 
+#' This structure makes it easy to group, color, filter, and facet by the two most important factors for density plots: missingness and variables.
+#'
+#' @return data.frame in super-long format
+#' 
+#' @examples
+#' imp <- mice::mice(mice::nhanes, print = FALSE)
+#' reshape_mids(data = imp)
+#' @keywords internal
+#' @noRd
+reshape_mids <- function(data) {
+
+  # Create an empty list to store intermediate objects
+  shelf <- list()
+
+  # Extract imputations in long format
+  imps <- data.frame(mice::complete(data, "long", include = TRUE))
+
+  # Define column names for melting (depends on mice long format column names)
+  id_vars <- colnames(imps)[1:2]
+
+  # Define the response matrix
+  Rmat <- data$where
+
+  # Loop over the variables in the original data
+  for (j in 1:ncol(Rmat)) {
+
+    # Check if there are missing values
+    if (any(Rmat[, j])) {
+
+      # What variable are we considering
+      J <- colnames(Rmat)[j]
+
+      # Keep only the .imp identifier and the variable value
+      active_data <- imps[, c(id_vars, J)]
+
+      # Force active variable to numeric
+      active_data[, J] <- as.numeric(active_data[, J])
+
+      # attach the response indicator
+      active_data <- cbind(
+        active_data,
+        miss = Rmat[, J]
+      )
+
+      # Melt values
+      ad_melt <- reshape2::melt(active_data, id.vars = c(id_vars, "miss"))
+
+      # Store the result
+      shelf[[j]] <- ad_melt
+    }
+  }
+
+  # Combine the results from the many variables
+  do.call(rbind, shelf)
+
+}

@@ -44,54 +44,25 @@ plot_density <- function(data, vrb = "all", panels = FALSE) {
         }
     }
 
-    # Extract imputations in long format
-    imps <- data.frame(mice::complete(data, "long", include = TRUE))
+    # Reshape the mids object to be the best ggplot data possible
+    imps_ggplot <- reshape_mids(data)
 
-    # Create an empty list to store intermediate objects
-    shelf <- list()
+    # Keep only observed caases
+    imps_ggplot_obs <- imps_ggplot %>%
+      dplyr::filter(
+        .imp == 0,
+        .data$miss == FALSE
+      )
 
-    # Loop over the variables
-    for (j in 1:ncol(data$where)) {
-        if (any(data$where[, j])) {
-            # What variable are we considering
-            J <- colnames(data$where)[j]
+    # Keep only imputed values
+    imps_ggplot_imps <- imps_ggplot %>%
+        dplyr::filter(
+            .imp != 0,
+            .data$miss == TRUE
+        )
 
-            # Keep only the .imp identifier and the variable value
-            active_data <- imps[, c(".imp", J)]
-
-            # Force active variable to numeric
-            active_data[, J] <- as.numeric(active_data[, J])
-
-            # attach the response indicator
-            active_data <- cbind(
-                active_data,
-                miss = data$where[, J]
-            )
-
-            # Melt values
-            ad_melt <- reshape2::melt(active_data, id.vars = c(".imp", "miss"))
-
-            # Filter by dropping all of the cases that are observed from the non 0 groups
-            ad_melt_imps <- ad_melt %>%
-                dplyr::filter(
-                    .imp != 0,
-                    .data$miss == TRUE
-                )
-
-            # Filter by dropping all cases that are missing in the observed data
-            ad_melt_obs <- ad_melt %>%
-                dplyr::filter(
-                    .imp == 0,
-                    .data$miss == FALSE
-                )
-
-            # Store the result
-            shelf[[j]] <- rbind(ad_melt_obs, ad_melt_imps)
-        }
-    }
-
-    # Combine the results from the many variables
-    imps_ggplot <- do.call(rbind, shelf)
+    # Stack observed and imputed
+    imps_ggplot <- rbind(imps_ggplot_obs, imps_ggplot_imps)
 
     # Create a grouping variable for the densities
     imps_ggplot$group <- paste0(imps_ggplot$.imp, imps_ggplot$miss)
