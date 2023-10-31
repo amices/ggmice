@@ -75,14 +75,14 @@ plot_density <- function(data, vrb = "all", panels = FALSE) {
             ad_melt_imps <- ad_melt %>%
                 dplyr::filter(
                     .imp != 0,
-                    miss == TRUE
+                    .data$miss == TRUE
                 )
 
             # Filter by dropping all cases that are missing in the observed data
             ad_melt_obs <- ad_melt %>%
                 dplyr::filter(
                     .imp == 0,
-                    miss == FALSE
+                    .data$miss == FALSE
                 )
 
             # Store the result
@@ -113,14 +113,14 @@ plot_density <- function(data, vrb = "all", panels = FALSE) {
     for (i in 1:length(vrb)) {
         # Active data for plot
         imps_ggplot_active <- imps_ggplot %>%
-            dplyr::filter(variable %in% vrb[i])
+            dplyr::filter(.data$variable %in% vrb[i])
 
         # Base plot
         plot_list[[i]] <- imps_ggplot_active %>%
             ggplot2::ggplot(
                 ggplot2::aes(
                     x = value,
-                    color = group
+                    color = .data$group
                 )
             ) +
             ggplot2::geom_density(
@@ -130,13 +130,13 @@ plot_density <- function(data, vrb = "all", panels = FALSE) {
         # Panel structure
         if (panels == TRUE) {
             plot_list[[i]] <- plot_list[[i]] + ggplot2::facet_grid(
-                cols = ggplot2::vars(group),
+                cols = ggplot2::vars(.data$group),
                 scales = "free",
                 switch = "y"
             )
         } else {
             plot_list[[i]] <- plot_list[[i]] + ggplot2::facet_grid(
-                cols = ggplot2::vars(variable),
+                cols = ggplot2::vars(.data$variable),
                 scales = "free",
                 switch = "y"
             )
@@ -157,8 +157,8 @@ plot_density <- function(data, vrb = "all", panels = FALSE) {
                     length = 5
                 ),
                 limits = c(
-                    min(imps_ggplot_active$value) - sd(imps_ggplot_active$value),
-                    max(imps_ggplot_active$value) + sd(imps_ggplot_active$value)
+                    min(imps_ggplot_active$value) - stats::sd(imps_ggplot_active$value),
+                    max(imps_ggplot_active$value) + stats::sd(imps_ggplot_active$value)
                 )
             ) +
             ggplot2::labs(x = vrb[i]) +
