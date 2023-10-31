@@ -110,7 +110,6 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
         if (panels == TRUE) {
             plot_list[[i]] <- plot_list[[i]] + ggplot2::facet_grid(
                 cols = ggplot2::vars(group),
-                rows = ggplot2::vars(variable),
                 scales = "free",
                 switch = "y"
             )
@@ -151,6 +150,7 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
                 legend.position = "none"
             )
     }
+    
     # Collect plot together with patchwork
     if(length(plot_list) > 1){
         if (panels == TRUE) {
