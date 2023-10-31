@@ -15,12 +15,33 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
     if (is.null(data$chainMean) && is.null(data$chainVar)) {
         cli::cli_abort("No convergence diagnostics found", call. = FALSE)
     }
+    
+    # List all variables with missing values
+    vrb <- substitute(vrb)
+    varlist <- colnames(data$where[, colSums(data$where) != 0])
 
     # Select variables
-    if (vrb == "all") {
-        varlist <- colnames(data$where[, colSums(data$where) != 0])
+    if (as.character(vrb)[1] == "all") {
+        vrb <- varlist
     } else {
-        varlist <- vrb
+        vrb <- names(dplyr::select(data$data, {{ vrb }}))
+    }
+    if (any(vrb %nin% varlist)) {
+        cli::cli_inform(
+            c(
+                "Density plot could not be produced for variable(s):",
+                " " = paste(vrb[which(vrb %nin% varlist)], collapse = ", "),
+                "x" = "No density plot available."
+            )
+        )
+        if (any(vrb %in% varlist)) {
+            vrb <- vrb[which(vrb %in% varlist)]
+        } else {
+            cli::cli_abort(c(
+                "x" = "None of the variables are imputed.",
+                "No plots can be produced."
+            ))
+        }
     }
 
     # Extract imputations in long format
@@ -89,10 +110,10 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
     plot_list <- list()
 
     # Make plot for 1 variable at the time
-    for (i in 1:length(varlist)) {
+    for (i in 1:length(vrb)) {
         # Active data for plot
         imps_ggplot_active <- imps_ggplot %>%
-            dplyr::filter(variable %in% varlist[i])
+            dplyr::filter(variable %in% vrb[i])
 
         # Base plot
         plot_list[[i]] <- imps_ggplot_active %>%
@@ -140,7 +161,7 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
                     max(imps_ggplot_active$value) + sd(imps_ggplot_active$value)
                 )
             ) +
-            ggplot2::labs(x = varlist[i]) +
+            ggplot2::labs(x = vrb[i]) +
             theme_mice() +
             ggplot2::theme(
                 strip.text.x = ggplot2::element_blank(),
@@ -150,13 +171,13 @@ plot_density <- function(data, vrb = "all", panels = "multiple") {
                 legend.position = "none"
             )
     }
-    
+
     # Collect plot together with patchwork
     if(length(plot_list) > 1){
         if (panels == TRUE) {
-            patchwork::wrap_plots(plot_list, nrow = min(c(length(varlist), 5)))
+            patchwork::wrap_plots(plot_list, nrow = min(c(length(vrb), 5)))
         } else {
-            patchwork::wrap_plots(plot_list, ncol = min(c(length(varlist), 5)))
+            patchwork::wrap_plots(plot_list, ncol = min(c(length(vrb), 5)))
         }
     } else {
         plot_list[[1]]
