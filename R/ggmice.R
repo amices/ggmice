@@ -8,6 +8,8 @@
 #' @examples
 #' dat <- mice::nhanes
 #' ggmice(dat, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
+#' imp <- mice::mice(dat, print = FALSE)
+#' ggmice(imp, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
 #' @seealso See the `ggmice` vignette to use the `ggmice()` function on
 #' [incomplete data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function)
 #' or [imputed data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1).

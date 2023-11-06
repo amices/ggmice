@@ -20,6 +20,8 @@ Plot incomplete or imputed data
 \examples{
 dat <- mice::nhanes
 ggmice(dat, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
+imp <- mice::mice(dat, print = FALSE)
+ggmice(imp, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
 }
 \seealso{
 See the \code{ggmice} vignette to use the \code{ggmice()} function on
