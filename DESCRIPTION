@@ -27,6 +27,7 @@ Imports:
     magrittr,
     mice,
     purrr,
+    reshape2,
     rlang,
     stats,
     stringr,

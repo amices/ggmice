@@ -74,6 +74,23 @@ ggmice(imp, aes(x = hgt, group = .imp, size = .where)) +
     guide = "none"
   ) +
   theme(legend.position = "none")
+
+# Can make the same plot
+mice::densityplot(imp, ~hgt)
+plot_density(data = imp, vrb = "hgt", panels = FALSE)
+
+# Can be broken down by panels
+mice::densityplot(imp, ~ hgt | .imp)
+plot_density(data = imp, vrb = "hgt", panels = TRUE)
+
+# Can plot arbitrary variables 
+plot_density(data = imp, vrb = c("wgt", "bmi", "phb"), panels = FALSE)
+plot_density(data = imp, vrb = c("wgt", "bmi", "phb"), panels = TRUE)
+
+# Can plot all variables
+mice::densityplot(imp)
+plot_density(data = imp)
+
 ```
 
 # `fluxplot`
@@ -217,6 +234,13 @@ p <- map(vrb, ~ {
 })
 wrap_plots(p, guides = "collect") &
   theme(legend.position = "bottom")
+
+# Can make the same plot
+plot_density(data = imp)
+
+# And if needed can break down by data set
+plot_density(data = imp, panels = TRUE)
+
 ```
 
 Display strip plots for all variables.
