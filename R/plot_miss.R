@@ -3,7 +3,6 @@
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param border Logical indicating whether borders should be present between tiles.
-#' @param row.breaks Optional numeric input specifying the number of breaks to be visualized on the y axis.
 #' @param ordered Logical indicating whether rows should be ordered according to their pattern.
 #' @param square  Logical indicating whether the plot tiles should be squares, defaults to squares.
 #'
@@ -17,8 +16,7 @@ plot_miss <-
   function(data,
            vrb = "all",
            border = FALSE,
-           row.breaks = nrow(data),
-           square = TRUE,
+           square = FALSE,
            ordered = FALSE) {
     # input processing
     if (is.matrix(data) && ncol(data) > 1) {
@@ -39,7 +37,7 @@ plot_miss <-
         )
       )
     }
-    if(ordered){
+    if (ordered) {
       # extract md.pattern matrix
       mdpat <- mice::md.pattern(data, plot = FALSE) %>%
         utils::head(., -1)
@@ -52,9 +50,11 @@ plot_miss <-
         dplyr::select(-ncol(.)) %>%
         dplyr::mutate(nmis = freq.pat) %>%
         tidyr::uncount(nmis)
-    } else{
-    # Create missingness indicator matrix
-    na.mat <- purrr::map_df(data[,vrb], function(y) as.numeric(!is.na(y)))
+    } else {
+      # Create missingness indicator matrix
+      na.mat <-
+        purrr::map_df(data[, vrb], function(y)
+          as.numeric(!is.na(y)))
     }
     # extract pattern info
     vrb <- colnames(na.mat)
@@ -64,50 +64,42 @@ plot_miss <-
     # transform to long format
     long <-
       as.data.frame(cbind(.y = 1:rws, na.mat)) %>%
-      tidyr::pivot_longer(cols = tidyselect::all_of(vrb),
-                          names_to = "x",
-                          values_to = ".where"
+      tidyr::pivot_longer(
+        cols = tidyselect::all_of(vrb),
+        names_to = "x",
+        values_to = ".where"
       ) %>%
-      dplyr::mutate(
-        .x = as.numeric(factor(
-          .data$x,
-          levels = vrb, ordered = TRUE
-        )),
-        .where = factor(
-          .data$.where,
-          levels = c(0, 1),
-          labels = c("missing", "observed")
-        )
-      )
+      dplyr::mutate(.x = as.numeric(factor(
+        .data$x,
+        levels = vrb, ordered = TRUE
+      )),
+      .where = factor(
+        .data$.where,
+        levels = c(0, 1),
+        labels = c("missing", "observed")
+      ))
     gg <-
-      ggplot2::ggplot(
-        long,
-        ggplot2::aes(
-          .data$.x,
-          .data$.y,
-          fill = .data$.where
-        )
-      ) +
+      ggplot2::ggplot(long,
+                      ggplot2::aes(.data$.x,
+                                   as.numeric(.data$.y),
+                                   fill = .data$.where)) +
       ggplot2::scale_fill_manual(values = c(
         "observed" = "#006CC2B3",
         "missing" = "#B61A51B3"
       )) +
       ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
-      ggplot2::scale_x_continuous(
-        breaks = 1:cls,
-        labels = vrb) +
-      ggplot2::scale_y_reverse(
-        n.breaks = row.breaks
-      ) +
+      ggplot2::scale_x_continuous(breaks = 1:cls,
+                                  labels = vrb) +
+      ggplot2::scale_y_reverse() +
       ggplot2::labs(
-        x = "Variables",
-        y = "Rows in dataset",
+        x = "Column name",
+        y = "Row number",
         fill = "",
         alpha = ""
       ) +
       theme_minimice()
     # additional arguments
-    if(border){
+    if (border) {
       gg <- gg + ggplot2::geom_tile(color = "black")
     } else{
       gg <- gg + ggplot2::geom_tile()
@@ -117,11 +109,12 @@ plot_miss <-
     } else {
       gg <- gg + ggplot2::coord_cartesian(expand = FALSE)
     }
-    if(ordered){
+    if (ordered) {
       gg <- gg +
-        ggplot2::theme(axis.text.y = ggplot2::element_blank(),
-                       axis.ticks.y = ggplot2::element_blank()
-      )
+        ggplot2::theme(
+          axis.text.y = ggplot2::element_blank(),
+          axis.ticks.y = ggplot2::element_blank()
+        )
     }
     return(gg)
   }

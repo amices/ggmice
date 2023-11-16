@@ -4,7 +4,7 @@ dat <- mice::nhanes
 # tests
 test_that("plot_miss produces plot", {
   expect_s3_class(plot_miss(dat), "ggplot")
-  expect_s3_class(plot_miss(dat, border = TRUE, ordered = T, row.breaks = 25, square = TRUE), "ggplot")
+  expect_s3_class(plot_miss(dat, border = TRUE, ordered = TRUE, square = TRUE), "ggplot")
   expect_s3_class(plot_miss(cbind(dat, "testvar" = NA)), "ggplot")
 })
 
