@@ -90,7 +90,12 @@ plot_miss <-
       ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
       ggplot2::scale_x_continuous(breaks = 1:cls,
                                   labels = vrb) +
-      ggplot2::scale_y_reverse(expand = ggplot2::expansion(add = c(1, 1))) +
+      ggplot2::scale_y_reverse(breaks = \(y) {
+        eb = scales::extended_breaks()(y)
+        eb[1] = min(long$.y)
+        eb[length(eb)] = max(long$.y)
+        eb
+      }) +
       ggplot2::labs(
         x = "Column name",
         y = "Row number",
@@ -105,9 +110,9 @@ plot_miss <-
       gg <- gg + ggplot2::geom_tile()
     }
     if (square) {
-      gg <- gg + ggplot2::coord_fixed()
+      gg <- gg + ggplot2::coord_fixed(expand = FALSE)
     } else {
-      gg <- gg + ggplot2::coord_cartesian()
+      gg <- gg + ggplot2::coord_cartesian(expand = FALSE)
     }
     if (ordered) {
       gg <- gg +
@@ -118,3 +123,4 @@ plot_miss <-
     }
     return(gg)
   }
+
