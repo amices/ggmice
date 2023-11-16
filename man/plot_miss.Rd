@@ -9,6 +9,7 @@ plot_miss(
   vrb = "all",
   border = FALSE,
   row.breaks = nrow(data),
+  square = TRUE,
   ordered = FALSE
 )
 }
@@ -20,6 +21,8 @@ plot_miss(
 \item{border}{Logical indicating whether borders should be present between tiles.}
 
 \item{row.breaks}{Optional numeric input specifying the number of breaks to be visualized on the y axis.}
+
+\item{square}{Logical indicating whether the plot tiles should be squares, defaults to squares.}
 
 \item{ordered}{Logical indicating whether rows should be ordered according to their pattern.}
 }

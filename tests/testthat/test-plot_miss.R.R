@@ -4,7 +4,7 @@ dat <- mice::nhanes
 # tests
 test_that("plot_miss produces plot", {
   expect_s3_class(plot_miss(dat), "ggplot")
-  expect_s3_class(plot_miss(dat), "ggplot")
+  expect_s3_class(plot_miss(dat, border = TRUE, ordered = T, row.breaks = 25, square = TRUE), "ggplot")
   expect_s3_class(plot_miss(cbind(dat, "testvar" = NA)), "ggplot")
 })
 
@@ -17,10 +17,8 @@ test_that("plot_miss works with different inputs", {
 
 
 test_that("plot_miss with incorrect argument(s)", {
-  expect_output(plot_miss(na.omit(dat)))
+  expect_s3_class(plot_miss(na.omit(dat)), "ggplot")
   expect_error(plot_miss("test"))
   expect_error(plot_miss(dat, vrb = "test"))
-  expect_error(plot_miss(dat, cluster = "test"))
   expect_error(plot_miss(cbind(dat, .x = NA)))
-  expect_error(plot_miss(dat, npat = "test"))
 })

@@ -5,6 +5,7 @@
 #' @param border Logical indicating whether borders should be present between tiles.
 #' @param row.breaks Optional numeric input specifying the number of breaks to be visualized on the y axis.
 #' @param ordered Logical indicating whether rows should be ordered according to their pattern.
+#' @param square  Logical indicating whether the plot tiles should be squares, defaults to squares.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
@@ -17,6 +18,7 @@ plot_miss <-
            vrb = "all",
            border = FALSE,
            row.breaks = nrow(data),
+           square = TRUE,
            ordered = FALSE) {
     # input processing
     if (is.matrix(data) && ncol(data) > 1) {
@@ -40,7 +42,7 @@ plot_miss <-
     if(ordered){
       # extract md.pattern matrix
       mdpat <- mice::md.pattern(data, plot = FALSE) %>%
-        head(., -1)
+        utils::head(., -1)
       # save frequency of patterns
       freq.pat <- rownames(mdpat) %>%
         as.numeric()
@@ -103,12 +105,17 @@ plot_miss <-
         fill = "",
         alpha = ""
       ) +
-      ggplot2::coord_cartesian(expand = FALSE) +
       theme_minimice()
+    # additional arguments
     if(border){
       gg <- gg + ggplot2::geom_tile(color = "black")
     } else{
       gg <- gg + ggplot2::geom_tile()
+    }
+    if (square) {
+      gg <- gg + ggplot2::coord_fixed(expand = FALSE)
+    } else {
+      gg <- gg + ggplot2::coord_cartesian(expand = FALSE)
     }
     if(ordered){
       gg <- gg +
