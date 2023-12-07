@@ -89,7 +89,12 @@ plot_miss <-
       ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
       ggplot2::scale_x_continuous(breaks = 1:cls,
                                   labels = vrb) +
-      ggplot2::scale_y_reverse() +
+      ggplot2::scale_y_reverse(breaks = \(y) {
+        eb = scales::extended_breaks()(y)
+        eb[1] = min(long$.y)
+        eb[length(eb)] = max(long$.y)
+        eb
+      }) +
       ggplot2::labs(
         x = "Column name",
         y = "Row number",
@@ -117,3 +122,4 @@ plot_miss <-
     }
     return(gg)
   }
+
