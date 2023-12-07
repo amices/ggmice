@@ -39,15 +39,14 @@ plot_miss <-
     }
     if (ordered) {
       # extract md.pattern matrix
-      mdpat <- mice::md.pattern(data, plot = FALSE) %>%
-        utils::head(., -1)
+      mdpat <- utils::head(mice::md.pattern(data, plot = FALSE), -1)
       # save frequency of patterns
       freq.pat <- rownames(mdpat) %>%
         as.numeric()
 
       na.mat <- mdpat %>%
         as.data.frame() %>%
-        dplyr::select(-ncol(.)) %>%
+        dplyr::select(-ncol(.data)) %>%
         dplyr::mutate(nmis = freq.pat) %>%
         tidyr::uncount(nmis)
     } else {
