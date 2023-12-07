@@ -1,6 +1,6 @@
 #' Plot the predictor matrix of an imputation model
 #'
-#' @param data A predictor matrix for `mice`, typically generated with [mice::make.predictorMatrix] or [mice::quickpred].
+#' @param data A predictor matrix for `mice`, typically generated with [mice::make.predictorMatrix] or [mice::quickpred], or an object of class [`mice::mids`].
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param method Character string or vector with imputation methods.
 #' @param label Logical indicating whether predictor matrix values should be displayed.
@@ -20,28 +20,38 @@ plot_pred <-
            label = TRUE,
            square = TRUE,
            rotate = FALSE) {
-    verify_data(data, pred = TRUE)
+    verify_data(data, pred = TRUE, imp = TRUE)
+    if (mice::is.mids(data)) {
+      method <- data$method
+      data <- data$predictorMatrix
+    }
     p <- nrow(data)
-    if (!is.null(method) && is.character(method)) {
-      if (length(method) == 1) {
-        method <- rep(method, p)
+    if (!mice::is.mids(data)) {
+      if (!is.null(method) && is.character(method)) {
+        if (length(method) == 1) {
+          method <- rep(method, p)
+        }
+        if (length(method) == p) {
+          ylabel <- "Imputation method"
+        }
       }
-      if (length(method) == p) {
-        ylabel <- "Imputation method"
+      if (is.null(method)) {
+        method <- rep("", p)
+        ylabel <- ""
       }
-    }
-    if (is.null(method)) {
-      method <- rep("", p)
-      ylabel <- ""
-    }
-    if (!is.character(method) || length(method) != p) {
-      cli::cli_abort("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
+      if (!is.character(method) || length(method) != p) {
+        cli::cli_abort("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
+      }
     }
     vrb <- substitute(vrb)
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
+      vrb <- names(dplyr::select(as.data.frame(data), {
+        {
+          vrb
+        }
+      }))
     }
     vrbs <- row.names(data)
     long <- data.frame(
