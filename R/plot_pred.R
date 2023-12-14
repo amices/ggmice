@@ -26,32 +26,26 @@ plot_pred <-
       data <- data$predictorMatrix
     }
     p <- nrow(data)
-    if (!mice::is.mids(data)) {
-      if (!is.null(method) && is.character(method)) {
-        if (length(method) == 1) {
-          method <- rep(method, p)
-        }
-        if (length(method) == p) {
-          ylabel <- "Imputation method"
-        }
+    if (!is.null(method) && is.character(method)) {
+      if (length(method) == 1) {
+        method <- rep(method, p)
       }
-      if (is.null(method)) {
-        method <- rep("", p)
-        ylabel <- ""
+      if (length(method) == p) {
+        ylabel <- "Imputation method"
       }
-      if (!is.character(method) || length(method) != p) {
-        cli::cli_abort("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
-      }
+    }
+    if (is.null(method)) {
+      method <- rep("", p)
+      ylabel <- ""
+    }
+    if (!is.character(method) || length(method) != p) {
+      cli::cli_abort("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
     }
     vrb <- substitute(vrb)
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(as.data.frame(data), {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
     }
     vrbs <- row.names(data)
     long <- data.frame(
