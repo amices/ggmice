@@ -22,6 +22,12 @@ plot_pred <-
            rotate = FALSE) {
     verify_data(data, pred = TRUE, imp = TRUE)
     if (mice::is.mids(data)) {
+      if (!is.null(method)) {
+        cli::cli_warn(c(
+          "!" = "`Method` is ignored when `data` is of class `mids`.",
+          "i" = "The `method` vector from the `mids` object will be used."
+        ))
+      }
       method <- data$method
       data <- data$predictorMatrix
     }
