@@ -7,6 +7,7 @@
 #' @param diagonal Logical indicating whether the correlation of each variable with itself should be displayed.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param caption Logical indicating whether the figure caption should be displayed.
+#' @param grid Logical indicating whether borders should be present between tiles.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
@@ -20,7 +21,8 @@ plot_corr <-
            square = TRUE,
            diagonal = FALSE,
            rotate = FALSE,
-           caption = TRUE) {
+           caption = TRUE,
+           grid = TRUE) {
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
@@ -73,7 +75,6 @@ plot_corr <-
                         label = .data$corr,
                         fill = .data$corr
                       )) +
-      ggplot2::geom_tile(color = "black", alpha = 0.6) +
       ggplot2::scale_x_discrete(limits = vrb, position = "top") +
       ggplot2::scale_y_discrete(limits = rev(vrb)) +
       ggplot2::scale_fill_gradient2(
@@ -84,6 +85,11 @@ plot_corr <-
         limits = c(-1, 1)
       )  +
       theme_minimice()
+    if (grid) {
+      gg <- gg + ggplot2::geom_tile(color = "black", alpha = 0.6)
+    } else {
+      gg <- gg + ggplot2::geom_tile(alpha = 0.6)
+    }
     if (caption) {
       gg <- gg +
         ggplot2::labs(

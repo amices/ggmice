@@ -11,7 +11,8 @@ plot_corr(
   square = TRUE,
   diagonal = FALSE,
   rotate = FALSE,
-  caption = TRUE
+  caption = TRUE,
+  grid = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ plot_corr(
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
 
 \item{caption}{Logical indicating whether the figure caption should be displayed.}
+
+\item{grid}{Logical indicating whether borders should be present between tiles.}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.

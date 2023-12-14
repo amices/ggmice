@@ -11,7 +11,8 @@ plot_pattern(
   rotate = FALSE,
   cluster = NULL,
   npat = NULL,
-  caption = TRUE
+  caption = TRUE,
+  grid = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ plot_pattern(
 \item{npat}{Optional numeric input specifying the number of missing data patterns to be visualized, defaults to all patterns.}
 
 \item{caption}{Logical indicating whether the figure caption should be displayed.}
+
+\item{grid}{Logical indicating whether borders should be present between tiles.}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.

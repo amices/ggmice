@@ -9,7 +9,8 @@ test_that("plot_corr creates ggplot object", {
     label = TRUE,
     square = FALSE,
     diagonal = TRUE,
-    rotate = TRUE
+    rotate = TRUE,
+    grid = FALSE
   ),
   "ggplot")
 })

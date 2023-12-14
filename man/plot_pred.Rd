@@ -10,7 +10,8 @@ plot_pred(
   method = NULL,
   label = TRUE,
   square = TRUE,
-  rotate = FALSE
+  rotate = FALSE,
+  grid = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ plot_pred(
 \item{square}{Logical indicating whether the plot tiles should be squares.}
 
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
+
+\item{grid}{Logical indicating whether borders should be present between tiles.}
 }
 \value{
 An object of class \code{ggplot2::ggplot}.

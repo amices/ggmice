@@ -6,6 +6,7 @@
 #' @param label Logical indicating whether predictor matrix values should be displayed.
 #' @param square Logical indicating whether the plot tiles should be squares.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
+#' @param grid Logical indicating whether borders should be present between tiles.
 #'
 #' @return An object of class `ggplot2::ggplot`.
 #'
@@ -19,7 +20,8 @@ plot_pred <-
            method = NULL,
            label = TRUE,
            square = TRUE,
-           rotate = FALSE) {
+           rotate = FALSE,
+           grid = TRUE) {
     verify_data(data, pred = TRUE)
     p <- nrow(data)
     if (!is.null(method) && is.character(method)) {
@@ -69,7 +71,6 @@ plot_pred <-
                         label = .data$ind,
                         fill = .data$clr
                       )) +
-      ggplot2::geom_tile(color = "black", alpha = 0.6) +
       ggplot2::scale_x_discrete(limits = vrbs, position = "top") +
       ggplot2::scale_y_reverse(
         breaks = 1:p,
@@ -92,7 +93,11 @@ plot_pred <-
         color = ""
       ) +
       theme_minimice()
-
+    if (grid) {
+      gg <- gg + ggplot2::geom_tile(color = "black", alpha = 0.6)
+    } else {
+      gg <- gg + ggplot2::geom_tile(alpha = 0.6)
+    }
     if (all(method == "")) {
       gg <-
         gg + ggplot2::theme(axis.ticks.y.right = ggplot2::element_blank())

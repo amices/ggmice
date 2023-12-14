@@ -10,7 +10,8 @@ test_that("plot_pred creates ggplot object", {
     method = c("pmm"),
     label = FALSE,
     square = FALSE,
-    rotate = TRUE
+    rotate = TRUE,
+    grid = FALSE
   ),
   "ggplot")
   expect_s3_class(plot_pred(pred, vrb = c("age", "bmi")), "ggplot")
