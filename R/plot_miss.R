@@ -2,7 +2,7 @@
 #'
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
-#' @param border Logical indicating whether borders should be present between tiles.
+#' @param grid Logical indicating whether borders should be present between tiles.
 #' @param ordered Logical indicating whether rows should be ordered according to their pattern.
 #' @param square  Logical indicating whether the plot tiles should be squares, defaults to squares.
 #'
@@ -15,7 +15,7 @@
 plot_miss <-
   function(data,
            vrb = "all",
-           border = FALSE,
+           grid = FALSE,
            square = FALSE,
            ordered = FALSE) {
     # input processing
@@ -103,7 +103,7 @@ plot_miss <-
       ) +
       theme_minimice()
     # additional arguments
-    if (border) {
+    if (grid) {
       gg <- gg + ggplot2::geom_tile(color = "black")
     } else{
       gg <- gg + ggplot2::geom_tile()

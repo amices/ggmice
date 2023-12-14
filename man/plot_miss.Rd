@@ -4,14 +4,14 @@
 \alias{plot_miss}
 \title{Plot missingness in a dataset}
 \usage{
-plot_miss(data, vrb = "all", border = FALSE, square = FALSE, ordered = FALSE)
+plot_miss(data, vrb = "all", grid = FALSE, square = FALSE, ordered = FALSE)
 }
 \arguments{
 \item{data}{An incomplete dataset of class \code{data.frame} or \code{matrix}.}
 
 \item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 
-\item{border}{Logical indicating whether borders should be present between tiles.}
+\item{grid}{Logical indicating whether borders should be present between tiles.}
 
 \item{square}{Logical indicating whether the plot tiles should be squares, defaults to squares.}
 
