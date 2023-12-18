@@ -39,50 +39,18 @@ verify_data <- function(data,
                         df = FALSE,
                         imp = FALSE,
                         pred = FALSE) {
-  if (df && !imp) {
-    if (!(is.data.frame(data) || is.matrix(data))) {
-      cli::cli_abort(
-        c(
-          "The 'data' argument requires an object of class 'data.frame' or 'matrix'.",
-          "i" = "Input object is of class {class(data)}."
-        ),
-        call. = FALSE
-      )
-    }
+  df <- data.frame(val = unlist(as.list(environment())[-1]),
+                   type = c("data.frame", "mids", "matrix"))
+  types <- df[df$val==T,]$type
+  types_format <- purrr::map(types, function(x) paste0("`", x, "`")) %>% unlist()
+  if(!inherits(data, types)){
+    cli::cli_abort(c(
+      "!" = "The {.arg data} argument requires an object of class {stringr::str_flatten_comma({types_format}, \", or \")}.",
+      "i" = "Input object is of class {class(data)}"
+    ),
+    call. = FALSE)
   }
-  if (df && imp) {
-    if (!(is.data.frame(data) ||
-          is.matrix(data) || mice::is.mids(data))) {
-      cli::cli_abort(
-        c(
-          "The 'data' argument requires an object of class 'data.frame', 'matrix', or 'mids'.",
-          "i" = "Input object is of class {class(data)}."
-        ),
-        call. = FALSE
-      )
-    }
-  }
-  if (imp && !df) {
-    if (!mice::is.mids(data)) {
-      cli::cli_abort(
-        c(
-          "The 'data' argument requires an object of class 'mids'.",
-          "i" = "Input object is of class {class(data)}."
-        ),
-        call. = FALSE
-      )
-    }
-  }
-  if (pred) {
-    if (!is.matrix(data)) {
-      cli::cli_abort(
-        c(
-          "The 'data' argument requires an object of class 'matrix'.",
-          "i" = "Input object is of class {class(data)}."
-        ),
-        call. = FALSE
-      )
-    }
+  if (is.matrix(data)) {
     if (dim(data)[1] != dim(data)[2]) {
       cli::cli_abort(
         c(
