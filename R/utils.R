@@ -1,6 +1,6 @@
 # Functions for internal use
 
-# util functions
+# Shorthand 'not in' for code readability
 `%nin%` <- Negate(`%in%`)
 
 #' Pipe operator
@@ -18,11 +18,6 @@
 #' @param rhs A function call using the magrittr semantics.
 #' @return The result of calling `rhs(lhs)`.
 NULL
-
-# suppress undefined global functions or variables note
-utils::globalVariables(c(".id", ".imp", ".where", ".id", "where", "name", "value"))
-
-# Alias a function with `foo <- function(...) pkgB::blah(...)`
 
 #' Utils function to validate data argument inputs
 #'
@@ -104,3 +99,6 @@ verify_data <- function(data,
     }
   }
 }
+
+# suppress undefined global functions or variables note
+utils::globalVariables(c(".id", ".imp", ".where", ".id", "where", "name", "value"))
