@@ -1,3 +1,15 @@
+# ggmice (development version)
+
+## Bug fixes
+
+* Correct labeling of 'exclusion-restriction' variables in `plot_pred()` (#128) 
+
+## Minor changes
+
+* Miscellaneous documentation and vignette updates (#128)
+
+---
+
 # ggmice 0.1.0
 
 ## Breaking changes
@@ -25,7 +37,7 @@
 * Input validation for `data` argument `plot_*` functions (#85)
 * Input validation for `vrb` argument `plot_*` functions (#80)
 * Input validation for `mapping` argument `ggmice()` (#34, #90)
-* Vignette updates (PRs #31, #35, #38) and other documentation (#45, #51)
+* Vignette updates (#31, #35, #38) and other documentation (#45, #51)
 * The `plot_pattern()` function creates missing data pattern plot with more informative labels (#59, #111)
 
 ---

@@ -52,13 +52,13 @@ plot_pred <-
       ind = matrix(data, nrow = p * p, byrow = TRUE)
     ) %>% dplyr::mutate(clr = factor(
       .data$ind,
-      levels = c(-2, 0, 1, 2, 3),
+      levels = c(-3, -2, 0, 1, 2),
       labels = c(
+        "inclusion-restriction variable",
         "cluster variable",
         "not used",
         "predictor",
-        "random effect",
-        "inclusion-restriction variable"
+        "random effect"
       ),
       ordered = TRUE
     ))
@@ -79,11 +79,11 @@ plot_pred <-
       ) +
       ggplot2::scale_fill_manual(
         values = c(
+          "inclusion-restriction variable" = "orangered",
           "cluster variable" = "lightyellow",
           "not used" = "grey90",
           "predictor" = "palegreen3",
-          "random effect" = "deepskyblue",
-          "inclusion-restriction variable" = "orangered"
+          "random effect" = "deepskyblue"
         )
       ) +
       ggplot2::labs(
