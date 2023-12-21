@@ -23,10 +23,10 @@ plot_pred <-
     verify_data(data, pred = TRUE, imp = TRUE)
     if (mice::is.mids(data)) {
       if (!is.null(method)) {
-        cli::cli_warn(c(
-          "!" = "`method` is ignored when `data` is of class `mids`.",
-          "i" = "The `method` vector from the `mids` object will be used."
-        ))
+        cli::cli_warn(
+          c("!" = "Input `method` is ignored when `data` is of class `mids`.",
+            "i" = "The `method` vector from the `mids` object will be used.")
+        )
       }
       method <- data$method
       data <- data$predictorMatrix
@@ -45,7 +45,8 @@ plot_pred <-
       ylabel <- ""
     }
     if (!is.character(method) || length(method) != p) {
-      cli::cli_abort("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
+      cli::cli_abort("Method should be `NULL` or a character string or vector
+                     (of length 1 or `ncol(data)`).")
     }
     vrb <- substitute(vrb)
     if (vrb[1] == "all") {
