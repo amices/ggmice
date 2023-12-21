@@ -10,13 +10,14 @@ plot_corr(
   label = FALSE,
   square = TRUE,
   diagonal = FALSE,
-  rotate = FALSE
+  rotate = FALSE,
+  caption = TRUE
 )
 }
 \arguments{
 \item{data}{A dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
 
-\item{vrb}{String or vector with variable name(s), default is "all".}
+\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 
 \item{label}{Logical indicating whether correlation values should be displayed.}
 
@@ -25,6 +26,8 @@ plot_corr(
 \item{diagonal}{Logical indicating whether the correlation of each variable with itself should be displayed.}
 
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
+
+\item{caption}{Logical indicating whether the figure caption should be displayed.}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.

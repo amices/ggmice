@@ -1,11 +1,12 @@
 #' Plot the missing data pattern of an incomplete dataset
 #'
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
-#' @param vrb String or vector with variable name(s), default is "all".
+#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param square Logical indicating whether the plot tiles should be squares, defaults to squares to mimick `mice::md.pattern()`.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
 #' @param npat Optional numeric input specifying the number of missing data patterns to be visualized, defaults to all patterns.
+#' @param caption Logical indicating whether the figure caption should be displayed.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
@@ -18,62 +19,78 @@ plot_pattern <-
            square = TRUE,
            rotate = FALSE,
            cluster = NULL,
-           npat = NULL) {
-    if (!is.data.frame(data) & !is.matrix(data)) {
-      stop("Dataset should be a 'data.frame' or 'matrix'.")
+           npat = NULL,
+           caption = TRUE) {
+    # input processing
+    if (is.matrix(data) && ncol(data) > 1) {
+      data <- as.data.frame(data)
     }
-    if (vrb == "all") {
+    verify_data(data, df = TRUE)
+    vrb <- substitute(vrb)
+    if (vrb != "all" && length(vrb) < 2) {
+      cli::cli_abort("The number of variables should be two or more to compute missing data patterns.")
+    }
+    if (vrb[1] == "all") {
       vrb <- names(data)
+    } else {
+      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
     }
-    if (any(vrb %nin% names(data))) {
-      stop("Supplied variable name(s) not found in the dataset.")
-    }
-    if (".x" %in% vrb | ".y" %in% vrb) {
-      stop(
-        "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot. Please exclude or rename your variable(s)."
+    if (".x" %in% vrb || ".y" %in% vrb) {
+      cli::cli_abort(
+        c(
+          "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot.",
+          "i" = "Please exclude or rename your variable(s)."
+        )
       )
     }
     if (!is.null(cluster)) {
       if (cluster %nin% names(data[, vrb])) {
-        stop(
-          "Cluster variable not recognized, please provide the variable name as a character string."
+        cli::cli_abort(
+          c("Cluster variable not recognized.",
+            "i" = "Please provide the variable name as a character string.")
         )
       }
     }
     if (!is.null(npat)) {
-      if (!is.numeric(npat) | npat < 1) {
-        stop("Number of patterns should be one or more. Please provide a positive numeric value.")
+      if (!is.numeric(npat) || npat < 1) {
+        cli::cli_abort(
+          c("The minimum number of patterns to display is one.",
+            "i" = "Please provide a positive integer.")
+        )
       }
-    }
-    if (!any(is.na(data))) {
-      return(message(
-        "This dataset is completely observed. No missing data patterns are shown."
-      ))
     }
 
     # get missing data pattern
     pat <- mice::md.pattern(data[, vrb], plot = FALSE)
+    rows_pat_full <-
+      (nrow(pat) - 1) # full number of missing data patterns
+
 
     # filter npat most frequent patterns
     if (!is.null(npat)) {
-      if (npat < (nrow(pat) - 1)) {
+      if (npat < rows_pat_full) {
         top_n_pat <-
           sort(as.numeric(row.names(pat)), decreasing = TRUE)[1:npat]
-        rows_pat_full <-
-          nrow(pat) # full number of missing data patterns
-        pat <- pat[rownames(pat) %in% c(top_n_pat, ""),]
-        # show number of requested, shown, and hidden missing data patterns
-        message(
-          npat,
-          " missing data patterns were requested and ",
-          nrow(pat),
-          " missing data patterns are shown. ",
-          (rows_pat_full - nrow(pat)),
-          " missing data patterns are hidden."
-        )
+        pat <-
+          pat[rownames(pat) %in% c(top_n_pat, ""), , drop = FALSE]
+
+        if (npat != (nrow(pat) - 1)) {
+          # if npat != number of missing patterns
+          # show number of requested, shown, and hidden missing data patterns
+          cli::cli_inform(
+            c(
+              "i" = "{npat} missing data patterns were requested.",
+              "i" = "{nrow(pat) - 1} missing data patterns are shown.",
+              "i" = "{rows_pat_full - (nrow(pat)-1)} missing data patterns are hidden."
+            )
+          )
+        }
       } else {
-        warning(
-          "Number of patterns specified is equal to or greater than the total number of patterns. All missing data patterns are shown."
+        cli::cli_warn(
+          c(
+            "Number of patterns specified is equal to or greater than the total number of patterns.",
+            "i" = "All missing data patterns are shown."
+          )
         )
       }
     }
@@ -88,7 +105,7 @@ plot_pattern <-
 
     # add opacity for clustering
     if (is.null(cluster)) {
-      pat_clean <- cbind(.opacity = 1, pat[-rws, vrb])
+      pat_clean <- cbind(.opacity = 1, pat[-rws, vrb, drop = FALSE])
     } else {
       pats <- purrr::map(split(data[, vrb], ~ get(cluster)), ~ {
         mice::md.pattern(., plot = FALSE) %>%
@@ -111,14 +128,14 @@ plot_pattern <-
       ) %>%
       dplyr::mutate(
         .x = as.numeric(factor(
-          .data$x, levels = vrb, ordered = TRUE
+          .data$x,
+          levels = vrb, ordered = TRUE
         )),
         .where = factor(
           .data$.where,
           levels = c(0, 1),
           labels = c("missing", "observed")
         ),
-        # TODO: always obs/always missing, add title, maybe make y axis prop to freq, add asterisk to clust var with caption that can tell that there is missingness in it
         .opacity = as.numeric(.data$.opacity)
       )
 
@@ -158,6 +175,8 @@ plot_pattern <-
         alpha = ""
       ) +
       theme_minimice()
+
+    # additional arguments
     if (square) {
       gg <- gg + ggplot2::coord_fixed(expand = FALSE)
     } else {
@@ -166,6 +185,29 @@ plot_pattern <-
     if (rotate) {
       gg <-
         gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
+    }
+    if (caption) {
+      if (!is.null(npat) && npat < rows_pat_full) {
+        gg <- gg +
+          ggplot2::labs(
+            x = "Number of missing entries\nper column*",
+            y = "Pattern frequency**",
+            caption = paste0(
+              "*total number of missing entries: ",
+              pat[rws, cls],
+              "\n**number of patterns shown: ",
+              (nrow(pat) - 1),
+              " out of ",
+              rows_pat_full,
+              ""
+            )
+          )
+      } else {
+        gg <- gg +
+          ggplot2::labs(x = "Number of missing entries\nper column*",
+                        caption = paste0("*total number of missing entries: ",
+                                         pat[rws, cls]))
+      }
     }
 
     return(gg)
@@ -176,10 +218,12 @@ plot_pattern <-
 #' @param pat Numeric matrix with a missing data pattern.
 #' @param ord Vector with variable names.
 #' @keywords internal
+#' @noRd
 pat_to_chr <- function(pat, ord = NULL) {
   if (is.null(ord)) {
     ord <- colnames(pat)[-ncol(pat)]
   }
-  apply(pat[-nrow(pat), ord], 1, function(x)
-    paste(as.numeric(x), collapse = ""))
+  apply(pat[-nrow(pat), ord], 1, function(x) {
+    paste(as.numeric(x), collapse = "")
+  })
 }

@@ -10,16 +10,16 @@
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6532702.svg)](https://doi.org/10.5281/zenodo.6532702)
 
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![GitHub R package
 version](https://img.shields.io/github/r-package/v/amices/ggmice?color=yellow&label=dev)](https://github.com/amices/ggmice/blob/main/DESCRIPTION)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/amices/ggmice/workflows/R-CMD-check/badge.svg)](https://github.com/amices/ggmice/actions)
 <!-- badges: end -->
 
 ## Visualizations for `mice` with `ggplot2`
 
-Enhance a [`mice`](https://amices.org/mice) imputation workflow with
+Enhance a [`mice`](https://amices.org/mice/) imputation workflow with
 visualizations for incomplete and/or imputed data. The `ggmice`
 functions produce
 [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot) objects which
@@ -50,7 +50,8 @@ Inspect the missing data in an incomplete dataset and subsequently
 evaluate the imputed data points against observed data. See the [Get
 started](https://amices.org/ggmice/articles/ggmice.html) vignette for an
 overview of all functionalities. Example data from
-[`mice`](https://amices.org/mice/reference/boys).
+[`mice`](https://amices.org/mice/reference/boys), showing height (in cm)
+by age (in years).
 
 ``` r
 # load packages
@@ -60,26 +61,26 @@ library(ggmice)
 # load some data
 dat <- boys
 # visualize the incomplete data
-ggmice(dat, aes(age, bmi)) + geom_point()
+ggmice(dat, aes(age, hgt)) + geom_point()
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
 ``` r
 # impute the incomplete data
-imp <- mice(dat, m = 1, seed = 1, printFlag = FALSE)
+imp <- mice(dat, m = 1, seed = 1)
 # visualize the imputed data
-ggmice(imp, aes(age, bmi)) + geom_point() 
+ggmice(imp, aes(age, hgt)) + geom_point()
 ```
 
 <img src="man/figures/README-example-2.png" width="100%" />
 
 ## Acknowledgements
 
-The `ggmice` package is developed with guidance and feedback from Gerko
-Vink, Stef van Buuren, Thomas Debray, Valentijn de Jong, Johanna Muñoz,
-Thom Volker, Mingyang Cai and Anaïs Fopma. The `ggmice` hex is based on
-designs from the `ggplot2` hex and the `mice` hex (by Jaden Walters).
+The `ggmice` package is developed with guidance and feedback from the
+[Amices](https://github.com/amices) team. The `ggmice` hex is based on
+the [`ggplot2`](https://github.com/tidyverse/ggplot2/) and
+[`mice`](https://github.com/amices/mice) hex designs.
 
 This project has received funding from the European Union’s Horizon 2020
 research and innovation programme under ReCoDID grant agreement No

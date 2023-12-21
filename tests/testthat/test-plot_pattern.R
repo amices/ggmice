@@ -1,18 +1,26 @@
+# create test objects
+dat <- mice::nhanes
+
+# tests
 test_that("plot_pattern produces plot", {
-  gg <- plot_pattern(mice::nhanes)
-  expect_s3_class(gg, "ggplot")
-  gg <- plot_pattern(mice::nhanes, square = FALSE, rotate = TRUE, cluster = "age", npat = 2)
-  expect_s3_class(gg, "ggplot")
-  gg <- plot_pattern(cbind(mice::nhanes, "test var" = NA))
-  expect_s3_class(gg, "ggplot")
+  expect_s3_class(plot_pattern(dat), "ggplot")
+  expect_s3_class(plot_pattern(dat, square = FALSE, rotate = TRUE, cluster = "age", npat = 2), "ggplot")
+  expect_s3_class(plot_pattern(cbind(dat, "testvar" = NA), caption = FALSE), "ggplot")
 })
 
+test_that("plot_pattern works with different inputs", {
+  expect_s3_class(plot_pattern(dat, c("age", "bmi")), "ggplot")
+  expect_s3_class(plot_pattern(dat, c(age, bmi)), "ggplot")
+  expect_s3_class(plot_pattern(data.frame(age = dat$age, testvar = NA)), "ggplot")
+  expect_s3_class(plot_pattern(cbind(dat, "with space" = NA)), "ggplot")
+})
+
+
 test_that("plot_pattern with incorrect argument(s)", {
-  expect_message(plot_pattern(na.omit(mice::nhanes)))
+  expect_output(plot_pattern(na.omit(dat)))
   expect_error(plot_pattern("test"))
-  expect_error(plot_pattern(mice::nhanes, vrb = "test"))
-  expect_error(plot_pattern(mice::nhanes, cluster = "test"))
-  expect_error(plot_pattern(cbind(mice::nhanes, .x = NA)))
-  expect_error(plot_pattern(mice::nhanes, npat = "test"))
-  expect_message(plot_pattern(na.omit(mice::nhanes)))
+  expect_error(plot_pattern(dat, vrb = "test"))
+  expect_error(plot_pattern(dat, cluster = "test"))
+  expect_error(plot_pattern(cbind(dat, .x = NA)))
+  expect_error(plot_pattern(dat, npat = "test"))
 })
