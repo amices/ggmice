@@ -8,6 +8,8 @@
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ggmice)](https://cran.r-project.org/package=ggmice)
 [![Total CRAN
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)](https://cranlogs.r-pkg.org/badges/grand-total/ggmice)
+[![r-universe status
+badge](https://amices.r-universe.dev/badges/ggmice)](https://amices.r-universe.dev/ggmice)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6532702.svg)](https://doi.org/10.5281/zenodo.6532702)
 
 [![Lifecycle:
