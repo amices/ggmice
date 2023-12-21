@@ -12,7 +12,14 @@ ggmice(data = NULL, mapping = ggplot2::aes())
 \item{mapping}{A list of aesthetic mappings created with \code{\link[ggplot2:aes]{ggplot2::aes()}}.}
 }
 \value{
-An object of class \code{\link[ggplot2:ggplot]{ggplot2::ggplot}}.
+An object of class \code{\link[ggplot2:ggplot]{ggplot2::ggplot}}. The \code{\link{ggmice}} function returns output
+equivalent to \code{\link[ggplot2:ggplot]{ggplot2::ggplot}} output, with a few important exceptions:
+\itemize{
+\item The theme is set to \code{\link{theme_mice}}.
+\item The color scale is set to the \code{\link[mice:mdc]{mice::mdc}} colors.
+\item The \code{colour} aesthetic is set to \code{.where}, an internally defined variable which distinguishes
+observed data from missing data or imputed data (for incomplete and imputed data, respectively).
+}
 }
 \description{
 Plot incomplete or imputed data
@@ -20,7 +27,11 @@ Plot incomplete or imputed data
 \examples{
 dat <- mice::nhanes
 ggmice(dat, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
+imp <- mice::mice(dat, print = FALSE)
+ggmice(imp, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
 }
 \seealso{
-See the \code{ggmice} vignette to use the \code{ggmice()} function on \href{https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function}{incomplete data} or \href{https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1}{imputed data}.
+See the \code{ggmice} vignette to use the \code{ggmice()} function on
+\href{https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function}{incomplete data}
+or \href{https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1}{imputed data}.
 }

@@ -22,7 +22,7 @@ plot_pred <-
            rotate = FALSE) {
     verify_data(data, pred = TRUE)
     p <- nrow(data)
-    if (!is.null(method) & is.character(method)) {
+    if (!is.null(method) && is.character(method)) {
       if (length(method) == 1) {
         method <- rep(method, p)
       }
@@ -34,18 +34,14 @@ plot_pred <-
       method <- rep("", p)
       ylabel <- ""
     }
-    if (!is.character(method) | length(method) != p) {
-      stop("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
+    if (!is.character(method) || length(method) != p) {
+      cli::cli_abort("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
     }
     vrb <- substitute(vrb)
     if (vrb[1] == "all") {
       vrb <- names(data)
     } else {
-      vrb <- names(dplyr::select(as.data.frame(data), {
-        {
-          vrb
-        }
-      }))
+      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
     }
     vrbs <- row.names(data)
     long <- data.frame(
@@ -54,13 +50,13 @@ plot_pred <-
       ind = matrix(data, nrow = p * p, byrow = TRUE)
     ) %>% dplyr::mutate(clr = factor(
       .data$ind,
-      levels = c(-2, 0, 1, 2, 3),
+      levels = c(-3, -2, 0, 1, 2),
       labels = c(
+        "inclusion-restriction variable",
         "cluster variable",
         "not used",
         "predictor",
-        "random effect",
-        "inclusion-restriction variable"
+        "random effect"
       ),
       ordered = TRUE
     ))
@@ -82,11 +78,11 @@ plot_pred <-
       ) +
       ggplot2::scale_fill_manual(
         values = c(
+          "inclusion-restriction variable" = "orangered",
           "cluster variable" = "lightyellow",
           "not used" = "grey90",
           "predictor" = "palegreen3",
-          "random effect" = "deepskyblue",
-          "inclusion-restriction variable" = "orangered"
+          "random effect" = "deepskyblue"
         )
       ) +
       ggplot2::labs(
@@ -97,6 +93,10 @@ plot_pred <-
       ) +
       theme_minimice()
 
+    if (all(method == "")) {
+      gg <-
+        gg + ggplot2::theme(axis.ticks.y.right = ggplot2::element_blank())
+    }
     if (label) {
       gg <- gg + ggplot2::geom_text(color = "black", show.legend = FALSE)
     }

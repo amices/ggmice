@@ -11,8 +11,8 @@
 #' @export
 plot_trace <- function(data, vrb = "all") {
   verify_data(data, imp = TRUE)
-  if (is.null(data$chainMean)) {
-    stop("no convergence diagnostics found", call. = FALSE)
+  if (is.null(data$chainMean) && is.null(data$chainVar)) {
+    cli::cli_abort("No convergence diagnostics found", call. = FALSE)
   }
 
   # extract chain means and chain standard deviations
@@ -26,24 +26,21 @@ plot_trace <- function(data, vrb = "all") {
   if (as.character(vrb)[1] == "all") {
     vrb <- varlist
   } else {
-    vrb <- names(dplyr::select(data$data, {
-      {
-        vrb
-      }
-    }))
+    vrb <- names(dplyr::select(data$data, {{vrb}}))
   }
   if (any(vrb %nin% varlist)) {
-    message(
-      paste0(
-        "No convergence diagnostics found for variable(s) '",
-        vrb[which(vrb %nin% varlist)],
-        "'. No plots can be produced for these. Are you sure these variables are imputed?"
+    cli::cli_inform(
+      c(
+        "Trace plot could not be produced for variable(s):",
+        " " = paste(vrb[which(vrb %nin% varlist)], collapse = ", "),
+        "x" = "No convergence diagnostics found."
       )
     )
     if (any(vrb %in% varlist)) {
       vrb <- vrb[which(vrb %in% varlist)]
     } else {
-      stop("None of the variables are imputed. No plots can be produced.")
+      cli::cli_abort(c("x" = "None of the variables are imputed.",
+                       "No plots can be produced."))
     }
   }
 
@@ -69,17 +66,26 @@ plot_trace <- function(data, vrb = "all") {
                     y = .data$val,
                     color = as.factor(.data$.m)
                   )) +
-    ggplot2::geom_line() +
+    ggplot2::geom_line(linewidth = 0.6) +
+    ggplot2::geom_hline(yintercept = -Inf) +
     ggplot2::facet_wrap(
-      vrb ~ .ms,
-      scales = "free",
+      .ms ~ vrb,
+      dir = "v",
       ncol = 2,
-      strip.position = "left"
+      scales = "free_y",
+      strip.position = "left",
+      labeller = function(labels) {
+        labels <- lapply(labels, as.character)
+        list(do.call(paste, c(labels, list(sep = "\n"))))
+      }
     ) +
     ggplot2::labs(x = "Iteration",
-                  y = "",
+                  y = "Imputation parameter",
                   color = "Imputation number") +
-    theme_mice()
+    theme_mice() +
+    ggplot2::theme(
+      strip.background = ggplot2::element_blank(),
+      strip.placement = "outside",
+      strip.switch.pad.wrap = ggplot2::unit(0, "cm")
+    )
 }
-
-# TODO: make iterations and statistic arguments as well
