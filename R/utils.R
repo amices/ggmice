@@ -57,7 +57,7 @@ verify_data <- function(data,
       )
     }
   }
-  if (imp && !df) {
+  if (imp && !df && !pred) {
     if (!mice::is.mids(data)) {
       cli::cli_abort(
         c(
@@ -68,7 +68,18 @@ verify_data <- function(data,
       )
     }
   }
-  if (pred) {
+  if (imp && pred){
+    if (!(is.matrix(data) || mice::is.mids(data))) {
+      cli::cli_abort(
+        c(
+          "The 'data' argument requires an object of class 'matrix', or 'mids'.",
+          "i" = "Input object is of class {class(data)}."
+        ),
+        call. = FALSE
+      )
+    }
+  }
+  if (pred && !imp) {
     if (!is.matrix(data)) {
       cli::cli_abort(
         c(
