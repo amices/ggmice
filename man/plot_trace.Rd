@@ -4,12 +4,14 @@
 \alias{plot_trace}
 \title{Plot the trace lines of the imputation algorithm}
 \usage{
-plot_trace(data, vrb = "all")
+plot_trace(data, vrb = "all", trend = FALSE)
 }
 \arguments{
 \item{data}{An object of class \link[mice:mids-class]{mice::mids}.}
 
 \item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
+
+\item{trend}{Logical indicating whether a trend line should be displayed.}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
