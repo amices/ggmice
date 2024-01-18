@@ -2,6 +2,7 @@
 #'
 #' @param data An object of class [mice::mids].
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
+#' @param trend Logical indicating whether a trend line should be displayed.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
@@ -9,7 +10,7 @@
 #' imp <- mice::mice(mice::nhanes, print = FALSE)
 #' plot_trace(imp)
 #' @export
-plot_trace <- function(data, vrb = "all") {
+plot_trace <- function(data, vrb = "all", trend = FALSE) {
   verify_data(data, imp = TRUE)
   if (is.null(data$chainMean) && is.null(data$chainVar)) {
     cli::cli_abort("No convergence diagnostics found", call. = FALSE)
@@ -60,12 +61,12 @@ plot_trace <- function(data, vrb = "all") {
                 ))
 
   # plot the convergence diagnostics
-  ggplot2::ggplot(long,
-                  ggplot2::aes(
-                    x = .data$.it,
-                    y = .data$val,
-                    color = as.factor(.data$.m)
-                  )) +
+  gg <- ggplot2::ggplot(long,
+                        ggplot2::aes(
+                          x = .data$.it,
+                          y = .data$val,
+                          color = as.factor(.data$.m)
+                        )) +
     ggplot2::geom_line(linewidth = 0.6) +
     ggplot2::geom_hline(yintercept = -Inf) +
     ggplot2::facet_wrap(
@@ -88,4 +89,15 @@ plot_trace <- function(data, vrb = "all") {
       strip.placement = "outside",
       strip.switch.pad.wrap = ggplot2::unit(0, "cm")
     )
+  if (trend) {
+    gg <- gg +
+      ggplot2::geom_smooth(
+        formula = y ~ x,
+        method = "loess",
+        se = FALSE,
+        color = "black",
+        linetype = "dashed"
+      )
+  }
+  return(gg)
 }
