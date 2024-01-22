@@ -137,9 +137,11 @@ ggmice <- function(data = NULL,
   # create plot
   gg <- ggplot2::ggplot(data = mice_data, mapping = mice_mapping) +
     ggplot2::scale_color_manual(values = mice_colors,
+                                na.value = "#B61A51B3",
                                 name = "",
                                 drop = FALSE) +
     ggplot2::scale_fill_manual(values = mice_colors,
+                               na.value = "#B61A51B3",
                                name = "",
                                drop = FALSE) +
     theme_mice()
