@@ -7,8 +7,10 @@
 #' equivalent to [`ggplot2::ggplot`] output, with a few important exceptions:
 #'
 #' - The theme is set to [`ggmice::theme_mice`].
-#' - The color scale is set to the [`mice::mdc`] colors.
+#' - The color and fill scales are set to the [`mice::mdc`] colors (see below).
 #' - The `colour` aesthetic is set to `.where`, an internally defined variable which distinguishes
+#' observed data from missing data or imputed data (for incomplete and imputed data, respectively).
+#' - The `fill` aesthetic is set to `.where`, an internally defined variable which distinguishes
 #' observed data from missing data or imputed data (for incomplete and imputed data, respectively).
 #'
 #' @examples
@@ -44,6 +46,14 @@ ggmice <- function(data = NULL,
     cli::cli_warn(
       c(
         "The aes() argument 'colour' has a special use in ggmice() and will be overwritten.",
+        "i" = "Try using 'shape' or 'linetype' for additional mapping, or use faceting."
+      )
+    )
+  }
+  if (!is.null(mapping$fill)) {
+    cli::cli_warn(
+      c(
+        "The aes() argument 'fill' has a special use in ggmice() and will be overwritten.",
         "i" = "Try using 'shape' or 'linetype' for additional mapping, or use faceting."
       )
     )
@@ -91,7 +101,7 @@ ggmice <- function(data = NULL,
       )
     }
     mice_mapping <-
-      utils::modifyList(mapping, ggplot2::aes(colour = .where))
+      utils::modifyList(mapping, ggplot2::aes(colour = .where, fill = .where))
     mice_colors <-
       c("observed" = "#006CC2B3",
         "missing" = "#B61A51B3")
@@ -118,7 +128,7 @@ ggmice <- function(data = NULL,
       .imp = factor(.imp, levels = 0:data$m, ordered = TRUE)
     )
     mice_mapping <-
-      utils::modifyList(mapping, ggplot2::aes(colour = .where))
+      utils::modifyList(mapping, ggplot2::aes(colour = .where, fill = .where))
     mice_colors <-
       c("observed" = "#006CC2B3",
         "imputed" = "#B61A51B3")
@@ -129,6 +139,9 @@ ggmice <- function(data = NULL,
     ggplot2::scale_color_manual(values = mice_colors,
                                 name = "",
                                 drop = FALSE) +
+    ggplot2::scale_fill_manual(values = mice_colors,
+                               name = "",
+                               drop = FALSE) +
     theme_mice()
 
   # edit plot to display missing values on the axes
