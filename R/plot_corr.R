@@ -24,16 +24,11 @@ plot_corr <-
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
-    verify_data(data = data, df = TRUE)
+    verify_data(data = data, classes = "data.frame")
     vrb <- substitute(vrb)
-    if (vrb != "all" && length(vrb) < 2) {
+    vrb <- vrb_to_cols(vrb, data)
+    if (length(vrb) < 2) {
       cli::cli_abort("The number of variables should be two or more to compute correlations.")
-    }
-    if (vrb[1] == "all") {
-      vrb <- names(data)
-    } else {
-      data <- dplyr::select(data, {{vrb}})
-      vrb <- names(data)
     }
     # check if any column is constant
     constants <- apply(data, MARGIN = 2, function(x) {
