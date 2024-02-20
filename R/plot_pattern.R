@@ -181,7 +181,7 @@ plot_pattern <-
     if (grid) {
       gg <- gg + ggplot2::geom_tile(color = "black")
     } else {
-      gg <- gg + ggplot2::geom_tile()
+      gg <- gg + ggplot2::geom_raster()
     }
     if (square) {
       gg <- gg + ggplot2::coord_fixed(expand = FALSE)
@@ -215,7 +215,6 @@ plot_pattern <-
                                          pat[rws, cls]))
       }
     }
-
     return(gg)
   }
 
