@@ -7,6 +7,7 @@
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
 #' @param npat Optional numeric input specifying the number of missing data patterns to be visualized, defaults to all patterns.
 #' @param caption Logical indicating whether the figure caption should be displayed.
+#' @param grid Logical indicating whether borders should be present between tiles.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
@@ -20,7 +21,8 @@ plot_pattern <-
            rotate = FALSE,
            cluster = NULL,
            npat = NULL,
-           caption = TRUE) {
+           caption = TRUE,
+           grid = TRUE) {
     # input processing
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
@@ -150,7 +152,6 @@ plot_pattern <-
           alpha = 0.1 + .data$.opacity / 2
         )
       ) +
-      ggplot2::geom_tile(color = "black") +
       ggplot2::scale_fill_manual(values = c(
         "observed" = "#006CC2B3",
         "missing" = "#B61A51B3"
@@ -177,6 +178,11 @@ plot_pattern <-
       theme_minimice()
 
     # additional arguments
+    if (grid) {
+      gg <- gg + ggplot2::geom_tile(color = "black")
+    } else {
+      gg <- gg + ggplot2::geom_raster()
+    }
     if (square) {
       gg <- gg + ggplot2::coord_fixed(expand = FALSE)
     } else {
@@ -209,7 +215,6 @@ plot_pattern <-
                                          pat[rws, cls]))
       }
     }
-
     return(gg)
   }
 
