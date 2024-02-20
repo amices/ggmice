@@ -25,15 +25,11 @@ plot_pattern <-
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
-    verify_data(data, df = TRUE)
+    verify_data(data, classes = "data.frame")
     vrb <- substitute(vrb)
-    if (vrb != "all" && length(vrb) < 2) {
+    vrb <- vrb_to_cols(vrb, data)
+    if (length(vrb) < 2) {
       cli::cli_abort("The number of variables should be two or more to compute missing data patterns.")
-    }
-    if (vrb[1] == "all") {
-      vrb <- names(data)
-    } else {
-      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
     }
     if (".x" %in% vrb || ".y" %in% vrb) {
       cli::cli_abort(

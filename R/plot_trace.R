@@ -10,7 +10,7 @@
 #' plot_trace(imp)
 #' @export
 plot_trace <- function(data, vrb = "all") {
-  verify_data(data, imp = TRUE)
+  verify_data(data, classes = "mids")
   if (is.null(data$chainMean) && is.null(data$chainVar)) {
     cli::cli_abort("No convergence diagnostics found", call. = FALSE)
   }
@@ -20,9 +20,9 @@ plot_trace <- function(data, vrb = "all") {
   sm <- sqrt(data$chainVar)
 
   # select variable to plot from list of imputed variables
-  vrb <- substitute(vrb)
   varlist <-
     names(data$imp)[apply(!(is.nan(mn) | is.na(mn)), 1, all)]
+  vrb <- substitute(vrb)
   if (as.character(vrb)[1] == "all") {
     vrb <- varlist
   } else {

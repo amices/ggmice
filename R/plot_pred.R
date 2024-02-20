@@ -20,7 +20,7 @@ plot_pred <-
            label = TRUE,
            square = TRUE,
            rotate = FALSE) {
-    verify_data(data, pred = TRUE)
+    verify_data(data, classes = "matrix")
     p <- nrow(data)
     if (!is.null(method) && is.character(method)) {
       if (length(method) == 1) {
@@ -38,11 +38,7 @@ plot_pred <-
       cli::cli_abort("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
     }
     vrb <- substitute(vrb)
-    if (vrb[1] == "all") {
-      vrb <- names(data)
-    } else {
-      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
-    }
+    vrb <- vrb_to_cols(vrb, data)
     vrbs <- row.names(data)
     long <- data.frame(
       vrb = 1:p,

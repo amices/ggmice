@@ -23,7 +23,7 @@
 ggmice <- function(data = NULL,
                    mapping = ggplot2::aes()) {
   # validate inputs
-  verify_data(data, df = TRUE, imp = TRUE)
+  verify_data(data, classes = c("data.frame", "mids"))
   if (is.null(mapping$x) && is.null(mapping$y)) {
     cli::cli_abort(
       c(

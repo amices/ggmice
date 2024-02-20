@@ -15,15 +15,11 @@ plot_flux <-
            vrb = "all",
            label = TRUE,
            caption = TRUE) {
-    verify_data(data, df = TRUE)
+    verify_data(data, classes = "data.frame")
     vrb <- substitute(vrb)
-    if (vrb != "all" && length(vrb) < 2) {
+    vrb <- vrb_to_cols(vrb, data)
+    if (length(vrb) < 2) {
       cli::cli_abort("The number of variables should be two or more to compute flux.")
-    }
-    if (vrb[1] == "all") {
-      vrb <- names(data)
-    } else {
-      vrb <- names(dplyr::select(data, {{vrb}}))
     }
     # plot in and outflux
     flx <- mice::flux(data[, vrb])[, c("influx", "outflux")]
