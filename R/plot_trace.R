@@ -3,11 +3,40 @@
 #' @param data An object of class [mice::mids].
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #'
+#' @details
+#' The `vrb` argument is "quoted" via [rlang::enexpr()] and evaluated according
+#' to [Tidy Evaluation principles](https://adv-r.hadley.nz/metaprogramming.html).
+#' In practice, this technical nuance only affects users when passing an object
+#' from the environment (e.g., a vector of variable names) to the `vrb` argument.
+#' In such cases, the object must be "unquoted" via the `!!` prefix operator.
+#'
 #' @return An object of class [ggplot2::ggplot].
 #'
 #' @examples
 #' imp <- mice::mice(mice::nhanes, print = FALSE)
+#'
+#' ## Plot all imputed variables
 #' plot_trace(imp)
+#'
+#' ## Variables can be specified via character vectors comprising their names
+#' plot_trace(imp, "bmi")
+#' plot_trace(imp, c("bmi", "hyp"))
+#'
+#' ## Variable names can be unquoted
+#' plot_trace(imp, bmi)
+#' plot_trace(imp, c(bmi, hyp))
+#'
+#' ## When passing the variable names as an object from the environment, the
+#' ## object's name must be unqoted via `!!`.
+#' vars <- c("bmi", "hyp")
+#' plot_trace(imp, vars) |> try() # Error
+#' plot_trace(imp, !!vars)        # Runs because the 'vrb' argument is unquoted
+#'
+#' for(v in vars)
+#'   plot_trace(imp, !!v) |> print()
+#'
+#' @importFrom utils tail
+#' @importFrom rlang enexpr
 #' @export
 plot_trace <- function(data, vrb = "all") {
   verify_data(data, imp = TRUE)
@@ -20,14 +49,27 @@ plot_trace <- function(data, vrb = "all") {
   sm <- sqrt(data$chainVar)
 
   # select variable to plot from list of imputed variables
-  vrb <- substitute(vrb)
+  vrb <- enexpr(vrb)
+  if(is.call(vrb))
+    vrb <- as.character(vrb) |> tail(-1)
+  else if(is.symbol(vrb))
+    vrb <- as.character(vrb)
+
   varlist <-
     names(data$imp)[apply(!(is.nan(mn) | is.na(mn)), 1, all)]
-  if (as.character(vrb)[1] == "all") {
+  if (length(vrb) == 1 && as.character(vrb) == "all") {
     vrb <- varlist
-  } else {
-    vrb <- names(dplyr::select(data$data, {{vrb}}))
+  } else if (any(vrb %nin% colnames(data$data))) {
+    cli::cli_abort(
+      c(
+        "x" = "The following variables are not present in 'data':",
+        " " = paste(setdiff(vrb, colnames(data$data)), collapse = ", "),
+        "i" = "Did you forget to use `!!` to unqote the object name you passed to the `vrb` argument?",
+        "i" = "Or maybe you just made a typo?"
+      )
+    )
   }
+
   if (any(vrb %nin% varlist)) {
     cli::cli_inform(
       c(
@@ -89,3 +131,4 @@ plot_trace <- function(data, vrb = "all") {
       strip.switch.pad.wrap = ggplot2::unit(0, "cm")
     )
 }
+
