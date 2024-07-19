@@ -1,7 +1,7 @@
 # create test objects
 dat <- mice::nhanes
 imp <- mice::mice(dat, printFlag = FALSE)
-v   <- c("bmi", "hyp")
+v <- c("bmi", "hyp")
 
 # tests
 test_that("plot_trace creates ggplot object", {

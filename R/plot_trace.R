@@ -35,8 +35,6 @@
 #' for(v in vars)
 #'   plot_trace(imp, !!v) |> print()
 #'
-#' @importFrom utils tail
-#' @importFrom rlang enexpr
 #' @export
 plot_trace <- function(data, vrb = "all") {
   verify_data(data, imp = TRUE)
@@ -49,17 +47,18 @@ plot_trace <- function(data, vrb = "all") {
   sm <- sqrt(data$chainVar)
 
   # select variable to plot from list of imputed variables
-  vrb <- enexpr(vrb)
-  if(is.call(vrb))
-    vrb <- as.character(vrb) |> tail(-1)
-  else if(is.symbol(vrb))
+  vrb <- rlang::enexpr(vrb)
+  if (is.call(vrb))
+    vrb <- as.character(vrb) |> utils::tail(-1)
+  if (is.symbol(vrb))
     vrb <- as.character(vrb)
 
   varlist <-
     names(data$imp)[apply(!(is.nan(mn) | is.na(mn)), 1, all)]
   if (length(vrb) == 1 && as.character(vrb) == "all") {
     vrb <- varlist
-  } else if (any(vrb %nin% colnames(data$data))) {
+  }
+  if (any(vrb %nin% colnames(data$data))) {
     cli::cli_abort(
       c(
         "x" = "The following variables are not present in 'data':",
@@ -81,8 +80,7 @@ plot_trace <- function(data, vrb = "all") {
     if (any(vrb %in% varlist)) {
       vrb <- vrb[which(vrb %in% varlist)]
     } else {
-      cli::cli_abort(c("x" = "None of the variables are imputed.",
-                       "No plots can be produced."))
+      cli::cli_abort(c("x" = "None of the variables are imputed.", "No plots can be produced."))
     }
   }
 
@@ -95,8 +93,7 @@ plot_trace <- function(data, vrb = "all") {
                   vrb = rep(vrb, each = m * it, times = 2),
                   val = c(matrix(aperm(mn[vrb, , , drop = FALSE], c(
                     2, 3, 1
-                  )), nrow = m * it * p),
-                  matrix(aperm(sm[vrb, , , drop = FALSE], c(
+                  )), nrow = m * it * p), matrix(aperm(sm[vrb, , , drop = FALSE], c(
                     2, 3, 1
                   )), nrow = m * it * p))
                 ))
@@ -121,9 +118,7 @@ plot_trace <- function(data, vrb = "all") {
         list(do.call(paste, c(labels, list(sep = "\n"))))
       }
     ) +
-    ggplot2::labs(x = "Iteration",
-                  y = "Imputation parameter",
-                  color = "Imputation number") +
+    ggplot2::labs(x = "Iteration", y = "Imputation parameter", color = "Imputation number") +
     theme_mice() +
     ggplot2::theme(
       strip.background = ggplot2::element_blank(),
@@ -131,4 +126,3 @@ plot_trace <- function(data, vrb = "all") {
       strip.switch.pad.wrap = ggplot2::unit(0, "cm")
     )
 }
-
