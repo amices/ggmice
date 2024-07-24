@@ -1,39 +1,39 @@
 #' Plot the trace lines of the imputation algorithm
 #'
 #' @param data An object of class [mice::mids].
-#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
+#' @param vrb String, vector, or unquoted expression with variable name(s),
+#'   default is "all".
 #'
 #' @details
 #' The `vrb` argument is "quoted" via [rlang::enexpr()] and evaluated according
-#' to [Tidy Evaluation principles](https://adv-r.hadley.nz/metaprogramming.html).
+#' to [tidy evaluation principles](https://adv-r.hadley.nz/metaprogramming.html).
 #' In practice, this technical nuance only affects users when passing an object
 #' from the environment (e.g., a vector of variable names) to the `vrb` argument.
 #' In such cases, the object must be "unquoted" via the `!!` prefix operator.
 #'
-#' @return An object of class [ggplot2::ggplot].
+#' @returns An object of class [ggplot2::ggplot].
 #'
 #' @examples
+#' # create [mice::mids] object with [mice::mice()]
 #' imp <- mice::mice(mice::nhanes, print = FALSE)
 #'
-#' ## Plot all imputed variables
+#' # plot trace lines for all imputed columns
 #' plot_trace(imp)
 #'
-#' ## Variables can be specified via character vectors comprising their names
+#' # plot trace lines for specific columns by supplying a string or character vector
 #' plot_trace(imp, "bmi")
 #' plot_trace(imp, c("bmi", "hyp"))
-#'
-#' ## Variable names can be unquoted
+
+#' # plot trace lines for specific columns by supplying unquoted variable names
 #' plot_trace(imp, bmi)
 #' plot_trace(imp, c(bmi, hyp))
 #'
-#' ## When passing the variable names as an object from the environment, the
-#' ## object's name must be unqoted via `!!`.
-#' vars <- c("bmi", "hyp")
-#' plot_trace(imp, vars) |> try() # Error
-#' plot_trace(imp, !!vars)        # Runs because the 'vrb' argument is unquoted
-#'
-#' for(v in vars)
-#'   plot_trace(imp, !!v) |> print()
+#' # plot trace lines for specific columns by passing an object with variable names
+#' # from the environment, unquoted with `!!`
+#' my_variables <- c("bmi", "hyp")
+#' plot_trace(imp, !!my_variables)
+#' # object with variable names must be unquoted with `!!`
+#' try(plot_trace(imp, my_variables))
 #'
 #' @export
 plot_trace <- function(data, vrb = "all") {
@@ -58,17 +58,20 @@ plot_trace <- function(data, vrb = "all") {
   if (length(vrb) == 1 && as.character(vrb) == "all") {
     vrb <- varlist
   }
-  if (any(vrb %nin% colnames(data$data))) {
+  if (all(vrb %nin% colnames(data$data))) {
     cli::cli_abort(
       c(
-        "x" = "The following variables are not present in 'data':",
-        " " = paste(setdiff(vrb, colnames(data$data)), collapse = ", "),
-        "i" = "Did you forget to use `!!` to unqote the object name you passed to the `vrb` argument?",
-        "i" = "Or maybe you just made a typo?"
+        "x" = "Variable name(s) not found in {.code data}.",
+        "i" = "If you supply an object with variable names from the environment, use `!!` to unqote:",
+        " " = paste0("{.code vrb = !!", vrb, "}")
       )
     )
   }
-
+  if (any(vrb %nin% colnames(data$data))) {
+    cli::cli_abort(c("x" = "The following variables are not present in {.code data}:", " " = paste(setdiff(
+      vrb, colnames(data$data)
+    ), collapse = ", ")))
+  }
   if (any(vrb %nin% varlist)) {
     cli::cli_inform(
       c(

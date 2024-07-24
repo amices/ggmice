@@ -9,7 +9,8 @@ plot_trace(data, vrb = "all")
 \arguments{
 \item{data}{An object of class \link[mice:mids-class]{mice::mids}.}
 
-\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
+\item{vrb}{String, vector, or unquoted expression with variable name(s),
+default is "all".}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
@@ -19,32 +20,30 @@ Plot the trace lines of the imputation algorithm
 }
 \details{
 The \code{vrb} argument is "quoted" via \code{\link[rlang:defusing-advanced]{rlang::enexpr()}} and evaluated according
-to \href{https://adv-r.hadley.nz/metaprogramming.html}{Tidy Evaluation principles}.
+to \href{https://adv-r.hadley.nz/metaprogramming.html}{tidy evaluation principles}.
 In practice, this technical nuance only affects users when passing an object
 from the environment (e.g., a vector of variable names) to the \code{vrb} argument.
 In such cases, the object must be "unquoted" via the \verb{!!} prefix operator.
 }
 \examples{
+# create [mice::mids] object with [mice::mice()]
 imp <- mice::mice(mice::nhanes, print = FALSE)
 
-## Plot all imputed variables
+# plot trace lines for all imputed columns
 plot_trace(imp)
 
-## Variables can be specified via character vectors comprising their names
+# plot trace lines for specific columns by supplying a string or character vector
 plot_trace(imp, "bmi")
 plot_trace(imp, c("bmi", "hyp"))
-
-## Variable names can be unquoted
+# plot trace lines for specific columns by supplying unquoted variable names
 plot_trace(imp, bmi)
 plot_trace(imp, c(bmi, hyp))
 
-## When passing the variable names as an object from the environment, the
-## object's name must be unqoted via `!!`.
-vars <- c("bmi", "hyp")
-plot_trace(imp, vars) |> try() # Error
-plot_trace(imp, !!vars)        # Runs because the 'vrb' argument is unquoted
-
-for(v in vars)
-  plot_trace(imp, !!v) |> print()
+# plot trace lines for specific columns by passing an object with variable names
+# from the environment, unquoted with `!!`
+my_variables <- c("bmi", "hyp")
+plot_trace(imp, !!my_variables)
+# object with variable names must be unquoted with `!!`
+try(plot_trace(imp, my_variables))
 
 }
