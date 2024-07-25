@@ -49,7 +49,7 @@ plot_trace <- function(data, vrb = "all") {
   # select variable to plot from list of imputed variables
   vrb <- rlang::enexpr(vrb)
   if (is.call(vrb))
-    vrb <- as.character(vrb) |> utils::tail(-1)
+    vrb <- as.character(vrb)[-1]
   if (is.symbol(vrb))
     vrb <- as.character(vrb)
 
