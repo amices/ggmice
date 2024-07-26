@@ -102,13 +102,11 @@ plot_corr <-
           y = "Variable to impute",
           fill = "Correlation*
       ",
-      caption = "*pairwise complete observations"
+          caption = "*pairwise complete observations"
         )
     } else {
       gg <- gg +
-        ggplot2::labs(x = "Imputation model predictor",
-                      y = "Variable to impute",
-                      fill = "Correlation")
+        ggplot2::labs(x = "Imputation model predictor", y = "Variable to impute", fill = "Correlation")
     }
     if (label) {
       gg <-
