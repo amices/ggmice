@@ -60,8 +60,7 @@ ggmice <- function(data = NULL,
   }
   if (length(vrbs) > length(unique(vrbs))) {
     cli::cli_abort(
-      c("The data must have unique column names.",
-        "x" = "Duplication found in {vrbs[duplicated(vrbs)]}")
+      c("The data must have unique column names.", "x" = "Duplication found in {vrbs[duplicated(vrbs)]}")
     )
   }
   # extract mapping variables
@@ -107,8 +106,8 @@ ggmice <- function(data = NULL,
           .imp = 0,
           .id = rownames(data$data),
           data$data
-        )[!miss_xy,],
-        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy,]
+        )[!miss_xy, ],
+        data.frame(.where = "imputed", mice::complete(data, action = "long"))[where_xy, ]
       ),
       .where = factor(
         .where,
@@ -154,7 +153,6 @@ ggmice <- function(data = NULL,
   return(gg)
 }
 
-
 #' Utils function to extract mapping variables
 #'
 #' @param data Incomplete dataset or mids object.
@@ -197,11 +195,9 @@ match_mapping <- function(data, vrbs, mapping_in) {
         inherits(try(dplyr::mutate(mapping_data,
                                    !!rlang::parse_quo(mapping_text, env = rlang::current_env())),
                      silent = TRUE)
-                 ,
-                 "try-error")) {
+                 , "try-error")) {
       cli::cli_abort(
-        c("Must provide a valid mapping variable.",
-          "x" = "Mapping variable '{mapping_text}' not found in the data or imputations.")
+        c("Must provide a valid mapping variable.", "x" = "Mapping variable '{mapping_text}' not found in the data or imputations.")
       )
     } else {
       cli::cli_warn(
