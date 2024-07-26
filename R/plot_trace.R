@@ -48,58 +48,35 @@ plot_trace <- function(data, vrb = "all") {
 
   # select variable to plot from list of imputed variables
   vrb <- rlang::enexpr(vrb)
-  if (is.call(vrb))
-    vrb <- as.character(vrb)[-1]
-  if (is.symbol(vrb))
-    vrb <- as.character(vrb)
-
-  varlist <-
-    names(data$imp)[apply(!(is.nan(mn) | is.na(mn)), 1, all)]
-  if (length(vrb) == 1 && as.character(vrb) == "all") {
-    vrb <- varlist
-  }
-  if (all(vrb %nin% colnames(data$data))) {
-    cli::cli_abort(
-      c(
-        "x" = "Variable name(s) not found in {.code data}.",
-        "i" = "If you supply an object with variable names from the environment, use `!!` to unqote:",
-        " " = paste0("{.code vrb = !!", vrb, "}")
-      )
-    )
-  }
-  if (any(vrb %nin% colnames(data$data))) {
-    cli::cli_abort(c("x" = "The following variables are not present in {.code data}:", " " = paste(setdiff(
-      vrb, colnames(data$data)
-    ), collapse = ", ")))
-  }
-  if (any(vrb %nin% varlist)) {
+  vrbs_in_data <- names(data$imp)
+  vrb_matched <- match_vrb(vrb, vrbs_in_data)
+  available_vrbs <- vrbs_in_data[apply(!(is.nan(mn) | is.na(sm)), 1, all)]
+  if (any(vrb_matched %nin% available_vrbs)) {
     cli::cli_inform(
       c(
         "Trace plot could not be produced for variable(s):",
-        " " = paste(vrb[which(vrb %nin% varlist)], collapse = ", "),
-        "x" = "No convergence diagnostics found."
+        " " = paste(vrb_matched[which(vrb_matched %nin% available_vrbs)], collapse = ", "),
+        "i" = "No convergence diagnostics found."
       )
     )
-    if (any(vrb %in% varlist)) {
-      vrb <- vrb[which(vrb %in% varlist)]
-    } else {
-      cli::cli_abort(c("x" = "None of the variables are imputed.", "No plots can be produced."))
-    }
   }
-
-  p <- length(vrb)
+  vrb_matched <- vrb_matched[which(vrb_matched %in% available_vrbs)]
+  p <- length(vrb_matched)
   m <- data$m
   it <- data$iteration
-  long <- cbind(expand.grid(.it = seq_len(it), .m = seq_len(m)),
-                data.frame(
-                  .ms = rep(c("mean", "sd"), each = m * it * p),
-                  vrb = rep(vrb, each = m * it, times = 2),
-                  val = c(matrix(aperm(mn[vrb, , , drop = FALSE], c(
-                    2, 3, 1
-                  )), nrow = m * it * p), matrix(aperm(sm[vrb, , , drop = FALSE], c(
-                    2, 3, 1
-                  )), nrow = m * it * p))
-                ))
+  long <- cbind(
+    expand.grid(.it = seq_len(it), .m = seq_len(m)),
+    data.frame(
+      .ms = rep(c("mean", "sd"), each = m * it * p),
+      vrb_matched = rep(vrb_matched, each = m * it, times = 2),
+      val = c(
+        matrix(aperm(mn[vrb_matched, , , drop = FALSE], c(
+          2, 3, 1)), nrow = m * it * p),
+        matrix(aperm(sm[vrb_matched, , , drop = FALSE], c(
+          2, 3, 1)), nrow = m * it * p)
+        )
+    )
+  )
 
   # plot the convergence diagnostics
   ggplot2::ggplot(long,
@@ -111,7 +88,7 @@ plot_trace <- function(data, vrb = "all") {
     ggplot2::geom_line(linewidth = 0.6) +
     ggplot2::geom_hline(yintercept = -Inf) +
     ggplot2::facet_wrap(
-      .ms ~ vrb,
+      .ms ~ vrb_matched,
       dir = "v",
       ncol = 2,
       scales = "free_y",
