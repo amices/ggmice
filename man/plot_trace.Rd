@@ -33,15 +33,15 @@ imp <- mice::mice(mice::nhanes, print = FALSE)
 plot_trace(imp)
 
 # plot trace lines for specific columns by supplying a string or character vector
-plot_trace(imp, "bmi")
-plot_trace(imp, c("bmi", "hyp"))
+plot_trace(imp, "chl")
+plot_trace(imp, c("chl", "hyp"))
 # plot trace lines for specific columns by supplying unquoted variable names
-plot_trace(imp, bmi)
-plot_trace(imp, c(bmi, hyp))
+plot_trace(imp, chl)
+plot_trace(imp, c(chl, hyp))
 
 # plot trace lines for specific columns by passing an object with variable names
 # from the environment, unquoted with `!!`
-my_variables <- c("bmi", "hyp")
+my_variables <- c("chl", "hyp")
 plot_trace(imp, !!my_variables)
 # object with variable names must be unquoted with `!!`
 try(plot_trace(imp, my_variables))
