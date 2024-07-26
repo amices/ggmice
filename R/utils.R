@@ -19,6 +19,11 @@
 #' @return The result of calling `rhs(lhs)`.
 NULL
 
+# suppress undefined global functions or variables note
+utils::globalVariables(c(".id", ".imp", ".where", ".id", "where", "name", "value", "nmis"))
+
+# Alias a function with `foo <- function(...) pkgB::blah(...)`
+
 #' Utils function to validate data argument inputs
 #'
 #' @param data The input supplied to the 'data' argument.
