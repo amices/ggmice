@@ -2,7 +2,8 @@
 
 ## Bug fixes
 
-* Correct labeling of 'exclusion-restriction' variables in `plot_pred()` (#128) 
+* Correct labeling of 'exclusion-restriction' variables in `plot_pred()` (#128)
+* Parsing of `vrb` argument in all `plot_*()` functions: variable name(s) from object in global environment now recognized using `!!` notation (#157)
 
 ## Minor changes
 
