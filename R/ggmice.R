@@ -118,6 +118,10 @@ ggmice <- function(data = NULL,
     )
     mice_mapping <-
       utils::modifyList(mapping, ggplot2::aes(colour = .where))
+    if (is.null(mapping$group)) {
+      mice_mapping <-
+        utils::modifyList(mice_mapping, ggplot2::aes(group = .imp))
+    }
     mice_colors <-
       c("observed" = "#006CC2B3",
         "imputed" = "#B61A51B3")
