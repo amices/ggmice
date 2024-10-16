@@ -48,32 +48,33 @@ plot_moments <- function(data, vrb = "all") {
   # extract means and variances
   means_obs <- colMeans(data$data, na.rm = TRUE)
   means_imp <- rowMeans(data$chainMean[, data$iteration, ])
-  vars_obs <- apply(data$data, na.rm = TRUE, 2, var)
-  vars_imp <- rowMeans(data$chainVar[, data$iteration, ])
-  available_vrbs <- vrbs_in_data[(!(is.nan(means_imp) | is.na(vars_imp)))]
+  sds_obs <- sqrt(apply(data$data, na.rm = TRUE, 2, var))
+  sds_imp <- sqrt(rowMeans(data$chainVar[, data$iteration, ]))
+  # extract relevant variables
+  available_vrbs <- vrbs_in_data[(!(is.nan(means_imp) | is.na(sds_imp)))]
   if (any(vrb_matched %nin% available_vrbs)) {
     cli::cli_inform(
       c(
         "Moments plot could not be produced for variable(s):",
-        " " = paste(vrb_matched[which(vrb_matched %nin% available_vrbs)], collapse = ", "),
-        "i" = "No imputed data found."
-      )
+        " " = paste(vrb_matched[which(vrb_matched %nin% available_vrbs)], collapse = ", ")
+        )
     )
   }
   vrb_matched <- vrb_matched[which(vrb_matched %in% available_vrbs)]
   # create plotting data
   p <- length(vrb_matched)
   long <- cbind(
-    data.frame(.vrb = vrb_matched),
-    .mm = c(rep("Means", p), rep("Variances", p)),
-    obs = c(means_obs[vrb_matched], vars_obs[vrb_matched]),
-    imp = c(means_imp[vrb_matched], vars_imp[vrb_matched])
+    data.frame(vrb = vrb_matched),
+    .mm = c(rep("mean", p), rep("SD", p)),
+    obs = c(means_obs[vrb_matched], sds_obs[vrb_matched]),
+    imp = c(means_imp[vrb_matched], sds_imp[vrb_matched])
   )
   # create plot
   ggplot2::ggplot(long,
                   ggplot2::aes(
                     x = .data$obs,
-                    y = .data$imp
+                    y = .data$imp,
+                    color = .data$vrb
                   )) +
     ggplot2::geom_point() +
     ggplot2::geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
@@ -82,15 +83,14 @@ plot_moments <- function(data, vrb = "all") {
       dir = "v",
       ncol = 2,
       scales = "free",
-      strip.position = "top",
-      labeller = function(labels) {
-        labels <- lapply(labels, as.character)
-        list(do.call(paste, c(labels, list(sep = "\n"))))
-      }
+      labeller = ggplot2::as_labeller(
+        c(mean = "mean", SD = "SD")),
+      strip.position = "top"
     ) +
     ggplot2::labs(
       x = "Observed data",
       y = "Imputed data",
+      color = ""
     ) +
     theme_mice() +
     ggplot2::theme(
