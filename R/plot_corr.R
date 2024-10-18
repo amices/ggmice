@@ -87,7 +87,7 @@ plot_corr <-
     if (diff) {
       lab_fill <- "Difference in correlations*
 "
-      lab_note <- "*observed minus imputed (pooled across imputations)"
+      lab_note <- "*pooled imputed minus observed"
     }
     # compute correlations
     if (!imp | diff) {
@@ -99,7 +99,7 @@ plot_corr <-
         stats::cov2cor(stats::cov(data.matrix(.x[, vrb_matched]), use = "pairwise.complete.obs"))
       })
       if (diff) {
-        corr <- corr - (Reduce("+", corrs) / length(corrs))
+        corr <- (Reduce("+", corrs) / length(corrs)) - corr
       } else {
         corr <- Reduce("+", corrs) / length(corrs)
       }
