@@ -153,10 +153,15 @@ plot_corr <-
         )
     }
     if (diff) {
-      gg <- gg + ggplot2::scale_fill_gradient2(
-        low = ggplot2::alpha("deepskyblue", 1),
-        mid = "lightyellow",
-        high = ggplot2::alpha("orangered", 1),
+      gg <- gg + ggplot2::scale_fill_gradientn(
+        colors = c(
+          "deepskyblue4",
+          "deepskyblue",
+          "lightyellow",
+          "orangered",
+          "orangered4"
+        ),
+        values = c(0, 0.475, 0.5, 0.525, 1),
         na.value = "grey90",
         limits = c(-2, 2)
       )
