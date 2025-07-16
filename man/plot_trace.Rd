@@ -4,13 +4,16 @@
 \alias{plot_trace}
 \title{Plot the trace lines of the imputation algorithm}
 \usage{
-plot_trace(data, vrb = "all")
+plot_trace(data, vrb = "all", legend = TRUE)
 }
 \arguments{
-\item{data}{An object of class \link[mice:mids-class]{mice::mids}.}
+\item{data}{An object of class \link[mice:mids]{mice::mids}.}
 
 \item{vrb}{String, vector, or unquoted expression with variable name(s),
 default is "all".}
+
+\item{legend}{Logical indicating whether the plot legend should be visible,
+default is TRUE.}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
