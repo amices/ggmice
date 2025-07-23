@@ -2,13 +2,14 @@
 % Please edit documentation in R/theme.R
 \name{theme_mice}
 \alias{theme_mice}
-\title{Theme for \link{mice} style \link[ggplot2:ggplot]{ggplot2::ggplot} objects}
+\title{Theme for \link[mice:mice]{mice::mice} style \link[ggplot2:ggplot]{ggplot2::ggplot} objects}
 \usage{
 theme_mice()
 }
 \value{
-A \link{ggplot2} theme.
+A \link[ggplot2:ggplot]{ggplot2::ggplot} theme.
 }
 \description{
-Theme for \link{mice} style \link[ggplot2:ggplot]{ggplot2::ggplot} objects
+Theme for \link[mice:mice]{mice::mice} style \link[ggplot2:ggplot]{ggplot2::ggplot} objects
 }
+\keyword{internal}

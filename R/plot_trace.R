@@ -3,6 +3,8 @@
 #' @param data An object of class [mice::mids].
 #' @param vrb String, vector, or unquoted expression with variable name(s),
 #'   default is "all".
+#' @param legend Logical indicating whether the plot legend should be visible,
+#'   default is TRUE.
 #'
 #' @details
 #' The `vrb` argument is "quoted" via [rlang::enexpr()] and evaluated according
@@ -36,7 +38,7 @@
 #' try(plot_trace(imp, my_variables))
 #'
 #' @export
-plot_trace <- function(data, vrb = "all") {
+plot_trace <- function(data, vrb = "all", legend = TRUE) {
   verify_data(data, imp = TRUE)
   if (is.null(data$chainMean) && is.null(data$chainVar)) {
     cli::cli_abort("No convergence diagnostics found", call. = FALSE)
@@ -47,7 +49,8 @@ plot_trace <- function(data, vrb = "all") {
   # extract chain means and chain standard deviations
   mn <- data$chainMean
   sm <- sqrt(data$chainVar)
-  available_vrbs <- vrbs_in_data[apply(!(is.nan(mn) | is.na(sm)), 1, all)]
+  available_vrbs <- vrbs_in_data[apply(!(is.nan(mn) |
+                                           is.na(sm)), 1, all)]
   if (any(vrb_matched %nin% available_vrbs)) {
     cli::cli_inform(
       c(
@@ -67,21 +70,20 @@ plot_trace <- function(data, vrb = "all") {
     data.frame(
       .ms = rep(c("mean", "sd"), each = m * it * p),
       vrb_matched = rep(vrb_matched, each = m * it, times = 2),
-      val = c(
-        matrix(aperm(mn[vrb_matched, , , drop = FALSE], c(
-          2, 3, 1)), nrow = m * it * p),
-        matrix(aperm(sm[vrb_matched, , , drop = FALSE], c(
-          2, 3, 1)), nrow = m * it * p)
-        )
+      val = c(matrix(aperm(mn[vrb_matched, , , drop = FALSE], c(
+        2, 3, 1
+      )), nrow = m * it * p), matrix(aperm(sm[vrb_matched, , , drop = FALSE], c(
+        2, 3, 1
+      )), nrow = m * it * p))
     )
   )
   # create plot
-  ggplot2::ggplot(long,
-                  ggplot2::aes(
-                    x = .data$.it,
-                    y = .data$val,
-                    color = as.factor(.data$.m)
-                  )) +
+  gg <- ggplot2::ggplot(long,
+                        ggplot2::aes(
+                          x = .data$.it,
+                          y = .data$val,
+                          color = as.factor(.data$.m)
+                        )) +
     ggplot2::geom_line(linewidth = 0.6) +
     ggplot2::geom_hline(yintercept = -Inf) +
     ggplot2::facet_wrap(
@@ -102,4 +104,8 @@ plot_trace <- function(data, vrb = "all") {
       strip.placement = "outside",
       strip.switch.pad.wrap = ggplot2::unit(0, "cm")
     )
+  if (!legend) {
+    gg <- gg + ggplot2::theme(legend.position = "none")
+  }
+  return(gg)
 }
