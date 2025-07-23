@@ -72,11 +72,13 @@ plot_trace <- function(data,
                 data.frame(
                   .ms = rep(c("mean", "sd"), each = m * it * p),
                   vrb = rep(vrb, each = m * it, times = 2),
-                  val = c(matrix(aperm(mn[vrb, , , drop = FALSE], c(
-                    2, 3, 1
-                  )), nrow = m * it * p), matrix(aperm(sm[vrb, , , drop = FALSE], c(
-                    2, 3, 1
-                  )), nrow = m * it * p))
+                  val = c(
+                    matrix(
+                      aperm(mn[vrb, , , drop = FALSE], c(2, 3, 1)),
+                      nrow = m * it * p),
+                    matrix(
+                      aperm(sm[vrb, , , drop = FALSE], c(2, 3, 1)),
+                      nrow = m * it * p))
                 ))
 
   # plot the convergence diagnostics
