@@ -38,7 +38,10 @@
 #' try(plot_trace(imp, my_variables))
 #'
 #' @export
-plot_trace <- function(data, vrb = "all", trend = FALSE, legend = TRUE) {
+plot_trace <- function(data,
+                       vrb = "all",
+                       trend = FALSE,
+                       legend = TRUE) {
   verify_data(data, imp = TRUE)
   if (is.null(data$chainMean) && is.null(data$chainVar)) {
     cli::cli_abort("No convergence diagnostics found", call. = FALSE)
@@ -71,8 +74,7 @@ plot_trace <- function(data, vrb = "all", trend = FALSE, legend = TRUE) {
                   vrb = rep(vrb, each = m * it, times = 2),
                   val = c(matrix(aperm(mn[vrb, , , drop = FALSE], c(
                     2, 3, 1
-                  )), nrow = m * it * p),
-                  matrix(aperm(sm[vrb, , , drop = FALSE], c(
+                  )), nrow = m * it * p), matrix(aperm(sm[vrb, , , drop = FALSE], c(
                     2, 3, 1
                   )), nrow = m * it * p))
                 ))
@@ -113,6 +115,7 @@ plot_trace <- function(data, vrb = "all", trend = FALSE, legend = TRUE) {
         color = "black",
         linetype = "dashed"
       )
+  }
   if (!legend) {
     gg <- gg + ggplot2::theme(legend.position = "none")
   }
