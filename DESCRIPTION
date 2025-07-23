@@ -20,7 +20,7 @@ Description: Enhance a 'mice' imputation workflow with visualizations for
 License: GPL (>= 3)
 URL: https://github.com/amices/ggmice, https://amices.org/,
     https://amices.org/ggmice/
-BugReports: https://github.com/amices/ggmice
+BugReports: https://github.com/amices/ggmice/issues
 Imports: 
     cli,
     dplyr,
