@@ -1,51 +1,68 @@
 #' Plot the trace lines of the imputation algorithm
 #'
 #' @param data An object of class [mice::mids].
-#' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
-#' @param trend Logical indicating whether a trend line should be displayed.
+#' @param vrb String, vector, or unquoted expression with variable name(s),
+#'   default is "all".
+#' @param legend Logical indicating whether the plot legend should be visible,
+#'   default is TRUE.
 #'
-#' @return An object of class [ggplot2::ggplot].
+#' @details
+#' The `vrb` argument is "quoted" via [rlang::enexpr()] and evaluated according
+#' to [tidy evaluation principles](https://adv-r.hadley.nz/metaprogramming.html).
+#' In practice, this technical nuance only affects users when passing an object
+#' from the environment (e.g., a vector of variable names) to the `vrb` argument.
+#' In such cases, the object must be "unquoted" via the `!!` prefix operator.
+#'
+#' @returns An object of class [ggplot2::ggplot].
 #'
 #' @examples
+#' # create [mice::mids] object with [mice::mice()]
 #' imp <- mice::mice(mice::nhanes, print = FALSE)
+#'
+#' # plot trace lines for all imputed columns
 #' plot_trace(imp)
+#'
+#' # plot trace lines for specific columns by supplying a string or character vector
+#' plot_trace(imp, "chl")
+#' plot_trace(imp, c("chl", "hyp"))
+
+#' # plot trace lines for specific columns by supplying unquoted variable names
+#' plot_trace(imp, chl)
+#' plot_trace(imp, c(chl, hyp))
+#'
+#' # plot trace lines for specific columns by passing an object with variable names
+#' # from the environment, unquoted with `!!`
+#' my_variables <- c("chl", "hyp")
+#' plot_trace(imp, !!my_variables)
+#' # object with variable names must be unquoted with `!!`
+#' try(plot_trace(imp, my_variables))
+#'
 #' @export
-plot_trace <- function(data, vrb = "all", trend = FALSE) {
+plot_trace <- function(data, vrb = "all", trend = FALSE, legend = TRUE) {
   verify_data(data, imp = TRUE)
   if (is.null(data$chainMean) && is.null(data$chainVar)) {
     cli::cli_abort("No convergence diagnostics found", call. = FALSE)
   }
-
+  vrb <- rlang::enexpr(vrb)
+  vrbs_in_data <- names(data$imp)
+  vrb_matched <- match_vrb(vrb, vrbs_in_data)
   # extract chain means and chain standard deviations
   mn <- data$chainMean
   sm <- sqrt(data$chainVar)
-
-  # select variable to plot from list of imputed variables
-  vrb <- substitute(vrb)
-  varlist <-
-    names(data$imp)[apply(!(is.nan(mn) | is.na(mn)), 1, all)]
-  if (as.character(vrb)[1] == "all") {
-    vrb <- varlist
-  } else {
-    vrb <- names(dplyr::select(data$data, {{vrb}}))
-  }
-  if (any(vrb %nin% varlist)) {
+  available_vrbs <- vrbs_in_data[apply(!(is.nan(mn) |
+                                           is.na(sm)), 1, all)]
+  if (any(vrb_matched %nin% available_vrbs)) {
     cli::cli_inform(
       c(
         "Trace plot could not be produced for variable(s):",
-        " " = paste(vrb[which(vrb %nin% varlist)], collapse = ", "),
-        "x" = "No convergence diagnostics found."
+        " " = paste(vrb_matched[which(vrb_matched %nin% available_vrbs)], collapse = ", "),
+        "i" = "No convergence diagnostics found."
       )
     )
-    if (any(vrb %in% varlist)) {
-      vrb <- vrb[which(vrb %in% varlist)]
-    } else {
-      cli::cli_abort(c("x" = "None of the variables are imputed.",
-                       "No plots can be produced."))
-    }
   }
-
-  p <- length(vrb)
+  vrb_matched <- vrb_matched[which(vrb_matched %in% available_vrbs)]
+  # compute diagnostics
+  p <- length(vrb_matched)
   m <- data$m
   it <- data$iteration
   long <- cbind(expand.grid(.it = seq_len(it), .m = seq_len(m)),
@@ -70,7 +87,7 @@ plot_trace <- function(data, vrb = "all", trend = FALSE) {
     ggplot2::geom_line(linewidth = 0.6) +
     ggplot2::geom_hline(yintercept = -Inf) +
     ggplot2::facet_wrap(
-      .ms ~ vrb,
+      .ms ~ vrb_matched,
       dir = "v",
       ncol = 2,
       scales = "free_y",
@@ -80,9 +97,7 @@ plot_trace <- function(data, vrb = "all", trend = FALSE) {
         list(do.call(paste, c(labels, list(sep = "\n"))))
       }
     ) +
-    ggplot2::labs(x = "Iteration",
-                  y = "Imputation parameter",
-                  color = "Imputation number") +
+    ggplot2::labs(x = "Iteration", y = "Imputation parameter", color = "Imputation number") +
     theme_mice() +
     ggplot2::theme(
       strip.background = ggplot2::element_blank(),
@@ -98,6 +113,8 @@ plot_trace <- function(data, vrb = "all", trend = FALSE) {
         color = "black",
         linetype = "dashed"
       )
+  if (!legend) {
+    gg <- gg + ggplot2::theme(legend.position = "none")
   }
   return(gg)
 }

@@ -11,7 +11,22 @@
 #' @return An object of class [ggplot2::ggplot].
 #'
 #' @examples
+#' # plot missing data pattern for all columns
 #' plot_pattern(mice::nhanes)
+#'
+#' # plot missing data pattern for specific columns by supplying a character vector
+#' plot_pattern(mice::nhanes, c("chl", "hyp"))
+#'
+#' # plot missing data pattern for specific columns by supplying unquoted variable names
+#' plot_pattern(mice::nhanes, c(chl, hyp))
+#'
+#' # plot missing data pattern for specific columns by passing an object with variable names
+#' # from the environment, unquoted with `!!`
+#' my_variables <- c("chl", "hyp")
+#' plot_pattern(mice::nhanes, !!my_variables)
+#' # object with variable names must be unquoted with `!!`
+#' try(plot_pattern(mice::nhanes, my_variables))
+#'
 #' @export
 plot_pattern <-
   function(data,
@@ -21,21 +36,16 @@ plot_pattern <-
            cluster = NULL,
            npat = NULL,
            caption = TRUE) {
-    # input processing
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
     verify_data(data, df = TRUE)
-    vrb <- substitute(vrb)
-    if (vrb != "all" && length(vrb) < 2) {
+    vrb <- rlang::enexpr(vrb)
+    vrb_matched <- match_vrb(vrb, names(data))
+    if (length(vrb_matched) < 2) {
       cli::cli_abort("The number of variables should be two or more to compute missing data patterns.")
     }
-    if (vrb[1] == "all") {
-      vrb <- names(data)
-    } else {
-      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
-    }
-    if (".x" %in% vrb || ".y" %in% vrb) {
+    if (".x" %in% vrb_matched || ".y" %in% vrb_matched) {
       cli::cli_abort(
         c(
           "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot.",
@@ -44,7 +54,7 @@ plot_pattern <-
       )
     }
     if (!is.null(cluster)) {
-      if (cluster %nin% names(data[, vrb])) {
+      if (cluster %nin% names(data[, vrb_matched])) {
         cli::cli_abort(
           c("Cluster variable not recognized.",
             "i" = "Please provide the variable name as a character string.")
@@ -61,7 +71,7 @@ plot_pattern <-
     }
 
     # get missing data pattern
-    pat <- mice::md.pattern(data[, vrb], plot = FALSE)
+    pat <- mice::md.pattern(data[, vrb_matched], plot = FALSE)
     rows_pat_full <-
       (nrow(pat) - 1) # full number of missing data patterns
 
