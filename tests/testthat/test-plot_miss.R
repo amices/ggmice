@@ -20,5 +20,5 @@ test_that("plot_miss with incorrect argument(s)", {
   expect_s3_class(plot_miss(na.omit(dat)), "ggplot")
   expect_error(plot_miss("test"))
   expect_error(plot_miss(dat, vrb = "test"))
-  expect_error(plot_miss(cbind(dat, .x = NA)))
+  expect_error(plot_miss(cbind(dat, .y = NA)))
 })

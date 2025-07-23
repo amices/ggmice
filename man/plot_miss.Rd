@@ -4,18 +4,27 @@
 \alias{plot_miss}
 \title{Plot missingness in a dataset}
 \usage{
-plot_miss(data, vrb = "all", grid = FALSE, square = FALSE, ordered = FALSE)
+plot_miss(
+  data,
+  vrb = "all",
+  ordered = FALSE,
+  rotate = FALSE,
+  grid = FALSE,
+  square = FALSE
+)
 }
 \arguments{
 \item{data}{An incomplete dataset of class \code{data.frame} or \code{matrix}.}
 
 \item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 
+\item{ordered}{Logical indicating whether rows should be ordered according to their pattern.}
+
+\item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
+
 \item{grid}{Logical indicating whether borders should be present between tiles.}
 
 \item{square}{Logical indicating whether the plot tiles should be squares, defaults to squares.}
-
-\item{ordered}{Logical indicating whether rows should be ordered according to their pattern.}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
@@ -24,5 +33,20 @@ An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 Plot missingness in a dataset
 }
 \examples{
+# plot correlations for all columns
 plot_miss(mice::nhanes)
+
+# plot correlations for specific columns by supplying a character vector
+plot_miss(mice::nhanes, c("chl", "hyp"))
+
+# plot correlations for specific columns by supplying unquoted variable names
+plot_miss(mice::nhanes, c(chl, hyp))
+
+# plot correlations for specific columns by passing an object with variable names
+# from the environment, unquoted with `!!`
+my_variables <- c("chl", "hyp")
+plot_miss(mice::nhanes, !!my_variables)
+# object with variable names must be unquoted with `!!`
+try(plot_miss(mice::nhanes, my_variables))
+
 }

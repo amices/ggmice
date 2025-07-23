@@ -2,75 +2,85 @@
 #'
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
-#' @param grid Logical indicating whether borders should be present between tiles.
 #' @param ordered Logical indicating whether rows should be ordered according to their pattern.
+#' @param grid Logical indicating whether borders should be present between tiles.
+#' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param square  Logical indicating whether the plot tiles should be squares, defaults to squares.
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
 #' @examples
+#' # plot correlations for all columns
 #' plot_miss(mice::nhanes)
+#'
+#' # plot correlations for specific columns by supplying a character vector
+#' plot_miss(mice::nhanes, c("chl", "hyp"))
+#'
+#' # plot correlations for specific columns by supplying unquoted variable names
+#' plot_miss(mice::nhanes, c(chl, hyp))
+#'
+#' # plot correlations for specific columns by passing an object with variable names
+#' # from the environment, unquoted with `!!`
+#' my_variables <- c("chl", "hyp")
+#' plot_miss(mice::nhanes, !!my_variables)
+#' # object with variable names must be unquoted with `!!`
+#' try(plot_miss(mice::nhanes, my_variables))
+#'
 #' @export
-
 plot_miss <-
   function(data,
            vrb = "all",
+           ordered = FALSE,
+           rotate = FALSE,
            grid = FALSE,
-           square = FALSE,
-           ordered = FALSE) {
+           square = FALSE) {
     # input processing
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
-    verify_data(data, df = TRUE)
-    vrb <- substitute(vrb)
-    if (vrb[1] == "all") {
-      vrb <- names(data)
-    } else {
-      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
-    }
-    if (".x" %in% vrb || ".y" %in% vrb) {
+    verify_data(data = data, df = TRUE)
+    vrb <- rlang::enexpr(vrb)
+    vrb_matched <- match_vrb(vrb, names(data))
+    if (".y" %in% vrb_matched) {
       cli::cli_abort(
         c(
-          "The variable names '.x' and '.y' are used internally to produce the missing data pattern plot.",
+          "The variable name '.y' is used internally in this function.",
           "i" = "Please exclude or rename your variable(s)."
         )
       )
     }
-    if (ordered) {
-      # extract md.pattern matrix
-      mdpat <- utils::head(mice::md.pattern(data, plot = FALSE), -1)
-      # save frequency of patterns
-      freq.pat <- rownames(mdpat) %>%
-        as.numeric()
-
-      na.mat <- mdpat %>%
-        as.data.frame() %>%
-        dplyr::select(-ncol(.data)) %>%
-        dplyr::mutate(nmis = freq.pat) %>%
-        tidyr::uncount(nmis)
-    } else {
-      # Create missingness indicator matrix
-      na.mat <-
-        purrr::map_df(data[, vrb], function(y)
-          as.numeric(!is.na(y)))
+    # extract response indicator
+    if (!ordered) {
+      R <- !is.na(data[, vrb_matched])
     }
-    # extract pattern info
-    vrb <- colnames(na.mat)
-    rws <- nrow(na.mat)
-    cls <- ncol(na.mat)
+    if (ordered) {
+      if (length(vrb_matched) < 2) {
+        cli::cli_abort("The number of variables should be two or more to compute missing data patterns.")
+      }
+      md_pat <- mice::md.pattern(
+        data[, vrb_matched],
+        plot = FALSE)[, -(length(vrb_matched) + 1)]
+      n_pat <- nrow(md_pat) - 1
+      md_pat <- md_pat[-(n_pat + 1), ]
+      pat_frq <- as.numeric(rownames(md_pat))
+      row.names(md_pat) <- 1:n_pat
+      R <- md_pat[rep(row.names(md_pat), times = pat_frq), ] == 1
+    }
 
     # transform to long format
+    .vrb <- colnames(R)
+    .rws <- nrow(R)
+    .cls <- ncol(R)
     long <-
-      as.data.frame(cbind(.y = 1:rws, na.mat)) %>%
+      as.data.frame(cbind(.y = 1:.rws, R)) %>%
       tidyr::pivot_longer(
-        cols = tidyselect::all_of(vrb),
+        cols = tidyselect::all_of(.vrb),
         names_to = "x",
         values_to = ".where"
       ) %>%
       dplyr::mutate(.x = as.numeric(factor(
         .data$x,
-        levels = vrb, ordered = TRUE
+        levels = .vrb, ordered = TRUE
       )),
       .where = factor(
         .data$.where,
@@ -87,8 +97,9 @@ plot_miss <-
         "missing" = "#B61A51B3"
       )) +
       ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
-      ggplot2::scale_x_continuous(breaks = 1:cls,
-                                  labels = vrb) +
+      ggplot2::scale_x_continuous(breaks = 1:.cls,
+                                  labels = .vrb,
+                                  position = "top") +
       ggplot2::scale_y_reverse(breaks = \(y) {
         eb = scales::extended_breaks()(y)
         eb[1] = min(long$.y)
@@ -120,6 +131,9 @@ plot_miss <-
           axis.ticks.y = ggplot2::element_blank()
         )
     }
+    if (rotate) {
+      gg <-
+        gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
+    }
     return(gg)
   }
-
