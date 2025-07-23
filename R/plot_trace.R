@@ -38,7 +38,10 @@
 #' try(plot_trace(imp, my_variables))
 #'
 #' @export
-plot_trace <- function(data, vrb = "all", legend = TRUE) {
+plot_trace <- function(data,
+                       vrb = "all",
+                       trend = FALSE,
+                       legend = TRUE) {
   verify_data(data, imp = TRUE)
   if (is.null(data$chainMean) && is.null(data$chainVar)) {
     cli::cli_abort("No convergence diagnostics found", call. = FALSE)
@@ -65,19 +68,20 @@ plot_trace <- function(data, vrb = "all", legend = TRUE) {
   p <- length(vrb_matched)
   m <- data$m
   it <- data$iteration
-  long <- cbind(
-    expand.grid(.it = seq_len(it), .m = seq_len(m)),
-    data.frame(
-      .ms = rep(c("mean", "sd"), each = m * it * p),
-      vrb_matched = rep(vrb_matched, each = m * it, times = 2),
-      val = c(matrix(aperm(mn[vrb_matched, , , drop = FALSE], c(
-        2, 3, 1
-      )), nrow = m * it * p), matrix(aperm(sm[vrb_matched, , , drop = FALSE], c(
-        2, 3, 1
-      )), nrow = m * it * p))
-    )
-  )
-  # create plot
+  long <- cbind(expand.grid(.it = seq_len(it), .m = seq_len(m)),
+                data.frame(
+                  .ms = rep(c("mean", "sd"), each = m * it * p),
+                  vrb = rep(vrb, each = m * it, times = 2),
+                  val = c(
+                    matrix(
+                      aperm(mn[vrb, , , drop = FALSE], c(2, 3, 1)),
+                      nrow = m * it * p),
+                    matrix(
+                      aperm(sm[vrb, , , drop = FALSE], c(2, 3, 1)),
+                      nrow = m * it * p))
+                ))
+
+  # plot the convergence diagnostics
   gg <- ggplot2::ggplot(long,
                         ggplot2::aes(
                           x = .data$.it,
@@ -104,6 +108,16 @@ plot_trace <- function(data, vrb = "all", legend = TRUE) {
       strip.placement = "outside",
       strip.switch.pad.wrap = ggplot2::unit(0, "cm")
     )
+  if (trend) {
+    gg <- gg +
+      ggplot2::geom_smooth(
+        formula = y ~ x,
+        method = "loess",
+        se = FALSE,
+        color = "black",
+        linetype = "dashed"
+      )
+  }
   if (!legend) {
     gg <- gg + ggplot2::theme(legend.position = "none")
   }
