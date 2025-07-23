@@ -9,7 +9,8 @@ Authors@R: c(
     person("Thom", "Volker", role = "ctb", comment = c(ORCID = "0000-0002-2408-7820")),
     person("Gerko", "Vink", role = "ctb", comment = c(ORCID = "0000-0001-9767-1924")),
     person("Pepijn", "Vink", role = "ctb", comment = c(ORCID = "0000-0001-6960-9904")),
-    person("Jamie", "Wallis", role = "ctb", comment = c(ORCID = "0000-0003-2765-3813"))
+    person("Jamie", "Wallis", role = "ctb", comment = c(ORCID = "0000-0003-2765-3813")),
+    person("Kyle", "Lang", role = "ctb", comment = c(ORCID = "0000-0001-5340-7849"))
     )
 Description: Enhance a 'mice' imputation workflow with visualizations for
     incomplete and/or imputed data. The plotting functions produce
@@ -19,7 +20,7 @@ Description: Enhance a 'mice' imputation workflow with visualizations for
 License: GPL (>= 3)
 URL: https://github.com/amices/ggmice, https://amices.org/,
     https://amices.org/ggmice/
-BugReports: https://github.com/amices/ggmice
+BugReports: https://github.com/amices/ggmice/issues
 Imports: 
     cli,
     dplyr,
@@ -47,4 +48,4 @@ Config/testthat/edition: 3
 Copyright: 'ggmice' authors
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2

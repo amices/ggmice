@@ -22,5 +22,20 @@ An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 Plot the influx and outflux of a multivariate missing data pattern
 }
 \examples{
+# plot flux for all columns
 plot_flux(mice::nhanes)
+
+# plot flux for specific columns by supplying a character vector
+plot_flux(mice::nhanes, c("chl", "hyp"))
+
+# plot flux for specific columns by supplying unquoted variable names
+plot_flux(mice::nhanes, c(chl, hyp))
+
+# plot flux for specific columns by passing an object with variable names
+# from the environment, unquoted with `!!`
+my_variables <- c("chl", "hyp")
+plot_flux(mice::nhanes, !!my_variables)
+# object with variable names must be unquoted with `!!`
+try(plot_flux(mice::nhanes, my_variables))
+
 }
