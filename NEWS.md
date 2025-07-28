@@ -1,3 +1,20 @@
+# ggmice (development version)
+
+## New features
+
+* New optional argument in `plot_trace()` to hide legend (#165)
+
+## Bug fixes
+
+* Correct labelling of 'exclusion-restriction' variables in `plot_pred()` (#128)
+* Parsing of `vrb` argument in all `plot_*()` functions: variable name(s) from object in global environment now recognized using `!!` notation (#157)
+
+## Minor changes
+
+* Miscellaneous documentation and vignette updates (#128, #165)
+
+---
+
 # ggmice 0.1.0
 
 ## Breaking changes
@@ -7,7 +24,6 @@
 
 ## New features
 
-* New plotting function `plot_variance()` visualizes post-imputation variability (#56)
 * New optional argument `plot_pred()` shows methods vector with predictor matrix plot (#71)
 * New optional argument `plot_pattern()` hides less frequent patterns (#77)
 * New optional argument `plot_pattern()` hides legend caption (#111)
@@ -26,7 +42,7 @@
 * Input validation for `data` argument `plot_*` functions (#85)
 * Input validation for `vrb` argument `plot_*` functions (#80)
 * Input validation for `mapping` argument `ggmice()` (#34, #90)
-* Vignette updates (PRs #31, #35, #38) and other documentation (#45, #51)
+* Vignette updates (#31, #35, #38) and other documentation (#45, #51)
 * The `plot_pattern()` function creates missing data pattern plot with more informative labels (#59, #111)
 
 ---

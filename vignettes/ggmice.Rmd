@@ -13,7 +13,8 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.width = 7.2
+  fig.width = 7.2,
+  fig.height = 4
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
@@ -89,7 +90,7 @@ The `mapping` argument in `ggmice()` cannot be empty. An `x` or `y` mapping (or 
 
 ## Incomplete data
 
-If the object supplied to the `data` argument in `ggmice()` is a `data.frame`, the visualization will contain observed data in blue and missing data in red. Since missing data points are by definition unobserved, the values themselves cannot be plotted. What we *can* plot are sets of variable pairs. Any missing values on one variable can be displayed on top of the axis of the other. This provides a visual cue that the missing data is distinct from the observed values, but still displays the observed value of the other variable. 
+If the object supplied to the `data` argument in `ggmice()` is a `data.frame`, the visualization will contain observed data in blue and missing data in red. Since missing data points are by definition unobserved, the values themselves cannot be plotted. What we *can* plot are sets of variable pairs. Any missing values in one variable can be displayed on the axis of the other. This provides a visual cue that the missing data is distinct from the observed values, but still displays the observed value of the other variable. 
 
 For example, the variable `age` is completely observed, while there are some missing entries for the height variable `hgt`. We can create a scatter plot of these two variables with: 
 
@@ -98,7 +99,7 @@ ggmice(dat, aes(age, hgt)) +
   geom_point()
 ```
 
-The `age` of cases with missing `hgt` are plotted on top of the horizontal axis. This is in contrast to a regular `ggplot()` call with the same arguments, which would leave out all cases with missing `hgt`. So, with `ggmice()` we loose less information, and may even gain valuable insight into the missingness in the data.
+The `age` of cases with missing `hgt` are plotted on the horizontal axis. This is in contrast to a regular `ggplot()` call with the same arguments, which would leave out all cases with missing `hgt`. So, with `ggmice()` we loose less information, and may even gain valuable insight into the missingness in the data.
 
 Another example of `ggmice()` in action on incomplete data is when one of the variables is categorical. The incomplete continuous variable `hgt` is plotted against the incomplete categorical variable `reg` with:
 
@@ -107,7 +108,7 @@ ggmice(dat, aes(reg, hgt)) +
   geom_point()
 ```
 
-Again, missing values are plotted on top of the axes. Cases with observed `hgt` and missing `reg` are plotted on top of the vertical axis. Cases with observed `reg` and missing `hgt` are plotted on top of the horizontal axis. There are no cases were neither is observed, but otherwise these would be plotted on the intersection of the two axes. 
+Again, missing values are plotted on the axes. Cases with observed `hgt` and missing `reg` are plotted on the vertical axis. Cases with observed `reg` and missing `hgt` are plotted on the horizontal axis. There are no cases were neither is observed, but otherwise these would be plotted on the intersection of the two axes. 
 
 The 'grammar of graphics' makes it easy to adjust the plots programmatically. For example, we could be interested in the differences in growth data between the city and other regions. Add facets based on a clustering variable with:
 
@@ -206,9 +207,10 @@ plot_pattern(dat)
 # specify optional arguments
 plot_pattern(
   dat,
-  square = FALSE,
+  square = TRUE,
   rotate = TRUE,
-  npat = 3
+  npat = 3,
+  cluster = "reg"
 )
 ```
 
@@ -279,14 +281,6 @@ The function `plot_trace()` plots the trace lines of the MICE algorithm for conv
 plot_trace(imp, "hgt")
 ```
 
-## Between-imputation variance
-
-The function `plot_variance()` visualizes the cell-level between-imputation variance as a heatmap. The color of the tiles in the plot represent the scaled between-imputation variance for the imputed cells in the data. The `data` argument requires an object of class `mice::mids`.
-
-```{r variance}
-# create heatmap of between-imputation variance
-plot_variance(imp, grid = FALSE)
-```
 
 ---
 

@@ -4,17 +4,21 @@
 \alias{plot_variance}
 \title{Plot the scaled between imputation variance for every cell as a heatmap}
 \usage{
-plot_variance(data, grid = TRUE, caption = TRUE)
+plot_variance(data, vrb = "all", rotate = FALSE, grid = FALSE, square = FALSE)
 }
 \arguments{
-\item{data}{A multiply imputed object of class \code{\link[mice:mids-class]{mice::mids}}.}
+\item{data}{A multiply imputed object of class \link[mice:mids]{mice::mids}.}
 
-\item{grid}{Logical indicating whether grid lines should be displayed.}
+\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 
-\item{caption}{Logical indicating whether the figure caption should be displayed.}
+\item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
+
+\item{grid}{Logical indicating whether borders should be present between tiles.}
+
+\item{square}{Logical indicating whether the plot tiles should be squares, defaults to squares.}
 }
 \value{
-An object of class \code{ggplot}.
+An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 }
 \description{
 This function plots the cell-level between imputation variance. The function
@@ -24,6 +28,23 @@ lighter cells indicate less variance. White cells represent observed cells or un
 imputation variance.
 }
 \examples{
-imp <- mice::mice(mice::nhanes, printFlag = FALSE)
+# impute a dataset
+imp <- mice::mice(mice::nhanes, print = FALSE)
+
+# plot correlations for all columns
 plot_variance(imp)
+
+# plot correlations for specific columns by supplying a character vector
+plot_variance(imp, c("chl", "hyp"))
+
+# plot correlations for specific columns by supplying unquoted variable names
+plot_variance(imp, c(chl, hyp))
+
+# plot correlations for specific columns by passing an object with variable names
+# from the environment, unquoted with `!!`
+my_variables <- c("chl", "hyp")
+plot_variance(imp, !!my_variables)
+# object with variable names must be unquoted with `!!`
+try(plot_variance(imp, my_variables))
+
 }

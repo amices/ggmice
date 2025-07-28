@@ -1,6 +1,6 @@
 # Functions for internal use
 
-# util functions
+# Shorthand 'not in' for code readability
 `%nin%` <- Negate(`%in%`)
 
 #' Pipe operator
@@ -18,11 +18,6 @@
 #' @param rhs A function call using the magrittr semantics.
 #' @return The result of calling `rhs(lhs)`.
 NULL
-
-# suppress undefined global functions or variables note
-utils::globalVariables(c(".id", ".imp", ".where", ".id", "where", "name", "value"))
-
-# Alias a function with `foo <- function(...) pkgB::blah(...)`
 
 #' Utils function to validate data argument inputs
 #'
@@ -104,3 +99,40 @@ verify_data <- function(data,
     }
   }
 }
+
+#' Utils function to match `vrb` argument to variable names in `data`
+#'
+#' @param vrb The input supplied to the 'vrb' argument.
+#' @param vrbs_in_data A character vector of available variable names in `data`.
+#'
+#' @return String or character vector with matched variable name(s).
+#'
+#' @keywords internal
+#' @noRd
+match_vrb <- function(vrb, vrbs_in_data) {
+  if (is.call(vrb))
+    vrb <- as.character(vrb)[-1]
+  if (is.symbol(vrb))
+    vrb <- as.character(vrb)
+  if (length(vrb) == 1 && as.character(vrb) == "all") {
+    vrb <- vrbs_in_data
+  }
+  if (all(vrb %nin% vrbs_in_data)) {
+    cli::cli_abort(
+      c(
+        "x" = "The variable name(s) supplied to {.var vrb} could not be found in {.var data}.",
+        "i" = "If you supply an object with variable names from the environment, use `!!` to unqote:",
+        " " = paste0("{.code vrb = !!", vrb, "}")
+      )
+    )
+  }
+  if (any(vrb %nin% vrbs_in_data)) {
+    cli::cli_warn(c("x" = "The following variables are not present in {.var data}:", " " = paste(
+      setdiff(vrb, vrbs_in_data), collapse = ", "
+    )))
+  }
+  return(vrb)
+}
+
+# suppress undefined global functions or variables note
+utils::globalVariables(c(".id", ".imp", ".where", ".id", "where", "name", "value"))

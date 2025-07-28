@@ -8,7 +8,22 @@
 #' @return An object of class [ggplot2::ggplot].
 #'
 #' @examples
+#' # plot flux for all columns
 #' plot_flux(mice::nhanes)
+#'
+#' # plot flux for specific columns by supplying a character vector
+#' plot_flux(mice::nhanes, c("chl", "hyp"))
+#'
+#' # plot flux for specific columns by supplying unquoted variable names
+#' plot_flux(mice::nhanes, c(chl, hyp))
+#'
+#' # plot flux for specific columns by passing an object with variable names
+#' # from the environment, unquoted with `!!`
+#' my_variables <- c("chl", "hyp")
+#' plot_flux(mice::nhanes, !!my_variables)
+#' # object with variable names must be unquoted with `!!`
+#' try(plot_flux(mice::nhanes, my_variables))
+#'
 #' @export
 plot_flux <-
   function(data,
@@ -16,17 +31,14 @@ plot_flux <-
            label = TRUE,
            caption = TRUE) {
     verify_data(data, df = TRUE)
-    vrb <- substitute(vrb)
-    if (vrb != "all" && length(vrb) < 2) {
+    vrb <- rlang::enexpr(vrb)
+    vrb_matched <- match_vrb(vrb, names(data))
+    if (length(vrb_matched) < 2) {
       cli::cli_abort("The number of variables should be two or more to compute flux.")
     }
-    if (vrb[1] == "all") {
-      vrb <- names(data)
-    } else {
-      vrb <- names(dplyr::select(data, {{vrb}}))
-    }
-    # plot in and outflux
-    flx <- mice::flux(data[, vrb])[, c("influx", "outflux")]
+    # compute flux
+    flx <- mice::flux(data[, vrb_matched])[, c("influx", "outflux")]
+    # create plot
     gg <-
       data.frame(
         vrb = rownames(flx),

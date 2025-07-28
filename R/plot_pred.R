@@ -10,8 +10,25 @@
 #' @return An object of class `ggplot2::ggplot`.
 #'
 #' @examples
+#' # generate a predictor matrix
 #' pred <- mice::quickpred(mice::nhanes)
+#'
+#' # plot predictor matrix for all columns
 #' plot_pred(pred)
+#'
+#' # plot predictor matrix for specific columns by supplying a character vector
+#' plot_pred(pred, c("chl", "hyp"))
+#'
+#' # plot predictor matrix for specific columns by supplying unquoted variable names
+#' plot_pred(pred, c(chl, hyp))
+#'
+#' # plot predictor matrix for specific columns by passing an object with variable names
+#' # from the environment, unquoted with `!!`
+#' my_variables <- c("chl", "hyp")
+#' plot_pred(pred, !!my_variables)
+#' # object with variable names must be unquoted with `!!`
+#' try(plot_pred(pred, my_variables))
+#'
 #' @export
 plot_pred <-
   function(data,
@@ -21,7 +38,9 @@ plot_pred <-
            square = TRUE,
            rotate = FALSE) {
     verify_data(data, pred = TRUE)
-    p <- nrow(data)
+    vrb <- rlang::enexpr(vrb)
+    vrb_matched <- match_vrb(vrb, row.names(data))
+    p <- length(vrb_matched)
     if (!is.null(method) && is.character(method)) {
       if (length(method) == 1) {
         method <- rep(method, p)
@@ -37,26 +56,19 @@ plot_pred <-
     if (!is.character(method) || length(method) != p) {
       cli::cli_abort("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
     }
-    vrb <- substitute(vrb)
-    if (vrb[1] == "all") {
-      vrb <- names(data)
-    } else {
-      vrb <- names(dplyr::select(as.data.frame(data), {{vrb}}))
-    }
-    vrbs <- row.names(data)
     long <- data.frame(
       vrb = 1:p,
-      prd = rep(vrbs, each = p),
-      ind = matrix(data, nrow = p * p, byrow = TRUE)
+      prd = rep(vrb_matched, each = p),
+      ind = matrix(data[vrb_matched, vrb_matched], nrow = p * p, byrow = TRUE)
     ) %>% dplyr::mutate(clr = factor(
       .data$ind,
-      levels = c(-2, 0, 1, 2, 3),
+      levels = c(-3, -2, 0, 1, 2),
       labels = c(
+        "inclusion-restriction variable",
         "cluster variable",
         "not used",
         "predictor",
-        "random effect",
-        "inclusion-restriction variable"
+        "random effect"
       ),
       ordered = TRUE
     ))
@@ -70,19 +82,19 @@ plot_pred <-
                         fill = .data$clr
                       )) +
       ggplot2::geom_tile(color = "black", alpha = 0.6) +
-      ggplot2::scale_x_discrete(limits = vrbs, position = "top") +
+      ggplot2::scale_x_discrete(limits = vrb_matched, position = "top") +
       ggplot2::scale_y_reverse(
         breaks = 1:p,
-        labels = vrbs,
+        labels = vrb_matched,
         sec.axis = ggplot2::dup_axis(labels = method, name = ylabel)
       ) +
       ggplot2::scale_fill_manual(
         values = c(
+          "inclusion-restriction variable" = "orangered",
           "cluster variable" = "lightyellow",
           "not used" = "grey90",
           "predictor" = "palegreen3",
-          "random effect" = "deepskyblue",
-          "inclusion-restriction variable" = "orangered"
+          "random effect" = "deepskyblue"
         )
       ) +
       ggplot2::labs(

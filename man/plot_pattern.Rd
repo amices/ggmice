@@ -36,5 +36,20 @@ An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 Plot the missing data pattern of an incomplete dataset
 }
 \examples{
+# plot missing data pattern for all columns
 plot_pattern(mice::nhanes)
+
+# plot missing data pattern for specific columns by supplying a character vector
+plot_pattern(mice::nhanes, c("chl", "hyp"))
+
+# plot missing data pattern for specific columns by supplying unquoted variable names
+plot_pattern(mice::nhanes, c(chl, hyp))
+
+# plot missing data pattern for specific columns by passing an object with variable names
+# from the environment, unquoted with `!!`
+my_variables <- c("chl", "hyp")
+plot_pattern(mice::nhanes, !!my_variables)
+# object with variable names must be unquoted with `!!`
+try(plot_pattern(mice::nhanes, my_variables))
+
 }
