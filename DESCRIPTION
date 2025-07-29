@@ -38,6 +38,7 @@ Imports:
 Suggests:
     covr,
     knitr,
+    lifecycle,
     patchwork,
     plotly,
     rmarkdown,

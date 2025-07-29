@@ -30,7 +30,7 @@ plot_miss(
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 }
 \description{
-Plot missingness in a dataset
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 # plot correlations for all columns

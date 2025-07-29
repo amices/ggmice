@@ -9,6 +9,9 @@
 #'
 #' @return An object of class [ggplot2::ggplot].
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' @examples
 #' # plot correlations for all columns
 #' plot_miss(mice::nhanes)
@@ -38,6 +41,8 @@ plot_miss <-
            rotate = FALSE,
            grid = FALSE,
            square = FALSE) {
+    # flag lifecycle
+    lifecycle::signal_stage("experimental", "plot_miss()")
     # input processing
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
