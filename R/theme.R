@@ -1,6 +1,7 @@
-#' Theme for [mice] style [ggplot2::ggplot] objects
+#' Theme for [mice::mice] style [ggplot2::ggplot] objects
 #'
-#' @return A [ggplot2] theme.
+#' @return A [ggplot2::ggplot] theme.
+#' @keywords internal
 theme_mice <- function() {
   ggplot2::theme_classic() +
     ggplot2::theme(
@@ -10,9 +11,10 @@ theme_mice <- function() {
     )
 }
 
-#' Minimal theme for [mice] style [ggplot2::ggplot] objects
+#' Minimal theme for [mice::mice] style [ggplot2::ggplot] objects
 #'
-#' @return A [ggplot2] theme.
+#' @return A [ggplot2::ggplot] theme.
+#' @keywords internal
 theme_minimice <- function() {
   ggplot2::theme_minimal() +
     ggplot2::theme(

@@ -14,7 +14,7 @@ plot_pred(
 )
 }
 \arguments{
-\item{data}{A predictor matrix for \code{mice}, typically generated with \link[mice:make.predictorMatrix]{mice::make.predictorMatrix} or \link[mice:quickpred]{mice::quickpred}, or an object of class \code{\link[mice:mids-class]{mice::mids}}.}
+\item{data}{A predictor matrix for \code{mice}, typically generated with \link[mice:make.predictorMatrix]{mice::make.predictorMatrix} or \link[mice:quickpred]{mice::quickpred}, or an object of class \code{\link[mice:mids]{mice::mids}}.}
 
 \item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 
@@ -33,6 +33,27 @@ An object of class \code{ggplot2::ggplot}.
 Plot the predictor matrix of an imputation model
 }
 \examples{
+# generate a predictor matrix
 pred <- mice::quickpred(mice::nhanes)
+
+# plot predictor matrix for all columns
 plot_pred(pred)
+
+# plot predictor matrix for specific columns by supplying a character vector
+plot_pred(pred, c("chl", "hyp"))
+
+# plot predictor matrix for specific columns by supplying unquoted variable names
+plot_pred(pred, c(chl, hyp))
+
+# plot predictor matrix for specific columns by passing an object with variable names
+# from the environment, unquoted with `!!`
+my_variables <- c("chl", "hyp")
+plot_pred(pred, !!my_variables)
+# object with variable names must be unquoted with `!!`
+try(plot_pred(pred, my_variables))
+
+# plot predictor matrix of mids object
+imp <- mice::mice(mice::nhanes, print = FALSE)
+plot_pred(imp)
+
 }

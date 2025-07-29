@@ -4,12 +4,16 @@
 \alias{plot_trace}
 \title{Plot the trace lines of the imputation algorithm}
 \usage{
-plot_trace(data, vrb = "all")
+plot_trace(data, vrb = "all", legend = TRUE)
 }
 \arguments{
-\item{data}{An object of class \link[mice:mids-class]{mice::mids}.}
+\item{data}{An object of class \link[mice:mids]{mice::mids}.}
 
-\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
+\item{vrb}{String, vector, or unquoted expression with variable name(s),
+default is "all".}
+
+\item{legend}{Logical indicating whether the plot legend should be visible,
+default is TRUE.}
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
@@ -17,7 +21,32 @@ An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 \description{
 Plot the trace lines of the imputation algorithm
 }
+\details{
+The \code{vrb} argument is "quoted" via \code{\link[rlang:defusing-advanced]{rlang::enexpr()}} and evaluated according
+to \href{https://adv-r.hadley.nz/metaprogramming.html}{tidy evaluation principles}.
+In practice, this technical nuance only affects users when passing an object
+from the environment (e.g., a vector of variable names) to the \code{vrb} argument.
+In such cases, the object must be "unquoted" via the \verb{!!} prefix operator.
+}
 \examples{
+# create [mice::mids] object with [mice::mice()]
 imp <- mice::mice(mice::nhanes, print = FALSE)
+
+# plot trace lines for all imputed columns
 plot_trace(imp)
+
+# plot trace lines for specific columns by supplying a string or character vector
+plot_trace(imp, "chl")
+plot_trace(imp, c("chl", "hyp"))
+# plot trace lines for specific columns by supplying unquoted variable names
+plot_trace(imp, chl)
+plot_trace(imp, c(chl, hyp))
+
+# plot trace lines for specific columns by passing an object with variable names
+# from the environment, unquoted with `!!`
+my_variables <- c("chl", "hyp")
+plot_trace(imp, !!my_variables)
+# object with variable names must be unquoted with `!!`
+try(plot_trace(imp, my_variables))
+
 }

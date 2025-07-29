@@ -1,12 +1,18 @@
 # ggmice (development version)
 
+## New features
+
+* New optional argument in `plot_trace()` to hide legend (#165)
+* New input data type for `plot_pred()` (#132)
+
 ## Bug fixes
 
-* Correct labeling of 'exclusion-restriction' variables in `plot_pred()` (#128) 
+* Correct labelling of 'exclusion-restriction' variables in `plot_pred()` (#128)
+* Parsing of `vrb` argument in all `plot_*()` functions: variable name(s) from object in global environment now recognized using `!!` notation (#157)
 
 ## Minor changes
 
-* Miscellaneous documentation and vignette updates (#128)
+* Miscellaneous documentation and vignette updates (#128, #165)
 
 ---
 

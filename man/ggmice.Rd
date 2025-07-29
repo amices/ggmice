@@ -7,7 +7,7 @@
 ggmice(data = NULL, mapping = ggplot2::aes())
 }
 \arguments{
-\item{data}{An incomplete dataset (of class \code{data.frame}), or an object of class \code{\link[mice:mids-class]{mice::mids}}.}
+\item{data}{An incomplete dataset (of class \code{data.frame}), or an object of class \code{\link[mice:mids]{mice::mids}}.}
 
 \item{mapping}{A list of aesthetic mappings created with \code{\link[ggplot2:aes]{ggplot2::aes()}}.}
 }
