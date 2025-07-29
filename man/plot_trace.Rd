@@ -9,13 +9,14 @@ plot_trace(data, vrb = "all", trend = FALSE, legend = TRUE)
 \arguments{
 \item{data}{An object of class \link[mice:mids]{mice::mids}.}
 
-\item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
+\item{vrb}{String, vector, or unquoted expression with variable name(s),
+default is "all".}
 
-\item{trend}{Logical indicating whether a trend line should be displayed.}
+\item{trend}{Logical indicating whether a smoothened trend should be added,
+default is FALSE.}
 
 \item{legend}{Logical indicating whether the plot legend should be visible,
 default is TRUE.}
-
 }
 \value{
 An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.

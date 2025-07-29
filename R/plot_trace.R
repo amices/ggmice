@@ -5,6 +5,8 @@
 #'   default is "all".
 #' @param legend Logical indicating whether the plot legend should be visible,
 #'   default is TRUE.
+#' @param trend Logical indicating whether a smoothened trend should be added,
+#'   default is FALSE.
 #'
 #' @details
 #' The `vrb` argument is "quoted" via [rlang::enexpr()] and evaluated according
@@ -71,13 +73,13 @@ plot_trace <- function(data,
   long <- cbind(expand.grid(.it = seq_len(it), .m = seq_len(m)),
                 data.frame(
                   .ms = rep(c("mean", "sd"), each = m * it * p),
-                  vrb = rep(vrb, each = m * it, times = 2),
+                  vrb = rep(vrb_matched, each = m * it, times = 2),
                   val = c(
                     matrix(
-                      aperm(mn[vrb, , , drop = FALSE], c(2, 3, 1)),
+                      aperm(mn[vrb_matched, , , drop = FALSE], c(2, 3, 1)),
                       nrow = m * it * p),
                     matrix(
-                      aperm(sm[vrb, , , drop = FALSE], c(2, 3, 1)),
+                      aperm(sm[vrb_matched, , , drop = FALSE], c(2, 3, 1)),
                       nrow = m * it * p))
                 ))
 
@@ -91,7 +93,7 @@ plot_trace <- function(data,
     ggplot2::geom_line(linewidth = 0.6) +
     ggplot2::geom_hline(yintercept = -Inf) +
     ggplot2::facet_wrap(
-      .ms ~ vrb_matched,
+      .ms ~ vrb,
       dir = "v",
       ncol = 2,
       scales = "free_y",
