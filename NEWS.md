@@ -3,6 +3,7 @@
 ## New features
 
 * New optional argument in `plot_trace()` to hide legend (#165)
+* New input data type for `plot_pred()` (#132)
 
 ## Bug fixes
 

@@ -1,6 +1,7 @@
 # create test objects
 dat <- mice::nhanes
 pred <- mice::quickpred(dat)
+imp <- mice::mice(dat, printFlag = FALSE)
 
 # tests
 test_that("plot_pred creates ggplot object", {
@@ -18,6 +19,7 @@ test_that("plot_pred creates ggplot object", {
   expect_s3_class(plot_pred(rbind(
     cbind(pred, "with space" = 0), "with space" = 0
   )), "ggplot")
+  expect_s3_class(plot_pred(imp, vrb = c("age", "bmi")), "ggplot")
 })
 
 test_that("plot_pred with incorrect argument(s)", {

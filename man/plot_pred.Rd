@@ -14,7 +14,7 @@ plot_pred(
 )
 }
 \arguments{
-\item{data}{A predictor matrix for \code{mice}, typically generated with \link[mice:make.predictorMatrix]{mice::make.predictorMatrix} or \link[mice:quickpred]{mice::quickpred}.}
+\item{data}{A predictor matrix for \code{mice}, typically generated with \link[mice:make.predictorMatrix]{mice::make.predictorMatrix} or \link[mice:quickpred]{mice::quickpred}, or an object of class \code{\link[mice:mids]{mice::mids}}.}
 
 \item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 
@@ -51,5 +51,9 @@ my_variables <- c("chl", "hyp")
 plot_pred(pred, !!my_variables)
 # object with variable names must be unquoted with `!!`
 try(plot_pred(pred, my_variables))
+
+# plot predictor matrix of mids object
+imp <- mice::mice(mice::nhanes, print = FALSE)
+plot_pred(imp)
 
 }

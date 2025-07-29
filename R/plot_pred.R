@@ -1,6 +1,6 @@
 #' Plot the predictor matrix of an imputation model
 #'
-#' @param data A predictor matrix for `mice`, typically generated with [mice::make.predictorMatrix] or [mice::quickpred].
+#' @param data A predictor matrix for `mice`, typically generated with [mice::make.predictorMatrix] or [mice::quickpred], or an object of class [`mice::mids`].
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
 #' @param method Character string or vector with imputation methods.
 #' @param label Logical indicating whether predictor matrix values should be displayed.
@@ -29,6 +29,10 @@
 #' # object with variable names must be unquoted with `!!`
 #' try(plot_pred(pred, my_variables))
 #'
+#' # plot predictor matrix of mids object
+#' imp <- mice::mice(mice::nhanes, print = FALSE)
+#' plot_pred(imp)
+#'
 #' @export
 plot_pred <-
   function(data,
@@ -37,13 +41,26 @@ plot_pred <-
            label = TRUE,
            square = TRUE,
            rotate = FALSE) {
-    verify_data(data, pred = TRUE)
+    verify_data(data, pred = TRUE, imp = TRUE)
     vrb <- rlang::enexpr(vrb)
+    if (mice::is.mids(data)) {
+      if (!is.null(method)) {
+        cli::cli_warn(
+          c("!" = "Input `method` is ignored when `data` is of class `mids`.",
+            "i" = "The `method` vector from the `mids` object will be used.")
+        )
+      }
+      method <- data$method
+      data <- data$predictorMatrix
+    }
     vrb_matched <- match_vrb(vrb, row.names(data))
     p <- length(vrb_matched)
     if (!is.null(method) && is.character(method)) {
       if (length(method) == 1) {
         method <- rep(method, p)
+      }
+      if (length(method > p)) {
+        method <- method[row.names(data) %in% vrb_matched]
       }
       if (length(method) == p) {
         ylabel <- "Imputation method"
@@ -54,7 +71,8 @@ plot_pred <-
       ylabel <- ""
     }
     if (!is.character(method) || length(method) != p) {
-      cli::cli_abort("Method should be NULL or a character string or vector (of length 1 or `ncol(data)`).")
+      cli::cli_abort("Method should be `NULL` or a character string or vector
+                     (of length 1 or `ncol(data)`).")
     }
     long <- data.frame(
       vrb = 1:p,
