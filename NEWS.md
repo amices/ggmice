@@ -2,6 +2,7 @@
 
 ## New features
 
+* New function `plot_miss()` to visualize missing data indicator matrix (#123)
 * New optional argument in `plot_trace()` to hide legend (#165)
 
 ## Bug fixes

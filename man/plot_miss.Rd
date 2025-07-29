@@ -49,4 +49,8 @@ plot_miss(mice::nhanes, !!my_variables)
 # object with variable names must be unquoted with `!!`
 try(plot_miss(mice::nhanes, my_variables))
 
+# plot larger dataset
+plot_miss(mice::boys)
+plot_miss(mice::boys, ordered = TRUE)
+
 }
