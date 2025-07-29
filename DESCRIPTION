@@ -29,6 +29,7 @@ Imports:
     mice,
     purrr,
     rlang,
+    scales,
     stats,
     stringr,
     tidyr,
@@ -37,6 +38,7 @@ Imports:
 Suggests:
     covr,
     knitr,
+    lifecycle,
     patchwork,
     plotly,
     rmarkdown,
