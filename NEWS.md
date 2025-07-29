@@ -1,13 +1,14 @@
-# ggmice (development version)
+# ggmice 0.1.1
 
 ## New features
 
+* New function `plot_miss()` to visualize missing data indicator matrix (#123)
 * New optional argument in `plot_trace()` to hide legend (#165)
 * New input data type for `plot_pred()` (#132)
 
 ## Bug fixes
 
-* Correct labelling of 'exclusion-restriction' variables in `plot_pred()` (#128)
+* Correct labeling of 'exclusion-restriction' variables in `plot_pred()` (#128)
 * Parsing of `vrb` argument in all `plot_*()` functions: variable name(s) from object in global environment now recognized using `!!` notation (#157)
 
 ## Minor changes
