@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggmice</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,6 +84,19 @@
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>An object of class <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot2::ggplot</a></code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The predictor matrix in <a href="https://amices.org/mice/reference/mice.html" class="external-link">mice::mice</a> determines the role an imputation model predictor takes in the imputation model.
+The rows correspond to incomplete target variables, and the columns to imputation model predictors.</p>
+<p>A value of <code>1</code> indicates that the column variable is a predictor to impute the target (row) variable. The value <code>0</code> means that it is not used as predictor.</p>
+<p>Imputation methods for multilevel data use other codes than <code>0</code> and <code>1</code>:</p><ul><li><p>Methods <code>2l.bin</code>, <code>2l.lmer</code>, <code>2l.norm</code>, <code>2l.pan</code>, <code>2lonly.mean</code>, <code>2lonly.norm</code> and <code>2lonly.pmm</code> use code <code>-2</code> to indicate the class variable;</p></li>
+<li><p>Methods <code>2l.bin</code>, <code>2l.lmer</code>, <code>2l.norm</code> and <code>2l.pan</code> use code <code>2</code> to indicate the random effects;</p></li>
+<li><p>Method <code>2l.pan</code> uses codes <code>3</code> and <code>4</code> to add class means to codes <code>1</code> and <code>2</code> respectively.</p></li>
+</ul></div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>van Buuren, S. (2018). Flexible imputation of missing data. Chapman and Hall/CRC. <a href="https://stefvanbuuren.name/fimd/" class="external-link">stefvanbuuren.name/fimd</a></p>
     </div>
 
     <div class="section level2">
