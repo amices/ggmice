@@ -72,7 +72,9 @@ plot_trace <- function(data, vrb = "all", legend = TRUE) {
     expand.grid(.it = seq_len(it), .m = seq_len(m)),
     data.frame(
       .ms = rep(c("mean", "sd"), each = m * it * p),
-      vrb_matched = rep(vrb_matched, each = m * it, times = 2),
+      vrb_matched = factor(rep(
+        vrb_matched, each = m * it, times = 2
+      ), levels = vrb_matched),
       val = c(matrix(aperm(mn[vrb_matched, , , drop = FALSE], c(
         2, 3, 1
       )), nrow = m * it * p), matrix(aperm(sm[vrb_matched, , , drop = FALSE], c(
