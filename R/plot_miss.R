@@ -60,36 +60,33 @@ plot_miss <-
     }
     # extract response indicator
     if (!ordered) {
-      R <- !is.na(data[, vrb_matched])
+      resp_ind <- !is.na(data[, vrb_matched])
     }
     if (ordered) {
       if (length(vrb_matched) < 2) {
         cli::cli_abort("The number of variables should be two or more to compute missing data patterns.")
       }
-      md_pat <- mice::md.pattern(
-        data[, vrb_matched],
-        plot = FALSE)[, -(length(vrb_matched) + 1)]
+      md_pat <- mice::md.pattern(data[, vrb_matched], plot = FALSE)[, -(length(vrb_matched) + 1)]
       n_pat <- nrow(md_pat) - 1
       md_pat <- md_pat[-(n_pat + 1), ]
       pat_frq <- as.numeric(rownames(md_pat))
       row.names(md_pat) <- 1:n_pat
-      R <- md_pat[rep(row.names(md_pat), times = pat_frq), ] == 1
+      resp_ind <- md_pat[rep(row.names(md_pat), times = pat_frq), ] == 1
     }
 
     # transform to long format
-    .vrb <- colnames(R)
-    .rws <- nrow(R)
-    .cls <- ncol(R)
+    .vrb <- colnames(resp_ind)
+    .rws <- nrow(resp_ind)
+    .cls <- ncol(resp_ind)
     long <-
-      as.data.frame(cbind(.y = 1:.rws, R)) %>%
+      as.data.frame(cbind(.y = 1:.rws, resp_ind)) %>%
       tidyr::pivot_longer(
         cols = tidyselect::all_of(.vrb),
         names_to = "x",
         values_to = ".where"
       ) %>%
       dplyr::mutate(.x = as.numeric(factor(
-        .data$x,
-        levels = .vrb, ordered = TRUE
+        .data$x, levels = .vrb, ordered = TRUE
       )),
       .where = factor(
         .data$.where,
@@ -98,9 +95,7 @@ plot_miss <-
       ))
     gg <-
       ggplot2::ggplot(long,
-                      ggplot2::aes(.data$.x,
-                                   as.numeric(.data$.y),
-                                   fill = .data$.where)) +
+                      ggplot2::aes(.data$.x, as.numeric(.data$.y), fill = .data$.where)) +
       ggplot2::scale_fill_manual(values = c(
         "observed" = "#006CC2B3",
         "missing" = "#B61A51B3"
@@ -109,12 +104,14 @@ plot_miss <-
       ggplot2::scale_x_continuous(breaks = 1:.cls,
                                   labels = .vrb,
                                   position = "top") +
-      ggplot2::scale_y_reverse(breaks = \(y) {
-        eb = scales::extended_breaks()(y)
-        eb[1] = min(long$.y)
-        eb[length(eb)] = max(long$.y)
-        eb
-      }) +
+      ggplot2::scale_y_reverse(
+        breaks = function(y) {
+          eb <- scales::extended_breaks()(y)
+          eb[1] <- min(long$.y)
+          eb[length(eb)] = max(long$.y)
+          eb
+        }
+      ) +
       ggplot2::labs(
         x = "Column name",
         y = "Row number",
