@@ -1,3 +1,15 @@
+# ggmice 0.1.1
+
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+## Downstream dependencies
+
+There are no downstream dependencies of 'ggmice' yet.
+
+---
+
 # ggmice 0.1.0
 
 ## R CMD check results
