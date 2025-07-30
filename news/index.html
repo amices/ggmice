@@ -40,15 +40,17 @@
 <h2 class="pkg-version" data-toc-text="0.1.1" id="ggmice-011">ggmice 0.1.1<a class="anchor" aria-label="anchor" href="#ggmice-011"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-1"></a></h3>
-<ul><li>New function <code><a href="../reference/plot_miss.html">plot_miss()</a></code> to visualize missing data indicator matrix (<a href="https://github.com/amices/ggmice/issues/123" class="external-link">#123</a>)</li>
-<li>New optional argument in <code><a href="../reference/plot_trace.html">plot_trace()</a></code> to hide legend (<a href="https://github.com/amices/ggmice/issues/165" class="external-link">#165</a>)</li>
-<li>New input data type for <code><a href="../reference/plot_pred.html">plot_pred()</a></code> to allow <code>mids</code> objects (<a href="https://github.com/amices/ggmice/issues/132" class="external-link">#132</a>)</li>
-<li>New optional argument in <code><a href="../reference/plot_trace.html">plot_trace()</a></code> to add a trend line (<a href="https://github.com/amices/ggmice/issues/140" class="external-link">#140</a>)</li>
+<ul><li>New function <code><a href="../reference/plot_miss.html">plot_miss()</a></code> visualizes missing data indicator matrix (<a href="https://github.com/amices/ggmice/issues/123" class="external-link">#123</a>)</li>
+<li>New <code><a href="../reference/plot_trace.html">plot_trace()</a></code> argument <code>legend</code> hides plot legend when set to <code>FALSE</code> (<a href="https://github.com/amices/ggmice/issues/165" class="external-link">#165</a>)</li>
+<li>
+<code><a href="../reference/plot_pred.html">plot_pred()</a></code> now allows <code><a href="https://amices.org/mice/reference/mids.html" class="external-link">mice::mids</a></code> objects as input data type (<a href="https://github.com/amices/ggmice/issues/132" class="external-link">#132</a>)</li>
+<li>New <code><a href="../reference/plot_trace.html">plot_trace()</a></code> argument <code>trend</code> adds a trend line to plot when set to <code>TRUE</code> (<a href="https://github.com/amices/ggmice/issues/140" class="external-link">#140</a>)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-1-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-1"></a></h3>
-<ul><li>Correct labeling of ‘exclusion-restriction’ variables in <code><a href="../reference/plot_pred.html">plot_pred()</a></code> (<a href="https://github.com/amices/ggmice/issues/128" class="external-link">#128</a>)</li>
-<li>Parsing of <code>vrb</code> argument in all <code>plot_*()</code> functions: variable name(s) from object in global environment now recognized using <code>!!</code> notation (<a href="https://github.com/amices/ggmice/issues/157" class="external-link">#157</a>)</li>
+<ul><li>
+<code><a href="../reference/plot_pred.html">plot_pred()</a></code> now correct labels predictor matrix entries <code>-3</code>, <code>3</code> and <code>4</code> as ‘exclusion-restriction’, ‘fixed effect’ and ‘random effect’ variables respectively (<a href="https://github.com/amices/ggmice/issues/128" class="external-link">#128</a>, <a href="https://github.com/amices/ggmice/issues/169" class="external-link">#169</a>)</li>
+<li>All <code>plot_*()</code> functions now parse <code>vrb</code> argument to recognize variable name(s) from object in global environment using <code>!!</code> notation (<a href="https://github.com/amices/ggmice/issues/157" class="external-link">#157</a>)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-changes-0-1-1">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-1-1"></a></h3>
