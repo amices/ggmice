@@ -2,15 +2,15 @@
 
 ## New features
 
-* New function `plot_miss()` to visualize missing data indicator matrix (#123)
-* New optional argument in `plot_trace()` to hide legend (#165)
-* New input data type for `plot_pred()` to allow `mids` objects (#132)
-* New optional argument in `plot_trace()` to add a trend line (#140)
+* New function `plot_miss()` visualizes missing data indicator matrix (#123)
+* New `plot_trace()` argument `legend` hides plot legend when set to `FALSE` (#165)
+* `plot_pred()` now allows `mice::mids` objects as input data type (#132)
+* New `plot_trace()` argument `trend` adds a trend line to plot when set to `TRUE` (#140)
 
 ## Bug fixes
 
-* Correct labeling of 'exclusion-restriction' variables in `plot_pred()` (#128)
-* Parsing of `vrb` argument in all `plot_*()` functions: variable name(s) from object in global environment now recognized using `!!` notation (#157)
+* `plot_pred()` now correct labels predictor matrix entries `-3`, `3` and `4` as 'exclusion-restriction', 'fixed effect' and 'random effect' variables respectively (#128, #169)
+* All `plot_*()` functions now parse `vrb` argument to recognize variable name(s) from object in global environment using `!!` notation (#157)
 
 ## Minor changes
 
