@@ -4,8 +4,8 @@
 
 * New function `plot_miss()` to visualize missing data indicator matrix (#123)
 * New optional argument in `plot_trace()` to hide legend (#165)
-* New input data type for `plot_pred()` (#132)
-* New optional argument in `plot_trace()` (#140)
+* New input data type for `plot_pred()` to allow `mids` objects (#132)
+* New optional argument in `plot_trace()` to add a trend line (#140)
 
 ## Bug fixes
 
@@ -14,7 +14,7 @@
 
 ## Minor changes
 
-* Miscellaneous documentation and vignette updates (#128, #165)
+* Miscellaneous documentation and vignette updates (#128, #165, #169)
 
 ---
 
