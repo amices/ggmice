@@ -24,6 +24,7 @@ theme_minimice <- function() {
       panel.grid.minor = ggplot2::element_blank(),
       panel.grid.major = ggplot2::element_blank(),
       axis.ticks = ggplot2::element_line(colour = "black"),
+      axis.text = ggplot2::element_text(hjust = 0, vjust = 0),
       axis.title.y.right = ggplot2::element_text(margin = ggplot2::margin(l = 6))
     )
 }
