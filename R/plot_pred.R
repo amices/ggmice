@@ -9,6 +9,19 @@
 #'
 #' @return An object of class `ggplot2::ggplot`.
 #'
+#' @details
+#' The predictor matrix in [mice::mice] determines the role an imputation model predictor takes in the imputation model.
+#' The rows correspond to incomplete target variables, and the columns to imputation model predictors.
+#'
+#' A value of `1` indicates that the column variable is a predictor to impute the target (row) variable. The value `0` means that it is not used as predictor.
+#'
+#' Imputation methods for multilevel data use other codes than `0` and `1`:
+#' - Methods `2l.bin`, `2l.lmer`, `2l.norm`, `2l.pan`, `2lonly.mean`, `2lonly.norm` and `2lonly.pmm` use code `-2` to indicate the class variable;
+#' - Methods `2l.bin`, `2l.lmer`, `2l.norm` and `2l.pan` use code `2` to indicate the random effects;
+#' - Method `2l.pan` uses codes `3` and `4` to add class means to codes `1` and `2` respectively.
+#'
+#' @references van Buuren, S. (2018). Flexible imputation of missing data. Chapman and Hall/CRC. [stefvanbuuren.name/fimd](https://stefvanbuuren.name/fimd/)
+#'
 #' @examples
 #' # generate a predictor matrix
 #' pred <- mice::quickpred(mice::nhanes)
@@ -46,8 +59,7 @@ plot_pred <-
     if (mice::is.mids(data)) {
       if (!is.null(method)) {
         cli::cli_warn(
-          c("!" = "Input `method` is ignored when `data` is of class `mids`.",
-            "i" = "The `method` vector from the `mids` object will be used.")
+          c("!" = "Input `method` is ignored when `data` is of class `mids`.", "i" = "The `method` vector from the `mids` object will be used.")
         )
       }
       method <- data$method
@@ -80,12 +92,14 @@ plot_pred <-
       ind = matrix(data[vrb_matched, vrb_matched], nrow = p * p, byrow = TRUE)
     ) %>% dplyr::mutate(clr = factor(
       .data$ind,
-      levels = c(-3, -2, 0, 1, 2),
+      levels = c(-3, -2, 0, 1, 2, 3, 4),
       labels = c(
         "inclusion-restriction variable",
         "cluster variable",
         "not used",
         "predictor",
+        "random effect",
+        "fixed effect",
         "random effect"
       ),
       ordered = TRUE
@@ -112,7 +126,8 @@ plot_pred <-
           "cluster variable" = "lightyellow",
           "not used" = "grey90",
           "predictor" = "palegreen3",
-          "random effect" = "deepskyblue"
+          "random effect" = "deepskyblue",
+          "fixed effect" = "deepskyblue"
         )
       ) +
       ggplot2::labs(

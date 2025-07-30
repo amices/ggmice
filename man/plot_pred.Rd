@@ -32,6 +32,19 @@ An object of class \code{ggplot2::ggplot}.
 \description{
 Plot the predictor matrix of an imputation model
 }
+\details{
+The predictor matrix in \link[mice:mice]{mice::mice} determines the role an imputation model predictor takes in the imputation model.
+The rows correspond to incomplete target variables, and the columns to imputation model predictors.
+
+A value of \code{1} indicates that the column variable is a predictor to impute the target (row) variable. The value \code{0} means that it is not used as predictor.
+
+Imputation methods for multilevel data use other codes than \code{0} and \code{1}:
+\itemize{
+\item Methods \verb{2l.bin}, \verb{2l.lmer}, \verb{2l.norm}, \verb{2l.pan}, \verb{2lonly.mean}, \verb{2lonly.norm} and \verb{2lonly.pmm} use code \code{-2} to indicate the class variable;
+\item Methods \verb{2l.bin}, \verb{2l.lmer}, \verb{2l.norm} and \verb{2l.pan} use code \code{2} to indicate the random effects;
+\item Method \verb{2l.pan} uses codes \code{3} and \code{4} to add class means to codes \code{1} and \code{2} respectively.
+}
+}
 \examples{
 # generate a predictor matrix
 pred <- mice::quickpred(mice::nhanes)
@@ -56,4 +69,7 @@ try(plot_pred(pred, my_variables))
 imp <- mice::mice(mice::nhanes, print = FALSE)
 plot_pred(imp)
 
+}
+\references{
+van Buuren, S. (2018). Flexible imputation of missing data. Chapman and Hall/CRC. \href{https://stefvanbuuren.name/fimd/}{stefvanbuuren.name/fimd}
 }

@@ -48,6 +48,9 @@ plot_trace <- function(data,
   if (is.null(data$chainMean) && is.null(data$chainVar)) {
     cli::cli_abort("No convergence diagnostics found", call. = FALSE)
   }
+  if (data$m < 2L && data$maxit < 2L) {
+    cli::cli_abort("More iterations and/or imputations required", call. = FALSE)
+  }
   vrb <- rlang::enexpr(vrb)
   vrbs_in_data <- names(data$imp)
   vrb_matched <- match_vrb(vrb, vrbs_in_data)
