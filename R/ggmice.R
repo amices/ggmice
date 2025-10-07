@@ -137,14 +137,18 @@ ggmice <- function(data = NULL,
       ggplot2::coord_cartesian(clip = "off")
     if (!is.null(mapping$x)) {
       if (vrb_x %nin% vrbs_num) {
-        gg <- gg +
-          ggplot2::scale_x_discrete(expand = ggplot2::expansion(add = c(0, 0.6)))
+        if (any(is.infinite(mice_data[[vrb_x]]))) {
+          gg <- gg +
+            ggplot2::scale_x_discrete(expand = ggplot2::expansion(add = c(0, 0.6)))
+        }
       }
     }
     if (!is.null(mapping$y)) {
       if (vrb_y %nin% vrbs_num) {
-        gg <- gg +
-          ggplot2::scale_y_discrete(expand = ggplot2::expansion(add = c(0, 0.6)))
+        if (any(is.infinite(mice_data[[vrb_y]]))) {
+          gg <- gg +
+            ggplot2::scale_y_discrete(expand = ggplot2::expansion(add = c(0, 0.6)))
+        }
       }
     }
   }
