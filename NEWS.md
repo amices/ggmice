@@ -1,5 +1,9 @@
 # ggmice (development version)
 
+## Bug fixes
+
+* Deprecated `ggplot2` argument `size` no longer used in vignettes (#174)
+
 # ggmice 0.1.1
 
 ## New features
