@@ -67,9 +67,9 @@ mice::densityplot(imp, ~hgt)
 ggmice(imp, aes(x = hgt, group = .imp)) +
   geom_density()
 # extended reproduction with ggmice
-ggmice(imp, aes(x = hgt, group = .imp, size = .where)) +
+ggmice(imp, aes(x = hgt, group = .imp, linewidth = .where)) +
   geom_density() +
-  scale_size_manual(
+  scale_linewidth_manual(
     values = c("observed" = 1, "imputed" = 0.5),
     guide = "none"
   ) +
