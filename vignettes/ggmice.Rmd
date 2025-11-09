@@ -174,7 +174,7 @@ A major advantage of `ggmice()` over the equivalent function `mice::stripplot()`
 ```{r imp-box}
 ggmice(imp, aes(x = .imp, y = hgt)) +
   geom_jitter(height = 0, width = 0.25) +
-  geom_boxplot(width = 0.5, size = 1, alpha = 0.75, outlier.shape = NA) +
+  geom_boxplot(width = 0.5, linewidth = 1, alpha = 0.75, outlier.shape = NA) +
   labs(x = "Imputation number")
 ```
 
