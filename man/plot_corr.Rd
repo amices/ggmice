@@ -7,6 +7,7 @@
 plot_corr(
   data,
   vrb = "all",
+  diff = FALSE,
   label = FALSE,
   square = TRUE,
   diagonal = FALSE,
@@ -18,6 +19,8 @@ plot_corr(
 \item{data}{A dataset of class \code{data.frame}, \code{tibble}, or \code{matrix}.}
 
 \item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
+
+\item{diff}{Logical indicating whether the difference between the observed and imputed data is plotted.}
 
 \item{label}{Logical indicating whether correlation values should be displayed.}
 
