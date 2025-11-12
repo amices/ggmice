@@ -21,6 +21,7 @@ License: GPL (>= 3)
 URL: https://amices.org/ggmice/
 BugReports: https://github.com/amices/ggmice/issues
 Imports: 
+    broom,
     cli,
     dplyr,
     ggplot2,
