@@ -16,8 +16,10 @@ An object of class \code{\link[ggplot2:ggplot]{ggplot2::ggplot}}. The \code{\lin
 equivalent to \code{\link[ggplot2:ggplot]{ggplot2::ggplot}} output, with a few important exceptions:
 \itemize{
 \item The theme is set to \code{\link{theme_mice}}.
-\item The color scale is set to the \code{\link[mice:mdc]{mice::mdc}} colors.
+\item The color and fill scales are set to the \code{\link[mice:mdc]{mice::mdc}} colors (see below).
 \item The \code{colour} aesthetic is set to \code{.where}, an internally defined variable which distinguishes
+observed data from missing data or imputed data (for incomplete and imputed data, respectively).
+\item The \code{fill} aesthetic is set to \code{.where}, an internally defined variable which distinguishes
 observed data from missing data or imputed data (for incomplete and imputed data, respectively).
 }
 }
