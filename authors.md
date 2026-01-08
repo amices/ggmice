@@ -25,15 +25,14 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/amices/ggmice/blob/main/DESCRIPTION)
+[`inst/CITATION`](https://github.com/amices/ggmice/blob/main/inst/CITATION)
 
-Oberman H (2025). *ggmice: Visualizations for 'mice' with 'ggplot2'*. R
-package version 0.1.1.9000, <https://amices.org/ggmice/>.
+Oberman H (2022). *'ggmice': Visualizations for 'mice' with 'ggplot2'*.
+[doi:10.5281/zenodo.6532702](https://doi.org/10.5281/zenodo.6532702).
 
     @Manual{,
-      title = {ggmice: Visualizations for 'mice' with 'ggplot2'},
+      title = {'ggmice': Visualizations for 'mice' with 'ggplot2'},
       author = {Hanne Oberman},
-      year = {2025},
-      note = {R package version 0.1.1.9000},
-      url = {https://amices.org/ggmice/},
+      year = {2022},
+      doi = {https://doi.org/10.5281/zenodo.6532702},
     }
