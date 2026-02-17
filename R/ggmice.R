@@ -90,10 +90,13 @@ ggmice <- function(data = NULL,
       )
     }
     mice_mapping <-
-      utils::modifyList(mapping, ggplot2::aes(colour = .where))
+      utils::modifyList(mapping, ggplot2::aes(colour = .where, shape = .where, stroke = 1))
     mice_colors <-
       c("observed" = "#006CC2B3",
         "missing" = "#B61A51B3")
+    mice_shapes <-
+      c("observed" = "circle open",
+        "missing" = "cross")
   }
   if (mice::is.mids(data)) {
     where_xy <- rowSums(as.matrix(data$where[, c(vrb_x, vrb_y)])) > 0L
@@ -117,15 +120,21 @@ ggmice <- function(data = NULL,
       .imp = factor(.imp, levels = 0:data$m, ordered = TRUE)
     )
     mice_mapping <-
-      utils::modifyList(mapping, ggplot2::aes(colour = .where))
+      utils::modifyList(mapping, ggplot2::aes(colour = .where, shape = .where, stroke = 1))
     mice_colors <-
       c("observed" = "#006CC2B3",
         "imputed" = "#B61A51B3")
+    mice_shapes <-
+      c("observed" = "circle open",
+        "imputed" = "circle open")
   }
 
   # create plot
   gg <- ggplot2::ggplot(data = mice_data, mapping = mice_mapping) +
     ggplot2::scale_color_manual(values = mice_colors,
+                                name = "",
+                                drop = FALSE) +
+    ggplot2::scale_shape_manual(values = mice_shapes,
                                 name = "",
                                 drop = FALSE) +
     theme_mice()
