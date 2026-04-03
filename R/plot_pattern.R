@@ -2,10 +2,10 @@
 #'
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
-#' @param square Logical indicating whether the plot tiles should be squares, defaults to squares to mimick `mice::md.pattern()`.
+#' @param square Logical indicating whether the plot tiles should be squares, defaults to squares to mimic `mice::md.pattern()`.
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
-#' @param npat Optional numeric input specifying the number of missing data patterns to be visualized, defaults to all patterns.
+#' @param npat Optional numeric input specifying the maximum number of missing data patterns to be visualized, defaults to all patterns.
 #' @param caption Logical indicating whether the figure caption should be displayed.
 #'
 #' @return An object of class [ggplot2::ggplot].
@@ -26,6 +26,9 @@
 #' plot_pattern(mice::nhanes, !!my_variables)
 #' # object with variable names must be unquoted with `!!`
 #' try(plot_pattern(mice::nhanes, my_variables))
+#'
+#' # plot missing data pattern by cluster
+#' plot_pattern(mice::nhanes, cluster = "age")
 #'
 #' @export
 plot_pattern <-
@@ -118,7 +121,7 @@ plot_pattern <-
       pat_clean <- cbind(.opacity = 1, pat[-rws, vrb, drop = FALSE])
     } else {
       pats <- purrr::map(split(data[, vrb], ~ get(cluster)), ~ {
-        mice::md.pattern(., plot = FALSE) %>%
+        purrr::quietly(mice::md.pattern)(., plot = FALSE)$result %>%
           pat_to_chr(., ord = vrb)
       })
       pat_used <- purrr::map_dfr(pats, ~ {
@@ -233,7 +236,7 @@ pat_to_chr <- function(pat, ord = NULL) {
   if (is.null(ord)) {
     ord <- colnames(pat)[-ncol(pat)]
   }
-  apply(pat[-nrow(pat), ord], 1, function(x) {
+  apply(pat[-nrow(pat), ord, drop = FALSE], 1, function(x) {
     paste(as.numeric(x), collapse = "")
   })
 }

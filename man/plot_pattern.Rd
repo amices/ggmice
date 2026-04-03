@@ -19,13 +19,13 @@ plot_pattern(
 
 \item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
 
-\item{square}{Logical indicating whether the plot tiles should be squares, defaults to squares to mimick \code{mice::md.pattern()}.}
+\item{square}{Logical indicating whether the plot tiles should be squares, defaults to squares to mimic \code{mice::md.pattern()}.}
 
 \item{rotate}{Logical indicating whether the variable name labels should be rotated 90 degrees.}
 
 \item{cluster}{Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).}
 
-\item{npat}{Optional numeric input specifying the number of missing data patterns to be visualized, defaults to all patterns.}
+\item{npat}{Optional numeric input specifying the maximum number of missing data patterns to be visualized, defaults to all patterns.}
 
 \item{caption}{Logical indicating whether the figure caption should be displayed.}
 }
@@ -51,5 +51,8 @@ my_variables <- c("chl", "hyp")
 plot_pattern(mice::nhanes, !!my_variables)
 # object with variable names must be unquoted with `!!`
 try(plot_pattern(mice::nhanes, my_variables))
+
+# plot missing data pattern by cluster
+plot_pattern(mice::nhanes, cluster = "age")
 
 }
