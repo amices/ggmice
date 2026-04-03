@@ -115,8 +115,7 @@ plot_miss <-
       ggplot2::labs(
         x = "Column name",
         y = "Row number",
-        fill = "",
-        alpha = ""
+        fill = ""
       ) +
       theme_minimice()
     # additional arguments
