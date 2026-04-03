@@ -467,8 +467,6 @@ pred <- quickpred(dat)
 
 # create predictor matrix plot
 plot_pred(pred)
-#> Ignoring unknown labels:
-#> • colour : ""
 ```
 
 ![](ggmice_files/figure-html/predictormatrix-1.png)
@@ -483,8 +481,6 @@ plot_pred(
   rotate = TRUE,
   method = "pmm"
 )
-#> Ignoring unknown labels:
-#> • colour : ""
 ```
 
 ![](ggmice_files/figure-html/predictormatrix-2.png)
@@ -514,9 +510,9 @@ This is the end of the vignette. This document was generated using:
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.3 LTS
+#> Running under: Ubuntu 24.04.4 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -535,26 +531,26 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggmice_0.1.1.9000 ggplot2_4.0.1     mice_3.19.0      
+#> [1] ggmice_0.1.1.9000 ggplot2_4.0.2     mice_3.19.0      
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] gtable_0.3.6       shape_1.4.6.1      xfun_0.55          bslib_0.9.0       
-#>  [5] htmlwidgets_1.6.4  lattice_0.22-7     vctrs_0.6.5        tools_4.5.2       
-#>  [9] Rdpack_2.6.4       generics_0.1.4     tibble_3.3.0       pan_1.9           
+#>  [1] gtable_0.3.6       shape_1.4.6.1      xfun_0.57          bslib_0.10.0      
+#>  [5] htmlwidgets_1.6.4  lattice_0.22-9     vctrs_0.7.2        tools_4.5.3       
+#>  [9] Rdpack_2.6.6       generics_0.1.4     tibble_3.3.1       pan_1.9           
 #> [13] pkgconfig_2.0.3    jomo_2.7-6         Matrix_1.7-4       RColorBrewer_1.1-3
-#> [17] S7_0.2.1           desc_1.4.3         lifecycle_1.0.4    compiler_4.5.2    
-#> [21] farver_2.1.2       stringr_1.6.0      textshaping_1.0.4  codetools_0.2-20  
+#> [17] S7_0.2.1           desc_1.4.3         lifecycle_1.0.5    compiler_4.5.3    
+#> [21] farver_2.1.2       stringr_1.6.0      textshaping_1.0.5  codetools_0.2-20  
 #> [25] htmltools_0.5.9    sass_0.4.10        yaml_2.3.12        glmnet_4.1-10     
 #> [29] pillar_1.11.1      pkgdown_2.2.0      nloptr_2.2.1       jquerylib_0.1.4   
-#> [33] tidyr_1.3.2        MASS_7.3-65        cachem_1.1.0       reformulas_0.4.3  
+#> [33] tidyr_1.3.2        MASS_7.3-65        cachem_1.1.0       reformulas_0.4.4  
 #> [37] iterators_1.0.14   rpart_4.1.24       boot_1.3-32        foreach_1.5.2     
 #> [41] mitml_0.4-5        nlme_3.1-168       tidyselect_1.2.1   digest_0.6.39     
-#> [45] stringi_1.8.7      dplyr_1.1.4        purrr_1.2.0        labeling_0.4.3    
-#> [49] splines_4.5.2      fastmap_1.2.0      grid_4.5.2         cli_3.6.5         
-#> [53] magrittr_2.0.4     patchwork_1.3.2    survival_3.8-3     broom_1.0.11      
-#> [57] withr_3.0.2        scales_1.4.0       backports_1.5.0    rmarkdown_2.30    
-#> [61] otel_0.2.0         nnet_7.3-20        lme4_1.1-38        ragg_1.5.0        
-#> [65] evaluate_1.0.5     knitr_1.51         rbibutils_2.4      rlang_1.1.6       
-#> [69] Rcpp_1.1.0         glue_1.8.0         minqa_1.2.8        jsonlite_2.0.0    
-#> [73] R6_2.6.1           systemfonts_1.3.1  fs_1.6.6
+#> [45] stringi_1.8.7      dplyr_1.2.0        purrr_1.2.1        labeling_0.4.3    
+#> [49] splines_4.5.3      fastmap_1.2.0      grid_4.5.3         cli_3.6.5         
+#> [53] magrittr_2.0.4     patchwork_1.3.2    survival_3.8-6     broom_1.0.12      
+#> [57] withr_3.0.2        scales_1.4.0       backports_1.5.0    rmarkdown_2.31    
+#> [61] otel_0.2.0         nnet_7.3-20        lme4_2.0-1         ragg_1.5.2        
+#> [65] evaluate_1.0.5     knitr_1.51         rbibutils_2.4.1    rlang_1.1.7       
+#> [69] Rcpp_1.1.1         glue_1.8.0         minqa_1.2.8        jsonlite_2.0.0    
+#> [73] R6_2.6.1           systemfonts_1.3.2  fs_2.0.1
 ```

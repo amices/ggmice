@@ -55,28 +55,20 @@ An object of class
 ``` r
 # plot correlations for all columns
 plot_miss(mice::nhanes)
-#> Ignoring unknown labels:
-#> • alpha : ""
 
 
 # plot correlations for specific columns by supplying a character vector
 plot_miss(mice::nhanes, c("chl", "hyp"))
-#> Ignoring unknown labels:
-#> • alpha : ""
 
 
 # plot correlations for specific columns by supplying unquoted variable names
 plot_miss(mice::nhanes, c(chl, hyp))
-#> Ignoring unknown labels:
-#> • alpha : ""
 
 
 # plot correlations for specific columns by passing an object with variable names
 # from the environment, unquoted with `!!`
 my_variables <- c("chl", "hyp")
 plot_miss(mice::nhanes, !!my_variables)
-#> Ignoring unknown labels:
-#> • alpha : ""
 
 # object with variable names must be unquoted with `!!`
 try(plot_miss(mice::nhanes, my_variables))
@@ -88,11 +80,7 @@ try(plot_miss(mice::nhanes, my_variables))
 
 # plot larger dataset
 plot_miss(mice::boys)
-#> Ignoring unknown labels:
-#> • alpha : ""
 
 plot_miss(mice::boys, ordered = TRUE)
-#> Ignoring unknown labels:
-#> • alpha : ""
 
 ```

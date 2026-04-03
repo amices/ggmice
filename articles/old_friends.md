@@ -325,9 +325,9 @@ This is the end of the vignette. This document was generated using:
 
 ``` r
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.5.3 (2026-03-11)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.3 LTS
+#> Running under: Ubuntu 24.04.4 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -346,28 +346,34 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] patchwork_1.3.2   purrr_1.2.0       plotly_4.11.0     ggplot2_4.0.1    
+#> [1] patchwork_1.3.2   purrr_1.2.1       plotly_4.12.0     ggplot2_4.0.2    
 #> [5] mice_3.19.0       ggmice_0.1.1.9000
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] gtable_0.3.6       shape_1.4.6.1      xfun_0.55          bslib_0.9.0       
-#>  [5] htmlwidgets_1.6.4  lattice_0.22-7     crosstalk_1.2.2    vctrs_0.6.5       
-#>  [9] tools_4.5.2        Rdpack_2.6.4       generics_0.1.4     tibble_3.3.0      
-#> [13] pan_1.9            pkgconfig_2.0.3    jomo_2.7-6         Matrix_1.7-4      
-#> [17] data.table_1.18.0  RColorBrewer_1.1-3 S7_0.2.1           desc_1.4.3        
-#> [21] lifecycle_1.0.4    compiler_4.5.2     farver_2.1.2       stringr_1.6.0     
-#> [25] textshaping_1.0.4  codetools_0.2-20   htmltools_0.5.9    sass_0.4.10       
-#> [29] lazyeval_0.2.2     yaml_2.3.12        glmnet_4.1-10      pillar_1.11.1     
-#> [33] pkgdown_2.2.0      nloptr_2.2.1       jquerylib_0.1.4    tidyr_1.3.2       
-#> [37] MASS_7.3-65        cachem_1.1.0       reformulas_0.4.3   iterators_1.0.14  
-#> [41] rpart_4.1.24       boot_1.3-32        foreach_1.5.2      mitml_0.4-5       
-#> [45] nlme_3.1-168       tidyselect_1.2.1   digest_0.6.39      stringi_1.8.7     
-#> [49] dplyr_1.1.4        labeling_0.4.3     splines_4.5.2      fastmap_1.2.0     
-#> [53] grid_4.5.2         cli_3.6.5          magrittr_2.0.4     survival_3.8-3    
-#> [57] broom_1.0.11       withr_3.0.2        scales_1.4.0       backports_1.5.0   
-#> [61] httr_1.4.7         rmarkdown_2.30     otel_0.2.0         nnet_7.3-20       
-#> [65] lme4_1.1-38        ragg_1.5.0         evaluate_1.0.5     knitr_1.51        
-#> [69] rbibutils_2.4      viridisLite_0.4.2  rlang_1.1.6        Rcpp_1.1.0        
-#> [73] glue_1.8.0         minqa_1.2.8        jsonlite_2.0.0     R6_2.6.1          
-#> [77] systemfonts_1.3.1  fs_1.6.6
+#>  [1] gtable_0.3.6        shape_1.4.6.1       xfun_0.57          
+#>  [4] bslib_0.10.0        htmlwidgets_1.6.4   lattice_0.22-9     
+#>  [7] crosstalk_1.2.2     vctrs_0.7.2         tools_4.5.3        
+#> [10] Rdpack_2.6.6        generics_0.1.4      tibble_3.3.1       
+#> [13] pan_1.9             pkgconfig_2.0.3     jomo_2.7-6         
+#> [16] Matrix_1.7-4        data.table_1.18.2.1 RColorBrewer_1.1-3 
+#> [19] S7_0.2.1            desc_1.4.3          lifecycle_1.0.5    
+#> [22] compiler_4.5.3      farver_2.1.2        stringr_1.6.0      
+#> [25] textshaping_1.0.5   codetools_0.2-20    htmltools_0.5.9    
+#> [28] sass_0.4.10         lazyeval_0.2.2      yaml_2.3.12        
+#> [31] glmnet_4.1-10       pillar_1.11.1       pkgdown_2.2.0      
+#> [34] nloptr_2.2.1        jquerylib_0.1.4     tidyr_1.3.2        
+#> [37] MASS_7.3-65         cachem_1.1.0        reformulas_0.4.4   
+#> [40] iterators_1.0.14    rpart_4.1.24        boot_1.3-32        
+#> [43] foreach_1.5.2       mitml_0.4-5         nlme_3.1-168       
+#> [46] tidyselect_1.2.1    digest_0.6.39       stringi_1.8.7      
+#> [49] dplyr_1.2.0         labeling_0.4.3      splines_4.5.3      
+#> [52] fastmap_1.2.0       grid_4.5.3          cli_3.6.5          
+#> [55] magrittr_2.0.4      survival_3.8-6      broom_1.0.12       
+#> [58] withr_3.0.2         scales_1.4.0        backports_1.5.0    
+#> [61] httr_1.4.8          rmarkdown_2.31      otel_0.2.0         
+#> [64] nnet_7.3-20         lme4_2.0-1          ragg_1.5.2         
+#> [67] evaluate_1.0.5      knitr_1.51          rbibutils_2.4.1    
+#> [70] viridisLite_0.4.3   rlang_1.1.7         Rcpp_1.1.1         
+#> [73] glue_1.8.0          minqa_1.2.8         jsonlite_2.0.0     
+#> [76] R6_2.6.1            systemfonts_1.3.2   fs_2.0.1
 ```
