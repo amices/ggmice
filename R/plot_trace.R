@@ -40,10 +40,7 @@
 #' try(plot_trace(imp, my_variables))
 #'
 #' @export
-plot_trace <- function(data,
-                       vrb = "all",
-                       trend = FALSE,
-                       legend = TRUE) {
+plot_trace <- function(data, vrb = "all", trend = FALSE, legend = TRUE) {
   verify_data(data, imp = TRUE)
   if (is.null(data$chainMean) && is.null(data$chainVar)) {
     cli::cli_abort("No convergence diagnostics found", call. = FALSE)
@@ -57,13 +54,20 @@ plot_trace <- function(data,
   # extract chain means and chain standard deviations
   mn <- data$chainMean
   sm <- sqrt(data$chainVar)
-  available_vrbs <- vrbs_in_data[apply(!(is.nan(mn) |
-                                           is.na(sm)), 1, all)]
+  available_vrbs <- vrbs_in_data[apply(
+    !(is.nan(mn) |
+      is.na(sm)),
+    1,
+    all
+  )]
   if (any(vrb_matched %nin% available_vrbs)) {
     cli::cli_inform(
       c(
         "Trace plot could not be produced for variable(s):",
-        " " = paste(vrb_matched[which(vrb_matched %nin% available_vrbs)], collapse = ", "),
+        " " = paste(
+          vrb_matched[which(vrb_matched %nin% available_vrbs)],
+          collapse = ", "
+        ),
         "i" = "No convergence diagnostics found."
       )
     )
@@ -73,26 +77,33 @@ plot_trace <- function(data,
   p <- length(vrb_matched)
   m <- data$m
   it <- data$iteration
-  long <- cbind(expand.grid(.it = seq_len(it), .m = seq_len(m)),
-                data.frame(
-                  .ms = rep(c("mean", "sd"), each = m * it * p),
-                  vrb = rep(vrb_matched, each = m * it, times = 2),
-                  val = c(
-                    matrix(
-                      aperm(mn[vrb_matched, , , drop = FALSE], c(2, 3, 1)),
-                      nrow = m * it * p),
-                    matrix(
-                      aperm(sm[vrb_matched, , , drop = FALSE], c(2, 3, 1)),
-                      nrow = m * it * p))
-                ))
+  long <- cbind(
+    expand.grid(.it = seq_len(it), .m = seq_len(m)),
+    data.frame(
+      .ms = rep(c("mean", "sd"), each = m * it * p),
+      vrb = rep(vrb_matched, each = m * it, times = 2),
+      val = c(
+        matrix(
+          aperm(mn[vrb_matched, , , drop = FALSE], c(2, 3, 1)),
+          nrow = m * it * p
+        ),
+        matrix(
+          aperm(sm[vrb_matched, , , drop = FALSE], c(2, 3, 1)),
+          nrow = m * it * p
+        )
+      )
+    )
+  )
 
   # plot the convergence diagnostics
-  gg <- ggplot2::ggplot(long,
-                        ggplot2::aes(
-                          x = .data$.it,
-                          y = .data$val,
-                          color = as.factor(.data$.m)
-                        )) +
+  gg <- ggplot2::ggplot(
+    long,
+    ggplot2::aes(
+      x = .data$.it,
+      y = .data$val,
+      color = as.factor(.data$.m)
+    )
+  ) +
     ggplot2::geom_line(linewidth = 0.6) +
     ggplot2::geom_hline(yintercept = -Inf) +
     ggplot2::facet_wrap(
@@ -106,7 +117,11 @@ plot_trace <- function(data,
         list(do.call(paste, c(labels, list(sep = "\n"))))
       }
     ) +
-    ggplot2::labs(x = "Iteration", y = "Imputation parameter", color = "Imputation number") +
+    ggplot2::labs(
+      x = "Iteration",
+      y = "Imputation parameter",
+      color = "Imputation number"
+    ) +
     theme_mice() +
     ggplot2::theme(
       strip.background = ggplot2::element_blank(),

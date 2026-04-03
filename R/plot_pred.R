@@ -48,18 +48,23 @@
 #'
 #' @export
 plot_pred <-
-  function(data,
-           vrb = "all",
-           method = NULL,
-           label = TRUE,
-           square = TRUE,
-           rotate = FALSE) {
+  function(
+    data,
+    vrb = "all",
+    method = NULL,
+    label = TRUE,
+    square = TRUE,
+    rotate = FALSE
+  ) {
     verify_data(data, pred = TRUE, imp = TRUE)
     vrb <- rlang::enexpr(vrb)
     if (mice::is.mids(data)) {
       if (!is.null(method)) {
         cli::cli_warn(
-          c("!" = "Input `method` is ignored when `data` is of class `mids`.", "i" = "The `method` vector from the `mids` object will be used.")
+          c(
+            "!" = "Input `method` is ignored when `data` is of class `mids`.",
+            "i" = "The `method` vector from the `mids` object will be used."
+          )
         )
       }
       method <- data$method
@@ -83,36 +88,43 @@ plot_pred <-
       ylabel <- ""
     }
     if (!is.character(method) || length(method) != p) {
-      cli::cli_abort("Method should be `NULL` or a character string or vector
-                     (of length 1 or `ncol(data)`).")
+      cli::cli_abort(
+        "Method should be `NULL` or a character string or vector
+                     (of length 1 or `ncol(data)`)."
+      )
     }
     long <- data.frame(
       vrb = 1:p,
       prd = rep(vrb_matched, each = p),
       ind = matrix(data[vrb_matched, vrb_matched], nrow = p * p, byrow = TRUE)
-    ) %>% dplyr::mutate(clr = factor(
-      .data$ind,
-      levels = c(-3, -2, 0, 1, 2, 3, 4),
-      labels = c(
-        "inclusion-restriction variable",
-        "cluster variable",
-        "not used",
-        "predictor",
-        "random effect",
-        "fixed effect",
-        "random effect"
-      ),
-      ordered = TRUE
-    ))
+    ) %>%
+      dplyr::mutate(
+        clr = factor(
+          .data$ind,
+          levels = c(-3, -2, 0, 1, 2, 3, 4),
+          labels = c(
+            "inclusion-restriction variable",
+            "cluster variable",
+            "not used",
+            "predictor",
+            "random effect",
+            "fixed effect",
+            "random effect"
+          ),
+          ordered = TRUE
+        )
+      )
 
     gg <-
-      ggplot2::ggplot(long,
-                      ggplot2::aes(
-                        x = .data$prd,
-                        y = .data$vrb,
-                        label = .data$ind,
-                        fill = .data$clr
-                      )) +
+      ggplot2::ggplot(
+        long,
+        ggplot2::aes(
+          x = .data$prd,
+          y = .data$vrb,
+          label = .data$ind,
+          fill = .data$clr
+        )
+      ) +
       ggplot2::geom_tile(color = "black", alpha = 0.6) +
       ggplot2::scale_x_discrete(limits = vrb_matched, position = "top") +
       ggplot2::scale_y_reverse(

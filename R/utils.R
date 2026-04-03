@@ -20,7 +20,16 @@
 NULL
 
 # suppress undefined global functions or variables note
-utils::globalVariables(c(".id", ".imp", ".where", ".id", "where", "name", "value", "nmis"))
+utils::globalVariables(c(
+  ".id",
+  ".imp",
+  ".where",
+  ".id",
+  "where",
+  "name",
+  "value",
+  "nmis"
+))
 
 # Alias a function with `foo <- function(...) pkgB::blah(...)`
 
@@ -35,10 +44,7 @@ utils::globalVariables(c(".id", ".imp", ".where", ".id", "where", "name", "value
 #'
 #' @keywords internal
 #' @noRd
-verify_data <- function(data,
-                        df = FALSE,
-                        imp = FALSE,
-                        pred = FALSE) {
+verify_data <- function(data, df = FALSE, imp = FALSE, pred = FALSE) {
   if (df && !imp) {
     if (!(is.data.frame(data) || is.matrix(data))) {
       cli::cli_abort(
@@ -51,8 +57,11 @@ verify_data <- function(data,
     }
   }
   if (df && imp) {
-    if (!(is.data.frame(data) ||
-          is.matrix(data) || mice::is.mids(data))) {
+    if (
+      !(is.data.frame(data) ||
+        is.matrix(data) ||
+        mice::is.mids(data))
+    ) {
       cli::cli_abort(
         c(
           "The 'data' argument requires an object of class 'data.frame', 'matrix', or 'mids'.",
@@ -73,7 +82,7 @@ verify_data <- function(data,
       )
     }
   }
-  if (imp && pred){
+  if (imp && pred) {
     if (!(is.matrix(data) || mice::is.mids(data))) {
       cli::cli_abort(
         c(
@@ -103,8 +112,11 @@ verify_data <- function(data,
         call. = FALSE
       )
     }
-    if (is.null(rownames(data)) || is.null(colnames(data)) ||
-        !all.equal(rownames(data), colnames(data))) {
+    if (
+      is.null(rownames(data)) ||
+        is.null(colnames(data)) ||
+        !all.equal(rownames(data), colnames(data))
+    ) {
       cli::cli_warn(
         c(
           "The 'data' argument expects a square predictor matrix with equal row and column names.",
@@ -126,10 +138,12 @@ verify_data <- function(data,
 #' @keywords internal
 #' @noRd
 match_vrb <- function(vrb, vrbs_in_data) {
-  if (is.call(vrb))
+  if (is.call(vrb)) {
     vrb <- as.character(vrb)[-1]
-  if (is.symbol(vrb))
+  }
+  if (is.symbol(vrb)) {
     vrb <- as.character(vrb)
+  }
   if (length(vrb) == 1 && as.character(vrb) == "all") {
     vrb <- vrbs_in_data
   }
@@ -143,12 +157,24 @@ match_vrb <- function(vrb, vrbs_in_data) {
     )
   }
   if (any(vrb %nin% vrbs_in_data)) {
-    cli::cli_warn(c("x" = "The following variables are not present in {.var data}:", " " = paste(
-      setdiff(vrb, vrbs_in_data), collapse = ", "
-    )))
+    cli::cli_warn(c(
+      "x" = "The following variables are not present in {.var data}:",
+      " " = paste(
+        setdiff(vrb, vrbs_in_data),
+        collapse = ", "
+      )
+    ))
   }
   return(vrb)
 }
 
 # suppress undefined global functions or variables note
-utils::globalVariables(c(".id", ".imp", ".where", ".id", "where", "name", "value"))
+utils::globalVariables(c(
+  ".id",
+  ".imp",
+  ".where",
+  ".id",
+  "where",
+  "name",
+  "value"
+))

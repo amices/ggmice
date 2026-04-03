@@ -29,13 +29,15 @@
 #'
 #' @export
 plot_pattern <-
-  function(data,
-           vrb = "all",
-           square = TRUE,
-           rotate = FALSE,
-           cluster = NULL,
-           npat = NULL,
-           caption = TRUE) {
+  function(
+    data,
+    vrb = "all",
+    square = TRUE,
+    rotate = FALSE,
+    cluster = NULL,
+    npat = NULL,
+    caption = TRUE
+  ) {
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
@@ -43,7 +45,9 @@ plot_pattern <-
     vrb <- rlang::enexpr(vrb)
     vrb_matched <- match_vrb(vrb, names(data))
     if (length(vrb_matched) < 2) {
-      cli::cli_abort("The number of variables should be two or more to compute missing data patterns.")
+      cli::cli_abort(
+        "The number of variables should be two or more to compute missing data patterns."
+      )
     }
     if (".x" %in% vrb_matched || ".y" %in% vrb_matched) {
       cli::cli_abort(
@@ -56,16 +60,20 @@ plot_pattern <-
     if (!is.null(cluster)) {
       if (cluster %nin% names(data[, vrb_matched])) {
         cli::cli_abort(
-          c("Cluster variable not recognized.",
-            "i" = "Please provide the variable name as a character string.")
+          c(
+            "Cluster variable not recognized.",
+            "i" = "Please provide the variable name as a character string."
+          )
         )
       }
     }
     if (!is.null(npat)) {
       if (!is.numeric(npat) || npat < 1) {
         cli::cli_abort(
-          c("The minimum number of patterns to display is one.",
-            "i" = "Please provide a positive integer.")
+          c(
+            "The minimum number of patterns to display is one.",
+            "i" = "Please provide a positive integer."
+          )
         )
       }
     }
@@ -74,7 +82,6 @@ plot_pattern <-
     pat <- mice::md.pattern(data[, vrb_matched], plot = FALSE)
     rows_pat_full <-
       (nrow(pat) - 1) # full number of missing data patterns
-
 
     # filter npat most frequent patterns
     if (!is.null(npat)) {
@@ -117,13 +124,19 @@ plot_pattern <-
     if (is.null(cluster)) {
       pat_clean <- cbind(.opacity = 1, pat[-rws, vrb, drop = FALSE])
     } else {
-      pats <- purrr::map(split(data[, vrb], ~ get(cluster)), ~ {
-        mice::md.pattern(., plot = FALSE) %>%
-          pat_to_chr(., ord = vrb)
-      })
-      pat_used <- purrr::map_dfr(pats, ~ {
-        pat_to_chr(pat) %in% .x
-      }) %>%
+      pats <- purrr::map(
+        split(data[, vrb], ~ get(cluster)),
+        ~ {
+          mice::md.pattern(., plot = FALSE) %>%
+            pat_to_chr(., ord = vrb)
+        }
+      )
+      pat_used <- purrr::map_dfr(
+        pats,
+        ~ {
+          pat_to_chr(pat) %in% .x
+        }
+      ) %>%
         rowMeans()
       pat_clean <- data.frame(.opacity = pat_used, pat[-rws, vrb])
     }
@@ -139,7 +152,8 @@ plot_pattern <-
       dplyr::mutate(
         .x = as.numeric(factor(
           .data$x,
-          levels = vrb, ordered = TRUE
+          levels = vrb,
+          ordered = TRUE
         )),
         .where = factor(
           .data$.where,
@@ -161,22 +175,25 @@ plot_pattern <-
         )
       ) +
       ggplot2::geom_tile(color = "black") +
-      ggplot2::scale_fill_manual(values = c(
-        "observed" = "#006CC2B3",
-        "missing" = "#B61A51B3"
-      )) +
+      ggplot2::scale_fill_manual(
+        values = c(
+          "observed" = "#006CC2B3",
+          "missing" = "#B61A51B3"
+        )
+      ) +
       ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
       ggplot2::scale_x_continuous(
         breaks = 1:(cls - 1),
         labels = na_col,
-        sec.axis = ggplot2::dup_axis(labels = vrb,
-                                     name = "Column name")
+        sec.axis = ggplot2::dup_axis(labels = vrb, name = "Column name")
       ) +
       ggplot2::scale_y_reverse(
         breaks = 1:(rws - 1),
         labels = frq,
-        sec.axis = ggplot2::dup_axis(labels = na_row,
-                                     name = "Number of missing entries\nper pattern")
+        sec.axis = ggplot2::dup_axis(
+          labels = na_row,
+          name = "Number of missing entries\nper pattern"
+        )
       ) +
       ggplot2::labs(
         x = "Number of missing entries\nper column",
@@ -214,9 +231,13 @@ plot_pattern <-
           )
       } else {
         gg <- gg +
-          ggplot2::labs(x = "Number of missing entries\nper column*",
-                        caption = paste0("*total number of missing entries: ",
-                                         pat[rws, cls]))
+          ggplot2::labs(
+            x = "Number of missing entries\nper column*",
+            caption = paste0(
+              "*total number of missing entries: ",
+              pat[rws, cls]
+            )
+          )
       }
     }
 

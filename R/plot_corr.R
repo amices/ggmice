@@ -29,13 +29,15 @@
 #'
 #' @export
 plot_corr <-
-  function(data,
-           vrb = "all",
-           label = FALSE,
-           square = TRUE,
-           diagonal = FALSE,
-           rotate = FALSE,
-           caption = TRUE) {
+  function(
+    data,
+    vrb = "all",
+    label = FALSE,
+    square = TRUE,
+    diagonal = FALSE,
+    rotate = FALSE,
+    caption = TRUE
+  ) {
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
@@ -43,7 +45,9 @@ plot_corr <-
     vrb <- rlang::enexpr(vrb)
     vrb_matched <- match_vrb(vrb, names(data))
     if (length(vrb_matched) < 2) {
-      cli::cli_abort("The number of variables should be two or more to compute correlations.")
+      cli::cli_abort(
+        "The number of variables should be two or more to compute correlations."
+      )
     }
     # check if any column is constant
     constants <- apply(data[, vrb_matched], MARGIN = 2, function(x) {
@@ -65,9 +69,15 @@ plot_corr <-
       vrb = rep(vrb_matched, each = p),
       prd = vrb_matched,
       corr = matrix(
-        round(stats::cov2cor(
-          stats::cov(data.matrix(data[, vrb_matched]), use = "pairwise.complete.obs")
-        ), 2),
+        round(
+          stats::cov2cor(
+            stats::cov(
+              data.matrix(data[, vrb_matched]),
+              use = "pairwise.complete.obs"
+            )
+          ),
+          2
+        ),
         nrow = p * p,
         byrow = TRUE
       )
@@ -77,13 +87,15 @@ plot_corr <-
     }
     # create plot
     gg <-
-      ggplot2::ggplot(corrs,
-                      ggplot2::aes(
-                        x = .data$prd,
-                        y = .data$vrb,
-                        label = .data$corr,
-                        fill = .data$corr
-                      )) +
+      ggplot2::ggplot(
+        corrs,
+        ggplot2::aes(
+          x = .data$prd,
+          y = .data$vrb,
+          label = .data$corr,
+          fill = .data$corr
+        )
+      ) +
       ggplot2::geom_tile(color = "black", alpha = 0.6) +
       ggplot2::scale_x_discrete(limits = vrb_matched, position = "top") +
       ggplot2::scale_y_discrete(limits = rev(vrb_matched)) +
@@ -93,7 +105,7 @@ plot_corr <-
         high = ggplot2::alpha("orangered", 0.6),
         na.value = "grey90",
         limits = c(-1, 1)
-      )  +
+      ) +
       theme_minimice()
     if (caption) {
       gg <- gg +
@@ -106,13 +118,16 @@ plot_corr <-
         )
     } else {
       gg <- gg +
-        ggplot2::labs(x = "Imputation model predictor", y = "Variable to impute", fill = "Correlation")
+        ggplot2::labs(
+          x = "Imputation model predictor",
+          y = "Variable to impute",
+          fill = "Correlation"
+        )
     }
     if (label) {
       gg <-
-        gg + ggplot2::geom_text(color = "black",
-                                show.legend = FALSE,
-                                na.rm = TRUE)
+        gg +
+        ggplot2::geom_text(color = "black", show.legend = FALSE, na.rm = TRUE)
     }
     if (square) {
       gg <- gg + ggplot2::coord_fixed(expand = FALSE)

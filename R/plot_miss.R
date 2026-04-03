@@ -35,12 +35,14 @@
 #'
 #' @export
 plot_miss <-
-  function(data,
-           vrb = "all",
-           ordered = FALSE,
-           rotate = FALSE,
-           grid = FALSE,
-           square = FALSE) {
+  function(
+    data,
+    vrb = "all",
+    ordered = FALSE,
+    rotate = FALSE,
+    grid = FALSE,
+    square = FALSE
+  ) {
     # flag lifecycle
     lifecycle::signal_stage("experimental", "plot_miss()")
     # input processing
@@ -64,9 +66,13 @@ plot_miss <-
     }
     if (ordered) {
       if (length(vrb_matched) < 2) {
-        cli::cli_abort("The number of variables should be two or more to compute missing data patterns.")
+        cli::cli_abort(
+          "The number of variables should be two or more to compute missing data patterns."
+        )
       }
-      md_pat <- mice::md.pattern(data[, vrb_matched], plot = FALSE)[, -(length(vrb_matched) + 1)]
+      md_pat <- mice::md.pattern(data[, vrb_matched], plot = FALSE)[,
+        -(length(vrb_matched) + 1)
+      ]
       n_pat <- nrow(md_pat) - 1
       md_pat <- md_pat[-(n_pat + 1), ]
       pat_frq <- as.numeric(rownames(md_pat))
@@ -85,25 +91,35 @@ plot_miss <-
         names_to = "x",
         values_to = ".where"
       ) %>%
-      dplyr::mutate(.x = as.numeric(factor(
-        .data$x, levels = .vrb, ordered = TRUE
-      )),
-      .where = factor(
-        .data$.where,
-        levels = c(0, 1),
-        labels = c("missing", "observed")
-      ))
+      dplyr::mutate(
+        .x = as.numeric(factor(
+          .data$x,
+          levels = .vrb,
+          ordered = TRUE
+        )),
+        .where = factor(
+          .data$.where,
+          levels = c(0, 1),
+          labels = c("missing", "observed")
+        )
+      )
     gg <-
-      ggplot2::ggplot(long,
-                      ggplot2::aes(.data$.x, as.numeric(.data$.y), fill = .data$.where)) +
-      ggplot2::scale_fill_manual(values = c(
-        "observed" = "#006CC2B3",
-        "missing" = "#B61A51B3"
-      )) +
+      ggplot2::ggplot(
+        long,
+        ggplot2::aes(.data$.x, as.numeric(.data$.y), fill = .data$.where)
+      ) +
+      ggplot2::scale_fill_manual(
+        values = c(
+          "observed" = "#006CC2B3",
+          "missing" = "#B61A51B3"
+        )
+      ) +
       ggplot2::scale_alpha_continuous(limits = c(0, 1), guide = "none") +
-      ggplot2::scale_x_continuous(breaks = 1:.cls,
-                                  labels = .vrb,
-                                  position = "top") +
+      ggplot2::scale_x_continuous(
+        breaks = 1:.cls,
+        labels = .vrb,
+        position = "top"
+      ) +
       ggplot2::scale_y_reverse(
         breaks = function(y) {
           eb <- scales::extended_breaks()(y)
@@ -122,7 +138,7 @@ plot_miss <-
     # additional arguments
     if (grid) {
       gg <- gg + ggplot2::geom_tile(color = "black")
-    } else{
+    } else {
       gg <- gg + ggplot2::geom_tile()
     }
     if (square) {

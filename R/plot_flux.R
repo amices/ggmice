@@ -26,15 +26,14 @@
 #'
 #' @export
 plot_flux <-
-  function(data,
-           vrb = "all",
-           label = TRUE,
-           caption = TRUE) {
+  function(data, vrb = "all", label = TRUE, caption = TRUE) {
     verify_data(data, df = TRUE)
     vrb <- rlang::enexpr(vrb)
     vrb_matched <- match_vrb(vrb, names(data))
     if (length(vrb_matched) < 2) {
-      cli::cli_abort("The number of variables should be two or more to compute flux.")
+      cli::cli_abort(
+        "The number of variables should be two or more to compute flux."
+      )
     }
     # compute flux
     flx <- mice::flux(data[, vrb_matched])[, c("influx", "outflux")]

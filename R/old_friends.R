@@ -17,7 +17,8 @@ bwplot <- function(...) {
       "For example, to plot a variable named 'my_vrb' from a mids object called 'my_mids', run: ",
       " " = "ggmice(my_mids, ggplot2::aes(x = .imp, y = my_vrb)) +",
       " " = "ggplot2::geom_boxplot()",
-      "i" = "See amices.org/ggmice for more info."),
+      "i" = "See amices.org/ggmice for more info."
+    ),
     .frequency = "once",
     .frequency_id = "bwplot"
   )
