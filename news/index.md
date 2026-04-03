@@ -6,6 +6,14 @@
 
 - Deprecated `ggplot2` argument `size` no longer used in vignettes
   ([\#174](https://github.com/amices/ggmice/issues/174))
+- Suppress message in
+  [`plot_pred()`](http://amices.org/ggmice/reference/plot_pred.md) and
+  [`plot_miss()`](http://amices.org/ggmice/reference/plot_miss.md) about
+  unused labels ([\#179](https://github.com/amices/ggmice/issues/179))
+- Suppress error in
+  [`plot_pattern()`](http://amices.org/ggmice/reference/plot_pattern.md)
+  when no missing values are present
+  ([\#180](https://github.com/amices/ggmice/issues/180))
 
 ## ggmice 0.1.1
 
