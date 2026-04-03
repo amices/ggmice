@@ -30,7 +30,7 @@ plot_pattern(
 - square:
 
   Logical indicating whether the plot tiles should be squares, defaults
-  to squares to mimick
+  to squares to mimic
   [`mice::md.pattern()`](https://amices.org/mice/reference/md.pattern.html).
 
 - rotate:
@@ -45,8 +45,8 @@ plot_pattern(
 
 - npat:
 
-  Optional numeric input specifying the number of missing data patterns
-  to be visualized, defaults to all patterns.
+  Optional numeric input specifying the maximum number of missing data
+  patterns to be visualized, defaults to all patterns.
 
 - caption:
 
@@ -84,4 +84,8 @@ try(plot_pattern(mice::nhanes, my_variables))
 #> ℹ If you supply an object with variable names from the environment, use `!!` to
 #>   unqote:
 #>   `vrb = !!my_variables`
+
+# plot missing data pattern by cluster
+plot_pattern(mice::nhanes, cluster = "age")
+
 ```
