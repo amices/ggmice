@@ -121,7 +121,7 @@ plot_pattern <-
       pat_clean <- cbind(.opacity = 1, pat[-rws, vrb, drop = FALSE])
     } else {
       pats <- purrr::map(split(data[, vrb], ~ get(cluster)), ~ {
-        mice::md.pattern(., plot = FALSE) %>%
+        purrr::quietly(mice::md.pattern)(., plot = FALSE)$result %>%
           pat_to_chr(., ord = vrb)
       })
       pat_used <- purrr::map_dfr(pats, ~ {
