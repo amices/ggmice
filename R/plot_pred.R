@@ -133,8 +133,7 @@ plot_pred <-
       ggplot2::labs(
         x = "Imputation model predictor",
         y = "Variable to impute",
-        fill = "",
-        color = ""
+        fill = ""
       ) +
       theme_minimice()
 
