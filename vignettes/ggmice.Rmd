@@ -25,8 +25,8 @@ p.caption {
 }
 </style>
 
-The R package `ggmice` is designed to unify missing data exploration, imputation model building, and evaluation of multiple imputation workflows. 
-`ggmice` provides 'grammar of graphics' (`ggplot2`) functionality for visualizing incomplete data, `mice` imputation models, and multiply imputed datasets (`mids` objects). 
+The R package `ggmice` is designed to enhance multiple imputation workflows with visalizations. 
+`ggmice` provides 'grammar of graphics' (`ggplot2`) functionality for exploring incomplete data, building `mice` imputation models, and evaluating multiply imputed datasets (`mids` objects). 
  
 ## Minimal example
 
@@ -38,7 +38,7 @@ library(ggmice)
 ```
 
 Visualize the incomplete `boys` data set from the `mice` package with `ggmice`.
-```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the incomplete `boys` dataset. Missing values in the height variable are visualized with `ggmice`."}
+```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the incomplete `boys` dataset. Missing values are visualized on the axes lines, showing that some cases have observed data for age but missing height values."}
 ggmice(
 	boys,
 	aes(age, hgt)) + 
@@ -65,10 +65,13 @@ The missing data have been imputed along the range of the observed data, with so
 
 # The `ggmice` package
 
-`ggmice` enhances `mice` imputation workflows with visualizations of incomplete and/or imputed data.
-The imputation package `mice` has become the de facto standard in R to handle the ubiquitous problem of incomplete data. 
+The `ggmice` package is designed to unify the visualization of missing and imputed data. 
+It is an extension package to the popular imputation package `mice`.
+
+`mice` has become the de facto standard in R to handle the ubiquitous problem of incomplete data. 
 With `mice`, missing data points are ‘imputed’ (i.e. filled in) to obtain several completed data sets. 
 Filling in the missing data multiple times allows for a valid representation of the uncertainty due to missingness.
+`ggmice` offers tools to build and evaluate `mice` imputation models.
 
 The functions in `ggmice` adhere to `ggplot2`'s 'grammar of graphics' philosophy. 
 The resulting plots are standard `ggplot` objects, so you can add layers, labels, themes, facets, and transformations as usual.
@@ -78,13 +81,12 @@ These editable `ggplot` objects are easily adapted into publication-quality grap
 <!-- Use `ggmice` to inspect missing data, develop imputation models, evaluate algorithmic convergence, or compare observed versus imputed data. -->
 <!-- The resulting `ggplot` objects may be easily manipulated or extended.  -->
 
-This vignette shows how to use `ggmice` to:
+In this vignette, you will learn how to create and interpret `ggmice`  visualizations for each phase of your imputation workflow. The vignette shows how to use `ggmice` to:
 
 - explore incomplete data,
 - build and inspect imputation models, and
 - evaluate imputation models and imputed data.
 
-You will learn how to create and interpret `ggmice`  visualizations for each phase of your imputation workflow. 
 <!-- The vignette gives an overview of the different plotting function in `ggmice`.  -->
 
 The core function, `ggmice()`, is a `ggplot2::ggplot()` wrapper function, which handles either missing or imputed values. 
@@ -404,3 +406,7 @@ This is the end of the vignette. This document was generated using:
 ```{r session, class.source = 'fold-hide'}
 sessionInfo()
 ```
+
+Acknowledgements
+
+The `ggmice` package is developed with guidance and feedback from Gerko Vink, Stef van Buuren, and others. This project has received funding from the European Union’s Horizon 2020 research and innovation programme under ReCoDID grant agreement No 825746.
