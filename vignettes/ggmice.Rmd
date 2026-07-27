@@ -237,17 +237,25 @@ We now have the necessary packages, an incomplete dataset (`dat`), and a `mice::
   <!-- - `plot_pattern()` -->
   <!-- - `plot_miss()` -->
   <!-- - `ggmice()` -->
+  
+In a `mice` workflow, the missing data should first be inspected before determining an imputation strategy.
+The missing data pattern shows where in the incomplete data the missing values occur.
+And multivariate graphs may highlight the severity of the missing data problem with respect to the substantive scientific estimate(s).
 
 ## `plot_pattern()`
 
 The `plot_pattern()` function displays the missing data pattern in an incomplete dataset. 
-The argument `data` (the incomplete dataset) is required, the argument `square` is optional and determines whether the missing data pattern has square or rectangular tiles, and the optional argument `rotate` changes the angle of the variable names 90 degrees if requested. 
-Other optional arguments are `cluster` and `npat`.
+The argument `data` is required, which specifies the incomplete dataset. 
 
 ```{r pattern}
 # create missing data pattern plot
 plot_pattern(dat)
+```
 
+The argument `square` is optional, and determines whether the missing data pattern has square or rectangular tiles.
+The optional argument `rotate` changes the angle of the variable names by 90 degrees if requested. 
+Other optional arguments are `cluster` and `npat`.
+```{r pattern2}
 # specify optional arguments
 plot_pattern(
   dat,
@@ -262,17 +270,20 @@ plot_pattern(
 
 ## `ggmice()`
 
-An example of `ggmice()` in action on incomplete data is when one of the variables is categorical.
-The incomplete continuous variable `hgt` is plotted against the incomplete categorical variable `reg` with:
+The `ggmice()` function can be used to explore missingness and associations between observed data.
+For example, we can create a scatterplot of the incomplete data, with one continuous and one categorical variable. 
+We can plot the incomplete continuous variable `hgt` against the incomplete categorical variable `reg` with:
 
 ```{r inc-cat}
 ggmice(dat, aes(reg, hgt)) +
   geom_point()
 ```
 
-Again, missing values are plotted on the axes. 
-Cases with observed `hgt` and missing `reg` are plotted on the vertical axis. Cases with observed `reg` and missing `hgt` are plotted on the horizontal axis. 
-There are no cases were neither is observed, but otherwise these would be plotted on the intersection of the two axes. 
+In this graph, the missing values are plotted on the axes lines. 
+
+- Cases with observed `hgt` and missing `reg` are plotted on the vertical axis. 
+- Cases with observed `reg` and missing `hgt` are plotted on the horizontal axis. 
+- There are no cases were neither is observed, but otherwise these would be plotted on the intersection of the two axes. 
 
 The 'grammar of graphics' makes it easy to adjust the plots programmatically. 
 For example, we could be interested in the differences in growth data between the city and other regions. 
@@ -312,8 +323,8 @@ ggmice(dat, aes(wgt * 2.20, hgt / 2.54)) +
 
 ## `plot_corr()`
 
-The function `plot_corr()` can be used to investigate relations between variables, for the development of imputation models. 
-Only one of the arguments (`data`, the incomplete dataset) is required, all other arguments are optional.
+The function `plot_corr()` can be used to investigate relations between variables for the development of imputation models. 
+Only one of the arguments (`data`; the incomplete dataset) is required, all other arguments are optional.
 
 ```{r correlations}
 # create correlation plot
@@ -332,8 +343,7 @@ plot_corr(
 
 ## `ggmice()`
 
-When `ggmice()` is applied to incomplete data with faceting based on a missingness indicator, association between observed and missing data become apparent. 
-
+When `ggmice()` is applied to incomplete data with faceting based on a missingness indicator, associations between observed and missing data become apparent. 
 This may help explore the missingness mechanisms in the incomplete data. 
 The distribution of the continuous variable `age` and categorical variable `reg` are visualized faceted by the missingness indicator for `hgt` with:
 
@@ -373,7 +383,12 @@ plot_flux(
 ## `plot_pred()`
 
 The function `plot_pred()` displays `mice` predictor matrices. 
-A predictor matrix is typically created using `mice::make.predictorMatrix()`, `mice::quickpred()`, or by using the default in `mice::mice()` and extracting the `predictorMatrix` from the resulting `mids` object. The `plot_pred()` function requires a predictor matrix (the `data` argument), but other arguments can be provided too.
+In a `mice` workflow, the predictor matrix determines which imputation model predictors will be used when imputing the incomplete variables.
+There are three ways to create a predictor matrix programmatically with `mice`.
+The first and most explicit way is using `mice::make.predictorMatrix()`. 
+The second way is implicitly, by using the default in `mice::mice()` and extracting the `predictorMatrix` from the resulting `mids` object. 
+The third way is via `mice::quickpred()`, which selects the most relevant imputation model predictors based on associations in the data.
+The `plot_pred()` function requires a predictor matrix (the `data` argument), but other arguments can be provided too.
 
 ```{r predictormatrix}
 # create predictor matrix
