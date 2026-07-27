@@ -12,10 +12,24 @@
 #' observed data from missing data or imputed data (for incomplete and imputed data, respectively).
 #'
 #' @examples
+#' # minimal example: scatterplot of incomplete and imputed data
 #' dat <- mice::nhanes
-#' ggmice(dat, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
+#' ggmice(dat, ggplot2::aes(x = age, y = chl)) + ggplot2::geom_point()
 #' imp <- mice::mice(dat, print = FALSE)
-#' ggmice(imp, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point()
+#' ggmice(imp, ggplot2::aes(x = age, y = chl)) + ggplot2::geom_point()
+#'
+#' # more advanced functionality with mixed data
+#' dat$hyp <- factor(dat$hyp, levels = (1:2), labels = c("no hypertension", "hypertension"))
+#' # facet incomplete data scatterplot by observed categorical variable
+#' ggmice(dat, aes(age, chl)) + geom_point() +
+#' facet_wrap(~ hyp, labeller = label_both)
+#' # facet incomplete data scatterplot by missing data indicator
+#' ggmice(dat, aes(age, chl)) + geom_point() +
+#' facet_wrap(~ factor(is.na(hyp) == 0, labels = c("hyp observed", "hyp missing")))
+#' # facet imputed data scatterplot by imputation number
+#' ggmice(imp, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point() +
+#' facet_wrap(~ .imp)
+#'
 #' @seealso See the `ggmice` vignette to use the `ggmice()` function on
 #' [incomplete data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function)
 #' or [imputed data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1).
@@ -81,10 +95,10 @@ ggmice <- function(data = NULL,
       mice_data <- dplyr::mutate(
         mice_data,
         dplyr::across(
-          tidyselect::all_of(vrbs_num),
+          tidyselect::all_of(vrbs_num[vrbs_num %in% c(vrb_x, vrb_y)]),
           ~ tidyr::replace_na(as.numeric(.x), -Inf)
         ),
-        dplyr::across(tidyselect::all_of(vrbs[vrbs %nin% vrbs_num]), ~ {
+        dplyr::across(tidyselect::all_of(vrbs[vrbs %nin% vrbs_num & vrbs %in% c(vrb_x, vrb_y)]), ~ {
           as.factor(tidyr::replace_na(as.character(.x), " "))
         })
       )
