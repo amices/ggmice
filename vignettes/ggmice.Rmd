@@ -19,6 +19,11 @@ knitr::opts_chunk$set(
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
+<style>
+p.caption {
+  font-size: 0.7em;
+}
+</style>
 
 The R package `ggmice` is designed to unify missing data exploration, imputation model building, and evaluation of multiple imputation workflows. 
 `ggmice` provides 'grammar of graphics' (`ggplot2`) functionality for visualizing incomplete data, `mice` imputation models, and multiply imputed datasets (`mids` objects). 
@@ -33,7 +38,7 @@ library(ggmice)
 ```
 
 Visualize the incomplete `boys` data set from the `mice` package with `ggmice`.
-```{r}
+```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the incomplete `boys` dataset. Missing values in the height variable are visualized with `ggmice`."}
 ggmice(
 	boys,
 	aes(age, hgt)) + 
@@ -49,7 +54,7 @@ imp <- mice(
 ```
 
 Visualize the imputed `boys` data set with `ggmice`.
-```{r}
+```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the imputed `boys` dataset. Missing values in the height variable are filled in with `mice` and visualized with `ggmice`."}
 ggmice(
 	imp,
 	aes(age, hgt)) + 
@@ -60,11 +65,11 @@ The missing data have been imputed along the range of the observed data, with so
 
 # The `ggmice` package
 
+`ggmice` enhances `mice` imputation workflows with visualizations of incomplete and/or imputed data.
 The imputation package `mice` has become the de facto standard in R to handle the ubiquitous problem of incomplete data. 
 With `mice`, missing data points are ‘imputed’ (i.e. filled in) to obtain several completed data sets. 
 Filling in the missing data multiple times allows for a valid representation of the uncertainty due to missingness.
 
-`ggmice` enhances `mice` imputation workflows with visualizations of incomplete and/or imputed data. 
 The functions in `ggmice` adhere to `ggplot2`'s 'grammar of graphics' philosophy. 
 The resulting plots are standard `ggplot` objects, so you can add layers, labels, themes, facets, and transformations as usual.
 These editable `ggplot` objects are easily adapted into publication-quality graphics.
