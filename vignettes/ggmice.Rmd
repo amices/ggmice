@@ -39,7 +39,8 @@ library(ggplot2)
 library(ggmice)
 ```
 
-Visualize the incomplete `boys` data set from the `mice` package with `ggmice`.
+Visualize the `boys` data set from the `mice` package with `ggmice`. 
+This is an incomplete dataset ($n = 748$) with cross-sectional data on $9$ growth-related variables (e.g., age in years and height in cm). 
 ```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the incomplete `boys` dataset. Missing values are visualized on the axes lines, showing that some cases have observed data for age but missing height values."}
 ggmice(
 	boys,
@@ -177,6 +178,8 @@ ggmice(imp, aes(age, hgt)) +
 This figure shows the observed data in blue and the imputed data in red.
 
 Aside from this minimal example, `ggmice` offers many more functionalities and functions.
+For example, the package contains plotting functions to explore incomplete data and evaluate convergence of the imputation algorithm. 
+The `ggmice` functions are presented in the order of a typical imputation workflow, where the missingness is first investigated, then imputation models are built based on relations between variables, and finally the imputations are inspected visually.
 
 <br>
 
@@ -218,7 +221,6 @@ We load the incomplete data from the `mice` package with:
 dat <- boys
 ```
 
-
 For the purpose of this vignette, we impute all incomplete variables $m = 3$ times with predictive mean matching as imputation method. 
 Imputations are generated with:
 
@@ -228,46 +230,33 @@ imp <- mice(dat, m = 3, method = "pmm")
 
 We now have the necessary packages, an incomplete dataset (`dat`), and a `mice::mids` object (`imp`) loaded in our workspace.
 
-# Sections
-
-1. Exploring incomplete data
+# Exploring incomplete data
 
   - `plot_pattern()`
   - `plot_miss()`
   - `ggmice()`
 
-2. imp model building
+## Missing data pattern
 
-  - `plot_corr()`
-  - `plot_flux()`
-  - `plot_pred()`
-  - `ggmice()` (miss ind)
+The `plot_pattern()` function displays the missing data pattern in an incomplete dataset. 
+The argument `data` (the incomplete dataset) is required, the argument `square` is optional and determines whether the missing data pattern has square or rectangular tiles, and the optional argument `rotate` changes the angle of the variable names 90 degrees if requested. 
+Other optional arguments are `cluster` and `npat`.
 
-3. eval
+```{r pattern}
+# create missing data pattern plot
+plot_pattern(dat)
 
-  - `plot_trace()`
-  - `ggmice()`
+# specify optional arguments
+plot_pattern(
+  dat,
+  square = TRUE,
+  rotate = TRUE,
+  npat = 3,
+  cluster = "reg"
+)
+```
 
-
-<!-- - Model building: how do we know which functional form to choose? -->
-<!--   - rely on defaults, tested in simulation studies  -->
-<!--   - assess the distribution of the incomplete variable (e.g., visual inspection) -->
-<!--   - ...? (maybe ad transformations?) -->
-<!-- - Model building: how do we know which imputation model predictors to select? -->
-<!--   - association of incomplete variable with other variables in the data ["include an auxiliary variable if its correlation with the main variable is ≥0.5 (in absolute value) [25]" @nguyen2021] -->
-<!--   - association of missingness indicator with other variables in the data  -->
-<!--   - external input (e.g., branching patterns, or expert knowledge to correct for MNAR) -->
-<!--   - Take the analysis model (if available) as starting point for imputation workflow, for congeneality -->
-<!--   - ...? -->
-<!-- - Model evaluation: how do we assess imputation model misfit? -->
-<!--   - fit of the model to the observed data -->
-<!--   - non-convergence in the algorithm  -->
-<!--   - mismatch between observed and imputed data distributions (e.g., visual inspection) [@buur18] -->
-<!--   - ...? -->
-
-
-
-# `ggmice()` flavours
+## `ggmice()`
 
 Another example of `ggmice()` in action on incomplete data is when one of the variables is categorical.
 The incomplete continuous variable `hgt` is plotted against the incomplete categorical variable `reg` with:
@@ -299,96 +288,23 @@ ggmice(dat, aes(wgt * 2.20, hgt / 2.54)) +
   labs(x = "Weight (lbs)", y = "Height (in)")
 ```
 
-A final example of `ggmice()` applied to incomplete data is faceting based on a missingness indicator. 
-Doing so may help explore the missingness mechanisms in the incomplete data. 
-The distribution of the continuous variable `age` and categorical variable `reg` are visualized faceted by the missingness indicator for `hgt` with:
+# Building imputation models
 
-```{r}
-# continuous variable
-ggmice(dat, aes(age)) +
-  geom_density() +
-  facet_wrap(~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
-# categorical variable
-ggmice(dat, aes(reg)) +
-  geom_bar(fill = "white") +
-  facet_wrap(~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
-```
-
-
-
-We could create the same scatter plots as the ones above, but now on the imputed data:
-
-```{r imp-same, warning = FALSE}
-ggmice(imp, aes(age, hgt)) +
-  geom_point()
-ggmice(imp, aes(reg, hgt)) +
-  geom_point()
-ggmice(imp, aes(wgt, hgt)) +
-  geom_point() +
-  facet_wrap(~ reg == "city", labeller = label_both)
-ggmice(imp, aes(wgt * 2.20, hgt / 2.54)) +
-  geom_point() +
-  labs(x = "Weight (lbs)", y = "Height (in)")
-```
-
-These figures show the observed data points once in blue, plus three imputed values in red for each missing entry. 
-
-It is also possible to use the imputation number as mapping variable in the plot. 
-For example, we can create a stripplot of observed and imputed data with the imputation number `.imp` on the horizontal axis:
-
-```{r imp-strip}
-ggmice(imp, aes(x = .imp, y = hgt)) +
-  geom_jitter(height = 0, width = 0.25) +
-  labs(x = "Imputation number")
-```
-
-A major advantage of `ggmice()` over the equivalent function `mice::stripplot()` is that `ggmice` allows us to add subsequent plotting layers, such as a boxplot overlay:
-
-```{r imp-box}
-ggmice(imp, aes(x = .imp, y = hgt)) +
-  geom_jitter(height = 0, width = 0.25) +
-  geom_boxplot(width = 0.5, linewidth = 1, alpha = 0.75, outlier.shape = NA) +
-  labs(x = "Imputation number")
-```
-
-You may want to create a plot visualizing the imputations of multiple variables as one object. This can be done by combining `ggmice` with the functional programming package `purrr` and visualization package `patchwork`. For example, we could obtain boxplots of different imputed variables as one object using:
-
-```{r facet}
-purrr::map(c("wgt", "hgt", "bmi"), ~ {
-  ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
-    geom_boxplot() +
-    labs(x = "Imputation number")
-}) %>%
-  patchwork::wrap_plots()
-```
-
-To re-create any `mice` plot with `ggmice`, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette. 
-
-
-# Other functions
-
-The `ggmice` package contains some additional plotting functions to explore incomplete data and evaluate convergence of the imputation algorithm. 
-These are presented in the order of a typical imputation workflow, where the missingness is first investigated using a missing data pattern and influx-outflux plot, then imputation models are built based on relations between variables, and finally the imputations are inspected visually to check for non-convergence. 
-
-## Missing data pattern
-
-The `plot_pattern()` function displays the missing data pattern in an incomplete dataset. 
-The argument `data` (the incomplete dataset) is required, the argument `square` is optional and determines whether the missing data pattern has square or rectangular tiles, and the optional argument `rotate` changes the angle of the variable names 90 degrees if requested. 
-Other optional arguments are `cluster` and `npat`.
-
-```{r pattern}
-# create missing data pattern plot
-plot_pattern(dat)
-
-# specify optional arguments
-plot_pattern(
-  dat,
-  square = TRUE,
-  rotate = TRUE,
-  npat = 3,
-  cluster = "reg"
-)
-```
+  - `plot_corr()`
+  - `plot_flux()`
+  - `plot_pred()`
+  - `ggmice()`
+  
+<!-- - Model building: how do we know which functional form to choose? -->
+<!--   - rely on defaults, tested in simulation studies  -->
+<!--   - assess the distribution of the incomplete variable (e.g., visual inspection) -->
+<!--   - ...? (maybe ad transformations?) -->
+<!-- - Model building: how do we know which imputation model predictors to select? -->
+<!--   - association of incomplete variable with other variables in the data ["include an auxiliary variable if its correlation with the main variable is ≥0.5 (in absolute value) [25]" @nguyen2021] -->
+<!--   - association of missingness indicator with other variables in the data  -->
+<!--   - external input (e.g., branching patterns, or expert knowledge to correct for MNAR) -->
+<!--   - Take the analysis model (if available) as starting point for imputation workflow, for congeneality -->
+<!--   - ...? -->
 
 ## Influx and outflux
 
@@ -453,6 +369,35 @@ plot_pred(
 )
 ```
 
+## `ggmice()`
+
+When `ggmice()` is applied to incomplete data with faceting based on a missingness indicator, association between observed and missing data become apparent. 
+
+This may help explore the missingness mechanisms in the incomplete data. 
+The distribution of the continuous variable `age` and categorical variable `reg` are visualized faceted by the missingness indicator for `hgt` with:
+
+```{r}
+# continuous variable
+ggmice(dat, aes(age)) +
+  geom_density() +
+  facet_wrap(~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
+# categorical variable
+ggmice(dat, aes(reg)) +
+  geom_bar(fill = "white") +
+  facet_wrap(~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
+```
+
+
+# Evaluating imputations
+
+  - `plot_trace()`
+  - `ggmice()`
+
+<!-- - Model evaluation: how do we assess imputation model misfit? -->
+<!--   - fit of the model to the observed data -->
+<!--   - non-convergence in the algorithm  -->
+<!--   - mismatch between observed and imputed data distributions (e.g., visual inspection) [@buur18] -->
+<!--   - ...? -->
 
 ## Algorithmic convergence
 
@@ -464,6 +409,58 @@ The optional argument `vrb` defaults to `"all"`, which would display traceplots 
 # create traceplot for one variable
 plot_trace(imp, "hgt")
 ```
+
+## `ggmice()`
+
+We could create the same scatter plots as the ones above, but now on the imputed data:
+
+```{r imp-same, warning = FALSE}
+ggmice(imp, aes(age, hgt)) +
+  geom_point()
+ggmice(imp, aes(reg, hgt)) +
+  geom_point()
+ggmice(imp, aes(wgt, hgt)) +
+  geom_point() +
+  facet_wrap(~ reg == "city", labeller = label_both)
+ggmice(imp, aes(wgt * 2.20, hgt / 2.54)) +
+  geom_point() +
+  labs(x = "Weight (lbs)", y = "Height (in)")
+```
+
+These figures show the observed data points once in blue, plus three imputed values in red for each missing entry. 
+
+It is also possible to use the imputation number as mapping variable in the plot. 
+For example, we can create a stripplot of observed and imputed data with the imputation number `.imp` on the horizontal axis:
+
+```{r imp-strip}
+ggmice(imp, aes(x = .imp, y = hgt)) +
+  geom_jitter(height = 0, width = 0.25) +
+  labs(x = "Imputation number")
+```
+
+A major advantage of `ggmice()` over the equivalent function `mice::stripplot()` is that `ggmice` allows us to add subsequent plotting layers, such as a boxplot overlay:
+
+```{r imp-box}
+ggmice(imp, aes(x = .imp, y = hgt)) +
+  geom_jitter(height = 0, width = 0.25) +
+  geom_boxplot(width = 0.5, linewidth = 1, alpha = 0.75, outlier.shape = NA) +
+  labs(x = "Imputation number")
+```
+
+You may want to create a plot visualizing the imputations of multiple variables as one object. This can be done by combining `ggmice` with the functional programming package `purrr` and visualization package `patchwork`. For example, we could obtain boxplots of different imputed variables as one object using:
+
+```{r facet}
+purrr::map(c("wgt", "hgt", "bmi"), ~ {
+  ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
+    geom_boxplot() +
+    labs(x = "Imputation number")
+}) %>%
+  patchwork::wrap_plots()
+```
+
+
+<!-- To re-create any `mice` plot with `ggmice`, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette.  -->
+
 
 
 ---
