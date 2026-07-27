@@ -12,6 +12,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  message = FALSE,
   comment = "#>",
   fig.width = 7.2,
   fig.height = 4
@@ -107,9 +108,6 @@ The core function in the `ggmice` package is `ggmice()`.
 - When the `data` argument is supplied with an incomplete dataset (a `data.frame` object), `ggmice()` visualizes observed versus *missing* data.
 - When the `data` argument is supplied with multiply imputed datasets (a `mids` object), `ggmice()` visualizes observed versus *imputed* data.
 
-Experienced `mice` users may already be familiar with the `lattice` style plotting functions in `mice` for visualizing imputed data. 
-These 'old friends' such as `mice::bwplot()` can be re-created with the `ggmice()` function, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette for advice.
-
 ### `ggmice()` versus `ggplot()`
 
 The `ggmice()` function mimics how the `ggplot2` function `ggplot()` works: both take a `data` argument and a `mapping` argument, and will return an object of class `ggplot`. 
@@ -179,7 +177,11 @@ This figure shows the observed data in blue and the imputed data in red.
 
 Aside from this minimal example, `ggmice` offers many more functionalities and functions.
 For example, the package contains plotting functions to explore incomplete data and evaluate convergence of the imputation algorithm. 
-The `ggmice` functions are presented in the order of a typical imputation workflow, where the missingness is first investigated, then imputation models are built based on relations between variables, and finally the imputations are inspected visually.
+
+Experienced `mice` users may already be familiar with the `lattice` style plotting functions in `mice` for visualizing imputed data. 
+These 'old friends' such as `mice::stripplot()` can be re-created with the `ggmice()` function, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette for advice.
+
+In this vignette, the `ggmice` functions are presented in the order of a typical imputation workflow, where the missingness is first investigated, then imputation models are built based on relations between variables, and finally the imputations are inspected visually.
 
 <br>
 
@@ -232,11 +234,11 @@ We now have the necessary packages, an incomplete dataset (`dat`), and a `mice::
 
 # Exploring incomplete data
 
-  - `plot_pattern()`
-  - `plot_miss()`
-  - `ggmice()`
+  <!-- - `plot_pattern()` -->
+  <!-- - `plot_miss()` -->
+  <!-- - `ggmice()` -->
 
-## Missing data pattern
+## `plot_pattern()`
 
 The `plot_pattern()` function displays the missing data pattern in an incomplete dataset. 
 The argument `data` (the incomplete dataset) is required, the argument `square` is optional and determines whether the missing data pattern has square or rectangular tiles, and the optional argument `rotate` changes the angle of the variable names 90 degrees if requested. 
@@ -256,9 +258,11 @@ plot_pattern(
 )
 ```
 
+<!-- ## `plot_miss()` -->
+
 ## `ggmice()`
 
-Another example of `ggmice()` in action on incomplete data is when one of the variables is categorical.
+An example of `ggmice()` in action on incomplete data is when one of the variables is categorical.
 The incomplete continuous variable `hgt` is plotted against the incomplete categorical variable `reg` with:
 
 ```{r inc-cat}
@@ -290,10 +294,10 @@ ggmice(dat, aes(wgt * 2.20, hgt / 2.54)) +
 
 # Building imputation models
 
-  - `plot_corr()`
-  - `plot_flux()`
-  - `plot_pred()`
-  - `ggmice()`
+  <!-- - `plot_corr()` -->
+  <!-- - `plot_flux()` -->
+  <!-- - `plot_pred()` -->
+  <!-- - `ggmice()` -->
   
 <!-- - Model building: how do we know which functional form to choose? -->
 <!--   - rely on defaults, tested in simulation studies  -->
@@ -306,28 +310,7 @@ ggmice(dat, aes(wgt * 2.20, hgt / 2.54)) +
 <!--   - Take the analysis model (if available) as starting point for imputation workflow, for congeneality -->
 <!--   - ...? -->
 
-## Influx and outflux
-
-The `plot_flux()` function produces an influx-outflux plot.
-The influx of a variable quantifies how well its missing data connect to the observed data on other variables. 
-The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. 
-In general, higher influx and outflux values are preferred when building imputation models. 
-The plotting function requires an incomplete dataset (argument `data`), and takes optional arguments to adjust the legend and axis labels.
-
-```{r flux}
-# create influx-outflux plot
-plot_flux(dat)
-
-# specify optional arguments
-plot_flux(
-  dat,
-  label = FALSE,
-  caption = FALSE
-)
-```
-
-
-## Correlations between variables
+## `plot_corr()`
 
 The function `plot_corr()` can be used to investigate relations between variables, for the development of imputation models. 
 Only one of the arguments (`data`, the incomplete dataset) is required, all other arguments are optional.
@@ -344,28 +327,6 @@ plot_corr(
   square = FALSE,
   diagonal = TRUE,
   rotate = TRUE
-)
-```
-
-## Predictor matrix
-
-The function `plot_pred()` displays `mice` predictor matrices. 
-A predictor matrix is typically created using `mice::make.predictorMatrix()`, `mice::quickpred()`, or by using the default in `mice::mice()` and extracting the `predictorMatrix` from the resulting `mids` object. The `plot_pred()` function requires a predictor matrix (the `data` argument), but other arguments can be provided too.
-
-```{r predictormatrix}
-# create predictor matrix
-pred <- quickpred(dat)
-
-# create predictor matrix plot
-plot_pred(pred)
-
-# specify optional arguments
-plot_pred(
-  pred,
-  label = FALSE,
-  square = FALSE,
-  rotate = TRUE,
-  method = "pmm"
 )
 ```
 
@@ -387,11 +348,55 @@ ggmice(dat, aes(reg)) +
   facet_wrap(~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
 ```
 
+## `plot_flux()`
+
+The `plot_flux()` function produces an influx-outflux plot.
+The influx of a variable quantifies how well its missing data connect to the observed data on other variables. 
+The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. 
+In general, higher influx and outflux values are preferred when building imputation models. 
+The plotting function requires an incomplete dataset (argument `data`), and takes optional arguments to adjust the legend and axis labels.
+
+```{r flux}
+# create influx-outflux plot
+plot_flux(dat)
+
+# specify optional arguments
+plot_flux(
+  dat,
+  label = FALSE,
+  caption = FALSE
+)
+```
+
+
+
+## `plot_pred()`
+
+The function `plot_pred()` displays `mice` predictor matrices. 
+A predictor matrix is typically created using `mice::make.predictorMatrix()`, `mice::quickpred()`, or by using the default in `mice::mice()` and extracting the `predictorMatrix` from the resulting `mids` object. The `plot_pred()` function requires a predictor matrix (the `data` argument), but other arguments can be provided too.
+
+```{r predictormatrix}
+# create predictor matrix
+pred <- quickpred(dat)
+
+# create predictor matrix plot
+plot_pred(pred)
+
+# specify optional arguments
+plot_pred(
+  pred,
+  label = FALSE,
+  square = FALSE,
+  rotate = TRUE,
+  method = "pmm"
+)
+```
+
 
 # Evaluating imputations
 
-  - `plot_trace()`
-  - `ggmice()`
+  <!-- - `plot_trace()` -->
+  <!-- - `ggmice()` -->
 
 <!-- - Model evaluation: how do we assess imputation model misfit? -->
 <!--   - fit of the model to the observed data -->
@@ -399,7 +404,7 @@ ggmice(dat, aes(reg)) +
 <!--   - mismatch between observed and imputed data distributions (e.g., visual inspection) [@buur18] -->
 <!--   - ...? -->
 
-## Algorithmic convergence
+## `plot_trace()`
 
 The function `plot_trace()` plots the trace lines of the MICE algorithm for convergence evaluation. 
 The only required argument is `data` (to supply a `mice::mids` object). 
