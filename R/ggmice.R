@@ -18,15 +18,28 @@
 #' imp <- mice::mice(dat, print = FALSE)
 #' ggmice(imp, ggplot2::aes(x = age, y = chl)) + ggplot2::geom_point()
 #'
-#' # more advanced functionality with mixed data
+#' # more advanced functionality for incomplete data
+#' # edit variable type for mixed incomplete data
 #' dat$hyp <- factor(dat$hyp, levels = (1:2), labels = c("no hypertension", "hypertension"))
-#' # facet incomplete data scatterplot by observed categorical variable
+#' # scatterplot with categorical incomplete data
+#' ggmice(dat, aes(hyp, chl)) + geom_jitter(width = 0.1)
+#' # incomplete data scatterplot faceted by categorical variable
 #' ggmice(dat, aes(age, chl)) + geom_point() +
 #' facet_wrap(~ hyp, labeller = label_both)
-#' # facet incomplete data scatterplot by missing data indicator
+#' # incomplete data scatterplot faceted by missing data indicator
 #' ggmice(dat, aes(age, chl)) + geom_point() +
 #' facet_wrap(~ factor(is.na(hyp) == 0, labels = c("hyp observed", "hyp missing")))
-#' # facet imputed data scatterplot by imputation number
+#'
+#' # more advanced functionality for imputed data
+#' # stripplot by imputation
+#' ggmice(imp, aes(x = .imp, y = chl)) + geom_jitter(width = 0.25) +
+#' labs(x = "Imputation number")
+#' # box plot by imputation
+#' ggmice(imp, aes(x = .imp, y = chl)) + geom_boxplot() +
+#' labs(x = "Imputation number")
+#' # density plot by imputation
+#' ggmice(imp, aes(x = chl, group = .imp)) + geom_density()
+#' # scatterplot faceted by imputation number
 #' ggmice(imp, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point() +
 #' facet_wrap(~ .imp)
 #'
