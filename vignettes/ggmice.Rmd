@@ -381,72 +381,6 @@ meth <- make.method(penguins)
 plot_pred(pred, method = meth, square = FALSE)
 ```
 
-## `plot_corr()`
-
-The function `plot_corr()` can be used to investigate relations between variables for the development of imputation models. 
-Only one of the arguments (`data`; the incomplete dataset) is required, all other arguments are optional.
-
-```{r correlations}
-# create correlation plot
-plot_corr(penguins)
-
-# specify optional arguments
-plot_corr(
-  penguins,
-  vrb = c("bill_len", "bill_dep", "sex"),
-  label = TRUE,
-  square = FALSE,
-  diagonal = TRUE,
-  rotate = TRUE
-)
-```
-
-## `ggmice()`
-
-When `ggmice()` is applied to incomplete data with faceting based on a missingness indicator, associations between observed and missing data become apparent. 
-This may help explore the missingness mechanisms in the incomplete data. 
-The distribution of the continuous variable `bill_dep` and categorical variable `species` are visualized faceted by the missingness indicator for `sex` with:
-
-```{r}
-# continuous variable
-ggmice(penguins, aes(bill_dep)) +
-  geom_density() +
-  facet_wrap(~ factor(is.na(sex) == 0, labels = c("sex observed", "sex missing")))
-```
-
-We can see differences in the distribution of `bill_dep` based on the missingness indicator of `sex`, so `bill_dep` is informative for imputing `sex`.
-
-```{r}
-# categorical variable
-ggmice(penguins, aes(species)) +
-  geom_bar(fill = "white") +
-  facet_wrap(~ factor(is.na(sex) == 0, labels = c("sex observed", "sex missing")))
-```
-
-In this case, we can see differences in the distribution of `species` based on the missingness indicator of `sex`, so `species` is informative for imputing `sex`.
-
-## `plot_flux()`
-
-The `plot_flux()` function produces an influx-outflux plot.
-The influx of a variable quantifies how well its missing data connect to the observed data on other variables. 
-The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. 
-In general, higher influx and outflux values are preferred when building imputation models. 
-The plotting function requires an incomplete dataset (argument `data`), and takes optional arguments to adjust the legend and axis labels.
-
-```{r flux}
-# create influx-outflux plot
-plot_flux(penguins)
-
-# specify optional arguments
-plot_flux(
-  penguins,
-  label = FALSE,
-  caption = FALSE
-)
-```
-
-
-
 ## `plot_pred()`
 
 The function `plot_pred()` displays `mice` predictor matrices. 
@@ -474,12 +408,141 @@ plot_pred(
 )
 ```
 
+
+## `plot_corr()`
+
+The function `plot_corr()` can be used to investigate relations between variables for the development of imputation models. 
+Only one of the arguments (`data`; the incomplete dataset) is required, all other arguments are optional.
+
+```{r correlations}
+# create correlation plot
+plot_corr(penguins)
+
+# specify optional arguments
+plot_corr(
+  penguins,
+  vrb = c("bill_len", "bill_dep", "sex"),
+  label = TRUE,
+  square = FALSE,
+  diagonal = TRUE,
+  rotate = TRUE
+)
+```
+
+We can prune the predictor matrix based on the correlations.
+
+```{r}
+pred <- quickpred(penguins, mincor = 0.4)
+plot_pred(pred, method = meth, square = FALSE)
+```
+
+The `quickpred()` function uses both the pairwise complete observations to calculate the correlations, as well as the correlation with the missingness indicators.
+To visulaize the associations between observed data and missingness indicators, we can use `ggmice()`.
+
+## `ggmice()`
+
+When `ggmice()` is applied to incomplete data with faceting based on a missingness indicator, associations between observed and missing data become apparent. 
+This may help explore the missingness mechanisms in the incomplete data. 
+The distribution of the continuous variable `bill_dep` and categorical variable `species` are visualized faceted by the missingness indicator for `sex` with:
+
+```{r}
+# continuous variable
+ggmice(penguins, aes(bill_dep)) +
+  geom_density() +
+  facet_wrap(~ factor(
+    is.na(sex), 
+    levels = c(TRUE, FALSE), 
+    labels = c("missing sex", "observed sex")
+    ))
+```
+
+We can see differences in the distribution of `bill_dep` based on the missingness indicator of `sex`, so `bill_dep` is informative for imputing `sex`.
+
+```{r}
+# categorical variable
+ggmice(penguins, aes(species)) +
+  geom_bar(fill = "white") +
+  facet_wrap(~ factor(
+    is.na(sex), 
+    levels = c(TRUE, FALSE), 
+    labels = c("missing sex", "observed sex")
+    ))
+```
+
+In this case, we can see differences in the distribution of `species` based on the missingness indicator of `sex`, so `species` is informative for imputing `sex`.
+
+<!-- We can visualize observed - observed with -->
+<!-- ```{r} -->
+<!-- ggmice(penguins, aes(sex, bill_len)) + -->
+<!--   geom_point() -->
+<!-- ``` -->
+
+
+Visualize the association with the missingness indicator.
+
+```{r}
+ggmice(penguins, aes(bill_len)) +
+  geom_histogram(fill = "white") +
+  facet_grid(factor(
+    is.na(sex), 
+    levels = c(TRUE, FALSE), 
+    labels = c("missing sex", "observed sex")
+    ) ~ .)
+```
+
+We can even split this graph by penguin species.
+```{r}
+ggmice(penguins, aes(bill_len)) +
+  geom_histogram(fill = "white") +
+  facet_grid(factor(
+    is.na(sex), 
+    levels = c(TRUE, FALSE), 
+    labels = c("missing sex", "observed sex")
+    ) ~ species)
+```
+
+We can use this information to adjust the imputation models (via the predictor matrix).
+
+## `plot_flux()`
+
+The `plot_flux()` function produces an influx-outflux plot.
+The influx of a variable quantifies how well its missing data connect to the observed data on other variables. 
+The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. 
+In general, higher influx and outflux values are preferred when building imputation models. 
+The plotting function requires an incomplete dataset (argument `data`), and takes optional arguments to adjust the legend and axis labels.
+
+```{r flux}
+# create influx-outflux plot
+plot_flux(penguins)
+
+# specify optional arguments
+plot_flux(
+  penguins,
+  label = FALSE,
+  caption = FALSE
+)
+```
+
+Based on this, we edit the predictor matrix as follows:
+```{r}
+pred["sex", c("species", "bill_len")] <- 1
+plot_pred(pred, method = meth, square = FALSE)
+```
+
+
 # Imputing
 
 Run the imputation algorithm.
 
 ```{r}
-imp <- mice(penguins, pred = pred, meth = meth, print = FALSE, seed = 123)
+imp <- mice(
+  penguins, 
+  pred = pred, 
+  method = meth, 
+  m = 10,
+  seed = 123,
+  print = FALSE
+)
 ```
 
 # Evaluating imputations
