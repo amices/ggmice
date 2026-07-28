@@ -9,6 +9,12 @@ vignette: >
   %\VignetteDepends{ggplot2}
 ---
 
+<style>
+p.caption {
+  font-size: 0.7em;
+}
+</style>
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -20,11 +26,7 @@ knitr::opts_chunk$set(
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
-<style>
-p.caption {
-  font-size: 0.7em;
-}
-</style>
+<!-- pkgdown::build_article("ggmice") -->
 
 <!-- # Introduction -->
 
@@ -214,21 +216,21 @@ library(ggmice)
 
 <!-- ## Data -->
 
-We will use the `mice::boys` data for illustrations. 
-This is an incomplete dataset ($n = 748$) with cross-sectional data on $9$ growth-related variables (e.g., age in years and height in cm). 
+We will use the `penguins` data for illustrations. 
+This is an incomplete dataset ($n = 344$) with observational data on $9$ variables related to penguin populations (e.g., penguin species, and measurements of body weight in grams). 
 
-We load the incomplete data from the `mice` package with:
+<!-- We load the incomplete data from the `mice` package with: -->
 
-```{r data}
-dat <- boys
-```
+<!-- ```{r data} -->
+<!-- dat <- boys -->
+<!-- ``` -->
 
-For the purpose of this vignette, we impute all incomplete variables $m = 3$ times with predictive mean matching as imputation method. 
-Imputations are generated with:
+<!-- For the purpose of this vignette, we impute all incomplete variables $m = 3$ times with predictive mean matching as imputation method.  -->
+<!-- Imputations are generated with: -->
 
-```{r imp, results = "hide"}
-imp <- mice(dat, m = 3, method = "pmm")
-```
+<!-- ```{r imp, results = "hide"} -->
+<!-- imp <- mice(dat, m = 3, method = "pmm") -->
+<!-- ``` -->
 
 We now have the necessary packages, an incomplete dataset (`dat`), and a `mice::mids` object (`imp`) loaded in our workspace.
 
@@ -239,8 +241,26 @@ We now have the necessary packages, an incomplete dataset (`dat`), and a `mice::
   <!-- - `ggmice()` -->
   
 In a `mice` workflow, the missing data should first be inspected before determining an imputation strategy.
+<!-- The R package ggmice aids data analysts in exploring the missing parts of their data. -->
 The missing data pattern shows where in the incomplete data the missing values occur.
 And multivariate graphs may highlight the severity of the missing data problem with respect to the substantive scientific estimate(s).
+
+## `plot_miss()`
+
+The `plot_miss()` function facilitates the exploration of where the missingness occurs.
+The result is the graphical equivalent to the missingness matrix `is.na(penguins)`.
+
+```{r}
+plot_miss(penguins)
+```
+
+The plot can be ordered by the missingness proportion. 
+
+```{r}
+plot_miss(penguins, ordered = TRUE)
+```
+
+Other optional function arguments are `square` (for square tiles), `grid` (for grid lines between cells), `rotate` (to display the column names at a 90 degree angle), and `vrb` (to plot only a subset of variables).
 
 ## `plot_pattern()`
 
@@ -249,7 +269,7 @@ The argument `data` is required, which specifies the incomplete dataset.
 
 ```{r pattern}
 # create missing data pattern plot
-plot_pattern(dat)
+plot_pattern(penguins)
 ```
 
 The argument `square` is optional, and determines whether the missing data pattern has square or rectangular tiles.
@@ -258,11 +278,11 @@ Other optional arguments are `cluster` and `npat`.
 ```{r pattern2}
 # specify optional arguments
 plot_pattern(
-  dat,
+  penguins,
   square = TRUE,
   rotate = TRUE,
-  npat = 3,
-  cluster = "reg"
+  npat = 2,
+  cluster = "island"
 )
 ```
 
@@ -270,37 +290,49 @@ plot_pattern(
 
 ## `ggmice()`
 
-The `ggmice()` function can be used to explore missingness and associations between observed data.
-For example, we can create a scatterplot of the incomplete data, with one continuous and one categorical variable. 
-We can plot the incomplete continuous variable `hgt` against the incomplete categorical variable `reg` with:
+The `ggmice()` function can be used to explore the distributions of incomplete variables, associations with other variables, and with missingness indicators.
 
-```{r inc-cat}
-ggmice(dat, aes(reg, hgt)) +
+Plot the distribution of an incomplete variable with:
+```{r}
+ggmice(penguins, aes(x = sex)) +
+  geom_bar(fill = " white")
+```
+
+We can create scatterplots of the incomplete data. 
+For example, plot the bivariate distribution of two continuous incomplete variables with:
+```{r}
+ggmice(penguins, aes(x = bill_len, y = bill_dep)) +
+  geom_point()
+```
+
+We can plot the incomplete continuous variable `bill_dep` against the incomplete categorical variable `sex` with:
+
+```{r}
+ggmice(penguins, aes(x = sex, y = bill_dep)) +
   geom_point()
 ```
 
 In this graph, the missing values are plotted on the axes lines. 
 
-- Cases with observed `hgt` and missing `reg` are plotted on the vertical axis. 
-- Cases with observed `reg` and missing `hgt` are plotted on the horizontal axis. 
-- There are no cases were neither is observed, but otherwise these would be plotted on the intersection of the two axes. 
+- Cases with observed `bill_len` and missing `sex` are plotted on the vertical axis. 
+- There are no cases with observed `sex` and missing `bill_len`, but otherwise these would be plotted on the horizontal axis. 
+- Cases with missing `bill_len` as well as missing `sex` are plotted on the intersection of the two axes, since no data is available. 
 
 The 'grammar of graphics' makes it easy to adjust the plots programmatically. 
-For example, we could be interested in the differences in growth data between the city and other regions. 
-Add facets based on a clustering variable with:
+For example, if we could be interested in the sex differences in bill length between the penguin species, we can just add facets based on a clustering variable with:
 
 ```{r inc-clus}
-ggmice(dat, aes(wgt, hgt)) +
+ggmice(penguins, aes(x = sex, y = bill_dep)) +
   geom_point() +
-  facet_wrap(~ reg == "city", labeller = label_both)
+  facet_wrap(~ species, labeller = label_both)
 ```
 
-Or, alternatively, we could convert the plotted values of the variable `hgt` from centimeters to inches and the variable `wgt` from kilograms to pounds with:
+Or, alternatively, we could convert the plotted values of the variable `bill_len` from centimeters to inches with:
 
 ```{r inc-trans, warning = FALSE}
-ggmice(dat, aes(wgt * 2.20, hgt / 2.54)) +
+ggmice(penguins, aes(x = sex, y = bill_dep / 2.54)) +
   geom_point() +
-  labs(x = "Weight (lbs)", y = "Height (in)")
+  labs(y = "Bill depth (inches)")
 ```
 
 # Building imputation models
@@ -321,6 +353,16 @@ ggmice(dat, aes(wgt * 2.20, hgt / 2.54)) +
 <!--   - Take the analysis model (if available) as starting point for imputation workflow, for congeneality -->
 <!--   - ...? -->
 
+Imputation with mice requires an imputation model for each incomplete variable.
+The defaults in `mice` are to set an imputation method based on the column type, and to use all other variables as imputation model predictors.
+For example, a numeric data column would get the semi-parametric imputation method 'predictive mean matching' (`pmm`).
+
+```{r}
+pred <- make.predictorMatrix(penguins)
+meth <- make.method(penguins)
+plot_pred(pred, method = meth, square = FALSE)
+```
+
 ## `plot_corr()`
 
 The function `plot_corr()` can be used to investigate relations between variables for the development of imputation models. 
@@ -328,12 +370,12 @@ Only one of the arguments (`data`; the incomplete dataset) is required, all othe
 
 ```{r correlations}
 # create correlation plot
-plot_corr(dat)
+plot_corr(penguins)
 
 # specify optional arguments
 plot_corr(
-  dat,
-  vrb = c("hgt", "wgt", "bmi"),
+  penguins,
+  vrb = c("bill_len", "bill_dep", "sex"),
   label = TRUE,
   square = FALSE,
   diagonal = TRUE,
@@ -345,18 +387,25 @@ plot_corr(
 
 When `ggmice()` is applied to incomplete data with faceting based on a missingness indicator, associations between observed and missing data become apparent. 
 This may help explore the missingness mechanisms in the incomplete data. 
-The distribution of the continuous variable `age` and categorical variable `reg` are visualized faceted by the missingness indicator for `hgt` with:
+The distribution of the continuous variable `bill_dep` and categorical variable `species` are visualized faceted by the missingness indicator for `sex` with:
 
 ```{r}
 # continuous variable
-ggmice(dat, aes(age)) +
+ggmice(penguins, aes(bill_dep)) +
   geom_density() +
-  facet_wrap(~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
-# categorical variable
-ggmice(dat, aes(reg)) +
-  geom_bar(fill = "white") +
-  facet_wrap(~ factor(is.na(hgt) == 0, labels = c("observed height", "missing height")))
+  facet_wrap(~ factor(is.na(sex) == 0, labels = c("sex observed", "sex missing")))
 ```
+
+We can see differences in the distribution of `bill_dep` based on the missingness indicator of `sex`, so `bill_dep` is informative for imputing `sex`.
+
+```{r}
+# categorical variable
+ggmice(penguins, aes(species)) +
+  geom_bar(fill = "white") +
+  facet_wrap(~ factor(is.na(sex) == 0, labels = c("sex observed", "sex missing")))
+```
+
+In this case, we can see differences in the distribution of `species` based on the missingness indicator of `sex`, so `species` is informative for imputing `sex`.
 
 ## `plot_flux()`
 
@@ -368,11 +417,11 @@ The plotting function requires an incomplete dataset (argument `data`), and take
 
 ```{r flux}
 # create influx-outflux plot
-plot_flux(dat)
+plot_flux(penguins)
 
 # specify optional arguments
 plot_flux(
-  dat,
+  penguins,
   label = FALSE,
   caption = FALSE
 )
@@ -392,7 +441,7 @@ The `plot_pred()` function requires a predictor matrix (the `data` argument), bu
 
 ```{r predictormatrix}
 # create predictor matrix
-pred <- quickpred(dat)
+pred <- quickpred(penguins)
 
 # create predictor matrix plot
 plot_pred(pred)
@@ -403,10 +452,17 @@ plot_pred(
   label = FALSE,
   square = FALSE,
   rotate = TRUE,
-  method = "pmm"
+  meth = meth
 )
 ```
 
+# Imputing
+
+Run the imputation algorithm.
+
+```{r}
+imp <- mice(penguins, pred = pred, meth = meth, print = FALSE, seed = 123)
+```
 
 # Evaluating imputations
 
@@ -426,34 +482,45 @@ The only required argument is `data` (to supply a `mice::mids` object).
 The optional argument `vrb` defaults to `"all"`, which would display traceplots for all variables. 
 
 ```{r convergence}
-# create traceplot for one variable
-plot_trace(imp, "hgt")
+# create traceplot for all variables
+plot_trace(imp)
+```
+Add iterations to the imputation algorithm.
+
+```{r}
+imp <- mice.mids(imp, maxit = 5, print = FALSE)
+```
+
+```{r}
+plot_trace(imp)
 ```
 
 ## `ggmice()`
 
-We could create the same scatter plots as the ones above, but now on the imputed data:
+We can create the same scatter plots as the ones on the incomplete data, but now on the imputed data:
 
 ```{r imp-same, warning = FALSE}
-ggmice(imp, aes(age, hgt)) +
+ggmice(imp, aes(x = sex)) +
+  geom_bar(fill = " white")
+ggmice(imp, aes(x = bill_len, y = bill_dep)) +
   geom_point()
-ggmice(imp, aes(reg, hgt)) +
+ggmice(imp, aes(x = sex, y = bill_dep)) +
   geom_point()
-ggmice(imp, aes(wgt, hgt)) +
+ggmice(imp, aes(x = sex, y = bill_dep)) +
   geom_point() +
-  facet_wrap(~ reg == "city", labeller = label_both)
-ggmice(imp, aes(wgt * 2.20, hgt / 2.54)) +
+  facet_wrap(~ species, labeller = label_both)
+ggmice(imp, aes(x = sex, y = bill_dep / 2.54)) +
   geom_point() +
-  labs(x = "Weight (lbs)", y = "Height (in)")
+  labs(y = "Bill depth (inches)")
 ```
 
-These figures show the observed data points once in blue, plus three imputed values in red for each missing entry. 
+These figures show the observed data points once in blue, plus five imputed values in red for each missing entry. 
 
 It is also possible to use the imputation number as mapping variable in the plot. 
 For example, we can create a stripplot of observed and imputed data with the imputation number `.imp` on the horizontal axis:
 
 ```{r imp-strip}
-ggmice(imp, aes(x = .imp, y = hgt)) +
+ggmice(imp, aes(x = .imp, y = bill_len)) +
   geom_jitter(height = 0, width = 0.25) +
   labs(x = "Imputation number")
 ```
@@ -461,7 +528,7 @@ ggmice(imp, aes(x = .imp, y = hgt)) +
 A major advantage of `ggmice()` over the equivalent function `mice::stripplot()` is that `ggmice` allows us to add subsequent plotting layers, such as a boxplot overlay:
 
 ```{r imp-box}
-ggmice(imp, aes(x = .imp, y = hgt)) +
+ggmice(imp, aes(x = .imp, y = bill_len)) +
   geom_jitter(height = 0, width = 0.25) +
   geom_boxplot(width = 0.5, linewidth = 1, alpha = 0.75, outlier.shape = NA) +
   labs(x = "Imputation number")
@@ -470,7 +537,7 @@ ggmice(imp, aes(x = .imp, y = hgt)) +
 You may want to create a plot visualizing the imputations of multiple variables as one object. This can be done by combining `ggmice` with the functional programming package `purrr` and visualization package `patchwork`. For example, we could obtain boxplots of different imputed variables as one object using:
 
 ```{r facet}
-purrr::map(c("wgt", "hgt", "bmi"), ~ {
+purrr::map(c("bill_len", "bill_dep", "body_mass"), ~ {
   ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
     geom_boxplot() +
     labs(x = "Imputation number")
