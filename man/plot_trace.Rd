@@ -25,7 +25,7 @@ An object of class \link[ggplot2:ggplot]{ggplot2::ggplot}.
 Plot the trace lines of the imputation algorithm
 }
 \details{
-The \code{vrb} argument is "quoted" via \code{\link[rlang:defusing-advanced]{rlang::enexpr()}} and evaluated according
+The \code{vrb} argument is "quoted" via \code{\link[rlang:enexpr]{rlang::enexpr()}} and evaluated according
 to \href{https://adv-r.hadley.nz/metaprogramming.html}{tidy evaluation principles}.
 In practice, this technical nuance only affects users when passing an object
 from the environment (e.g., a vector of variable names) to the \code{vrb} argument.
