@@ -31,8 +31,8 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 
 <!-- # Introduction -->
 
-The R package `ggmice` is designed to support multiple imputation workflows with visualizations. 
-`ggmice` provides 'grammar of graphics' (`ggplot2`) functionality for exploring incomplete data, building `mice` imputation models, and evaluating multiply imputed datasets (`mids` objects). 
+The R package `ggmice` is designed to support `mice` imputation workflows with visualizations. 
+`ggmice` provides 'grammar of graphics' (`ggplot2`) functionality for exploring incomplete data, building imputation models, and evaluating imputations. 
  
 ## Minimal example
 
@@ -43,16 +43,16 @@ library(ggplot2)
 library(ggmice)
 ```
 
-Visualize the `boys` data set from the `mice` package with `ggmice`. 
-This is an incomplete dataset ($n = 748$) with cross-sectional data on $9$ growth-related variables (e.g., age in years and height in cm). 
-```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the incomplete `boys` dataset. Missing values are visualized on the axes lines, showing that some cases have observed data for age but missing height values."}
+Visualize some incomplete data with `ggmice`. 
+We use the `boys` dataset from the `mice` package, with cross-sectional data ($n = 748$) on $9$ growth-related variables (e.g., age in years and height in cm). 
+```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the incomplete `boys` dataset. Complete cases are displayed in blue and incomplete cases in red. The missing values are plotted on the axes lines, showing that some cases have observed data for age, but missing height values."}
 ggmice(
 	boys,
 	aes(age, hgt)) + 
 	geom_point()
 ```
 
-The blue points are observed, missing values are plotted on top of the axes in red.
+<!-- The blue points are observed, missing values are plotted on top of the axes in red. -->
 
 Impute the missing values in the `boys` data set with `mice`.
 ```{r, warning = FALSE, message = FALSE}
@@ -63,15 +63,15 @@ imp <- mice(
 ```
 
 Visualize the imputed `boys` data set with `ggmice`.
-```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the imputed `boys` dataset. Missing values in the height variable are filled in with `mice` and visualized with `ggmice`."}
+```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the imputed `boys` dataset. Missing values in the height variable have been filled in with `mice` and visualized with `ggmice`. Imputed values are displayed in red."}
 ggmice(
 	imp,
 	aes(age, hgt)) + 
 	geom_point()
 ```
 
-This figure shows the observed data in blue and the imputed data in red.
-The missing data have been imputed along the range of the observed data, with some uncertainty due to the missingness.
+<!-- This figure shows the observed data in blue and the imputed data in red. -->
+<!-- The missing data have been imputed along the range of the observed data, with some uncertainty due to the missingness. -->
 These visualizations offer direct graphical comparisons between incomplete and imputed data, and may be used to evaluate imputation model fit.
 
 ## Outline
