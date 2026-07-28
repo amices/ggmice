@@ -6,6 +6,7 @@
 #' @param rotate Logical indicating whether the variable name labels should be rotated 90 degrees.
 #' @param cluster Optional character string specifying which variable should be used for clustering (e.g., for multilevel data).
 #' @param npat Optional numeric input specifying the maximum number of missing data patterns to be visualized, defaults to all patterns.
+#' @param minobs Optional numeric input specifying the minimum number of observations per missing data pattern to be visualized, defaults to 1 observation.
 #' @param caption Logical indicating whether the figure caption should be displayed.
 #'
 #' @return An object of class [ggplot2::ggplot].
@@ -39,13 +40,13 @@ plot_pattern <-
            cluster = NULL,
            npat = NULL,
            caption = TRUE) {
-    if (is.matrix(data) && ncol(data) > 1) {
+    if (is.matrix(data) && ncol(data) > 1L) {
       data <- as.data.frame(data)
     }
     verify_data(data, df = TRUE)
     vrb <- rlang::enexpr(vrb)
     vrb_matched <- match_vrb(vrb, names(data))
-    if (length(vrb_matched) < 2) {
+    if (length(vrb_matched) < 2L) {
       cli::cli_abort("The number of variables should be two or more to compute missing data patterns.")
     }
     if (".x" %in% vrb_matched || ".y" %in% vrb_matched) {
@@ -65,7 +66,15 @@ plot_pattern <-
       }
     }
     if (!is.null(npat)) {
-      if (!is.numeric(npat) || npat < 1) {
+      if (!is.numeric(npat) || npat < 1L) {
+        cli::cli_abort(
+          c("The minimum number of patterns to display is one.",
+            "i" = "Please provide a positive integer.")
+        )
+      }
+    }
+    if (!is.null(minobs)) {
+      if (!is.numeric(minobs) || minobs < 1L) {
         cli::cli_abort(
           c("The minimum number of patterns to display is one.",
             "i" = "Please provide a positive integer.")
@@ -76,7 +85,7 @@ plot_pattern <-
     # get missing data pattern
     pat <- mice::md.pattern(data[, vrb_matched], plot = FALSE)
     rows_pat_full <-
-      (nrow(pat) - 1) # full number of missing data patterns
+      (nrow(pat) - 1L) # full number of missing data patterns
 
 
     # filter npat most frequent patterns
@@ -87,7 +96,7 @@ plot_pattern <-
         pat <-
           pat[rownames(pat) %in% c(top_n_pat, ""), , drop = FALSE]
 
-        if (npat != (nrow(pat) - 1)) {
+        if (npat != (nrow(pat) - 1L)) {
           # if npat != number of missing patterns
           # show number of requested, shown, and hidden missing data patterns
           cli::cli_inform(
@@ -99,7 +108,7 @@ plot_pattern <-
           )
         }
       } else {
-        cli::cli_warn(
+        cli::cli_inform(
           c(
             "Number of patterns specified is equal to or greater than the total number of patterns.",
             "i" = "All missing data patterns are shown."
