@@ -22,6 +22,7 @@ You can install the latest `ggmice` release from
 [CRAN](https://CRAN.R-project.org/package=ggmice) with:
 
 ``` r
+
 install.packages("ggmice")
 ```
 
@@ -29,6 +30,7 @@ Alternatively, you could install the development version of `ggmice`
 from [GitHub](https://github.com/amices) with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("amices/ggmice")
 ```
@@ -43,6 +45,7 @@ overview of all functionalities. Example data from
 by age (in years).
 
 ``` r
+
 # load packages
 library(ggplot2)
 library(mice)
@@ -56,6 +59,7 @@ ggmice(dat, aes(age, hgt)) + geom_point()
 ![](reference/figures/README-example-1.png)
 
 ``` r
+
 # impute the incomplete data
 imp <- mice(dat, m = 1, seed = 1)
 # visualize the imputed data

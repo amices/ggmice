@@ -1,10 +1,10 @@
-pandoc: 3.1.11
-pkgdown: 2.2.0
+pandoc: 3.8.3
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   ggmice: ggmice.html
   old_friends: old_friends.html
-last_built: 2026-04-03T15:03Z
+last_built: 2026-07-28T09:34Z
 urls:
   reference: http://amices.org/ggmice/reference
   article: http://amices.org/ggmice/articles

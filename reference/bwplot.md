@@ -17,7 +17,7 @@ bwplot(...)
 ## Value
 
 The output of
-[mice::bwplot](https://amices.org/mice/reference/bwplot.mids.html) and a
+[mice::bwplot](https://rdrr.io/pkg/lattice/man/xyplot.html) and a
 message about the `ggmice` equivalent.
 
 ## Examples

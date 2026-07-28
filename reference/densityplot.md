@@ -17,8 +17,8 @@ densityplot(...)
 ## Value
 
 The output of
-[mice::densityplot](https://amices.org/mice/reference/densityplot.mids.html)
-and a message about the `ggmice` equivalent.
+[mice::densityplot](https://rdrr.io/pkg/lattice/man/histogram.html) and
+a message about the `ggmice` equivalent.
 
 ## Examples
 

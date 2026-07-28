@@ -14,6 +14,9 @@
   [`plot_pattern()`](http://amices.org/ggmice/reference/plot_pattern.md)
   when no missing values are present
   ([\#180](https://github.com/amices/ggmice/issues/180))
+- Fix overlapping tiling effect in
+  [`plot_miss()`](http://amices.org/ggmice/reference/plot_miss.md) with
+  larger data ([\#184](https://github.com/amices/ggmice/issues/184))
 
 ## ggmice 0.1.1
 

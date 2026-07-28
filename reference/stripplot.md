@@ -17,8 +17,8 @@ stripplot(...)
 ## Value
 
 The output of
-[mice::stripplot](https://amices.org/mice/reference/stripplot.mids.html)
-and a message about the `ggmice` equivalent.
+[mice::stripplot](https://rdrr.io/pkg/lattice/man/xyplot.html) and a
+message about the `ggmice` equivalent.
 
 ## Examples
 

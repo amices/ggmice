@@ -32,6 +32,7 @@ You can install the latest `ggmice` release from
 [CRAN](https://CRAN.R-project.org/package=ggmice) with:
 
 ``` r
+
 install.packages("ggmice")
 ```
 
@@ -39,6 +40,7 @@ The development version of the `ggmice` package can be installed from
 GitHub with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("amices/ggmice")
 ```
@@ -49,6 +51,7 @@ packages as well. This vignette assumes that all three packages are
 loaded:
 
 ``` r
+
 library(mice)
 library(ggplot2)
 library(ggmice)
@@ -56,21 +59,23 @@ library(ggmice)
 
 We will use the
 [`mice::boys`](https://amices.org/mice/reference/boys.html) data for
-illustrations. This is an incomplete dataset ($n = 748$) with
-cross-sectional data on $9$ growth-related variables (e.g., age in years
-and height in cm).
+illustrations. This is an incomplete dataset ($`n = 748`$) with
+cross-sectional data on $`9`$ growth-related variables (e.g., age in
+years and height in cm).
 
 We load the incomplete data with:
 
 ``` r
+
 dat <- boys
 ```
 
 For the purpose of this vignette, we impute all incomplete variables
-$m = 3$ times with predictive mean matching as imputation method.
+$`m = 3`$ times with predictive mean matching as imputation method.
 Imputations are generated with:
 
 ``` r
+
 imp <- mice(dat, m = 3, method = "pmm")
 ```
 
@@ -92,6 +97,7 @@ equivalent to a
 [`ggplot()`](https://ggplot2.tidyverse.org/reference/ggplot.html) call:
 
 ``` r
+
 ggplot(dat, aes(x = age))
 ggmice(dat, aes(x = age))
 ```
@@ -151,6 +157,7 @@ some missing entries for the height variable `hgt`. We can create a
 scatter plot of these two variables with:
 
 ``` r
+
 ggmice(dat, aes(age, hgt)) +
   geom_point()
 ```
@@ -173,6 +180,7 @@ incomplete continuous variable `hgt` is plotted against the incomplete
 categorical variable `reg` with:
 
 ``` r
+
 ggmice(dat, aes(reg, hgt)) +
   geom_point()
 ```
@@ -191,6 +199,7 @@ in growth data between the city and other regions. Add facets based on a
 clustering variable with:
 
 ``` r
+
 ggmice(dat, aes(wgt, hgt)) +
   geom_point() +
   facet_wrap(~ reg == "city", labeller = label_both)
@@ -203,6 +212,7 @@ Or, alternatively, we could convert the plotted values of the variable
 to pounds with:
 
 ``` r
+
 ggmice(dat, aes(wgt * 2.20, hgt / 2.54)) +
   geom_point() +
   labs(x = "Weight (lbs)", y = "Height (in)")
@@ -223,6 +233,7 @@ distribution of the continuous variable `age` and categorical variable
 with:
 
 ``` r
+
 # continuous variable
 ggmice(dat, aes(age)) +
   geom_density() +
@@ -232,6 +243,7 @@ ggmice(dat, aes(age)) +
 ![](ggmice_files/figure-html/unnamed-chunk-2-1.png)
 
 ``` r
+
 # categorical variable
 ggmice(dat, aes(reg)) +
   geom_bar(fill = "white") +
@@ -259,6 +271,7 @@ For example, we could create the same scatter plots as the ones above,
 but now on the imputed data:
 
 ``` r
+
 ggmice(imp, aes(age, hgt)) +
   geom_point()
 ```
@@ -266,6 +279,7 @@ ggmice(imp, aes(age, hgt)) +
 ![](ggmice_files/figure-html/imp-same-1.png)
 
 ``` r
+
 ggmice(imp, aes(reg, hgt)) +
   geom_point()
 ```
@@ -273,6 +287,7 @@ ggmice(imp, aes(reg, hgt)) +
 ![](ggmice_files/figure-html/imp-same-2.png)
 
 ``` r
+
 ggmice(imp, aes(wgt, hgt)) +
   geom_point() +
   facet_wrap(~ reg == "city", labeller = label_both)
@@ -281,6 +296,7 @@ ggmice(imp, aes(wgt, hgt)) +
 ![](ggmice_files/figure-html/imp-same-3.png)
 
 ``` r
+
 ggmice(imp, aes(wgt * 2.20, hgt / 2.54)) +
   geom_point() +
   labs(x = "Weight (lbs)", y = "Height (in)")
@@ -300,6 +316,7 @@ the plot. For example, we can create a stripplot of observed and imputed
 data with the imputation number `.imp` on the horizontal axis:
 
 ``` r
+
 ggmice(imp, aes(x = .imp, y = hgt)) +
   geom_jitter(height = 0, width = 0.25) +
   labs(x = "Imputation number")
@@ -315,6 +332,7 @@ that `ggmice` allows us to add subsequent plotting layers, such as a
 boxplot overlay:
 
 ``` r
+
 ggmice(imp, aes(x = .imp, y = hgt)) +
   geom_jitter(height = 0, width = 0.25) +
   geom_boxplot(width = 0.5, linewidth = 1, alpha = 0.75, outlier.shape = NA) +
@@ -330,6 +348,7 @@ functional programming package `purrr` and visualization package
 variables as one object using:
 
 ``` r
+
 purrr::map(c("wgt", "hgt", "bmi"), ~ {
   ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
     geom_boxplot() +
@@ -365,6 +384,7 @@ the angle of the variable names 90 degrees if requested. Other optional
 arguments are `cluster` and `npat`.
 
 ``` r
+
 # create missing data pattern plot
 plot_pattern(dat)
 ```
@@ -372,6 +392,7 @@ plot_pattern(dat)
 ![](ggmice_files/figure-html/pattern-1.png)
 
 ``` r
+
 
 # specify optional arguments
 plot_pattern(
@@ -398,6 +419,7 @@ imputation models. The plotting function requires an incomplete dataset
 axis labels.
 
 ``` r
+
 # create influx-outflux plot
 plot_flux(dat)
 ```
@@ -405,6 +427,7 @@ plot_flux(dat)
 ![](ggmice_files/figure-html/flux-1.png)
 
 ``` r
+
 
 # specify optional arguments
 plot_flux(
@@ -425,6 +448,7 @@ imputation models. Only one of the arguments (`data`, the incomplete
 dataset) is required, all other arguments are optional.
 
 ``` r
+
 # create correlation plot
 plot_corr(dat)
 ```
@@ -432,6 +456,7 @@ plot_corr(dat)
 ![](ggmice_files/figure-html/correlations-1.png)
 
 ``` r
+
 
 # specify optional arguments
 plot_corr(
@@ -462,6 +487,7 @@ function requires a predictor matrix (the `data` argument), but other
 arguments can be provided too.
 
 ``` r
+
 # create predictor matrix
 pred <- quickpred(dat)
 
@@ -472,6 +498,7 @@ plot_pred(pred)
 ![](ggmice_files/figure-html/predictormatrix-1.png)
 
 ``` r
+
 
 # specify optional arguments
 plot_pred(
@@ -496,6 +523,7 @@ optional argument `vrb` defaults to `"all"`, which would display
 traceplots for all variables.
 
 ``` r
+
 # create traceplot for one variable
 plot_trace(imp, "hgt")
 ```
@@ -509,8 +537,9 @@ plot_trace(imp, "hgt")
 This is the end of the vignette. This document was generated using:
 
 ``` r
+
 sessionInfo()
-#> R version 4.5.3 (2026-03-11)
+#> R version 4.6.1 (2026-06-24)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.4 LTS
 #> 
@@ -531,26 +560,26 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] ggmice_0.1.1.9000 ggplot2_4.0.2     mice_3.19.0      
+#> [1] ggmice_0.1.1.9000 ggplot2_4.0.3     mice_3.19.0      
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] gtable_0.3.6       shape_1.4.6.1      xfun_0.57          bslib_0.10.0      
-#>  [5] htmlwidgets_1.6.4  lattice_0.22-9     vctrs_0.7.2        tools_4.5.3       
-#>  [9] Rdpack_2.6.6       generics_0.1.4     tibble_3.3.1       pan_1.9           
-#> [13] pkgconfig_2.0.3    jomo_2.7-6         Matrix_1.7-4       RColorBrewer_1.1-3
-#> [17] S7_0.2.1           desc_1.4.3         lifecycle_1.0.5    compiler_4.5.3    
+#>  [1] gtable_0.3.6       shape_1.4.6.1      xfun_0.60          bslib_0.11.0      
+#>  [5] htmlwidgets_1.6.4  lattice_0.22-9     vctrs_0.7.3        tools_4.6.1       
+#>  [9] Rdpack_2.6.6       generics_0.1.4     tibble_3.3.1       pan_2.0           
+#> [13] pkgconfig_2.0.3    jomo_2.7-6         Matrix_1.7-5       RColorBrewer_1.1-3
+#> [17] S7_0.2.2           desc_1.4.3         lifecycle_1.0.5    compiler_4.6.1    
 #> [21] farver_2.1.2       stringr_1.6.0      textshaping_1.0.5  codetools_0.2-20  
-#> [25] htmltools_0.5.9    sass_0.4.10        yaml_2.3.12        glmnet_4.1-10     
-#> [29] pillar_1.11.1      pkgdown_2.2.0      nloptr_2.2.1       jquerylib_0.1.4   
+#> [25] htmltools_0.5.9    sass_0.4.10        yaml_2.3.12        glmnet_5.0        
+#> [29] pillar_1.11.1      pkgdown_2.2.1      nloptr_2.2.1       jquerylib_0.1.4   
 #> [33] tidyr_1.3.2        MASS_7.3-65        cachem_1.1.0       reformulas_0.4.4  
-#> [37] iterators_1.0.14   rpart_4.1.24       boot_1.3-32        foreach_1.5.2     
-#> [41] mitml_0.4-5        nlme_3.1-168       tidyselect_1.2.1   digest_0.6.39     
-#> [45] stringi_1.8.7      dplyr_1.2.0        purrr_1.2.1        labeling_0.4.3    
-#> [49] splines_4.5.3      fastmap_1.2.0      grid_4.5.3         cli_3.6.5         
-#> [53] magrittr_2.0.4     patchwork_1.3.2    survival_3.8-6     broom_1.0.12      
-#> [57] withr_3.0.2        scales_1.4.0       backports_1.5.0    rmarkdown_2.31    
-#> [61] otel_0.2.0         nnet_7.3-20        lme4_2.0-1         ragg_1.5.2        
-#> [65] evaluate_1.0.5     knitr_1.51         rbibutils_2.4.1    rlang_1.1.7       
-#> [69] Rcpp_1.1.1         glue_1.8.0         minqa_1.2.8        jsonlite_2.0.0    
-#> [73] R6_2.6.1           systemfonts_1.3.2  fs_2.0.1
+#> [37] iterators_1.0.14   rpart_4.1.27       boot_1.3-32        foreach_1.5.2     
+#> [41] mitml_0.4-5        nlme_3.1-169       tidyselect_1.2.1   digest_0.6.39     
+#> [45] stringi_1.8.7      dplyr_1.2.1        purrr_1.2.2        labeling_0.4.3    
+#> [49] splines_4.6.1      fastmap_1.2.0      grid_4.6.1         cli_3.6.6         
+#> [53] magrittr_2.0.5     patchwork_1.3.2    survival_3.8-6     broom_1.0.13      
+#> [57] withr_3.0.3        scales_1.4.0       backports_1.5.1    rmarkdown_2.31    
+#> [61] otel_0.2.0         nnet_7.3-20        lme4_2.0-6         ragg_1.5.2        
+#> [65] evaluate_1.0.5     knitr_1.51         rbibutils_2.4.1    rlang_1.3.0       
+#> [69] Rcpp_1.1.2         glue_1.8.1         minqa_1.2.8        jsonlite_2.0.0    
+#> [73] R6_2.6.1           systemfonts_1.3.2  fs_2.1.0
 ```

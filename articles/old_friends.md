@@ -9,6 +9,7 @@ First load the `ggmice`, `mice`, and `ggplot2` packages, some incomplete
 data and a `mids` object into your workspace.
 
 ``` r
+
 # load packages
 library(ggmice)
 library(mice)
@@ -24,6 +25,7 @@ imp <- mice(dat, method = "pmm", printFlag = FALSE)
 Box-and-whisker plot of observed and imputed data.
 
 ``` r
+
 # original plot
 mice::bwplot(imp, hgt ~ .imp)
 ```
@@ -31,6 +33,7 @@ mice::bwplot(imp, hgt ~ .imp)
 ![](old_friends_files/figure-html/bwplot-1.png)
 
 ``` r
+
 # ggmice equivalent
 ggmice(imp, aes(x = .imp, y = hgt)) +
   geom_boxplot() +
@@ -40,6 +43,7 @@ ggmice(imp, aes(x = .imp, y = hgt)) +
 ![](old_friends_files/figure-html/bwplot-2.png)
 
 ``` r
+
 # extended reproduction with ggmice
 ggmice(imp, aes(x = .imp, y = hgt)) +
   stat_boxplot(geom = "errorbar", linetype = "dashed") +
@@ -55,6 +59,7 @@ ggmice(imp, aes(x = .imp, y = hgt)) +
 Density plot of observed and imputed data.
 
 ``` r
+
 # original plot
 mice::densityplot(imp, ~hgt)
 ```
@@ -62,6 +67,7 @@ mice::densityplot(imp, ~hgt)
 ![](old_friends_files/figure-html/densityplot-1.png)
 
 ``` r
+
 # ggmice equivalent
 ggmice(imp, aes(x = hgt, group = .imp)) +
   geom_density()
@@ -70,6 +76,7 @@ ggmice(imp, aes(x = hgt, group = .imp)) +
 ![](old_friends_files/figure-html/densityplot-2.png)
 
 ``` r
+
 # extended reproduction with ggmice
 ggmice(imp, aes(x = hgt, group = .imp, linewidth = .where)) +
   geom_density() +
@@ -87,6 +94,7 @@ ggmice(imp, aes(x = hgt, group = .imp, linewidth = .where)) +
 Influx and outflux plot of multivariate missing data patterns.
 
 ``` r
+
 # original plot
 fluxplot(dat)
 ```
@@ -94,6 +102,7 @@ fluxplot(dat)
 ![](old_friends_files/figure-html/flux-1.png)
 
 ``` r
+
 # ggmice equivalent
 plot_flux(dat)
 ```
@@ -105,6 +114,7 @@ plot_flux(dat)
 Missing data pattern plot.
 
 ``` r
+
 # original plot
 md <- md.pattern(dat)
 ```
@@ -112,6 +122,7 @@ md <- md.pattern(dat)
 ![](old_friends_files/figure-html/md.pattern-1.png)
 
 ``` r
+
 # ggmice equivalent
 plot_pattern(dat)
 ```
@@ -119,6 +130,7 @@ plot_pattern(dat)
 ![](old_friends_files/figure-html/md.pattern-2.png)
 
 ``` r
+
 # extended reproduction with ggmice
 plot_pattern(dat, square = TRUE) +
   theme(
@@ -136,6 +148,7 @@ plot_pattern(dat, square = TRUE) +
 Plot the trace lines of the MICE algorithm.
 
 ``` r
+
 # original plot
 plot(imp, hgt ~ .it | .ms)
 ```
@@ -143,6 +156,7 @@ plot(imp, hgt ~ .it | .ms)
 ![](old_friends_files/figure-html/plot.mids-1.png)
 
 ``` r
+
 # ggmice equivalent
 plot_trace(imp, "hgt")
 ```
@@ -154,6 +168,7 @@ plot_trace(imp, "hgt")
 Stripplot of observed and imputed data.
 
 ``` r
+
 # original plot
 mice::stripplot(imp, hgt ~ .imp)
 ```
@@ -161,6 +176,7 @@ mice::stripplot(imp, hgt ~ .imp)
 ![](old_friends_files/figure-html/stripplot-1.png)
 
 ``` r
+
 # ggmice equivalent
 ggmice(imp, aes(x = .imp, y = hgt)) +
   geom_jitter(width = 0.25) +
@@ -170,6 +186,7 @@ ggmice(imp, aes(x = .imp, y = hgt)) +
 ![](old_friends_files/figure-html/stripplot-2.png)
 
 ``` r
+
 # extended reproduction with ggmice (not recommended)
 ggmice(imp, aes(x = .imp, y = hgt)) +
   geom_jitter(
@@ -194,6 +211,7 @@ ggmice(imp, aes(x = .imp, y = hgt)) +
 Scatterplot of observed and imputed data.
 
 ``` r
+
 # original plot
 mice::xyplot(imp, hgt ~ age)
 ```
@@ -201,6 +219,7 @@ mice::xyplot(imp, hgt ~ age)
 ![](old_friends_files/figure-html/unnamed-chunk-2-1.png)
 
 ``` r
+
 # ggmice equivalent
 ggmice(imp, aes(age, hgt)) +
   geom_point()
@@ -209,6 +228,7 @@ ggmice(imp, aes(age, hgt)) +
 ![](old_friends_files/figure-html/unnamed-chunk-2-2.png)
 
 ``` r
+
 # extended reproduction with ggmice
 ggmice(imp, aes(age, hgt)) +
   geom_point(size = 2, shape = 1) +
@@ -226,6 +246,7 @@ used. For example, an interactive influx and outflux plot may be more
 legible than a static one.
 
 ``` r
+
 # load packages
 library(plotly)
 # influx and outflux plot
@@ -244,6 +265,7 @@ over the variables and subsequently `wrap_plots` to create a single
 figure.
 
 ``` r
+
 # load packages
 library(purrr)
 library(patchwork)
@@ -254,6 +276,7 @@ vrb <- names(dat)
 Display box-and-whisker plots for all variables.
 
 ``` r
+
 # original plot
 mice::bwplot(imp)
 ```
@@ -261,6 +284,7 @@ mice::bwplot(imp)
 ![](old_friends_files/figure-html/bwplots-1.png)
 
 ``` r
+
 # ggmice equivalent
 p <- map(vrb, ~ {
   ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
@@ -277,6 +301,7 @@ wrap_plots(p, guides = "collect") &
 Display density plots for all variables.
 
 ``` r
+
 # original plot
 mice::densityplot(imp)
 ```
@@ -284,6 +309,7 @@ mice::densityplot(imp)
 ![](old_friends_files/figure-html/densityplots-1.png)
 
 ``` r
+
 # ggmice equivalent
 p <- map(vrb, ~ {
   ggmice(imp, aes(x = .data[[.x]], group = .imp)) +
@@ -298,6 +324,7 @@ wrap_plots(p, guides = "collect") &
 Display strip plots for all variables.
 
 ``` r
+
 # original plot
 mice::stripplot(imp)
 ```
@@ -305,6 +332,7 @@ mice::stripplot(imp)
 ![](old_friends_files/figure-html/stripplots-1.png)
 
 ``` r
+
 # ggmice equivalent
 p <- map(vrb, ~ {
   ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
@@ -324,8 +352,9 @@ wrap_plots(p, guides = "collect") &
 This is the end of the vignette. This document was generated using:
 
 ``` r
+
 sessionInfo()
-#> R version 4.5.3 (2026-03-11)
+#> R version 4.6.1 (2026-06-24)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.4 LTS
 #> 
@@ -346,34 +375,28 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] patchwork_1.3.2   purrr_1.2.1       plotly_4.12.0     ggplot2_4.0.2    
+#> [1] patchwork_1.3.2   purrr_1.2.2       plotly_4.12.1     ggplot2_4.0.3    
 #> [5] mice_3.19.0       ggmice_0.1.1.9000
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] gtable_0.3.6        shape_1.4.6.1       xfun_0.57          
-#>  [4] bslib_0.10.0        htmlwidgets_1.6.4   lattice_0.22-9     
-#>  [7] crosstalk_1.2.2     vctrs_0.7.2         tools_4.5.3        
-#> [10] Rdpack_2.6.6        generics_0.1.4      tibble_3.3.1       
-#> [13] pan_1.9             pkgconfig_2.0.3     jomo_2.7-6         
-#> [16] Matrix_1.7-4        data.table_1.18.2.1 RColorBrewer_1.1-3 
-#> [19] S7_0.2.1            desc_1.4.3          lifecycle_1.0.5    
-#> [22] compiler_4.5.3      farver_2.1.2        stringr_1.6.0      
-#> [25] textshaping_1.0.5   codetools_0.2-20    htmltools_0.5.9    
-#> [28] sass_0.4.10         lazyeval_0.2.2      yaml_2.3.12        
-#> [31] glmnet_4.1-10       pillar_1.11.1       pkgdown_2.2.0      
-#> [34] nloptr_2.2.1        jquerylib_0.1.4     tidyr_1.3.2        
-#> [37] MASS_7.3-65         cachem_1.1.0        reformulas_0.4.4   
-#> [40] iterators_1.0.14    rpart_4.1.24        boot_1.3-32        
-#> [43] foreach_1.5.2       mitml_0.4-5         nlme_3.1-168       
-#> [46] tidyselect_1.2.1    digest_0.6.39       stringi_1.8.7      
-#> [49] dplyr_1.2.0         labeling_0.4.3      splines_4.5.3      
-#> [52] fastmap_1.2.0       grid_4.5.3          cli_3.6.5          
-#> [55] magrittr_2.0.4      survival_3.8-6      broom_1.0.12       
-#> [58] withr_3.0.2         scales_1.4.0        backports_1.5.0    
-#> [61] httr_1.4.8          rmarkdown_2.31      otel_0.2.0         
-#> [64] nnet_7.3-20         lme4_2.0-1          ragg_1.5.2         
-#> [67] evaluate_1.0.5      knitr_1.51          rbibutils_2.4.1    
-#> [70] viridisLite_0.4.3   rlang_1.1.7         Rcpp_1.1.1         
-#> [73] glue_1.8.0          minqa_1.2.8         jsonlite_2.0.0     
-#> [76] R6_2.6.1            systemfonts_1.3.2   fs_2.0.1
+#>  [1] gtable_0.3.6       shape_1.4.6.1      xfun_0.60          bslib_0.11.0      
+#>  [5] htmlwidgets_1.6.4  lattice_0.22-9     crosstalk_1.2.2    vctrs_0.7.3       
+#>  [9] tools_4.6.1        Rdpack_2.6.6       generics_0.1.4     tibble_3.3.1      
+#> [13] pan_2.0            pkgconfig_2.0.3    jomo_2.7-6         Matrix_1.7-5      
+#> [17] data.table_1.18.4  RColorBrewer_1.1-3 S7_0.2.2           desc_1.4.3        
+#> [21] lifecycle_1.0.5    compiler_4.6.1     farver_2.1.2       stringr_1.6.0     
+#> [25] textshaping_1.0.5  codetools_0.2-20   htmltools_0.5.9    sass_0.4.10       
+#> [29] yaml_2.3.12        glmnet_5.0         pillar_1.11.1      pkgdown_2.2.1     
+#> [33] nloptr_2.2.1       jquerylib_0.1.4    tidyr_1.3.2        MASS_7.3-65       
+#> [37] cachem_1.1.0       reformulas_0.4.4   iterators_1.0.14   rpart_4.1.27      
+#> [41] boot_1.3-32        foreach_1.5.2      mitml_0.4-5        nlme_3.1-169      
+#> [45] tidyselect_1.2.1   digest_0.6.39      stringi_1.8.7      dplyr_1.2.1       
+#> [49] labeling_0.4.3     splines_4.6.1      fastmap_1.2.0      grid_4.6.1        
+#> [53] cli_3.6.6          magrittr_2.0.5     survival_3.8-6     broom_1.0.13      
+#> [57] withr_3.0.3        scales_1.4.0       backports_1.5.1    httr_1.4.8        
+#> [61] rmarkdown_2.31     otel_0.2.0         nnet_7.3-20        lme4_2.0-6        
+#> [65] ragg_1.5.2         evaluate_1.0.5     knitr_1.51         rbibutils_2.4.1   
+#> [69] viridisLite_0.4.3  rlang_1.3.0        Rcpp_1.1.2         glue_1.8.1        
+#> [73] minqa_1.2.8        jsonlite_2.0.0     R6_2.6.1           systemfonts_1.3.2 
+#> [77] fs_2.1.0
 ```

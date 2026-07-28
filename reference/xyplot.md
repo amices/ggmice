@@ -17,7 +17,7 @@ xyplot(...)
 ## Value
 
 The output of
-[mice::xyplot](https://amices.org/mice/reference/xyplot.mids.html) and a
+[mice::xyplot](https://rdrr.io/pkg/lattice/man/xyplot.html) and a
 message about the `ggmice` equivalent.
 
 ## Examples
