@@ -19,6 +19,7 @@ p.caption {
 knitr::opts_chunk$set(
   collapse = TRUE,
   message = FALSE,
+  warning = FALSE,
   comment = "#>",
   fig.width = 7.2,
   fig.height = 4
@@ -30,7 +31,7 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 
 <!-- # Introduction -->
 
-The R package `ggmice` is designed to enhance multiple imputation workflows with visalizations. 
+The R package `ggmice` is designed to support multiple imputation workflows with visualizations. 
 `ggmice` provides 'grammar of graphics' (`ggplot2`) functionality for exploring incomplete data, building `mice` imputation models, and evaluating multiply imputed datasets (`mids` objects). 
  
 ## Minimal example
@@ -51,6 +52,8 @@ ggmice(
 	geom_point()
 ```
 
+The blue points are observed, missing values are plotted on top of the axes in red.
+
 Impute the missing values in the `boys` data set with `mice`.
 ```{r, warning = FALSE, message = FALSE}
 imp <- mice(
@@ -67,6 +70,7 @@ ggmice(
 	geom_point()
 ```
 
+This figure shows the observed data in blue and the imputed data in red.
 The missing data have been imputed along the range of the observed data, with some uncertainty due to the missingness.
 These visualizations offer direct graphical comparisons between incomplete and imputed data, and may be used to evaluate imputation model fit.
 
@@ -80,7 +84,7 @@ The vignette shows how to use `ggmice` to:
 - build and inspect imputation models, and
 - evaluate imputation models and imputed data.
 
-But first, some background information about the `ggmice` package and its core function, `ggmice()`.
+But first, we need some background information about the `ggmice` package and its core function, `ggmice()`.
 
 ## The `ggmice` package
 
@@ -100,7 +104,7 @@ These editable `ggplot` objects are easily adapted into publication-quality grap
 <!-- Use `ggmice` to inspect missing data, develop imputation models, evaluate algorithmic convergence, or compare observed versus imputed data. -->
 <!-- The resulting `ggplot` objects may be easily manipulated or extended.  -->
 
-<!-- The vignette gives an overview of the different plotting function in `ggmice`.  -->
+<!-- The vignette gives an overview of the different plotting functions in `ggmice`.  -->
 
 ## The `ggmice()` function
 
@@ -110,9 +114,10 @@ The core function in the `ggmice` package is `ggmice()`.
 - When the `data` argument is supplied with an incomplete dataset (a `data.frame` object), `ggmice()` visualizes observed versus *missing* data.
 - When the `data` argument is supplied with multiply imputed datasets (a `mids` object), `ggmice()` visualizes observed versus *imputed* data.
 
-### `ggmice()` versus `ggplot()`
+By convention, observed data are plotted in blue and missing or imputed data in red.
 
-The `ggmice()` function mimics how the `ggplot2` function `ggplot()` works: both take a `data` argument and a `mapping` argument, and will return an object of class `ggplot`. 
+The `ggmice()` function mimics how the `ggplot2` function `ggplot()` works.
+Both take a `data` argument and a `mapping` argument, and will return an object of class `ggplot`. 
 
 Using `ggmice()` looks equivalent to a `ggplot()` call:
 
@@ -145,9 +150,14 @@ This makes `ggmice()` a versatile plotting function for incomplete and/or impute
 
 ### Incomplete data
 
-If the object supplied to the `data` argument in `ggmice()` is a `data.frame`, the visualization will contain observed data in blue and missing data in red. 
-Since missing data points are by definition unobserved, the values themselves cannot be plotted. What we *can* plot are sets of variable pairs. 
-Any missing values in one variable can be displayed on the axis of the other. This provides a visual cue that the missing data is distinct from the observed values, but still displays the observed value of the other variable. 
+If the object supplied to the `data` argument in the `ggmice()` function is a `data.frame`, the visualization will contain observed data in blue and missing data in red. 
+Because missing data points are, by definition, unobserved, their values cannot be plotted directly. 
+For categorical variables we can display the missing values as their own category.
+For continuous variables, there is no straightforward way to show where the missingness occurs.
+
+Visualizations of the missingness that we *can* create are via plots of variable pairs. 
+Any missing values in one variable can be displayed on the axis of the other. 
+This provides a visual cue that the missing data is distinct from the observed values, but still displays the observed value of the other variable. 
 
 In the minimal example, the variable `age` was completely observed, while there were some missing entries for the height variable `hgt`. 
 We create a scatter plot of these two variables with: 
@@ -159,7 +169,7 @@ ggmice(boys, aes(age, hgt)) +
 
 The `age` of cases with missing `hgt` are plotted on the horizontal axis. 
 This is in contrast to a regular `ggplot()` call with the same arguments, which would leave out all cases with missing `hgt`. 
-So, with `ggmice()` we loose less information, and may even gain valuable insight into the missingness in the data.
+So, with `ggmice()` we lose less information, and may even gain valuable insight into the missingness in the data.
 
 ### Imputed data
 
@@ -174,8 +184,6 @@ In the minimal example, we created the same scatter plot with the imputed data a
 ggmice(imp, aes(age, hgt)) +
   geom_point()
 ```
-
-This figure shows the observed data in blue and the imputed data in red.
 
 Aside from this minimal example, `ggmice` offers many more functionalities and functions.
 For example, the package contains plotting functions to explore incomplete data and evaluate convergence of the imputation algorithm. 
@@ -216,11 +224,15 @@ library(ggmice)
 
 <!-- ## Data -->
 
-We will use the `penguins` data for illustrations. 
-This is an incomplete dataset ($n = 344$) with observational data on $9$ variables related to penguin populations (e.g., penguin species, and measurements of body weight in grams). 
+We will use the `penguins` data for illustrations, available from the base R `datasets`. 
+The `penguins` dataset contains incomplete observational data on penguin sightings ($n = 344$).
+Each row represents a single penguin, and the nine variables describe its characteristics (e.g., species) and measurements (e.g., body weight in grams). 
+
+In this vignette, we will treat the penguins data as our working example. 
+The missingness is empirical, and the data are of mixed type (continuous and categorical variables).
+With that, we have the necessary packages (`mice`, `ggplot2`, and `ggmice`) and an incomplete dataset (`penguins`) to start the full imputation workflow.
 
 <!-- We load the incomplete data from the `mice` package with: -->
-
 <!-- ```{r data} -->
 <!-- dat <- boys -->
 <!-- ``` -->
@@ -232,7 +244,11 @@ This is an incomplete dataset ($n = 344$) with observational data on $9$ variabl
 <!-- imp <- mice(dat, m = 3, method = "pmm") -->
 <!-- ``` -->
 
-We now have the necessary packages, an incomplete dataset (`dat`), and a `mice::mids` object (`imp`) loaded in our workspace.
+<!-- We now have the necessary packages, an incomplete dataset (`dat`), and a `mice::mids` object (`imp`) loaded in our workspace. -->
+
+We will first use `ggmice` to explore marginal and joint distributions of incomplete variables. 
+Next, we will construct and inspect imputation models based on relations between the variables. 
+Finally, we will visualize imputation algorithm and the resulting imputations to assess whether the imputation models yields plausible values and adequately reflect the uncertainty due to missingness.
 
 # Exploring incomplete data
 
@@ -319,7 +335,15 @@ In this graph, the missing values are plotted on the axes lines.
 - Cases with missing `bill_len` as well as missing `sex` are plotted on the intersection of the two axes, since no data is available. 
 
 The 'grammar of graphics' makes it easy to adjust the plots programmatically. 
-For example, if we could be interested in the sex differences in bill length between the penguin species, we can just add facets based on a clustering variable with:
+We could convert the plotted values of the variable `bill_len` from centimeters to inches with:
+
+```{r inc-trans, warning = FALSE}
+ggmice(penguins, aes(x = sex, y = bill_dep / 2.54)) +
+  geom_point() +
+  labs(y = "Bill depth (inches)")
+```
+
+If we would be interested in the sex differences in bill length between the penguin species, we can just add facets based on a clustering variable with:
 
 ```{r inc-clus}
 ggmice(penguins, aes(x = sex, y = bill_dep)) +
@@ -327,13 +351,7 @@ ggmice(penguins, aes(x = sex, y = bill_dep)) +
   facet_wrap(~ species, labeller = label_both)
 ```
 
-Or, alternatively, we could convert the plotted values of the variable `bill_len` from centimeters to inches with:
 
-```{r inc-trans, warning = FALSE}
-ggmice(penguins, aes(x = sex, y = bill_dep / 2.54)) +
-  geom_point() +
-  labs(y = "Bill depth (inches)")
-```
 
 # Building imputation models
 
@@ -485,6 +503,7 @@ The optional argument `vrb` defaults to `"all"`, which would display traceplots 
 # create traceplot for all variables
 plot_trace(imp)
 ```
+
 Add iterations to the imputation algorithm.
 
 ```{r}
@@ -506,15 +525,17 @@ ggmice(imp, aes(x = bill_len, y = bill_dep)) +
   geom_point()
 ggmice(imp, aes(x = sex, y = bill_dep)) +
   geom_point()
-ggmice(imp, aes(x = sex, y = bill_dep)) +
-  geom_point() +
-  facet_wrap(~ species, labeller = label_both)
 ggmice(imp, aes(x = sex, y = bill_dep / 2.54)) +
   geom_point() +
   labs(y = "Bill depth (inches)")
+ggmice(imp, aes(x = sex, y = bill_dep)) +
+  geom_point() +
+  facet_wrap(~ species, labeller = label_both)
 ```
 
-These figures show the observed data points once in blue, plus five imputed values in red for each missing entry. 
+These figures show the observed data points once in blue, plus five imputed values in red for each missing entry.
+
+
 
 It is also possible to use the imputation number as mapping variable in the plot. 
 For example, we can create a stripplot of observed and imputed data with the imputation number `.imp` on the horizontal axis:
@@ -543,6 +564,13 @@ purrr::map(c("bill_len", "bill_dep", "body_mass"), ~ {
     labs(x = "Imputation number")
 }) %>%
   patchwork::wrap_plots()
+```
+
+For further inspection, we can also split the plots by imputation number, which allows us to evaluate the bivariate distribution within each imputation.
+```{r}
+ggmice(imp, aes(x = sex, y = bill_dep)) +
+  geom_point() +
+  facet_wrap(~.imp)
 ```
 
 
