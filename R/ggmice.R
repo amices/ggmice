@@ -108,10 +108,10 @@ ggmice <- function(data = NULL,
       mice_data <- dplyr::mutate(
         mice_data,
         dplyr::across(
-          tidyselect::all_of(vrbs_num[vrbs_num %in% c(vrb_x, vrb_y)]),
+          tidyselect::all_of(c(vrb_x, vrb_y)[c(vrb_x, vrb_y) %in% vrbs_num]),
           ~ tidyr::replace_na(as.numeric(.x), -Inf)
         ),
-        dplyr::across(tidyselect::all_of(vrbs[vrbs %nin% vrbs_num & vrbs %in% c(vrb_x, vrb_y)]), ~ {
+        dplyr::across(tidyselect::all_of(c(vrb_x, vrb_y)[c(vrb_x, vrb_y) %nin% vrbs_num]), ~ {
           as.factor(tidyr::replace_na(as.character(.x), " "))
         })
       )
