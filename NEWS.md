@@ -5,6 +5,7 @@
 * Deprecated `ggplot2` argument `size` no longer used in vignettes (#174)
 * Suppress message in `plot_pred()` and `plot_miss()` about unused labels (#179)
 * Suppress error in `plot_pattern()` when no missing values are present (#180)
+* Fix overlapping tiling effect in `plot_miss()` with larger data (#184)
 
 # ggmice 0.1.1
 
