@@ -25,8 +25,8 @@ observed data from missing data or imputed data (for incomplete and imputed data
 Plot incomplete or imputed data
 }
 \examples{
-# minimal example: scatterplot of incomplete and imputed data
 library(ggplot2)
+# minimal example: scatterplot of incomplete and imputed data
 dat <- mice::nhanes
 ggmice(dat, aes(x = age, y = chl)) + geom_point()
 imp <- mice::mice(dat, print = FALSE)
@@ -59,7 +59,6 @@ ggmice(imp, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point() +
 
 }
 \seealso{
-See the \code{ggmice} vignette to use the \code{ggmice()} function on
-\href{https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function}{incomplete data}
-or \href{https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1}{imputed data}.
+See the \href{https://amices.org/ggmice/articles/ggmice.html}{\code{ggmice} vignette}
+to use the \code{ggmice()} function on incomplete data or imputed data.
 }
