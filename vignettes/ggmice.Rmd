@@ -139,23 +139,29 @@ This makes `ggmice()` a versatile plotting function for incomplete and imputed d
 
 ### Incomplete data
 
-If the object supplied to the `data` argument in the `ggmice()` function is a `data.frame`, the visualization will contain observed data in blue and missing data in red. 
-Because missing data points are, by definition, unobserved, their values cannot be plotted directly. 
-For categorical variables we can display the missing values as their own category.
-For continuous variables, there is no straightforward way to show where the missingness occurs.
+Because missing data points are by definition unobserved, their values cannot be plotted directly. 
+While for categorical variables we can display the missing values as their own category, there is no straightforward way to show the missingness in continuous variables.
+Therefore, we typically omit incomplete observations from our graphs.
 
-Visualizations of the missingness that we *can* create are via plots of variable pairs. 
-When there is a missing datapoint on one variable, but observed data on the other, display the observed value but not the missing one.
-Therefore, we typically omit the observation from the graph wholesale.
-In bivariate graphs, however, we can display any missing values on the axis lines. 
+In bivariate graphs, however, we can display incomplete observations in variable pairs.
+When there is a missing datapoint on one variable and observed data on the other, there is no bivariate coordinate in the graph to display this incomplete observation. 
+But we can still plot the information that we do have: the observed datapoint.
+<!-- we can display the observed value but not the missing one. -->
+<!-- Therefore,  -->
+<!-- Visualizations of the missingness that we *can* create are via plots of variable pairs.  -->
+<!--  on the axis lines.  -->
+These incomplete observations are plotted on the axes lines: 
 
-Even though there is no bivariate coordinate in the graph to display incomplete observations, we can still plot the information that we do have: the observed data.
+- Cases with observed `X` and missing `Y` are plotted on the horizontal axis. 
+- Cases with observed `Y` and missing `X` are plotted on the vertical axis. 
+- Cases with both `X` and `Y` missing are plotted on the intersection of the two axes, since no data is available. 
+
+These plotted values are observed for the variable belonging to that axis line, but not for the variable orthogonal to the axis line.
+This provides a visual cue that the missing data is distinct from the observed values, but still displays the observed value of the other variable. 
+In short, the observed values are plotted on the axis line of the observed variable. 
+<!-- If the object supplied to the `data` argument in the `ggmice()` function is a `data.frame`, the visualization will contain observed data in blue and missing data in red.  -->
 This is in contrast to a regular `ggplot()` call with the same arguments, which would leave out all cases with missingness. 
 
-The observed values can be plotted on the axis line of the observed variable. 
-These values are observed for the variable belonging to that axis line, but not for the variable orthogonal to the axis line.
-This provides a visual cue that the missing data is distinct from the observed values, but still displays the observed value of the other variable. 
-So, with `ggmice()` we lose less information, and may gain valuable insight into the missingness in the data.
 
 ### Imputed data
 
@@ -167,6 +173,7 @@ If the `data` argument in `ggmice()` is provided a `mice::mids` object, the resu
 Experienced `mice` users may already be familiar with the `lattice` style plotting functions in `mice` for visualizing imputed data. 
 These 'old friends' such as `mice::stripplot()` can be re-created with the `ggmice()` function, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette for advice.
 
+So, with `ggmice()` we lose less information, and may gain valuable insight into the missingness in the data.
 
 # Imputation workflow
 
@@ -253,14 +260,14 @@ Multivariate graphs may highlight the severity of the missing data problem in th
 The `plot_miss()` function facilitates the exploration of the location of the missingness in the data.
 The result is the graphical equivalent to the missingness matrix `is.na(penguins)`.
 
-```{r}
+```{r, fig.cap = "Visualization of the missing data matrix."}
 plot_miss(penguins)
 ```
 
 The plot can be ordered by the missingness proportion. 
 In the ordered graph, cases with more missing values are plotted last, matching the order of the missing data pattern plot (`plot_pattern()`).
 
-```{r}
+```{r, fig.cap="Visualization of the missing data matrix, ordered by the missingness proportion."}
 plot_miss(penguins, ordered = TRUE)
 ```
 
@@ -268,9 +275,9 @@ Other optional function arguments are `square` (for square tiles), `grid` (for g
 
 ## `plot_pattern()`
 
-The `plot_pattern()` function displays the missing data pattern in an incomplete dataset, supplied as the `data` argument
+The `plot_pattern()` function displays the missing data pattern in an incomplete dataset, which is supplied as the `data` argument.
 
-```{r pattern}
+```{r, fig.cap="Missing data pattern plot."}
 plot_pattern(penguins)
 ```
 
@@ -278,7 +285,7 @@ The optional argument `square` determines whether the missing data pattern has s
 The optional argument `rotate` changes the angle of the variable names by 90 degrees if requested. 
 <!-- Other optional arguments are `cluster` and `npat`. -->
 
-```{r pattern2}
+```{r, fig.cap="Missing data pattern plot, adjusted."}
 # specify optional arguments
 plot_pattern(
   penguins,
@@ -296,30 +303,27 @@ plot_pattern(
 The `ggmice()` function can be used to explore the distributions of incomplete variables, associations with other variables, and with missingness indicators.
 
 Plot the distribution of an incomplete variable with:
-```{r}
+```{r, fig.cap="Bar graph showing distribution and missingess in `sex`."}
 ggmice(penguins, aes(x = sex)) +
   geom_bar(fill = " white")
 ```
 
 We can create scatterplots of the incomplete data. 
-For example, plot the bivariate distribution of two continuous incomplete variables with:
-```{r}
-ggmice(penguins, aes(x = bill_len, y = bill_dep)) +
-  geom_point()
-```
 
 We can plot the incomplete continuous variable `bill_dep` against the incomplete categorical variable `sex` with:
 
-```{r}
+```{r, , fig.cap = "Visualization of bill depth by sex, showing missing values in red on the axis lines. Observed values for bill depth with missing data for sex are plotted on the vertical axis. The red point at the intersection of the axes indicates that at least one penguin has neither bill depth nor sex observed."}
 ggmice(penguins, aes(x = sex, y = bill_dep)) +
   geom_point()
 ```
 
-In this graph, the missing values are plotted on the axes lines. 
 
-- Cases with observed `bill_len` and missing `sex` are plotted on the vertical axis. 
-- There are no cases with observed `sex` and missing `bill_len`, but otherwise these would be plotted on the horizontal axis. 
-- Cases with missing `bill_len` as well as missing `sex` are plotted on the intersection of the two axes, since no data is available. 
+For example, plot the bivariate distribution of two continuous incomplete variables with:
+```{r, fig.cap = "Scatterplot of bill depth by bill length, showing missing values on the axis lines. The red point at the intersection of the axes indicates that at least one penguin has neither bill depth nor bill length observed."}
+ggmice(penguins, aes(x = bill_len, y = bill_dep)) +
+  geom_point()
+```
+
 
 The 'grammar of graphics' makes it easy to adjust the plots programmatically. [TODO: add ref ggplot2?]
 We could convert the plotted values of the variable `bill_len` from centimeters to inches with:
