@@ -531,7 +531,7 @@ imp <- mice(
 )
 ```
 
-TODO: add section intro about non-convergence in the algorithm and mismatch between observed and imputed data distributions
+<!-- TODO: add section intro about non-convergence in the algorithm and mismatch between observed and imputed data distributions -->
 
   <!-- - `plot_trace()` -->
   <!-- - `ggmice()` -->
@@ -546,13 +546,14 @@ TODO: add section intro about non-convergence in the algorithm and mismatch betw
 
 The function `plot_trace()` plots the trace lines of the MICE algorithm for convergence evaluation. 
 The only required argument is `data` (to supply a `mice::mids` object). 
-The optional argument `vrb` defaults to `"all"`, which would display traceplots for all variables. 
+The optional argument `vrb` defaults to `"all"`, which displays traceplots for all variables. 
 
 ```{r, fig.cap="Trace plots for all variables."}
 plot_trace(imp)
 ```
 
-Add iterations to the imputation algorithm. TODO: explain!
+<!-- TODO: explain non-conv! -->
+If we are unsure of the algorithmic convergence, we can add iterations to the imputation algorithm and re-evaluate:
 
 ```{r}
 imp <- mice.mids(imp, maxit = 5, print = FALSE)
@@ -565,7 +566,7 @@ plot_trace(imp)
 ## `ggmice()`
 
 We can create the same plots as the ones on the incomplete data, but now on the imputed data: 
-[TODO: While the function specification is almost exactly similar as above, the resulting output is not, so I think you need to provide some additional context on what is actually shown in these figures.]
+<!-- [TODO: While the function specification is almost exactly similar as above, the resulting output is not, so I think you need to provide some additional context on what is actually shown in these figures.] -->
 
 ```{r, fig.cap="Visualizations of imputed data.", warning = FALSE}
 ggmice(imp, aes(x = sex)) +
