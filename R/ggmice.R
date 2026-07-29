@@ -12,40 +12,40 @@
 #' observed data from missing data or imputed data (for incomplete and imputed data, respectively).
 #'
 #' @examples
+#' library(ggplot2)
 #' # minimal example: scatterplot of incomplete and imputed data
 #' dat <- mice::nhanes
-#' ggmice(dat, ggplot2::aes(x = age, y = chl)) + ggplot2::geom_point()
+#' ggmice(dat, aes(x = age, y = chl)) + geom_point()
 #' imp <- mice::mice(dat, print = FALSE)
-#' ggmice(imp, ggplot2::aes(x = age, y = chl)) + ggplot2::geom_point()
+#' ggmice(imp, aes(x = age, y = chl)) + geom_point()
 #'
 #' # more advanced functionality for incomplete data
 #' # edit variable type for mixed incomplete data
 #' dat$hyp <- factor(dat$hyp, levels = (1:2), labels = c("no hypertension", "hypertension"))
 #' # scatterplot with categorical incomplete data
-#' ggmice(dat, aes(hyp, chl)) + geom_jitter(width = 0.1)
+#'   ggmice(dat, aes(hyp, chl)) + geom_jitter(width = 0.1)
 #' # incomplete data scatterplot faceted by categorical variable
 #' ggmice(dat, aes(age, chl)) + geom_point() +
-#' facet_wrap(~ hyp, labeller = label_both)
+#'   facet_wrap(~ hyp, labeller = label_both)
 #' # incomplete data scatterplot faceted by missing data indicator
 #' ggmice(dat, aes(age, chl)) + geom_point() +
-#' facet_wrap(~ factor(is.na(hyp) == 0, labels = c("hyp observed", "hyp missing")))
+#'   facet_wrap(~ factor(is.na(hyp) == 0, labels = c("hyp observed", "hyp missing")))
 #'
 #' # more advanced functionality for imputed data
 #' # stripplot by imputation
 #' ggmice(imp, aes(x = .imp, y = chl)) + geom_jitter(width = 0.25) +
-#' labs(x = "Imputation number")
+#'   labs(x = "Imputation number")
 #' # box plot by imputation
 #' ggmice(imp, aes(x = .imp, y = chl)) + geom_boxplot() +
-#' labs(x = "Imputation number")
+#'   labs(x = "Imputation number")
 #' # density plot by imputation
 #' ggmice(imp, aes(x = chl, group = .imp)) + geom_density()
 #' # scatterplot faceted by imputation number
 #' ggmice(imp, ggplot2::aes(x = age, y = bmi)) + ggplot2::geom_point() +
-#' facet_wrap(~ .imp)
+#'   facet_wrap(~ .imp)
 #'
-#' @seealso See the `ggmice` vignette to use the `ggmice()` function on
-#' [incomplete data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function)
-#' or [imputed data](https://amices.org/ggmice/articles/ggmice.html#the-ggmice-function-1).
+#' @seealso See the [`ggmice` vignette](https://amices.org/ggmice/articles/ggmice.html)
+#' to use the `ggmice()` function on incomplete data or imputed data.
 #' @export
 ggmice <- function(data = NULL,
                    mapping = ggplot2::aes()) {
