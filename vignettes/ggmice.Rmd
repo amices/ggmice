@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.width = 7.2,
   fig.height = 4
-)
+  )
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
@@ -70,6 +70,7 @@ ggmice(imp,	aes(sex, body_mass)) +
 <!-- The missing data have been imputed along the range of the observed data, with some uncertainty due to the missingness. -->
 The `ggmice()` visualizations may be used to inspect the incomplete and imputed data, and to evaluate imputation model fit (e.g., whether the missing data have been imputed within the range of the observed data).
 Aside from the `ggmice()` function, the package contains several other visualization tools for imputation with `mice`.
+These other functions share the naming convention `plot_*()` and several function arguments (e.g., `vrb` to plot only a subset of variables).
 
 In this vignette, you will learn how to create and interpret `ggmice` visualizations for each phase of your imputation workflow.
 But first, we need some background information about the `ggmice` package and its core function, `ggmice()`.
@@ -272,59 +273,59 @@ In the ordered graph, cases with more missing values are plotted last, matching 
 plot_miss(penguins, ordered = TRUE)
 ```
 
-Other optional function arguments are `square` (for square tiles), `grid` (for grid lines between cells), `rotate` (to display the column names at a 90 degree angle), and `vrb` (to plot only a subset of variables).
+Other optional function arguments can be specified too (e.g., `rotate` to display the column names at a 90 degree angle). 
+Please refer to the function documentation for details.
 
 ## `plot_pattern()`
 
-The `plot_pattern()` function displays the missing data pattern in an incomplete dataset, which is supplied as the `data` argument.
+The `plot_pattern()` function displays the missing data pattern in an incomplete dataset, which should be supplied via the `data` argument.
 
 ```{r, fig.cap="Missing data pattern plot."}
 plot_pattern(penguins)
 ```
+The `plot_pattern()` function has several optional arguments, such as `square`, which determines whether the missing data pattern plot has the default square or rectangular tiles.
+Please refer to the function documentation for details.
+<!-- The optional argument `rotate` changes the angle of the variable names by 90 degrees if requested.  -->
 
-The optional argument `square` determines whether the missing data pattern has square (default) or rectangular tiles.
-The optional argument `rotate` changes the angle of the variable names by 90 degrees if requested. 
-<!-- Other optional arguments are `cluster` and `npat`. -->
+<!-- ```{r, fig.cap="Missing data pattern plot, adjusted."} -->
+<!-- # specify optional arguments -->
+<!-- plot_pattern( -->
+<!--   penguins, -->
+<!--   square = TRUE, -->
+<!--   rotate = TRUE, -->
+<!--   npat = 2, -->
+<!--   cluster = "island" -->
+<!-- ) -->
+<!-- ``` -->
 
-```{r, fig.cap="Missing data pattern plot, adjusted."}
-# specify optional arguments
-plot_pattern(
-  penguins,
-  square = TRUE,
-  rotate = TRUE,
-  npat = 2,
-  cluster = "island"
-)
-```
-
-<!-- ## `plot_miss()` -->
 
 ## `ggmice()`
 
-The `ggmice()` function can be used to explore the distributions of incomplete variables, associations with other variables, and with missingness indicators.
+In the missing data exploration phase, the `ggmice()` function can be used to visualize the distributions of incomplete variables, associations with other variables, and with missingness indicators.
 
-Plot the distribution of an incomplete variable with:
+For example, we can plot the distribution of an incomplete categorical variable with:
 ```{r, fig.cap="Bar graph showing the distribution of and missingess in the variable `sex`."}
 ggmice(penguins, aes(x = sex)) +
   geom_bar(fill = " white")
 ```
+In this graph, the missing data is plotted as a separate category.
 
-We can create scatterplots of the incomplete data. 
-For example, plot the bivariate distribution of two continuous incomplete variables with:
+We can also plot bivariate distributions in the incomplete data. 
+To create a scatterplot of two continuous incomplete variables we can use:
 ```{r, fig.cap = "Scatterplot of bill depth by bill length, showing missing values on the axis lines. The red point at the intersection of the axes indicates that at least one penguin has neither bill depth nor bill length observed."}
 ggmice(penguins, aes(x = bill_len, y = bill_dep)) +
   geom_point()
 ```
 
-We can plot the incomplete continuous variable `bill_dep` against the incomplete categorical variable `sex` with:
+Another bivariate graph can be made with the incomplete continuous variable `bill_dep` against the incomplete categorical variable `sex`:
 
 ```{r, fig.cap = "Visualization of bill depth (in cm) by sex, showing missing values in red on the axis lines. Observed values for bill depth with missing data for sex are plotted on the vertical axis. The red point at the intersection of the axes indicates that at least one penguin has neither bill depth nor sex observed."}
 ggmice(penguins, aes(x = sex, y = bill_dep)) +
   geom_point()
 ```
 
-The 'grammar of graphics' makes it easy to adjust the plots programmatically. [TODO: add ref ggplot2?]
-We could convert the plotted values of the variable `bill_len` from centimeters to inches with:
+The 'grammar of graphics' makes it easy to adjust the plots programmatically. 
+The `ggplot2` framework allows us to convert the plotted values of the variable `bill_dep` from centimeters to inches with:
 
 ```{r, fig.cap = "Visualization of bill depth (in inches) by sex, showing missing values in red on the axis lines. Observed values for bill depth with missing data for sex are plotted on the vertical axis. The red point at the intersection of the axes indicates that at least one penguin has neither bill depth nor sex observed.", warning = FALSE}
 ggmice(penguins, aes(x = sex, y = bill_dep / 2.54)) +
@@ -332,6 +333,7 @@ ggmice(penguins, aes(x = sex, y = bill_dep / 2.54)) +
   labs(y = "Bill depth (inches)")
 ```
 
+Another benefit of `ggplot` objects is that they may be adjusted using layers. 
 If we would be interested in the sex differences in bill length between the penguin species, we can just add facets based on a clustering variable with:
 
 ```{r, fig.cap = "Visualization of bill depth by sex, split by penguin species. Observed values for bill depth with missing data for sex are plotted on the vertical axes. The red point at the intersection of the axes indicates that at least one penguin has neither bill depth nor sex observed."}
@@ -389,44 +391,29 @@ By default, each variable is used as imputation model predictor for all other va
 ## `plot_pred()`
 
 The function `plot_pred()` displays `mice` predictor matrices, optionally paired with imputation methods. 
+To create a predictor matrix plot, supply a predictor matrix via the `data` argument:
 
-The only required argument to the `plot_pred()` function is a predictor matrix (the `data` argument):
-```{r, fig.cap = "Predictor matrix with `mice` defaults."}
+```{r, fig.cap = "Predictor matrix with `mice` defaults.", fig.height=6}
 plot_pred(pred)
 ```
 
-To add imputation methods for each incomplete variable, use the optional argument `meth`. 
+<!-- The only required argument to the `plot_pred()` function is a predictor matrix , but optional arguments may be added: -->
+Optional arguments may be added to the function call.
+For example, to show the full imputation model per incomplete variable, supply the methods vector via the optional argument `meth`:
 <!-- Other optional arguments are analogous to `plot_pattern()`. -->
-```{r, fig.cap = "Predictor matrix with `mice` defaults."}
-plot_pred(
-  pred,
-  label = FALSE,
-  square = FALSE,
-  rotate = TRUE,
-  meth = meth
-)
+```{r, fig.cap = "Predictor matrix with `mice` defaults including imputation methods.", fig.height=6}
+plot_pred(pred, meth = meth)
 ```
-
+Please refer to the function documentation for details.
 
 ## `plot_corr()`
 
 The function `plot_corr()` can be used to investigate relations between variables for the development of imputation models. 
-Only one of the arguments (`data`; the incomplete dataset) is required, all other arguments are optional.
+The function requires incomplete dataset (via the argument `data`).
+All other arguments are optional, for example to add textual labels of the estimated correlations (via the `label` argument).
 
-```{r, fig.cap = "Visualization of bivariate correlations."}
-plot_corr(penguins)
-```
-
-
-```{r, fig.cap = "Visualization of bivariate correlations."}
-plot_corr(
-  penguins,
-  vrb = c("bill_len", "bill_dep", "sex"),
-  label = TRUE,
-  square = FALSE,
-  diagonal = TRUE,
-  rotate = TRUE
-)
+```{r, fig.cap = "Visualization of bivariate correlations.", fig.height=6}
+plot_corr(penguins, label = TRUE)
 ```
 
 Based on these correlations, we can evaluate whether we have included all relevant imputation model predictors in the predictor matrix.
@@ -436,9 +423,9 @@ The `quickpred()` function in `mice` selects imputation model predictors based o
 The function calculates correlations both with pairwise complete observations, as well as with the missingness indicators.
 Any potential imputation model predictor that surpasses a certain set threshold on either one of the two correlations, is selected into the predictor matrix.
 
-```{r, fig.cap="Predictor matrix plot after pruning the predictor matrix."}
+```{r, fig.cap="Predictor matrix plot after pruning the predictor matrix.", fig.height=6}
 pred <- quickpred(penguins, mincor = 0.4)
-plot_pred(pred, method = meth, square = FALSE)
+plot_pred(pred, method = meth)
 ```
 
 The result is a pruned predictor matrix, that only includes imputation model predictors with a strong linear associations with the incomplete variables or missingness indicators.
@@ -514,25 +501,19 @@ The `plot_flux()` function produces an influx-outflux plot.
 The influx of a variable quantifies how well its missing data connect to the observed data on other variables. 
 The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. 
 In general, higher influx and outflux values are preferred when building imputation models. 
+
 The plotting function requires an incomplete dataset (argument `data`), and takes optional arguments to adjust the legend and axis labels.
 
 ```{r, fig.cap="Influx-outflux plot."}
-plot_flux(penguins)
+plot_flux(penguins, label = FALSE)
 ```
 
-
-```{r, fig.cap="Influx-outflux plot."}
-plot_flux(
-  penguins,
-  label = FALSE,
-  caption = FALSE
-)
-```
+For details, see the function documentation.
 
 Based on this, we edit the predictor matrix as follows:
-```{r, fig.cap="Predictor matrix plot after editing the predictor matrix."}
+```{r, fig.cap="Predictor matrix plot after editing the predictor matrix.", fig.height=6}
 pred["sex", c("species", "bill_len")] <- 1
-plot_pred(pred, method = meth, square = FALSE)
+plot_pred(pred, method = meth)
 ```
 
 
