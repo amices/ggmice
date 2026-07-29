@@ -31,9 +31,15 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 
 <!-- # Introduction -->
 
-The R package `ggmice` is designed to support `mice` imputation workflows with visualizations. 
-`ggmice` provides 'grammar of graphics' (`ggplot2`) functionality for exploring incomplete data, building imputation models, and evaluating imputations. 
- 
+The R package `ggmice` supports `mice` imputation workflows with visualizations. 
+The core function, `ggmice()`, allows for direct graphical comparisons between incomplete and imputed data.
+The resulting visualizations either contain observed and *missing* data, or observed and *imputed* data.
+`ggmice()` is designed to highlight missing and imputed observations, instead of omitting these from graphs.
+
+The `ggmice` package provides 'grammar of graphics' (`ggplot2`) functionality for exploring incomplete data, building imputation models, and evaluating imputations. 
+In this vignette, you will learn how to create and interpret `ggmice` visualizations for each phase of your imputation workflow.
+
+
 ## Minimal example
 
 Set-up the environment in R with packages for imputation and visualization.
@@ -44,29 +50,22 @@ library(ggmice)
 ```
 
 Visualize some incomplete data with `ggmice`. 
-We use the `boys` dataset from the `mice` package, with cross-sectional data ($n = 748$) on $9$ growth-related variables (e.g., age in years and height in cm). 
-```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the incomplete `boys` dataset. Complete cases are displayed in blue and incomplete cases in red. The missing values are plotted on the axes lines, showing that some cases have observed data for age, but missing height values."}
-ggmice(
-	boys,
-	aes(age, hgt)) + 
+We use the `penguins` data from the base R `datasets`, with observational data on individual penguins ($n = 344$) with $8$ variables (e.g., penguin species and body mass measurements). 
+```{r, fig.cap = "Scatterplot of body mass (in grams) by sex in the incomplete `penguins` dataset. Complete cases are displayed in blue and incomplete cases in red. The missing values are plotted on the axes lines, showing that some cases have observed data for body mass, but missing sex classification data."}
+ggmice(penguins, aes(sex, body_mass)) + 
 	geom_point()
 ```
 
 <!-- The blue points are observed, missing values are plotted on top of the axes in red. -->
 
-Impute the missing values in the `boys` data set with `mice`.
+Impute the missing values in the `penguins` data set with `mice`.
 ```{r, warning = FALSE, message = FALSE}
-imp <- mice(
-	boys,
-	m = 1,
-	print = FALSE)
+imp <- mice(penguins, print = FALSE)
 ```
 
 Visualize the imputed `boys` data set with `ggmice`.
-```{r, fig.cap = "Scatterplot of height (in cm) by age (in years) in the imputed `boys` dataset. Missing values in the height variable have been filled in with `mice` and visualized with `ggmice`. Imputed values are displayed in red."}
-ggmice(
-	imp,
-	aes(age, hgt)) + 
+```{r, fig.cap = "Scatterplot of body mass (in grams) by sex in the imputed `penguins` dataset. Missing values have been imputed with `mice`. Imputed values are displayed in red."}
+ggmice(imp,	aes(sex, body_mass)) + 
 	geom_point()
 ```
 
@@ -76,7 +75,6 @@ These visualizations offer direct graphical comparisons between incomplete and i
 
 ## Outline
 
-In this vignette, you will learn how to create and interpret `ggmice` visualizations for each phase of your imputation workflow. 
 
 The vignette shows how to use `ggmice` to:
 
@@ -91,7 +89,7 @@ But first, we need some background information about the `ggmice` package and it
 The `ggmice` package is designed to unify the visualization of incomplete and imputed data. 
 It is an extension package to the popular imputation package `mice`.
 
-`mice` has become the de facto standard in R to handle the ubiquitous problem of incomplete data. 
+`mice` has become a standard in R to handle the ubiquitous problem of incomplete data. 
 With `mice`, missing data points are ‘imputed’ (i.e. filled in) to obtain several completed data sets. 
 Filling in the missing data multiple times allows for a valid representation of the uncertainty due to missingness.
 `ggmice` offers tools to build and evaluate `mice` imputation models.
@@ -111,10 +109,10 @@ These editable `ggplot` objects are easily adapted into publication-quality grap
 The core function in the `ggmice` package is `ggmice()`. 
 `ggmice()` is a `ggplot2::ggplot()` wrapper function, which plots either missing or imputed values. 
 
-- When the `data` argument is supplied with an incomplete dataset (a `data.frame` object), `ggmice()` visualizes observed versus *missing* data.
-- When the `data` argument is supplied with multiply imputed datasets (a `mids` object), `ggmice()` visualizes observed versus *imputed* data.
+- When the `data` argument is supplied with an incomplete dataset (a `data.frame` object), `ggmice()` visualizes observed and *missing* data.
+- When the `data` argument is supplied with multiply imputed datasets (a `mids` object), `ggmice()` visualizes observed and *imputed* data.
 
-By convention, observed data are plotted in blue and missing or imputed data in red.
+By convention, observed data are plotted in blue and missing or imputed data in red, using the `mice::mdc()` colors. [TODO: add ref?]
 
 The `ggmice()` function mimics how the `ggplot2` function `ggplot()` works.
 Both take a `data` argument and a `mapping` argument, and will return an object of class `ggplot`. 
@@ -122,8 +120,8 @@ Both take a `data` argument and a `mapping` argument, and will return an object 
 Using `ggmice()` looks equivalent to a `ggplot()` call:
 
 ```{r gg, eval=FALSE}
-ggplot(boys, aes(x = age))
-ggmice(boys, aes(x = age))
+ggplot(penguins, aes(x = body_mass))
+ggmice(penguins, aes(x = body_mass))
 ```
 
 The main difference between the two functions is that `ggmice()` includes some pre-processing steps for incomplete and imputed data. 
@@ -131,16 +129,13 @@ The functions can be used interchangably, except for two key details:
 
 1. The object supplied to the `data` argument in `ggmice()` may be either an incomplete dataset of class `data.frame`, or an imputation object of class `mice::mids`. 
 
-Depending on whether a `data.frame` or `mids` object is provided, the resulting visualization will either contain observed and *missing* data, or observed and *imputed* data. 
-By convention, observed data is plotted in blue and missing or imputed data is plotted in red. 
-
 2. The `mapping` argument in `ggmice()` cannot be empty. 
 
-Because of the internal processing in `ggmice()`, the `mapping` argument is *required* for each `ggmice()` call. 
 This is in contrast to the aesthetic mapping in `ggplot()`, which may also be provided in subsequent plotting layers. 
+Because of the internal processing in `ggmice()`, the `mapping` argument is **required** for each `ggmice()` call. 
 An `x` or `y` mapping (or both) has to be supplied for `ggmice()` to function. 
 This aesthetic mapping can be provided with the `ggplot2` function `aes()` (or equivalents). 
-Other mapping may be provided too, except for `colour`, which is already used to display observed versus missing or imputed data.
+Other mappings may be provided too, except for `colour`, which is already used to display observed versus missing or imputed data.
 
 After creating a `ggplot` object, any desired plotting layers may be added (e.g., with the family of `ggplot2::geom_*` functions), or adjusted (e.g., with the `ggplot2::labs()` function). 
 This makes `ggmice()` a versatile plotting function for incomplete and/or imputed data. 
@@ -163,13 +158,13 @@ In the minimal example, the variable `age` was completely observed, while there 
 We create a scatter plot of these two variables with: 
 
 ```{r inc-con}
-ggmice(boys, aes(age, hgt)) +
+ggmice(penguins, aes(sex, body_mass)) +
   geom_point()
 ```
 
 The `age` of cases with missing `hgt` are plotted on the horizontal axis. 
 This is in contrast to a regular `ggplot()` call with the same arguments, which would leave out all cases with missing `hgt`. 
-So, with `ggmice()` we lose less information, and may even gain valuable insight into the missingness in the data.
+So, with `ggmice()` we lose less information, and may gain valuable insight into the missingness in the data.
 
 ### Imputed data
 
@@ -181,7 +176,7 @@ If the `data` argument in `ggmice()` is provided a `mice::mids` object, the resu
 In the minimal example, we created the same scatter plot with the imputed data as with the incomplete data:
 
 ```{r imp-con, warning = FALSE}
-ggmice(imp, aes(age, hgt)) +
+ggmice(imp, aes(sex, body_mass)) +
   geom_point()
 ```
 
@@ -227,9 +222,8 @@ library(ggmice)
 We will use the `penguins` data for illustrations, available from the base R `datasets`. 
 The `penguins` dataset contains incomplete observational data on penguin sightings ($n = 344$).
 Each row represents a single penguin, and the nine variables describe its characteristics (e.g., species) and measurements (e.g., body weight in grams). 
-
 In this vignette, we will treat the penguins data as our working example. 
-The missingness is empirical, and the data are of mixed type (continuous and categorical variables).
+
 With that, we have the necessary packages (`mice`, `ggplot2`, and `ggmice`) and an incomplete dataset (`penguins`) to start the full imputation workflow.
 
 <!-- We load the incomplete data from the `mice` package with: -->
@@ -248,7 +242,7 @@ With that, we have the necessary packages (`mice`, `ggplot2`, and `ggmice`) and 
 
 We will first use `ggmice` to explore marginal and joint distributions of incomplete variables. 
 Next, we will construct and inspect imputation models based on relations between the variables. 
-Finally, we will visualize imputation algorithm and the resulting imputations to assess whether the imputation models yields plausible values and adequately reflect the uncertainty due to missingness.
+Finally, we will visualize the imputation algorithm output and assess whether the imputation models yield plausible values.
 
 # Exploring incomplete data
 
@@ -259,11 +253,11 @@ Finally, we will visualize imputation algorithm and the resulting imputations to
 In a `mice` workflow, the missing data should first be inspected before determining an imputation strategy.
 <!-- The R package ggmice aids data analysts in exploring the missing parts of their data. -->
 The missing data pattern shows where in the incomplete data the missing values occur.
-And multivariate graphs may highlight the severity of the missing data problem with respect to the substantive scientific estimate(s).
+Multivariate graphs may highlight the severity of the missing data problem in the variables that will be used in the eventual analysis model.
 
 ## `plot_miss()`
 
-The `plot_miss()` function facilitates the exploration of where the missingness occurs.
+The `plot_miss()` function facilitates the exploration of the location of the missingness in the data.
 The result is the graphical equivalent to the missingness matrix `is.na(penguins)`.
 
 ```{r}
@@ -271,6 +265,7 @@ plot_miss(penguins)
 ```
 
 The plot can be ordered by the missingness proportion. 
+In the ordered graph, cases with more missing values are plotted last, matching the order of the missing data pattern plot (`plot_pattern()`).
 
 ```{r}
 plot_miss(penguins, ordered = TRUE)
@@ -280,17 +275,16 @@ Other optional function arguments are `square` (for square tiles), `grid` (for g
 
 ## `plot_pattern()`
 
-The `plot_pattern()` function displays the missing data pattern in an incomplete dataset. 
-The argument `data` is required, which specifies the incomplete dataset. 
+The `plot_pattern()` function displays the missing data pattern in an incomplete dataset, supplied as the `data` argument
 
 ```{r pattern}
-# create missing data pattern plot
 plot_pattern(penguins)
 ```
 
-The argument `square` is optional, and determines whether the missing data pattern has square or rectangular tiles.
+The optional argument `square` determines whether the missing data pattern has square (default) or rectangular tiles.
 The optional argument `rotate` changes the angle of the variable names by 90 degrees if requested. 
-Other optional arguments are `cluster` and `npat`.
+<!-- Other optional arguments are `cluster` and `npat`. -->
+
 ```{r pattern2}
 # specify optional arguments
 plot_pattern(
@@ -334,7 +328,7 @@ In this graph, the missing values are plotted on the axes lines.
 - There are no cases with observed `sex` and missing `bill_len`, but otherwise these would be plotted on the horizontal axis. 
 - Cases with missing `bill_len` as well as missing `sex` are plotted on the intersection of the two axes, since no data is available. 
 
-The 'grammar of graphics' makes it easy to adjust the plots programmatically. 
+The 'grammar of graphics' makes it easy to adjust the plots programmatically. [TODO: add ref ggplot2?]
 We could convert the plotted values of the variable `bill_len` from centimeters to inches with:
 
 ```{r inc-trans, warning = FALSE}
@@ -371,34 +365,42 @@ ggmice(penguins, aes(x = sex, y = bill_dep)) +
 <!--   - Take the analysis model (if available) as starting point for imputation workflow, for congeneality -->
 <!--   - ...? -->
 
-Imputation with mice requires an imputation model for each incomplete variable.
-The defaults in `mice` are to set an imputation method based on the column type, and to use all other variables as imputation model predictors.
-For example, a numeric data column would get the semi-parametric imputation method 'predictive mean matching' (`pmm`).
+Imputation with `mice` requires an imputation model for each incomplete variable, consisting of an imputation method and imputation model predictors.
+These methods and predictors are either assigned implicitly in the `mice()` call, or supplied by the user as a methods vector and predictor matrix.
+The defaults in `mice()` are to assign an imputation method based on the column type of each incomplete variable, and to use all other variables as imputation model predictors.
 
+The methods vector specifies an imputation method per variable.
+The default methods vector can be created using:
+```{r}
+meth <- make.method(penguins)
+```
+In the default methods vector, imputation methods are based on column type, e.g., numeric data columns get assigned the semi-parametric imputation method 'predictive mean matching' (`pmm`), whereas dichotomous variables will be imputed using logistic regression.
+
+The predictor matrix determines which variables will be used as predictors for imputing the incomplete variables.
+The default predictor matrix can be created with:
 ```{r}
 pred <- make.predictorMatrix(penguins)
-meth <- make.method(penguins)
-plot_pred(pred, method = meth, square = FALSE)
 ```
+In the predictor matrix, rows represent variables to impute, and columns are potential imputation model predictors.
+By default, each variable is used as imputation model predictor for all other variables.
+
+<!-- There are three ways to create a predictor matrix programmatically with `mice`: -->
+<!-- - The first and most explicit way is using `mice::make.predictorMatrix()`.  -->
+<!-- - The second way is implicitly, by using the default in `mice::mice()` and extracting the `predictorMatrix` from the resulting `mids` object.  -->
+<!-- - The third way is via `mice::quickpred()`, which selects the most relevant imputation model predictors based on associations in the data. -->
 
 ## `plot_pred()`
 
-The function `plot_pred()` displays `mice` predictor matrices. 
-In a `mice` workflow, the predictor matrix determines which imputation model predictors will be used when imputing the incomplete variables.
-There are three ways to create a predictor matrix programmatically with `mice`.
-The first and most explicit way is using `mice::make.predictorMatrix()`. 
-The second way is implicitly, by using the default in `mice::mice()` and extracting the `predictorMatrix` from the resulting `mids` object. 
-The third way is via `mice::quickpred()`, which selects the most relevant imputation model predictors based on associations in the data.
-The `plot_pred()` function requires a predictor matrix (the `data` argument), but other arguments can be provided too.
+The function `plot_pred()` displays `mice` predictor matrices, optionally paired with imputation methods. 
 
-```{r predictormatrix}
-# create predictor matrix
-pred <- quickpred(penguins)
-
-# create predictor matrix plot
+The only required argument to the `plot_pred()` function is a predictor matrix (the `data` argument):
+```{r}
 plot_pred(pred)
+```
 
-# specify optional arguments
+To add imputation methods for each incomplete variable, use the optional argument `meth`. 
+<!-- Other optional arguments are analogous to `plot_pattern()`. -->
+```{r}
 plot_pred(
   pred,
   label = FALSE,
@@ -414,11 +416,12 @@ plot_pred(
 The function `plot_corr()` can be used to investigate relations between variables for the development of imputation models. 
 Only one of the arguments (`data`; the incomplete dataset) is required, all other arguments are optional.
 
-```{r correlations}
-# create correlation plot
+```{r}
 plot_corr(penguins)
+```
 
-# specify optional arguments
+
+```{r}
 plot_corr(
   penguins,
   vrb = c("bill_len", "bill_dep", "sex"),
@@ -429,15 +432,20 @@ plot_corr(
 )
 ```
 
-We can prune the predictor matrix based on the correlations.
+Based on these correlations, we can evaluate whether we have included all relevant imputation model predictors in the predictor matrix.
+With large datasets, for example, we might want to prune the predictor matrix, only to include the most relevant imputation model predictors.
+
+The `quickpred()` function in `mice` selects imputation model predictors based on associations in the data.
+The function calculates correlations both with pairwise complete observations, as well as with the missingness indicators.
+Any potential imputation model predictor that surpasses a certain set threshold on either one of the two correlations, is selected into the predictor matrix.
 
 ```{r}
 pred <- quickpred(penguins, mincor = 0.4)
 plot_pred(pred, method = meth, square = FALSE)
 ```
 
-The `quickpred()` function uses both the pairwise complete observations to calculate the correlations, as well as the correlation with the missingness indicators.
-To visulaize the associations between observed data and missingness indicators, we can use `ggmice()`.
+The result is a pruned predictor matrix, that only includes imputation model predictors with a strong linear associations with the incomplete variables or missingness indicators.
+If we want to visualize this associations between observed data and missingness indicators, we can use the `ggmice()` function.
 
 ## `ggmice()`
 
@@ -456,7 +464,7 @@ ggmice(penguins, aes(bill_dep)) +
     ))
 ```
 
-We can see differences in the distribution of `bill_dep` based on the missingness indicator of `sex`, so `bill_dep` is informative for imputing `sex`.
+We can see differences in the distribution of `bill_dep` based on the missingness indicator of `sex`, which implies that `bill_dep` is informative for imputing `sex`.
 
 ```{r}
 # categorical variable
@@ -478,7 +486,7 @@ In this case, we can see differences in the distribution of `species` based on t
 <!-- ``` -->
 
 
-Visualize the association with the missingness indicator.
+We can visualize more associations with the missingness indicator.
 
 ```{r}
 ggmice(penguins, aes(bill_len)) +
@@ -530,22 +538,21 @@ plot_pred(pred, method = meth, square = FALSE)
 ```
 
 
-# Imputing
+# Evaluating imputations
 
-Run the imputation algorithm.
+Run the imputation algorithm on the incomplete dataset, with the imputation models we built (i.e., the predictor matrix and methods vector), and with three imputations.
 
 ```{r}
 imp <- mice(
   penguins, 
   pred = pred, 
   method = meth, 
-  m = 10,
-  seed = 123,
+  m = 3,
   print = FALSE
 )
 ```
 
-# Evaluating imputations
+TODO: add section intro about non-convergence in the algorithm and mismatch between observed and imputed data distributions
 
   <!-- - `plot_trace()` -->
   <!-- - `ggmice()` -->
@@ -567,7 +574,7 @@ The optional argument `vrb` defaults to `"all"`, which would display traceplots 
 plot_trace(imp)
 ```
 
-Add iterations to the imputation algorithm.
+Add iterations to the imputation algorithm. TODO: explain!
 
 ```{r}
 imp <- mice.mids(imp, maxit = 5, print = FALSE)
@@ -579,7 +586,8 @@ plot_trace(imp)
 
 ## `ggmice()`
 
-We can create the same scatter plots as the ones on the incomplete data, but now on the imputed data:
+We can create the same plots as the ones on the incomplete data, but now on the imputed data: 
+[TODO: While the function specification is almost exactly similar as above, the resulting output is not, so I think you need to provide some additional context on what is actually shown in these figures.]
 
 ```{r imp-same, warning = FALSE}
 ggmice(imp, aes(x = sex)) +
@@ -618,14 +626,28 @@ ggmice(imp, aes(x = .imp, y = bill_len)) +
   labs(x = "Imputation number")
 ```
 
-You may want to create a plot visualizing the imputations of multiple variables as one object. This can be done by combining `ggmice` with the functional programming package `purrr` and visualization package `patchwork`. For example, we could obtain boxplots of different imputed variables as one object using:
+You may want to create a plot visualizing the imputations of multiple variables as one object. 
+This can be done by combining `ggmice` with the functional programming package `purrr` and visualization package `patchwork`. 
+
+You can combine two figures with:
+```{r}
+p1 <- ggmice(imp, aes(x = .imp, y = bill_len)) + geom_boxplot()
+p2 <- ggmice(imp, aes(x = .imp, y = bill_dep)) + geom_boxplot()
+patchwork::wrap_plots(p1, p2)
+```
+
+
+We could obtain stripplots all imputed variables as one object using:
 
 ```{r facet}
-purrr::map(c("bill_len", "bill_dep", "body_mass"), ~ {
+# vector of imputed variable names
+vrb_imp <- names(imp$data)[colSums(imp$where)>0]
+
+purrr::map(vrb_imp, ~ {
   ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
-    geom_boxplot() +
+    geom_jitter() +
     labs(x = "Imputation number")
-}) %>%
+}) |>
   patchwork::wrap_plots()
 ```
 
