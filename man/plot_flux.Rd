@@ -4,12 +4,14 @@
 \alias{plot_flux}
 \title{Plot the influx and outflux of a multivariate missing data pattern}
 \usage{
-plot_flux(data, vrb = "all", label = TRUE, caption = TRUE)
+plot_flux(data, vrb = "all", jitter = TRUE, label = TRUE, caption = TRUE)
 }
 \arguments{
 \item{data}{An incomplete dataset of class \code{data.frame} or \code{matrix}.}
 
 \item{vrb}{String, vector, or unquoted expression with variable name(s), default is "all".}
+
+\item{jitter}{Logical indicating whether some noise is added to every point to prevent overplotting (the default).}
 
 \item{label}{Logical indicating whether variable names should be displayed within the plot (the default) or with colors in the legend.}
 
