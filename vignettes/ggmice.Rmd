@@ -312,7 +312,7 @@ In this graph, the missing data is plotted as a separate category.
 
 We can also plot bivariate distributions in the incomplete data. 
 To create a scatterplot of two continuous incomplete variables we can use:
-```{r, fig.cap = "Scatterplot of bill depth by bill length, showing missing values on the axis lines. The red point at the intersection of the axes indicates that at least one penguin has neither bill depth nor bill length observed."}
+```{r, fig.cap = "Scatterplot of the `penguins` bill depth (in cm) by bill length (in cm), showing missing values on the axis lines. The red point at the intersection of the axes indicates that at least one penguin has neither bill depth nor bill length observed."}
 ggmice(penguins, aes(x = bill_len, y = bill_dep)) +
   geom_point()
 ```
@@ -429,50 +429,51 @@ plot_pred(pred, method = meth)
 ```
 
 The result is a pruned predictor matrix, that only includes imputation model predictors with a strong linear associations with the incomplete variables or missingness indicators.
-If we want to visualize this associations between observed data and missingness indicators, we can use the `ggmice()` function.
+
+If we want to visualize this associations between observed data and missingness indicators, we can use an influx-outflux plot.
+<!-- TODO: make better bridge between sections here? -->
+
+## `plot_flux()`
+
+The `plot_flux()` function produces an influx-outflux plot.
+The influx of a variable quantifies how well its missing data connect to the observed data on other variables. 
+The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. 
+In general, higher influx and outflux values are preferred when building imputation models. 
+
+The plotting function requires an incomplete dataset (argument `data`), and takes optional arguments to adjust e.g., the legend and axis labels:
+
+```{r, fig.cap="Influx-outflux plot, showing connections between observed data and misisngness indicators. For example, `species`, `island`, and `year` have high outflux values and low influx, indicating that these observed variables may be quite informative for imputing incomplete variables."}
+plot_flux(penguins, label = FALSE)
+```
+
+For details, see the function documentation.
+
+We can use this information to adjust the imputation models, via editing the predictor matrix. 
+Based on the high outflux values, we add `species`, `island`, and `year` to the imputation models for all variables.
+```{r}
+pred[, c("species", "island", "year")] <- 1
+```
+
+Subsequently, we can remove any variable that now became an imputation model predictor for itself:
+```{r}
+diag(pred) <- 0
+```
+
+```{r, fig.cap="Predictor matrix plot after adding high outflux variables to the predictor matrix.", fig.height=6}
+plot_pred(pred, method = meth)
+```
+
+Another way to evaluate the associations with the missingness indicators is using `ggmice()`. 
 
 ## `ggmice()`
 
-When `ggmice()` is applied to incomplete data with faceting based on a missingness indicator, associations between observed and missing data become apparent. 
-This may help explore the missingness mechanisms in the incomplete data. 
-The distribution of the continuous variable `bill_dep` and categorical variable `species` are visualized faceted by the missingness indicator for `sex` with:
+We can use `ggmice()` to visualize associations between observed and missing data, by applying the function to incomplete data and adding faceting based on a missingness indicator. 
+This may help further explore the missingness mechanisms in the incomplete data. 
 
-```{r, fig.cap="Distribution of observed bill depth (in cm) split by the missingness indicator of the variable `sex`."}
-# continuous variable
-ggmice(penguins, aes(bill_dep)) +
-  geom_density() +
-  facet_wrap(~ factor(
-    is.na(sex), 
-    levels = c(TRUE, FALSE), 
-    labels = c("missing sex", "observed sex")
-    ))
-```
+For example, to investigate which variables may be informative for imputing the incomplete variable `sex`, we can create a graph split by the missingness indicator of `sex`.
+To visualize the association between the distribution of `bill_len` and the missingness indicator of `sex` we use a faceted design:
 
-We can see differences in the distribution of `bill_dep` based on the missingness indicator of `sex`, which implies that `bill_dep` is informative for imputing `sex`.
-
-```{r, fig.cap="Distribution of observed penguin species split by the missingness indicator of the variable `sex`."}
-# categorical variable
-ggmice(penguins, aes(species)) +
-  geom_bar(fill = "white") +
-  facet_wrap(~ factor(
-    is.na(sex), 
-    levels = c(TRUE, FALSE), 
-    labels = c("missing sex", "observed sex")
-    ))
-```
-
-In this case, we can see differences in the distribution of `species` based on the missingness indicator of `sex`, so `species` is informative for imputing `sex`.
-
-<!-- We can visualize observed - observed with -->
-<!-- ```{r} -->
-<!-- ggmice(penguins, aes(sex, bill_len)) + -->
-<!--   geom_point() -->
-<!-- ``` -->
-
-
-We can visualize more associations with the missingness indicator.
-
-```{r, fig.cap="Distribution of bill length (in cm) split by the missingness indicator of the variable `sex`."}
+```{r, fig.cap="Distribution of observed bill length (in cm) split by the missingness indicator of the variable `sex`. Since the missingness indicator itself is always observed, this plot does not show any missing data."}
 ggmice(penguins, aes(bill_len)) +
   geom_histogram(fill = "white") +
   facet_grid(factor(
@@ -481,6 +482,42 @@ ggmice(penguins, aes(bill_len)) +
     labels = c("missing sex", "observed sex")
     ) ~ .)
 ```
+
+We can see there are some differences in the distribution of `bill_len` based on the missingness indicator of `sex`, which may imply that `bill_len` is informative for imputing `sex`.
+
+<!-- TODO: comment Thom "Wouldn't you want to have the proportions here, rather than the counts, if you want to say something about differences in distributions? That is at least what the density plots implicitly do. Also, I find it hard to see that there really are differences in the distribution of species based on the missingness indicator?" -->
+
+<!-- With a categogical variable such as `species`, we van create an equivalent graph: -->
+<!-- ```{r, fig.cap="Distribution of observed penguin species split by the missingness indicator of the variable `sex`."} -->
+<!-- ggmice(penguins, aes(species)) + -->
+<!--   geom_bar(fill = "white") + -->
+<!--   facet_grid(factor( -->
+<!--     is.na(sex), -->
+<!--     levels = c(TRUE, FALSE), -->
+<!--     labels = c("missing sex", "observed sex") -->
+<!--     ) ~ .) -->
+<!-- ``` -->
+
+<!-- Here too, we see differences in the distributions split by the missingness indicator of `sex`, so `species` may be informative for imputing `sex`. -->
+
+<!-- We can visualize observed - observed with -->
+<!-- ```{r} -->
+<!-- ggmice(penguins, aes(sex, bill_len)) + -->
+<!--   geom_point() -->
+<!-- ``` -->
+
+
+<!-- We can visualize more associations with the missingness indicator. -->
+
+<!-- ```{r, fig.cap="Distribution of bill length (in cm) split by the missingness indicator of the variable `sex`."} -->
+<!-- ggmice(penguins, aes(bill_len)) + -->
+<!--   geom_histogram(fill = "white") + -->
+<!--   facet_grid(factor( -->
+<!--     is.na(sex),  -->
+<!--     levels = c(TRUE, FALSE),  -->
+<!--     labels = c("missing sex", "observed sex") -->
+<!--     ) ~ .) -->
+<!-- ``` -->
 
 <!-- We can even split this graph by penguin species. -->
 <!-- ```{r} -->
@@ -493,33 +530,21 @@ ggmice(penguins, aes(bill_len)) +
 <!--     ) ~ species) -->
 <!-- ``` -->
 
-We can use this information to adjust the imputation models (via the predictor matrix).
-
-## `plot_flux()`
-
-The `plot_flux()` function produces an influx-outflux plot.
-The influx of a variable quantifies how well its missing data connect to the observed data on other variables. 
-The outflux of a variable quantifies how well its observed data connect to the missing data on other variables. 
-In general, higher influx and outflux values are preferred when building imputation models. 
-
-The plotting function requires an incomplete dataset (argument `data`), and takes optional arguments to adjust the legend and axis labels.
-
-```{r, fig.cap="Influx-outflux plot."}
-plot_flux(penguins, label = FALSE)
+We add this variable to the imputation model of `sex` by assigning `bill_len` as imputation model predictor in the predictor matrix:
+```{r}
+pred["sex", c("bill_len", "species")] <- 1
 ```
 
-For details, see the function documentation.
-
-Based on this, we edit the predictor matrix as follows:
+Since we had already added some imputation model predictors, our predictor matrix now looks as follows:
 ```{r, fig.cap="Predictor matrix plot after editing the predictor matrix.", fig.height=6}
-pred["sex", c("species", "bill_len")] <- 1
 plot_pred(pred, method = meth)
 ```
 
+This yields a final version of the imputation models, that we will use to impute the data.
 
 # Evaluating imputations
 
-Run the imputation algorithm on the incomplete dataset, with the imputation models we built (i.e., the predictor matrix and methods vector), and with three imputations.
+Run the imputation algorithm on the incomplete dataset, with the imputation models we built (i.e., the predictor matrix and methods vector), with three imputations.
 
 ```{r}
 imp <- mice(
@@ -583,11 +608,9 @@ ggmice(imp, aes(x = sex, y = bill_dep)) +
   facet_wrap(~ species, labeller = label_both)
 ```
 
-These figures show the observed data points once in blue, plus five imputed values in red for each missing entry.
+These figures show the observed data points once in blue, plus `r imp$m` imputed values in red for each missing entry.
 
-
-
-It is also possible to use the imputation number as mapping variable in the plot. 
+In addition to recreating the graphs from the incomplete data exploration stage, it is also possible to use the imputation number as mapping variable in the plot. 
 For example, we can create a stripplot of observed and imputed data with the imputation number `.imp` on the horizontal axis:
 
 ```{r, fig.cap="Stripplot of bill length (in cm) by imputation."}
@@ -605,38 +628,50 @@ ggmice(imp, aes(x = .imp, y = bill_len)) +
   labs(x = "Imputation number")
 ```
 
-You may want to create a plot visualizing the imputations of multiple variables as one object. 
-This can be done by combining `ggmice` with the functional programming package `purrr` and visualization package `patchwork`. 
-
-You can combine two figures with:
-```{r, fig.cap="Combined boxplots."}
-p1 <- ggmice(imp, aes(x = .imp, y = bill_len)) + geom_boxplot()
-p2 <- ggmice(imp, aes(x = .imp, y = bill_dep)) + geom_boxplot()
-patchwork::wrap_plots(p1, p2)
-```
-
-
-We could obtain stripplots all imputed variables as one object using:
-
-```{r, fig.cap="Combined stripplots."}
-# vector of imputed variable names
-vrb_imp <- names(imp$data)[colSums(imp$where)>0]
-
-purrr::map(vrb_imp, ~ {
-  ggmice(imp, aes(x = .imp, y = .data[[.x]])) +
-    geom_jitter() +
-    labs(x = "Imputation number")
-}) |>
-  patchwork::wrap_plots()
-```
-
-For further inspection, we can also split the plots by imputation number, which allows us to evaluate the bivariate distribution within each imputation.
+Another advantage of the 'grammar of graphics' philosophy in `ggmice` is that we can use faceting to split plots by imputation number.
+This allows for further inspection of e.g., bivariate distributions within each imputation:
 ```{r, fig.cap="Scatterplots split by imputation."}
 ggmice(imp, aes(x = sex, y = bill_dep)) +
   geom_point() +
   facet_wrap(~.imp)
 ```
 
+When evaluating imputations, you may want to assess multiple variables at once. 
+To create plots of multiple imputed variables, we can combine `ggmice` with the graphical formatting package `patchwork` and the functional programming package `purrr`. 
+
+You can combine figures with `patchworks`'s `wrap_plots()` function:
+```{r, fig.cap="Combined boxplots."}
+p1 <- ggmice(imp, aes(x = .imp, y = bill_len)) + geom_boxplot()
+p2 <- ggmice(imp, aes(x = .imp, y = bill_dep)) + geom_boxplot()
+patchwork::wrap_plots(p1, p2)
+```
+
+And to plot many variables at once, we can use the `purrr` function `map()` (which works like a vectorized `for` loop).
+If we want to create stripplots of every imputed variable--and only imputed variables--we first need to know which variables were imputed.
+We generate a vector with the imputed variable names by extracting all variable names, and then indexing the variables where the number of imputed values is greater than zero:
+
+```{r}
+vrb_names <- names(imp$data)
+imp_count <- colSums(imp$where)
+vrb_imp <- vrb_names[imp_count > 0]
+```
+
+Subsequently, we can use functional programming to create a plot for each imputed variable:
+```{r}
+plot_list <- purrr::map(vrb_imp, function(vrb){
+  ggmice(imp, aes(x = .imp, y = .data[[vrb]])) +
+    geom_jitter() +
+    labs(x = "Imputation number")
+})
+```
+
+And finally, we use `patchwork` to combine the plot into one object:
+```{r, fig.cap="Combined stripplots."}
+plot_list |>
+  patchwork::wrap_plots()
+```
+
+<!-- TODO: write conclusion?? -->
 
 <!-- To re-create any `mice` plot with `ggmice`, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette.  -->
 
