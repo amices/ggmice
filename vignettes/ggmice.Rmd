@@ -570,14 +570,16 @@ imp <- mice(
 ## `plot_trace()`
 
 The function `plot_trace()` plots the trace lines of the MICE algorithm for convergence evaluation. 
-The only required argument is `data` (to supply a `mice::mids` object). 
-The optional argument `vrb` defaults to `"all"`, which displays traceplots for all variables. 
+The only required argument is `data` (to supply a `mice::mids` object).
+Optional arguments such as `trend` (to add a trend line that facilitates interpretation) are described in the function documentation.
+<!-- The optional argument `vrb` defaults to `"all"`, which displays traceplots for all variables.  -->
 
 ```{r, fig.cap="Trace plots for all variables."}
-plot_trace(imp)
+plot_trace(imp, trend = TRUE)
 ```
 
 <!-- TODO: explain non-conv! -->
+For algorithmic convergence, the trace plot lines should be stationary (non-trending) and mixing (intermingling nicely). 
 If we are unsure of the algorithmic convergence, we can add iterations to the imputation algorithm and re-evaluate:
 
 ```{r}
@@ -585,13 +587,19 @@ imp <- mice.mids(imp, maxit = 5, print = FALSE)
 ```
 
 ```{r, fig.cap="Trace plots for all variables after adding iterations."}
-plot_trace(imp)
+plot_trace(imp, trend = TRUE)
 ```
+
+We can supplement the inspection of the traceplots with evaluations of the imputed values themselves.
+We can use `ggmice()` to create visual diagnostics for the imputed variables. 
 
 ## `ggmice()`
 
+Plotting the imputed data can reveal unrealistic imputations or issues with the imputation models.
+Additionally, `ggmice()` allows for graphical comparisons between the incomplete and imputed data.
+
 We can create the same plots as the ones on the incomplete data, but now on the imputed data: 
-<!-- [TODO: While the function specification is almost exactly similar as above, the resulting output is not, so I think you need to provide some additional context on what is actually shown in these figures.] -->
+<!-- [TODO: Thoms feedback "While the function specification is almost exactly similar as above, the resulting output is not, so I think you need to provide some additional context on what is actually shown in these figures".] -->
 
 ```{r, fig.cap="", warning = FALSE}
 ggmice(imp, aes(x = sex)) +
@@ -675,7 +683,23 @@ plot_list |>
 
 <!-- To re-create any `mice` plot with `ggmice`, see the [Old friends](https://amices.org/ggmice/articles/old_friends.html) vignette.  -->
 
+# Take-aways
 
+In this vignette, you have seen how `ggmice` can support each phase of a `mice` imputation workflow, from the first look at the incomplete data to evaluating the imputations.
+
+In the exploration of the incomplete data, the `ggmice()` function allows you to visualize missing datapoints instead of silently discarding incomplete cases. 
+Other missingness exploration functions, such as `plot_pattern()`, may help you understand the structure of the missing data problem and subsequently inform imputation model choices.
+
+When building imputation models, `ggmice()` may be used to investigate associations between the observed data and missingness indicators. 
+Other visualization functions that may aid imputation model building are `plot_pred()`, `plot_corr()`, and `plot_flux()`.
+
+Applied to imputed data (`mids` objects), `ggmice()` visualizes observed and imputed values together, making it straightforward to compare the distributions before and after imputation.
+These graphs may also flag potential problems in the imputation model fit, such as implausible imputed values, or algorithmic non-convergence.
+Algorithmic convergence is a prerequisite for using `mice` imputations in any subsequent statistical analysis.
+Therefore, the `plot_trace()` function offers tools for visually diagnosing non-convergence.
+
+Across these steps, an advantage of `ggmice` is that all visualizations are standard `ggplot` objects. 
+This means you can adapt them to your own preferences and publication standards with the usual 'grammar of graphics' functionality.
 
 ---
 
