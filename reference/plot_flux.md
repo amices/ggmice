@@ -5,7 +5,7 @@ Plot the influx and outflux of a multivariate missing data pattern
 ## Usage
 
 ``` r
-plot_flux(data, vrb = "all", label = TRUE, caption = TRUE)
+plot_flux(data, vrb = "all", jitter = TRUE, label = TRUE, caption = TRUE)
 ```
 
 ## Arguments
@@ -18,6 +18,11 @@ plot_flux(data, vrb = "all", label = TRUE, caption = TRUE)
 
   String, vector, or unquoted expression with variable name(s), default
   is "all".
+
+- jitter:
+
+  Logical indicating whether some noise is added to every point to
+  prevent overplotting (the default).
 
 - label:
 

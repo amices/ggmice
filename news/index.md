@@ -2,6 +2,12 @@
 
 ## ggmice (development version)
 
+### New features
+
+- New [`plot_flux()`](http://amices.org/ggmice/reference/plot_flux.md)
+  argument `jitter` adds some noise to prevent overplotting
+  ([\#191](https://github.com/amices/ggmice/issues/191))
+
 ### Bug fixes
 
 - Deprecated `ggplot2` argument `size` no longer used in vignettes
