@@ -2,6 +2,7 @@
 #'
 #' @param data An incomplete dataset of class `data.frame` or `matrix`.
 #' @param vrb String, vector, or unquoted expression with variable name(s), default is "all".
+#' @param jitter Logical indicating whether some noise is added to every point to prevent overplotting (the default).
 #' @param label Logical indicating whether variable names should be displayed within the plot (the default) or with colors in the legend.
 #' @param caption Logical indicating whether the figure caption should be displayed.
 #'
@@ -28,6 +29,7 @@
 plot_flux <-
   function(data,
            vrb = "all",
+           jitter = TRUE,
            label = TRUE,
            caption = TRUE) {
     verify_data(data, df = TRUE)
@@ -35,6 +37,11 @@ plot_flux <-
     vrb_matched <- match_vrb(vrb, names(data))
     if (length(vrb_matched) < 2) {
       cli::cli_abort("The number of variables should be two or more to compute flux.")
+    }
+    if (jitter) {
+      positions <- ggplot2::position_jitter(height = 0.025, width = 0.025, seed = 123)
+    } else {
+      positions <- ggplot2::position_identity()
     }
     # compute flux
     flx <- mice::flux(data[, vrb_matched])[, c("influx", "outflux")]
@@ -65,13 +72,13 @@ plot_flux <-
       gg <- gg +
         ggplot2::geom_text(
           color = "black",
-          position = ggplot2::position_nudge(y = 0.025)
+          position = positions
         )
     } else {
       gg <- gg +
         ggplot2::geom_point(
           shape = 1,
-          position = ggplot2::position_nudge(y = 0.025)
+          position = positions
         ) +
         ggplot2::labs(color = "")
     }
