@@ -593,7 +593,7 @@ plot_trace(imp)
 We can create the same plots as the ones on the incomplete data, but now on the imputed data: 
 <!-- [TODO: While the function specification is almost exactly similar as above, the resulting output is not, so I think you need to provide some additional context on what is actually shown in these figures.] -->
 
-```{r, fig.cap="Visualizations of imputed data.", warning = FALSE}
+```{r, fig.cap="", warning = FALSE}
 ggmice(imp, aes(x = sex)) +
   geom_bar(fill = " white")
 ggmice(imp, aes(x = bill_len, y = bill_dep)) +
