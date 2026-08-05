@@ -1,5 +1,5 @@
 ---
-title: "Get started"
+title: "Get started with `ggmice`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{ggmice}
@@ -22,12 +22,39 @@ knitr::opts_chunk$set(
   warning = FALSE,
   comment = "#>",
   fig.width = 7.2,
-  fig.height = 4
+  fig.height = 4,
+  class.source = "foldable"
   )
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
-<!-- pkgdown::build_article("ggmice") -->
+```{r rendering, eval = FALSE, include = FALSE}
+# dev
+pkgdown::build_article("ggmice")
+
+# print
+rmarkdown::render(
+  "vignettes/ggmice.Rmd",
+  output_format = rmarkdown::html_document(
+    self_contained = TRUE, 
+    dev = "svglite"
+    ),
+  output_file   = "ggmice.html"
+)
+pagedown::chrome_print(
+  "vignettes/ggmice.html",
+  "vignettes/ggmice.pdf", 
+  format = "pdf", 
+  options = list(
+    printBackground = TRUE, 
+    marginLeft = 0.6, 
+    marginRight = 0.6
+  )
+)
+
+```
+
+
 
 <!-- # Introduction -->
 
