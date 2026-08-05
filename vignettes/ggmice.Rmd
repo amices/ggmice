@@ -1,6 +1,8 @@
 ---
 title: "Get started with `ggmice`"
 output: rmarkdown::html_vignette
+bibliography: references.bib
+link-citations: true
 vignette: >
   %\VignetteIndexEntry{ggmice}
   %\VignetteEngine{knitr::rmarkdown}
@@ -107,8 +109,8 @@ But first, we need some background information about the `ggmice` package and it
 
 ## The `ggmice` package
 
-The `ggmice` package unifies the visualization of incomplete and imputed data, and offers tools for building and evaluating imputation models. 
-`ggmice` is an extension package to the popular R packages `mice` and `ggplot2`.
+The `ggmice` package unifies the visualization of incomplete and imputed data, and offers tools for building and evaluating imputation models in R [@rcoreteam2025]. 
+`ggmice` is an extension package to the popular R packages `mice` [@vanbuuren2011] and `ggplot2` [@wickham2016].
 
 `mice` has become standard software for handling the ubiquitous problem of incomplete data. 
 With `mice`, missing data points are ‘imputed’ (i.e., filled in) to obtain several completed data sets. 
@@ -730,9 +732,11 @@ This means you can adapt them to your own preferences and publication standards 
 
 ---
 
-#
+# Supporting information
 
-This is the end of the vignette. This document was generated using:
+This is the end of the vignette. 
+
+This document was generated using:
 
 ```{r session, class.source = 'fold-hide'}
 sessionInfo()
@@ -741,3 +745,5 @@ sessionInfo()
 ## Acknowledgements
 
 The `ggmice` package is developed with guidance and feedback from Gerko Vink, Stef van Buuren, and others. This project has received funding from the European Union’s Horizon 2020 research and innovation programme under ReCoDID grant agreement No 825746.
+
+## References
