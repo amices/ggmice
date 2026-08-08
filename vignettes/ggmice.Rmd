@@ -56,6 +56,19 @@ pagedown::chrome_print(
 
 ```
 
+<!-- TODO: consider adding minimal hex -->
+<!-- ``` r -->
+<!-- hext::hext( -->
+<!--     "  /\\  /", " /   🐭", "ggmice", "", -->
+<!--     "left", "left") -->
+<!-- #>   ________ -->
+<!-- #>  /  /\  / \ -->
+<!-- #> / /   🐭   \ -->
+<!-- #> \  ggmice  / -->
+<!-- #>  \________/ -->
+<!-- ``` -->
+
+<!-- <sup>Created on 2026-08-08 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup> -->
 
 
 <!-- # Introduction -->
