@@ -42,8 +42,8 @@ Alternatively, you could install the development version of `ggmice`
 from [GitHub](https://github.com/amices) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("amices/ggmice")
+# install.packages("pak")
+pak::pak("amices/ggmice")
 ```
 
 ## Example
@@ -66,7 +66,7 @@ dat <- boys
 ggmice(dat, aes(age, hgt)) + geom_point()
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+<img src="man/figures/README-example-1.png" alt="" width="100%" />
 
 ``` r
 # impute the incomplete data
@@ -75,7 +75,7 @@ imp <- mice(dat, m = 1, seed = 1)
 ggmice(imp, aes(age, hgt)) + geom_point()
 ```
 
-<img src="man/figures/README-example-2.png" width="100%" />
+<img src="man/figures/README-example-2.png" alt="" width="100%" />
 
 ## Acknowledgements
 
