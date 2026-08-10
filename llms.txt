@@ -31,8 +31,8 @@ from [GitHub](https://github.com/amices) with:
 
 ``` r
 
-# install.packages("devtools")
-devtools::install_github("amices/ggmice")
+# install.packages("pak")
+pak::pak("amices/ggmice")
 ```
 
 ## Example
@@ -147,5 +147,6 @@ Practices](https://bestpractices.coreinfrastructure.org/projects/6036/badge)](ht
 
 ### All vignettes
 
-- [Get started](http://amices.org/ggmice/articles/ggmice.md):
+- [Get started with
+  \`ggmice\`](http://amices.org/ggmice/articles/ggmice.md):
 - [Old friends](http://amices.org/ggmice/articles/old_friends.md):

@@ -1,6 +1,6 @@
 # Changelog
 
-## ggmice (development version)
+## ggmice 0.1.2 (development version)
 
 ### New features
 
@@ -23,6 +23,10 @@
 - Fix overlapping tiling effect in
   [`plot_miss()`](http://amices.org/ggmice/reference/plot_miss.md) with
   larger data ([\#184](https://github.com/amices/ggmice/issues/184))
+
+### Minor changes
+
+- Vignette update ([\#183](https://github.com/amices/ggmice/issues/183))
 
 ## ggmice 0.1.1
 

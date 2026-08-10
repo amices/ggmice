@@ -375,11 +375,11 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] patchwork_1.3.2   purrr_1.2.2       plotly_4.12.1     ggplot2_4.0.3    
-#> [5] mice_3.19.0       ggmice_0.1.1.9000
+#> [1] patchwork_1.3.2 purrr_1.2.2     plotly_4.12.1   ggplot2_4.0.3  
+#> [5] mice_3.19.0     ggmice_0.1.2   
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] gtable_0.3.6       shape_1.4.6.1      xfun_0.60          bslib_0.11.0      
+#>  [1] gtable_0.3.6       shape_1.4.6.1      xfun_0.60          bslib_0.12.0      
 #>  [5] htmlwidgets_1.6.4  lattice_0.22-9     crosstalk_1.2.2    vctrs_0.7.3       
 #>  [9] tools_4.6.1        Rdpack_2.6.6       generics_0.1.4     tibble_3.3.1      
 #> [13] pan_2.0            pkgconfig_2.0.3    jomo_2.7-6         Matrix_1.7-5      
@@ -390,7 +390,7 @@ sessionInfo()
 #> [33] nloptr_2.2.1       jquerylib_0.1.4    tidyr_1.3.2        MASS_7.3-65       
 #> [37] cachem_1.1.0       reformulas_0.4.4   iterators_1.0.14   rpart_4.1.27      
 #> [41] boot_1.3-32        foreach_1.5.2      mitml_0.4-5        nlme_3.1-169      
-#> [45] tidyselect_1.2.1   digest_0.6.39      stringi_1.8.7      dplyr_1.2.1       
+#> [45] tidyselect_1.2.1   digest_0.6.39      stringi_1.8.9      dplyr_1.2.1       
 #> [49] labeling_0.4.3     splines_4.6.1      fastmap_1.2.0      grid_4.6.1        
 #> [53] cli_3.6.6          magrittr_2.0.5     survival_3.8-6     broom_1.0.13      
 #> [57] withr_3.0.3        scales_1.4.0       backports_1.5.1    httr_1.4.8        

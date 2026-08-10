@@ -31,8 +31,8 @@ from [GitHub](https://github.com/amices) with:
 
 ``` r
 
-# install.packages("devtools")
-devtools::install_github("amices/ggmice")
+# install.packages("pak")
+pak::pak("amices/ggmice")
 ```
 
 ## Example
