@@ -131,6 +131,7 @@ plot_miss <-
     }
     if (ordered) {
       gg <- gg +
+        ggplot2::labs(y = "Rows*", caption = "*ordered by missing data pattern") +
         ggplot2::theme(
           axis.text.y = ggplot2::element_blank(),
           axis.ticks.y = ggplot2::element_blank()
