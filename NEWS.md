@@ -3,6 +3,7 @@
 ## New features
 
 * New `plot_flux()` argument `jitter` adds some noise to prevent overplotting (#191)
+* Support for global options `plot_*()` function arguments, e.g. `options(ggmice.rotate = TRUE)`
 
 ## Bug fixes
 

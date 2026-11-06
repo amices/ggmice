@@ -15,6 +15,10 @@ vignette: >
 p.caption {
   font-size: 0.7em;
 }
+p.caption::before {
+  content: "Note. ";        
+  font-style: italic;        
+}
 </style>
 
 ```{r, include = FALSE}
@@ -317,6 +321,8 @@ plot_miss(penguins, ordered = TRUE)
 
 Other optional function arguments can be specified too (e.g., `rotate` to display the column names at a 90 degree angle). 
 Please refer to the function documentation for details.
+
+To set the `rotate` argument to `TRUE` for all subsequent plots, run `options("ggmice.rotate" = TRUE)`.
 
 ## `plot_pattern()`
 

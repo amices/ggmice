@@ -7,10 +7,10 @@
 plot_miss(
   data,
   vrb = "all",
-  ordered = FALSE,
-  rotate = FALSE,
-  grid = FALSE,
-  square = FALSE
+  ordered = getOption("ggmice.ordered", FALSE),
+  rotate = getOption("ggmice.rotate", FALSE),
+  grid = getOption("ggmice.grid", FALSE),
+  square = getOption("ggmice.square", FALSE)
 )
 }
 \arguments{

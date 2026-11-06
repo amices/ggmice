@@ -29,9 +29,9 @@
 plot_flux <-
   function(data,
            vrb = "all",
-           jitter = TRUE,
-           label = TRUE,
-           caption = TRUE) {
+           jitter = getOption("ggmice.jitter", TRUE),
+           label = getOption("ggmice.label", TRUE),
+           caption = getOption("ggmice.caption", TRUE)) {
     verify_data(data, df = TRUE)
     vrb <- rlang::enexpr(vrb)
     vrb_matched <- match_vrb(vrb, names(data))

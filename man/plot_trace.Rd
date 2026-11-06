@@ -4,7 +4,12 @@
 \alias{plot_trace}
 \title{Plot the trace lines of the imputation algorithm}
 \usage{
-plot_trace(data, vrb = "all", trend = FALSE, legend = TRUE)
+plot_trace(
+  data,
+  vrb = "all",
+  trend = getOption("ggmice.trend", FALSE),
+  legend = getOption("ggmice.legend", TRUE)
+)
 }
 \arguments{
 \item{data}{An object of class \link[mice:mids]{mice::mids}.}

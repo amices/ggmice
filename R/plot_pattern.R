@@ -34,11 +34,11 @@
 plot_pattern <-
   function(data,
            vrb = "all",
-           square = TRUE,
-           rotate = FALSE,
+           square = getOption("ggmice.square", TRUE),
+           rotate = getOption("ggmice.rotate", FALSE),
            cluster = NULL,
            npat = NULL,
-           caption = TRUE) {
+           caption = getOption("ggmice.caption", TRUE)) {
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
@@ -197,7 +197,7 @@ plot_pattern <-
     }
     if (rotate) {
       gg <-
-        gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0))
+        gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0, vjust = 0.5))
     }
     if (caption) {
       if (!is.null(npat) && npat < rows_pat_full) {

@@ -37,10 +37,10 @@
 plot_miss <-
   function(data,
            vrb = "all",
-           ordered = FALSE,
-           rotate = FALSE,
-           grid = FALSE,
-           square = FALSE) {
+           ordered = getOption("ggmice.ordered", FALSE),
+           rotate = getOption("ggmice.rotate", FALSE),
+           grid = getOption("ggmice.grid", FALSE),
+           square = getOption("ggmice.square", FALSE)) {
     # flag lifecycle
     lifecycle::signal_stage("experimental", "plot_miss()")
     # input processing
@@ -139,7 +139,7 @@ plot_miss <-
     }
     if (rotate) {
       gg <-
-        gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0))
+        gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0, vjust = 0.5))
     }
     return(gg)
   }

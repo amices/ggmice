@@ -42,8 +42,8 @@
 #' @export
 plot_trace <- function(data,
                        vrb = "all",
-                       trend = FALSE,
-                       legend = TRUE) {
+                       trend = getOption("ggmice.trend", FALSE),
+                       legend = getOption("ggmice.legend", TRUE)) {
   verify_data(data, imp = TRUE)
   if (is.null(data$chainMean) && is.null(data$chainVar)) {
     cli::cli_abort("No convergence diagnostics found", call. = FALSE)

@@ -31,11 +31,11 @@
 plot_corr <-
   function(data,
            vrb = "all",
-           label = FALSE,
-           square = TRUE,
-           diagonal = FALSE,
-           rotate = FALSE,
-           caption = TRUE) {
+           label = getOption("ggmice.label", FALSE),
+           square = getOption("ggmice.square", TRUE),
+           diagonal = getOption("ggmice.diagonal", FALSE),
+           rotate = getOption("ggmice.rotate", FALSE),
+           caption = getOption("ggmice.caption", TRUE)) {
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }
@@ -120,7 +120,7 @@ plot_corr <-
       gg <- gg + ggplot2::coord_cartesian(expand = FALSE)
     }
     if (rotate) {
-      gg <- gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0))
+      gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0, vjust = 0.5))
     }
     return(gg)
   }
