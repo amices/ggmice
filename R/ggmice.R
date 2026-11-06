@@ -23,7 +23,7 @@
 #' # edit variable type for mixed incomplete data
 #' dat$hyp <- factor(dat$hyp, levels = (1:2), labels = c("no hypertension", "hypertension"))
 #' # scatterplot with categorical incomplete data
-#'   ggmice(dat, aes(hyp, chl)) + geom_jitter(width = 0.1)
+#' ggmice(dat, aes(hyp, chl)) + geom_jitter(width = 0.1)
 #' # incomplete data scatterplot faceted by categorical variable
 #' ggmice(dat, aes(age, chl)) + geom_point() +
 #'   facet_wrap(~ hyp, labeller = label_both)
@@ -101,12 +101,9 @@ ggmice <- function(data = NULL,
       where_xy == 1,
       levels = c(FALSE, TRUE),
       labels = c("observed", "missing"),
-      ordered = TRUE,
-      exclude = NULL
+      ordered = TRUE
     ),
     data)
-    # mice_data <- rbind(mice_data, NULL)
-    # mice_data[nrow(mice_data), ".where"] <- "missing"
 
     if (!is.null(mapping$x) && !is.null(mapping$y)) {
       mice_data <- dplyr::mutate(
