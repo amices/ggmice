@@ -197,7 +197,7 @@ plot_pattern <-
     }
     if (rotate) {
       gg <-
-        gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
+        gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0))
     }
     if (caption) {
       if (!is.null(npat) && npat < rows_pat_full) {
