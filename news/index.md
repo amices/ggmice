@@ -7,6 +7,8 @@
 - New [`plot_flux()`](http://amices.org/ggmice/reference/plot_flux.md)
   argument `jitter` adds some noise to prevent overplotting
   ([\#191](https://github.com/amices/ggmice/issues/191))
+- Support for global options `plot_*()` function arguments,
+  e.g. `options(ggmice.rotate = TRUE)`
 
 ### Bug fixes
 

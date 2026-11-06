@@ -8,11 +8,11 @@ Plot the missing data pattern of an incomplete dataset
 plot_pattern(
   data,
   vrb = "all",
-  square = TRUE,
-  rotate = FALSE,
+  square = getOption("ggmice.square", TRUE),
+  rotate = getOption("ggmice.rotate", FALSE),
   cluster = NULL,
   npat = NULL,
-  caption = TRUE
+  caption = getOption("ggmice.caption", TRUE)
 )
 ```
 

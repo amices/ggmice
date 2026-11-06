@@ -73,6 +73,10 @@
 p.caption {
   font-size: 0.7em;
 }
+p.caption::before {
+  content: "Note. ";        
+  font-style: italic;        
+}
 </style>
 <!-- TODO: consider adding minimal hex --><!-- ``` r --><!-- hext::hext( --><!--     "  /\\  /", " /   🐭", "ggmice", "", --><!--     "left", "left") --><!-- #>   ________ --><!-- #>  /  /\  / \ --><!-- #> / /   🐭   \ --><!-- #> \  ggmice  / --><!-- #>  \________/ --><!-- ``` --><!-- <sup>Created on 2026-08-08 with [reprex v2.1.1](https://reprex.tidyverse.org)</sup> --><!-- # Introduction --><p>The R package <code>ggmice</code> supports <code>mice</code>
 imputation workflows with visualizations. <code>ggmice</code> provides
@@ -407,6 +411,8 @@ proportion.
 <p>Other optional function arguments can be specified too (e.g.,
 <code>rotate</code> to display the column names at a 90 degree angle).
 Please refer to the function documentation for details.</p>
+<p>To set the <code>rotate</code> argument to <code>TRUE</code> for all
+subsequent plots, run <code>options("ggmice.rotate" = TRUE)</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="plot_pattern">

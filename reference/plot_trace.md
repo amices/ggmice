@@ -5,7 +5,12 @@ Plot the trace lines of the imputation algorithm
 ## Usage
 
 ``` r
-plot_trace(data, vrb = "all", trend = FALSE, legend = TRUE)
+plot_trace(
+  data,
+  vrb = "all",
+  trend = getOption("ggmice.trend", FALSE),
+  legend = getOption("ggmice.legend", TRUE)
+)
 ```
 
 ## Arguments

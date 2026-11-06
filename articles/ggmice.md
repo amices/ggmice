@@ -360,6 +360,9 @@ Other optional function arguments can be specified too (e.g., `rotate`
 to display the column names at a 90 degree angle). Please refer to the
 function documentation for details.
 
+To set the `rotate` argument to `TRUE` for all subsequent plots, run
+`options("ggmice.rotate" = TRUE)`.
+
 ### `plot_pattern()`
 
 The

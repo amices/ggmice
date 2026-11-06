@@ -9,9 +9,9 @@ plot_pred(
   data,
   vrb = "all",
   method = NULL,
-  label = TRUE,
-  square = TRUE,
-  rotate = FALSE
+  label = getOption("ggmice.label", TRUE),
+  square = getOption("ggmice.square", TRUE),
+  rotate = getOption("ggmice.rotate", FALSE)
 )
 ```
 
