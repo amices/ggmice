@@ -151,7 +151,7 @@ plot_pred <-
     }
     if (rotate) {
       gg <-
-        gg + ggplot2::theme(axis.text.x.top = ggplot2::element_text(angle = 90))
+        gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0))
     }
     return(gg)
   }

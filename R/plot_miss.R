@@ -131,6 +131,7 @@ plot_miss <-
     }
     if (ordered) {
       gg <- gg +
+        ggplot2::labs(y = "Rows*", caption = "*ordered by missing data pattern") +
         ggplot2::theme(
           axis.text.y = ggplot2::element_blank(),
           axis.ticks.y = ggplot2::element_blank()
@@ -138,7 +139,7 @@ plot_miss <-
     }
     if (rotate) {
       gg <-
-        gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90))
+        gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0))
     }
     return(gg)
   }
