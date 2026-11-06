@@ -1040,13 +1040,13 @@ This document was generated using:
 ``` r
 
 sessionInfo()
-#> R version 4.6.1 (2026-06-24)
+#> R version 4.6.2 (2026-10-29)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.4 LTS
+#> Running under: Ubuntu 26.04.1 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
-#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#> LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
 #> 
 #> locale:
 #>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
@@ -1064,23 +1064,23 @@ sessionInfo()
 #> [1] ggmice_0.1.2  ggplot2_4.0.3 mice_3.19.0  
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] gtable_0.3.6       shape_1.4.6.1      xfun_0.60          bslib_0.12.0      
-#>  [5] htmlwidgets_1.6.4  lattice_0.22-9     vctrs_0.7.3        tools_4.6.1       
+#>  [1] gtable_0.3.6       shape_1.4.6.1      xfun_0.62          bslib_0.12.0      
+#>  [5] htmlwidgets_1.6.4  lattice_0.23-1     vctrs_0.7.3        tools_4.6.2       
 #>  [9] Rdpack_2.6.6       generics_0.1.4     tibble_3.3.1       pan_2.0           
-#> [13] pkgconfig_2.0.3    jomo_2.7-6         Matrix_1.7-5       RColorBrewer_1.1-3
-#> [17] S7_0.2.2           desc_1.4.3         lifecycle_1.0.5    compiler_4.6.1    
+#> [13] pkgconfig_2.0.3    jomo_2.7-6         Matrix_1.7-6       RColorBrewer_1.1-3
+#> [17] S7_0.2.2           desc_1.4.3         lifecycle_1.0.5    compiler_4.6.2    
 #> [21] farver_2.1.2       stringr_1.6.0      textshaping_1.0.5  codetools_0.2-20  
-#> [25] htmltools_0.5.9    sass_0.4.10        yaml_2.3.12        glmnet_5.0        
+#> [25] htmltools_0.5.9    sass_0.4.10        yaml_2.3.12        glmnet_5.2        
 #> [29] pillar_1.11.1      pkgdown_2.2.1      nloptr_2.2.1       jquerylib_0.1.4   
-#> [33] tidyr_1.3.2        MASS_7.3-65        cachem_1.1.0       reformulas_0.4.4  
+#> [33] tidyr_1.3.2        MASS_7.3-66        cachem_1.1.0       reformulas_0.4.4  
 #> [37] iterators_1.0.14   rpart_4.1.27       boot_1.3-32        foreach_1.5.2     
-#> [41] mitml_0.4-5        nlme_3.1-169       tidyselect_1.2.1   digest_0.6.39     
+#> [41] mitml_0.4-5        nlme_3.1-171       tidyselect_1.2.1   digest_0.6.39     
 #> [45] stringi_1.8.9      dplyr_1.2.1        purrr_1.2.2        labeling_0.4.3    
-#> [49] splines_4.6.1      fastmap_1.2.0      grid_4.6.1         cli_3.6.6         
-#> [53] magrittr_2.0.5     patchwork_1.3.2    survival_3.8-6     broom_1.0.13      
-#> [57] withr_3.0.3        scales_1.4.0       backports_1.5.1    rmarkdown_2.31    
-#> [61] otel_0.2.0         nnet_7.3-20        lme4_2.0-6         ragg_1.5.2        
-#> [65] evaluate_1.0.5     knitr_1.51         rbibutils_2.4.1    mgcv_1.9-4        
+#> [49] splines_4.6.2      fastmap_1.2.0      grid_4.6.2         cli_3.6.6         
+#> [53] magrittr_2.0.5     patchwork_1.3.2    survival_3.8-12    broom_1.0.13      
+#> [57] withr_3.0.3        scales_1.4.0       backports_1.5.1    rmarkdown_2.32    
+#> [61] otel_0.2.0         nnet_7.3-21        lme4_2.1-0         ragg_1.5.2        
+#> [65] evaluate_1.0.5     knitr_1.52         rbibutils_2.4.1    mgcv_1.9-4        
 #> [69] rlang_1.3.0        Rcpp_1.1.2         glue_1.8.1         minqa_1.2.8       
 #> [73] jsonlite_2.0.0     R6_2.6.1           systemfonts_1.3.2  fs_2.1.0
 ```

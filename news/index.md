@@ -27,6 +27,12 @@
 ### Minor changes
 
 - Vignette update ([\#183](https://github.com/amices/ggmice/issues/183))
+- Center axis tick labels in functions that plot variable names (i.e.,
+  [`plot_miss()`](http://amices.org/ggmice/reference/plot_miss.md),
+  [`plot_pattern()`](http://amices.org/ggmice/reference/plot_pattern.md),
+  [`plot_corr()`](http://amices.org/ggmice/reference/plot_corr.md),
+  [`plot_pred()`](http://amices.org/ggmice/reference/plot_pred.md);
+  [\#195](https://github.com/amices/ggmice/issues/195))
 
 ## ggmice 0.1.1
 
