@@ -101,9 +101,13 @@ ggmice <- function(data = NULL,
       where_xy == 1,
       levels = c(FALSE, TRUE),
       labels = c("observed", "missing"),
-      ordered = TRUE
+      ordered = TRUE,
+      exclude = NULL
     ),
     data)
+    # mice_data <- rbind(mice_data, NULL)
+    # mice_data[nrow(mice_data), ".where"] <- "missing"
+
     if (!is.null(mapping$x) && !is.null(mapping$y)) {
       mice_data <- dplyr::mutate(
         mice_data,
@@ -139,7 +143,8 @@ ggmice <- function(data = NULL,
       .where = factor(
         .where,
         levels = c("observed", "imputed"),
-        ordered = TRUE
+        ordered = TRUE,
+        exclude = NULL
       ),
       .imp = factor(.imp, levels = 0:data$m, ordered = TRUE)
     )
@@ -155,6 +160,7 @@ ggmice <- function(data = NULL,
     ggplot2::scale_color_manual(values = mice_colors,
                                 name = "",
                                 drop = FALSE) +
+    # ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(alpha = 1, show.legend = TRUE))) +
     theme_mice()
 
   # edit plot to display missing values on the axes
