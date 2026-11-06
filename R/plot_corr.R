@@ -120,7 +120,7 @@ plot_corr <-
       gg <- gg + ggplot2::coord_cartesian(expand = FALSE)
     }
     if (rotate) {
-      gg <- gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0))
+      gg + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 0, vjust = 0.5))
     }
     return(gg)
   }
