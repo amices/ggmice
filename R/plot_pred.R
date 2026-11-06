@@ -51,9 +51,9 @@ plot_pred <-
   function(data,
            vrb = "all",
            method = NULL,
-           label = TRUE,
-           square = TRUE,
-           rotate = FALSE) {
+           label = getOption("ggmice.label", TRUE),
+           square = getOption("ggmice.square", TRUE),
+           rotate = getOption("ggmice.rotate", FALSE)) {
     verify_data(data, pred = TRUE, imp = TRUE)
     vrb <- rlang::enexpr(vrb)
     if (mice::is.mids(data)) {

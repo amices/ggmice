@@ -15,6 +15,10 @@ vignette: >
 p.caption {
   font-size: 0.7em;
 }
+p.caption::before {
+  content: "Note. ";        
+  font-style: italic;        
+}
 </style>
 
 ```{r, include = FALSE}

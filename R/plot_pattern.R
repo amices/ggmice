@@ -34,11 +34,11 @@
 plot_pattern <-
   function(data,
            vrb = "all",
-           square = TRUE,
-           rotate = FALSE,
+           square = getOption("ggmice.square", TRUE),
+           rotate = getOption("ggmice.rotate", FALSE),
            cluster = NULL,
            npat = NULL,
-           caption = TRUE) {
+           caption = getOption("ggmice.caption", TRUE)) {
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }

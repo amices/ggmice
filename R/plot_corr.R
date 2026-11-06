@@ -31,11 +31,11 @@
 plot_corr <-
   function(data,
            vrb = "all",
-           label = FALSE,
-           square = TRUE,
-           diagonal = FALSE,
-           rotate = FALSE,
-           caption = TRUE) {
+           label = getOption("ggmice.ordered", FALSE),
+           square = getOption("ggmice.square", TRUE),
+           diagonal = getOption("ggmice.rotate", FALSE),
+           rotate = getOption("ggmice.rotate", FALSE),
+           caption = getOption("ggmice.grid", TRUE)) {
     if (is.matrix(data) && ncol(data) > 1) {
       data <- as.data.frame(data)
     }

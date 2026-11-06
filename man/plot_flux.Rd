@@ -4,7 +4,13 @@
 \alias{plot_flux}
 \title{Plot the influx and outflux of a multivariate missing data pattern}
 \usage{
-plot_flux(data, vrb = "all", jitter = TRUE, label = TRUE, caption = TRUE)
+plot_flux(
+  data,
+  vrb = "all",
+  jitter = getOption("ggmice.jitter", TRUE),
+  label = getOption("ggmice.label", TRUE),
+  caption = getOption("ggmice.caption", TRUE)
+)
 }
 \arguments{
 \item{data}{An incomplete dataset of class \code{data.frame} or \code{matrix}.}
